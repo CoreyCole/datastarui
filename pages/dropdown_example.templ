@@ -1,0 +1,30 @@
+package pages
+
+import (
+	"github.com/coreycole/datastarui/components/dropdown"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ DropdownExample() {
+	@l.Root() {
+		@dropdown.Dropdown() {
+			@dropdown.Trigger(dropdown.TriggerProps{Label: "Options"})
+			@dropdown.Content() {
+				@dropdown.Item(dropdown.ItemProps{Href: "#", ID: "menu-item-0"}) {
+					Account settings
+				}
+				@dropdown.Item(dropdown.ItemProps{Href: "#", ID: "menu-item-1"}) {
+					Support
+				}
+				@dropdown.Item(dropdown.ItemProps{Href: "#", ID: "menu-item-2"}) {
+					License
+				}
+				<form method="POST" action="#" role="none">
+					@dropdown.Item(dropdown.ItemProps{ID: "menu-item-3"}) {
+						Sign out
+					}
+				</form>
+			}
+		}
+	}
+}

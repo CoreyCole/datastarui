@@ -1,0 +1,19 @@
+package pages
+
+templ Root() {
+	<!DOCTYPE html>
+	<html class="antialiased dark m-0 p-0 h-full bg-black text-slate-300" lang="en" data-theme="dark">
+		<head>
+			<title>Datastar UI</title>
+			<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png"/>
+			<meta charset="UTF-8"/>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="/css/build.css"/>
+			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"></script>
+		</head>
+		<body>
+			{ children... }
+		</body>
+	</html>
+}

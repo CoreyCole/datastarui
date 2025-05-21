@@ -1,0 +1,255 @@
+package dropdown
+
+import "github.com/coreycole/datastarui/templui/utils"
+
+type contextKey string
+
+var (
+	contentIDKey    contextKey = "contentID"
+	subContentIDKey contextKey = "subContentID"
+)
+
+type Props struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type TriggerProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+	Label      string
+}
+
+type ContentProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+	Width      string
+	MaxHeight  string
+	Align      string
+	Side       string
+}
+
+type GroupProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type LabelProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type ItemProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+	Disabled   bool
+	Href       string
+	Target     string
+}
+
+type SeparatorProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type ShortcutProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type SubProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type SubTriggerProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type SubContentProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+type PortalProps struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+}
+
+templ Dropdown(props ...Props) {
+	{{
+		var p Props
+		if len(props) > 0 {
+			p = props[0]
+		}
+		contentID := p.ID
+		if contentID == "" {
+			contentID = utils.RandomID()
+		}
+	}}
+	<div
+		id={ contentID }
+		data-signals-buttonhover="false"
+		data-signals-menuhover="false"
+		class={ utils.TwMerge("relative inline-block text-left", p.Class) }
+		{ p.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+templ Trigger(props ...TriggerProps) {
+	{{
+		var p TriggerProps
+		if len(props) > 0 {
+			p = props[0]
+		}
+		if p.ID == "" {
+			p.ID = utils.RandomID()
+		}
+	}}
+	<div>
+		<button
+			id={ p.ID }
+			data-on-mouseover="$buttonhover = true"
+			data-on-mouseleave="$buttonhover = false"
+			type="button"
+			class={ utils.TwMerge("inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50", p.Class) }
+			aria-expanded="true"
+			aria-haspopup="true"
+			{ p.Attributes... }
+		>
+			if p.Label != "" {
+				{ p.Label }
+			} else {
+				{ children... }
+			}
+			<svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+				<path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+			</svg>
+		</button>
+	</div>
+}
+
+templ Content(props ...ContentProps) {
+	{{
+		var p ContentProps
+		if len(props) > 0 {
+			p = props[0]
+		}
+		if p.ID == "" {
+			p.ID = utils.RandomID()
+		}
+		widthClass := "w-56"
+		if p.Width != "" {
+			widthClass = p.Width
+		}
+	}}
+	<!-- 
+	Dropdown menu, show/hide based on menu state.
+	
+	Entering: "transition ease-out duration-100"
+	  From: "transform opacity-0 scale-95"
+	  To: "transform opacity-100 scale-100"
+	Leaving: "transition ease-in duration-75"
+	  From: "transform opacity-100 scale-100"
+	  To: "transform opacity-0 scale-95"
+	-->
+	<div
+		id={ p.ID }
+		data-show="$buttonhover || $menuhover"
+		data-on-mouseover="$menuhover = true"
+		data-on-mouseleave="$menuhover = false"
+		class={ utils.TwMerge("absolute left-0 z-10 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none", widthClass, p.Class) }
+		role="menu"
+		aria-orientation="vertical"
+		aria-labelledby="menu-button"
+		tabindex="-1"
+		{ p.Attributes... }
+	>
+		<div class="py-1" role="none">
+			{ children... }
+		</div>
+	</div>
+}
+
+templ Item(props ...ItemProps) {
+	{{
+		var p ItemProps
+		if len(props) > 0 {
+			p = props[0]
+		}
+		if p.ID == "" {
+			p.ID = utils.RandomID()
+		}
+		baseClass := "block px-4 py-2 text-sm"
+		textClass := "text-gray-700"
+		if p.Disabled {
+			textClass = "text-gray-400 cursor-not-allowed"
+		}
+	}}
+	if p.Href != "" {
+		<!-- Active: "bg-gray-100 text-gray-900 outline-none", Not Active: "text-gray-700" -->
+		<a
+			id={ p.ID }
+			href={ templ.SafeURL(p.Href) }
+			if p.Target != "" {
+				target={ p.Target }
+			}
+			class={ utils.TwMerge(baseClass, textClass, p.Class) }
+			role="menuitem"
+			tabindex="-1"
+			if p.Disabled {
+				aria-disabled="true"
+			}
+			{ p.Attributes... }
+		>
+			{ children... }
+		</a>
+	} else {
+		<button
+			id={ p.ID }
+			type="button"
+			class={ utils.TwMerge(baseClass, textClass, "w-full text-left", p.Class) }
+			role="menuitem"
+			tabindex="-1"
+			if p.Disabled {
+				disabled
+				aria-disabled="true"
+			}
+			{ p.Attributes... }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+templ Separator(props ...SeparatorProps) {
+	{{
+		var p SeparatorProps
+		if len(props) > 0 {
+			p = props[0]
+		}
+	}}
+	<div
+		if p.ID != "" {
+			id={ p.ID }
+		}
+		class={ utils.TwMerge("my-1 h-px bg-gray-200", p.Class) }
+		role="separator"
+		{ p.Attributes... }
+	></div>
+}

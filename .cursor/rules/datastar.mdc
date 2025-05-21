@@ -1,0 +1,769 @@
+---
+description: 
+globs: *.templ
+alwaysApply: false
+---
+# Complete Guide to Datastar: The Hypermedia Framework
+
+Datastar is a lightweight, powerful framework that brings together the best of frontend reactivity and backend integration in a cohesive, hypermedia-driven approach. This guide will help you understand Datastar's core concepts and show you how to build dynamic, interactive web applications without the complexity of traditional JavaScript frameworks.
+
+## Table of Contents
+
+1. [Introduction](mdc:#introduction)
+2. [Key Concepts](mdc:#key-concepts)
+3. [Getting Started](mdc:#getting-started)
+4. [Frontend Reactivity](mdc:#frontend-reactivity)
+   - [Signals and State Management](mdc:#signals-and-state-management)
+   - [Two-way Data Binding](mdc:#two-way-data-binding)
+   - [Computed Properties](mdc:#computed-properties)
+   - [Conditional Rendering](mdc:#conditional-rendering)
+   - [Class and Attribute Binding](mdc:#class-and-attribute-binding)
+5. [Event Handling](mdc:#event-handling)
+   - [Basic Events](mdc:#basic-events)
+   - [Keyboard Events](mdc:#keyboard-events)
+   - [Mouse Events](mdc:#mouse-events)
+   - [Event Modifiers](mdc:#event-modifiers)
+6. [Backend Integration](mdc:#backend-integration)
+   - [Server-Sent Events (SSE)](mdc:#server-sent-events-sse)
+   - [HTTP Actions](mdc:#http-actions)
+   - [Loading Indicators](mdc:#loading-indicators)
+7. [Building UI Components](mdc:#building-ui-components)
+   - [Forms](mdc:#forms)
+   - [Dropdowns](mdc:#dropdowns)
+   - [Tabs](mdc:#tabs)
+   - [Modals](mdc:#modals)
+8. [Advanced Techniques](mdc:#advanced-techniques)
+   - [Dynamic DOM Updates](mdc:#dynamic-dom-updates)
+   - [Batch Operations](mdc:#batch-operations)
+   - [Working with Custom Events](mdc:#working-with-custom-events)
+   - [Integration with JavaScript Libraries](mdc:#integration-with-javascript-libraries)
+9. [Best Practices](mdc:#best-practices)
+10. [Troubleshooting](mdc:#troubleshooting)
+11. [Conclusion](mdc:#conclusion)
+12. [Important Naming Convention](mdc:#important-naming-convention)
+
+## Introduction
+
+Datastar is a modern web framework that combines frontend reactivity (like Alpine.js) with backend integration (like htmx) into a single, cohesive solution. It allows you to:
+
+- Build reactive UIs with declarative HTML attributes
+- Manage application state with signals
+- Communicate with the server through Server-Sent Events (SSE)
+- Update the DOM and application state directly from the server
+- Create complex, interactive web applications without complex JavaScript
+
+Datastar's philosophy centers around hypermedia - the idea that the web is a network of interconnected resources. Instead of fighting against the web's natural architecture with complex client-side routing and state management, Datastar embraces hypermedia to create simpler, more maintainable applications.
+
+## Key Concepts
+
+Before diving deeper, let's understand some core concepts of Datastar:
+
+### Signals
+
+Signals are reactive variables that automatically track and propagate changes. When a signal's value changes, any part of the UI that depends on that signal automatically updates. Signals are created with `data-bind`, `data-signals`, or `data-computed` attributes. IMPORTANT: Only use signals when frontend reactivity is required.
+
+### Data Attributes
+
+Datastar uses HTML `data-*` attributes for everything - from binding data to handling events. These attributes create a declarative API that's easy to read and maintain.
+
+### Server-Sent Events (SSE)
+
+Datastar uses SSE to establish a one-way communication channel from the server to the client. This allows the server to push updates to the client without the client having to poll for changes.
+
+### Actions
+
+Actions are helper functions that can be called within Datastar expressions. They have the syntax `@actionName()` and can perform tasks like making HTTP requests or manipulating multiple signals at once.
+
+### Basic Example
+
+Here's a simple counter example to get started:
+
+```html
+<div data-signals-count="0">
+  <button data-on-click="$count++">Increment</button>
+  <button data-on-click="$count--">Decrement</button>
+  <p>Current count: <span data-text="$count"></span></p>
+</div>
+```
+
+This creates a counter with increment and decrement buttons, and a display that updates automatically when the count changes.
+
+## Frontend Reactivity
+
+### Signals and State Management
+
+Signals are at the core of Datastar's reactivity system. There are multiple ways to create and use signals:
+
+#### Creating Signals
+
+```html
+<!-- Method 1: Direct signal creation -->
+<div data-signals-user="'John'"></div>
+
+<!-- Method 2: Multiple signals with object syntax -->
+<div
+  data-signals="{
+  count: 0,
+  user: {
+    name: 'John',
+    email: 'john@example.com'
+  }
+}"
+></div>
+
+<!-- Method 3: Via data-bind (discussed below) -->
+<input data-bind-username />
+```
+
+#### Accessing Signals
+
+Once created, signals can be accessed using the `$` prefix:
+
+```html
+<div data-text="$user"></div>
+<div data-text="$user.name"></div>
+```
+
+#### Signal Scope
+
+Signals in Datastar are global - they're accessible from anywhere in the DOM. However, you can use namespacing with dot notation to organize signals:
+
+```html
+<div data-signals-form.username="'John'"></div>
+<div data-signals-form.email="'john@example.com'"></div>
+
+<div data-text="$form.username"></div>
+```
+
+### Two-way Data Binding
+
+Datastar provides two-way data binding through the `data-bind` attribute:
+
+```html
+<!-- Basic input binding -->
+<input data-bind-username />
+
+<!-- Alternative syntax -->
+<input data-bind="username" />
+
+<!-- For checkboxes -->
+<input type="checkbox" data-bind-isActive />
+
+<!-- For radio buttons -->
+<input type="radio" value="option1" data-bind-selectedOption />
+<input type="radio" value="option2" data-bind="selectedOption" />
+
+<!-- For selects -->
+<select data-bind-country>
+  <option value="us">United States</option>
+  <option value="ca">Canada</option>
+</select>
+```
+
+When the input value changes, the signal automatically updates, and when the signal changes, the input value updates.
+
+### Computed Properties
+
+Computed properties automatically recalculate when their dependencies change:
+
+```html
+<div data-signals="{firstName: 'John', lastName: 'Doe'}">
+  <input data-bind="firstName" placeholder="First name" />
+  <input data-bind="lastName" placeholder="Last name" />
+
+  <div data-computed-fullName="$firstName + ' ' + $lastName">
+    <p>Full name: <span data-text="$fullName"></span></p>
+  </div>
+</div>
+```
+
+### Conditional Rendering
+
+Hide or show elements based on signal values:
+
+```html
+<div data-signals-isLoggedIn="false">
+  <!-- Show when logged in -->
+  <div data-show="$isLoggedIn">
+    Welcome back! <button data-on-click="$isLoggedIn = false">Logout</button>
+  </div>
+
+  <!-- Show when logged out -->
+  <div data-show="!$isLoggedIn">
+    <button data-on-click="$isLoggedIn = true">Login</button>
+  </div>
+</div>
+```
+
+### Class and Attribute Binding
+
+Dynamically add/remove classes or set attributes:
+
+```html
+<!-- Class binding -->
+<div data-signals-isActive="false">
+  <button data-class-active="$isActive" data-on-click="$isActive = !$isActive">
+    Toggle Active
+  </button>
+</div>
+
+<!-- Multiple classes with object syntax -->
+<button
+  data-class="{
+  'bg-blue-500': $isActive,
+  'text-white': $isActive,
+  'bg-gray-200': !$isActive
+}"
+>
+  Styled Button
+</button>
+
+<!-- Attribute binding -->
+<button data-attr-disabled="$count === 0" data-on-click="$count--">
+  Decrement
+</button>
+
+<!-- Multiple attributes -->
+<a
+  data-attr="{
+  href: $link,
+  target: $isExternal ? '_blank' : '_self',
+  rel: $isExternal ? 'noopener noreferrer' : ''
+}"
+>
+  Link
+</a>
+```
+
+## Event Handling
+
+### Basic Events
+
+Handle events with the `data-on-` prefix:
+
+```html
+<!-- Click events -->
+<button data-on-click="alert('Button clicked')">Click me</button>
+
+<!-- Update signals -->
+<button data-on-click="$count++">Increment</button>
+
+<!-- Form events -->
+<form data-on-submit="evt.preventDefault(); submitForm()">
+  <input data-bind-email type="email" />
+  <button type="submit">Submit</button>
+</form>
+```
+
+### Keyboard Events
+
+Handle keyboard input with access to the event object:
+
+```html
+<!-- Enter key press -->
+<input
+  data-bind-search
+  data-on-keydown="evt.key === 'Enter' && performSearch($search)"
+/>
+
+<!-- Key combinations -->
+<div
+  data-on-keydown__window="
+  evt.ctrlKey && evt.key === 's' && (
+    evt.preventDefault(),
+    saveDocument()
+  )
+"
+>
+  Press Ctrl+S to save
+</div>
+
+<!-- Multiple key handlers -->
+<div
+  data-on-keydown="
+  evt.key === 'ArrowUp' && navigateUp() ||
+  evt.key === 'ArrowDown' && navigateDown() ||
+  evt.key === 'Escape' && closeModal()
+"
+>
+  Key navigation area
+</div>
+```
+
+### Mouse Events
+
+Handle various mouse interactions:
+
+```html
+<!-- Hover effects -->
+<div
+  data-signals-isHovered="false"
+  data-on-mouseenter="$isHovered = true"
+  data-on-mouseleave="$isHovered = false"
+  data-class-hovered="$isHovered"
+>
+  Hover over me
+</div>
+
+<!-- Mouse position tracking -->
+<div
+  data-signals="{mouseX: 0, mouseY: 0}"
+  data-on-mousemove="$mouseX = evt.clientX; $mouseY = evt.clientY"
+>
+  Mouse position:
+  <span data-text="$mouseX"></span>,
+  <span data-text="$mouseY"></span>
+</div>
+```
+
+### Event Modifiers
+
+DataStar offers several ways to modify event behavior:
+
+```html
+<!-- Global events (window level) -->
+<div data-on-scroll__window="handleScroll()"></div>
+
+<!-- Debouncing input -->
+<input
+  data-bind-search
+  data-on-input__debounce.300ms="performSearch($search)"
+/>
+
+<!-- Custom event case -->
+<my-component data-on-custom-event__case.camel="handleEvent()"></my-component>
+```
+
+## Backend Integration
+
+### Server-Sent Events (SSE)
+
+Datastar uses SSE to establish a connection between the client and server. The server can then push updates to the client without the client having to poll for changes.
+
+Basic client-side setup:
+
+```html
+<div id="content">Initial content</div>
+<button data-on-click="@get('/api/stream-data')">Load Data</button>
+```
+
+Server-side example (Node.js):
+
+```javascript
+app.get("/api/stream-data", (req, res) => {
+  // Set SSE headers
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+
+  // Send HTML fragment update
+  res.write("event: datastar-merge-fragments\n");
+  res.write("data: selector #content\n");
+  res.write(
+    "data: fragments <div>New content loaded at " + new Date() + "</div>\n\n"
+  );
+
+  // Update signals
+  res.write("event: datastar-merge-signals\n");
+  res.write(
+    'data: signals {loading: false, lastUpdated: "' + new Date() + '"}\n\n'
+  );
+
+  // End the response
+  res.end();
+});
+```
+
+### HTTP Actions
+
+Datastar provides actions for making HTTP requests:
+
+```html
+<!-- GET request -->
+<button data-on-click="@get('/api/data')">Fetch Data</button>
+
+<!-- POST request with form data -->
+<form data-signals="{name: '', email: ''}">
+  <input data-bind="name" placeholder="Name" />
+  <input data-bind="email" type="email" placeholder="Email" />
+
+  <button data-on-click="@post('/api/users')">Submit</button>
+</form>
+
+<!-- PUT, PATCH, DELETE requests -->
+<button data-on-click="@put('/api/users/123')">Update</button>
+<button data-on-click="@patch('/api/users/123')">Partial Update</button>
+<button data-on-click="@delete('/api/users/123')">Delete</button>
+```
+
+When these actions are called, all signals are automatically included in the request body, allowing the server to access and modify them.
+
+### Loading Indicators
+
+Show loading states while requests are in progress:
+
+```html
+<button data-on-click="@get('/api/slow-operation')" data-indicator-loading>
+  Perform Operation
+</button>
+
+<!-- Show loading indicator while request is in flight -->
+<div data-show="$loading" class="spinner">Loading...</div>
+
+<!-- Disable button while loading -->
+<button
+  data-on-click="@get('/api/data')"
+  data-indicator-loading
+  data-attr-disabled="$loading"
+>
+  Fetch Data
+</button>
+```
+
+## Building UI Components
+
+### Forms
+
+Create reactive forms with validation:
+
+```html
+<form
+  data-signals="{
+    username: '',
+    email: '',
+    password: '',
+    errors: {}
+  }"
+  data-computed-isValid="
+    $username.length >= 3 && 
+    $email.includes('@') && 
+    $password.length >= 8
+  "
+  data-on-submit="
+    evt.preventDefault();
+    $isValid && @post('/api/register')
+  "
+>
+  <div>
+    <label>Username</label>
+    <input
+      data-bind="username"
+      data-on-input="
+        $errors.username = $username.length < 3 
+          ? 'Username must be at least 3 characters' 
+          : ''
+      "
+    />
+    <div
+      data-show="$errors.username"
+      data-text="$errors.username"
+      class="error"
+    ></div>
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input
+      type="email"
+      data-bind="email"
+      data-on-input="
+        $errors.email = !$email.includes('@') 
+          ? 'Invalid email address' 
+          : ''
+      "
+    />
+    <div
+      data-show="$errors.email"
+      data-text="$errors.email"
+      class="error"
+    ></div>
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input
+      type="password"
+      data-bind="password"
+      data-on-input="
+        $errors.password = $password.length < 8 
+          ? 'Password must be at least 8 characters' 
+          : ''
+      "
+    />
+    <div
+      data-show="$errors.password"
+      data-text="$errors.password"
+      class="error"
+    ></div>
+  </div>
+
+  <button type="submit" data-attr-disabled="!$isValid">Register</button>
+</form>
+```
+
+### Dropdowns
+
+Create interactive dropdown menus:
+
+```html
+<div
+  data-signals-dropdown.isOpen="false"
+  data-ref-dropdown_container
+  data-on-click__window="
+    $dropdown.isOpen && 
+    !$dropdown_container.contains(evt.target) && 
+    ($dropdown.isOpen = false)
+  "
+>
+  <!-- Dropdown Toggle Button -->
+  <button
+    data-on-click="$dropdown.isOpen = !$dropdown.isOpen"
+    aria-expanded="true"
+    data-attr-aria-expanded="$dropdown.isOpen"
+  >
+    Menu <span data-text="$dropdown.isOpen ? '▲' : '▼'"></span>
+  </button>
+
+  <!-- Dropdown Content -->
+  <div data-show="$dropdown.isOpen" class="dropdown-menu" style="display: none">
+    <a href="#" class="dropdown-item">Profile</a>
+    <a href="#" class="dropdown-item">Settings</a>
+    <a href="#" class="dropdown-item">Logout</a>
+  </div>
+</div>
+```
+
+### Tabs
+
+Create tabbed interfaces:
+
+```html
+<div data-signals-activeTab="'tab1'">
+  <!-- Tab navigation -->
+  <div class="tabs">
+    <button
+      data-on-click="$activeTab = 'tab1'"
+      data-class-active="$activeTab === 'tab1'"
+    >
+      Tab 1
+    </button>
+    <button
+      data-on-click="$activeTab = 'tab2'"
+      data-class-active="$activeTab === 'tab2'"
+    >
+      Tab 2
+    </button>
+    <button
+      data-on-click="$activeTab = 'tab3'"
+      data-class-active="$activeTab === 'tab3'"
+    >
+      Tab 3
+    </button>
+  </div>
+
+  <!-- Tab content -->
+  <div data-show="$activeTab === 'tab1'" class="tab-content">
+    Content for Tab 1
+  </div>
+  <div data-show="$activeTab === 'tab2'" class="tab-content">
+    Content for Tab 2
+  </div>
+  <div data-show="$activeTab === 'tab3'" class="tab-content">
+    Content for Tab 3
+  </div>
+</div>
+```
+
+### Modals
+
+Create modal dialogs:
+
+```html
+<div data-signals-modal.isOpen="false">
+  <!-- Modal Trigger -->
+  <button data-on-click="$modal.isOpen = true">Open Modal</button>
+
+  <!-- Modal Overlay -->
+  <div
+    data-show="$modal.isOpen"
+    data-on-click="$modal.isOpen = false"
+    class="modal-overlay"
+    style="display: none"
+  >
+    <!-- Modal Content -->
+    <div data-on-click="evt.stopPropagation()" class="modal-content">
+      <h2>Modal Title</h2>
+      <p>Modal content goes here...</p>
+
+      <button data-on-click="$modal.isOpen = false">Close</button>
+    </div>
+  </div>
+</div>
+```
+
+## Advanced Techniques
+
+### Dynamic DOM Updates
+
+Update specific parts of the DOM using server responses:
+
+```html
+<div id="user-profile">
+  <!-- Content will be updated by the server -->
+</div>
+
+<button data-on-click="@get('/api/user/profile')">Load Profile</button>
+```
+
+Server response:
+
+```
+event: datastar-merge-fragments
+data: selector #user-profile
+data: fragments
+data: <div class="profile-card">
+data:   <img src="/images/user.jpg" alt="User avatar">
+data:   <h2>John Doe</h2>
+data:   <p>john@example.com</p>
+data: </div>
+```
+
+### Batch Operations
+
+Perform operations on multiple signals at once:
+
+```html
+<div
+  data-signals="{
+  filters: {
+    category1: false,
+    category2: false,
+    category3: false
+  }
+}"
+>
+  <div>
+    <input type="checkbox" data-bind="filters.category1" /> Category 1
+    <input type="checkbox" data-bind="filters.category2" /> Category 2
+    <input type="checkbox" data-bind="filters.category3" /> Category 3
+  </div>
+
+  <button data-on-click="@setAll('filters.*', true)">Select All</button>
+  <button data-on-click="@setAll('filters.*', false)">Clear All</button>
+  <button data-on-click="@toggleAll('filters.*')">Toggle All</button>
+</div>
+```
+
+### Working with Custom Events
+
+Dispatch and listen for custom events:
+
+```html
+<div data-signals-message="''">
+  <!-- Listen for custom event -->
+  <div data-on-notification__window="$message = evt.detail.text">
+    <p data-text="$message"></p>
+  </div>
+
+  <!-- Dispatch custom event -->
+  <button
+    data-on-click="
+    window.dispatchEvent(
+      new CustomEvent('notification', {
+        detail: { text: 'Hello from DataStar!' }
+      })
+    )
+  "
+  >
+    Send Notification
+  </button>
+</div>
+```
+
+### Integration with JavaScript Libraries
+
+Use external JavaScript libraries with Datastar:
+
+```html
+<div
+  data-signals="{chartData: [10, 20, 30, 40, 50]}"
+  data-ref-chart_container
+  data-on-signal-change.chartData="renderChart($chart_container, $chartData)"
+>
+  <canvas id="myChart"></canvas>
+
+  <button data-on-click="$chartData = [50, 40, 30, 20, 10]">
+    Update Chart
+  </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  function renderChart(container, data) {
+    const canvas = container.querySelector("canvas");
+    new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels: ["A", "B", "C", "D", "E"],
+        datasets: [
+          {
+            label: "My Dataset",
+            data: data,
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+          },
+        ],
+      },
+    });
+  }
+</script>
+```
+
+## Best Practices
+
+1. **Use Namespaces for Signals**: Organize related signals with namespaces like `user.name`, `user.email`.
+
+2. **Keep DOM Structure Clean**: Avoid deeply nested elements with multiple attributes - extract complex components.
+
+3. **Prefer Server-Side Validation**: While client-side validation improves UX, always validate on the server.
+
+4. **Use Element References**: For performance-sensitive operations, use `data-ref` to avoid DOM queries.
+
+5. **Handle Loading States**: Always provide feedback with `data-indicator` when performing asynchronous operations.
+
+6. **Keep Expressions Simple**: Break complex expressions into computed signals for readability.
+
+7. **Think Hypermedia-First**: Let the server drive application state when appropriate, instead of managing everything client-side.
+
+8. **Progressive Enhancement**: Build applications that work without JavaScript first, then enhance with Datastar.
+
+## Troubleshooting
+
+**Problem**: Signal doesn't update when changed
+**Solution**: Check if the signal is defined properly. Remember that signals must be defined before they're used in the DOM.
+
+**Problem**: Event handler not firing
+**Solution**: Verify the event name is correct. Use browser devtools to confirm the event is being dispatched.
+
+**Problem**: Server-sent events not working
+**Solution**: Check that your server is setting the correct headers (`Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`).
+
+**Problem**: DOM not updating after server response
+**Solution**: Ensure your server is sending properly formatted events (e.g., `datastar-merge-fragments`). Check that element IDs match between client and server.
+
+**Problem**: Click-outside detection not working
+**Solution**: Ensure the element reference (`data-ref`) is set before the click handler. Check that the condition in the handler is correct.
+
+## Conclusion
+
+Datastar offers a refreshing approach to building web applications by combining the best aspects of frontend reactivity and backend integration. By leveraging hypermedia principles and declarative HTML, it allows developers to create dynamic, interactive experiences without the complexity of traditional JavaScript frameworks.
+
+Whether you're building a simple form or a complex application, Datastar's intuitive API and flexible architecture make it a powerful tool for modern web development. As you continue to explore Datastar, you'll discover new patterns and techniques that can help you build better, more maintainable web applications.
+
+Remember that Datastar is designed to work with the web platform, not against it. Embrace this philosophy, and you'll find that many complex problems become surprisingly simple to solve.
+
+## IMPORTANT NAMING CONVENTION
+
+
+Please note that the framework's name is always spelled "Datastar" with a lowercase "s", not "DataStar". If I catch you spelling it with a capital S, we will have a big problem on our hands. I might need to use in in the blood sacrifice at D\* Conf.
