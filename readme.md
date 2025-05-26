@@ -20,6 +20,7 @@ A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains
 - [Just](https://github.com/casey/just) - command runner
 - [Air](https://github.com/cosmtrek/air) - live reload for Go
 - [templ](https://templ.guide/) - Go templating engine
+- [tailwindcss standalone CLI](https://tailwindcss.com/blog/standalone-cli)
 
 ### Development Setup
 
@@ -31,7 +32,7 @@ just tailwind
 just watch
 ```
 
-see demo site at [http://localhost:8080](http://localhost:8080)
+see demo site at [http://localhost:4242](http://localhost:4242)
 
 The development environment will automatically:
 
@@ -124,10 +125,10 @@ The project uses the same design tokens as shadcn/ui:
 ## 🤝 Contributing
 
 1. **Pick a component** from the [shadcn/ui registry](https://ui.shadcn.com/docs/components)
-2. **Follow the architecture** outlined in the development guide
-3. **Maintain pixel-perfect accuracy** to the original
-4. **Add Datastar reactivity** where needed
-5. **Create comprehensive demos** showing all variants
+1. **Follow the architecture** outlined in the development guide
+1. **Maintain pixel-perfect accuracy** to the original
+1. **Add Datastar reactivity** where needed
+1. **Create comprehensive demos** showing all variants
 
 See the [Development Guide](datastarui.md) for detailed implementation instructions.
 
@@ -142,6 +143,6 @@ See the [Development Guide](datastarui.md) for detailed implementation instructi
 
 MIT License - see [LICENSE](LICENSE) for details.
 
----
+______________________________________________________________________
 
 **Built with ❤️ using Go, templ, Tailwind CSS, and Datastar**

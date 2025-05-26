@@ -11,7 +11,7 @@ import (
 	pc "github.com/coreycole/datastarui/pages/components"
 )
 
-const port = "8080"
+const port = "4242"
 
 func main() {
 	// Create a new Echo instance
