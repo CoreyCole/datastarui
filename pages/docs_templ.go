@@ -43,7 +43,7 @@ func DocsPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-background\"><div class=\"container mx-auto px-4 py-8\"><div class=\"flex flex-col space-y-8\"><!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Documentation</h1><p class=\"text-lg text-muted-foreground\">Learn how to use DatastarUI components in your projects.</p></div><!-- Content --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Getting Started</h2><p class=\"text-muted-foreground\">Documentation coming soon. This page demonstrates the navigation highlighting working correctly.</p></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Documentation</h1><p class=\"text-lg text-muted-foreground\">Learn how to use DatastarUI components in your projects.</p></div><!-- Content --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Getting Started</h2><p class=\"text-muted-foreground\">Documentation coming soon. This page demonstrates the navigation highlighting working correctly.</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

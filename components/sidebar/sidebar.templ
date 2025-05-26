@@ -1,0 +1,48 @@
+package sidebar
+
+templ Sidebar(props SidebarProps) {
+	<aside class={ "border-grid fixed top-0 z-30 hidden h-screen w-full shrink-0 border-r md:sticky md:block", props.Class } { props.Attributes... }>
+		<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
+			<div class="flex flex-col gap-6">
+				for _, section := range props.Sections {
+					<div class="flex flex-col gap-1">
+						<h4 class="rounded-md px-2 py-1 text-sm font-medium">
+							{ section.Title }
+							if section.Label != "" {
+								<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
+							}
+						</h4>
+						<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
+							for _, item := range section.Items {
+								@SidebarLink(item, props.CurrentPath)
+							}
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</aside>
+}
+
+templ SidebarLink(item SidebarItem, currentPath string) {
+	{{
+	isActive := item.Href == currentPath
+	linkClasses := "group relative flex h-8 w-full items-center rounded-lg px-2 after:absolute after:inset-x-0 after:inset-y-[-2px] after:rounded-lg hover:bg-accent hover:text-accent-foreground"
+	if isActive {
+		linkClasses += " bg-accent font-medium text-accent-foreground"
+	} else {
+		linkClasses += " font-normal text-foreground"
+	}
+	}}
+	<a
+		class={ linkClasses }
+		href={ templ.SafeURL(item.Href) }
+		target=""
+		rel=""
+	>
+		{ item.Title }
+		if item.Label != "" {
+			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ item.Label }</span>
+		}
+	</a>
+}

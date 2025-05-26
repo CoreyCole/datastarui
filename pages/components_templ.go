@@ -46,7 +46,7 @@ func ComponentsPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-background\"><div class=\"container mx-auto px-4 py-8\"><div class=\"flex flex-col space-y-8\"><!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Components</h1><p class=\"text-lg text-muted-foreground\">Beautifully designed components built with Go, templ, and Datastar.</p></div><!-- Component Grid --><div class=\"grid gap-8\"><!-- Button Component --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Button</h2></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"space-y-4\"><!-- Default Variants --><div class=\"space-y-2\"><h3 class=\"text-sm font-medium\">Variants</h3><div class=\"flex flex-wrap gap-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Components</h1><p class=\"text-lg text-muted-foreground\">Beautifully designed components built with Go, templ, and Datastar.</p></div><!-- Component Grid --><div class=\"grid gap-8\"><!-- Button Component --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Button</h2></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"space-y-4\"><!-- Default Variants --><div class=\"space-y-2\"><h3 class=\"text-sm font-medium\">Variants</h3><div class=\"flex flex-wrap gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -335,7 +335,7 @@ func ComponentsPage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div></div></div></div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div></div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
