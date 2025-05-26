@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	p "github.com/coreycole/datastarui/pages"
+	pc "github.com/coreycole/datastarui/pages/components"
 )
 
 const port = "8080"
@@ -29,7 +30,10 @@ func main() {
 
 	// Serve the components page
 	e.GET("/components", func(c echo.Context) error {
-		component := p.ComponentsPage()
+		return c.Redirect(http.StatusFound, "/components/button")
+	})
+	e.GET("/components/button", func(c echo.Context) error {
+		component := pc.ButtonPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 

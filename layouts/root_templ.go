@@ -91,7 +91,7 @@ func Root(currentPage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<main class=\"relative pt-20 pb-6 lg:gap-10 lg:pt-22 lg:pb-8\"><div class=\"mx-auto w-full min-w-0\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<main class=\"relative pb-6\"><div class=\"mx-auto w-full min-w-0 pt-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
