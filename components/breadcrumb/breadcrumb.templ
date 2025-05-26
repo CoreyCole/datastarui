@@ -1,0 +1,122 @@
+package breadcrumb
+
+// Breadcrumb renders the main navigation wrapper
+templ Breadcrumb(props BreadcrumbProps) {
+	<nav
+		aria-label="breadcrumb"
+		data-slot="breadcrumb"
+		class={ breadcrumbVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</nav>
+}
+
+// BreadcrumbList renders the ordered list container for breadcrumb items
+templ BreadcrumbList(props BreadcrumbListProps) {
+	<ol
+		data-slot="breadcrumb-list"
+		class={ breadcrumbListVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</ol>
+}
+
+// BreadcrumbItem renders a list item wrapper for breadcrumb content
+templ BreadcrumbItem(props BreadcrumbItemProps) {
+	<li
+		data-slot="breadcrumb-item"
+		class={ breadcrumbItemVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</li>
+}
+
+// BreadcrumbLink renders a clickable breadcrumb link
+templ BreadcrumbLink(props BreadcrumbLinkProps) {
+	if props.AsChild {
+		<span
+			data-slot="breadcrumb-link"
+			class={ breadcrumbLinkVariants(props.Class) }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</span>
+	} else {
+		<a
+			data-slot="breadcrumb-link"
+			href={ templ.SafeURL(props.Href) }
+			class={ breadcrumbLinkVariants(props.Class) }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</a>
+	}
+}
+
+// BreadcrumbPage renders the current page indicator (non-clickable)
+templ BreadcrumbPage(props BreadcrumbPageProps) {
+	<span
+		data-slot="breadcrumb-page"
+		role="link"
+		aria-disabled="true"
+		aria-current="page"
+		class={ breadcrumbPageVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</span>
+}
+
+// BreadcrumbSeparator renders the separator between breadcrumb items
+templ BreadcrumbSeparator(props BreadcrumbSeparatorProps) {
+	<li
+		data-slot="breadcrumb-separator"
+		role="presentation"
+		aria-hidden="true"
+		class={ breadcrumbSeparatorVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		if props.CustomIcon {
+			{ children... }
+		} else {
+			<!-- ChevronRight icon (default separator) -->
+			<svg
+				class="size-3.5"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18 6-6-6-6"></path>
+			</svg>
+		}
+	</li>
+}
+
+// BreadcrumbEllipsis renders an ellipsis indicator for collapsed breadcrumbs
+templ BreadcrumbEllipsis(props BreadcrumbEllipsisProps) {
+	<span
+		data-slot="breadcrumb-ellipsis"
+		role="presentation"
+		aria-hidden="true"
+		class={ breadcrumbEllipsisVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		<!-- MoreHorizontal icon -->
+		<svg
+			class="size-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle cx="12" cy="12" r="1"></circle>
+			<circle cx="19" cy="12" r="1"></circle>
+			<circle cx="5" cy="12" r="1"></circle>
+		</svg>
+		<span class="sr-only">More</span>
+	</span>
+}

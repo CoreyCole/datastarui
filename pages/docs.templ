@@ -1,10 +1,27 @@
 package pages
 
 import l "github.com/coreycole/datastarui/layouts"
+import b "github.com/coreycole/datastarui/components/breadcrumb"
 
 templ DocsPage() {
 	@l.Root("docs") {
 		<div class="space-y-8">
+			<!-- Breadcrumb Navigation -->
+			@b.Breadcrumb(b.BreadcrumbProps{}) {
+				@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+					@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+						@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+							Home
+						}
+					}
+					@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+					@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+						@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+							Documentation
+						}
+					}
+				}
+			}
 			<!-- Page Header -->
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Documentation</h1>

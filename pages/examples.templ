@@ -1,29 +1,136 @@
 package pages
 
 import l "github.com/coreycole/datastarui/layouts"
+import b "github.com/coreycole/datastarui/components/breadcrumb"
 
 templ ExamplesPage() {
-@l.Root("examples") {
-<div class="min-h-screen bg-background">
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col space-y-8">
-            <!-- Page Header -->
-            <div class="space-y-2">
-                <h1 class="text-3xl font-bold tracking-tight">Examples</h1>
-                <p class="text-lg text-muted-foreground">
-                    Real-world examples and templates built with DatastarUI.
-                </p>
-            </div>
-            <!-- Content -->
-            <div class="space-y-4">
-                <h2 class="text-2xl font-semibold tracking-tight">Coming Soon</h2>
-                <p class="text-muted-foreground">
-                    Examples and templates coming soon. This page demonstrates the navigation highlighting working
-                    correctly.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-}
+	@l.Root("examples") {
+		<div class="min-h-screen bg-background">
+			<div class="container mx-auto px-4 py-8">
+				<div class="flex flex-col space-y-8">
+					<!-- Breadcrumb Navigation -->
+					@b.Breadcrumb(b.BreadcrumbProps{}) {
+						@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+							@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+								@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+									Home
+								}
+							}
+							@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+							@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+								@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+									Examples
+								}
+							}
+						}
+					}
+					<!-- Page Header -->
+					<div class="space-y-2">
+						<h1 class="text-3xl font-bold tracking-tight">Examples</h1>
+						<p class="text-lg text-muted-foreground">
+							Real-world examples and templates built with DatastarUI.
+						</p>
+					</div>
+					<!-- Content -->
+					<div class="space-y-8">
+						<div class="space-y-4">
+							<h2 class="text-2xl font-semibold tracking-tight">Breadcrumb Component</h2>
+							<p class="text-muted-foreground">
+								The breadcrumb component provides navigation context and helps users understand their location within the application.
+							</p>
+						</div>
+						<!-- Basic Breadcrumb Example -->
+						<div class="space-y-4">
+							<h3 class="text-xl font-semibold">Basic Breadcrumb</h3>
+							<div class="p-4 border rounded-lg">
+								@b.Breadcrumb(b.BreadcrumbProps{}) {
+									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+												Home
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+												Components
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+												Breadcrumb
+											}
+										}
+									}
+								}
+							</div>
+						</div>
+						<!-- Breadcrumb with Ellipsis Example -->
+						<div class="space-y-4">
+							<h3 class="text-xl font-semibold">Breadcrumb with Ellipsis</h3>
+							<div class="p-4 border rounded-lg">
+								@b.Breadcrumb(b.BreadcrumbProps{}) {
+									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+												Home
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbEllipsis(b.BreadcrumbEllipsisProps{})
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+												Components
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+												Breadcrumb
+											}
+										}
+									}
+								}
+							</div>
+						</div>
+						<!-- Custom Separator Example -->
+						<div class="space-y-4">
+							<h3 class="text-xl font-semibold">Custom Separator</h3>
+							<div class="p-4 border rounded-lg">
+								@b.Breadcrumb(b.BreadcrumbProps{}) {
+									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+												Home
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{CustomIcon: true}) {
+											<span class="text-muted-foreground">/</span>
+										}
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+												Components
+											}
+										}
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{CustomIcon: true}) {
+											<span class="text-muted-foreground">/</span>
+										}
+										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+												Breadcrumb
+											}
+										}
+									}
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
 }
