@@ -1,0 +1,172 @@
+package pages
+
+import (
+	"github.com/coreycole/datastarui/components/breadcrumb"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ BreadcrumbPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Breadcrumb")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Breadcrumb</h1>
+				<p class="text-lg text-muted-foreground">
+					Displays the path to the current resource using a hierarchy of links.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Breadcrumb -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Basic Breadcrumb</h2>
+						<p class="text-sm text-muted-foreground">
+							A simple breadcrumb with navigation links and current page.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+										Home
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+										Components
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+										Breadcrumb
+									}
+								}
+							}
+						}
+					</div>
+				</div>
+				<!-- Breadcrumb with Ellipsis -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">With Ellipsis</h2>
+						<p class="text-sm text-muted-foreground">
+							Use ellipsis to indicate collapsed breadcrumb items.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+										Home
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisProps{})
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+										Components
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+										Breadcrumb
+									}
+								}
+							}
+						}
+					</div>
+				</div>
+				<!-- Custom Separator -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Custom Separator</h2>
+						<p class="text-sm text-muted-foreground">
+							Override the default chevron separator with custom content.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+										Home
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+									<span class="text-muted-foreground">/</span>
+								}
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+										Components
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+									<span class="text-muted-foreground">/</span>
+								}
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+										Breadcrumb
+									}
+								}
+							}
+						}
+					</div>
+				</div>
+				<!-- Responsive Breadcrumb -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Responsive Example</h2>
+						<p class="text-sm text-muted-foreground">
+							A longer breadcrumb that demonstrates responsive behavior.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+										Home
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs"}) {
+										Documentation
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs/components"}) {
+										Components
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs/components/navigation"}) {
+										Navigation
+									}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+										Breadcrumb
+									}
+								}
+							}
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

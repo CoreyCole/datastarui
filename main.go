@@ -30,10 +30,14 @@ func main() {
 
 	// Serve the components page
 	e.GET("/components", func(c echo.Context) error {
-		return c.Redirect(http.StatusFound, "/components/button")
+		return c.Redirect(http.StatusFound, "/components/breadcrumb")
 	})
 	e.GET("/components/button", func(c echo.Context) error {
 		component := pc.ButtonPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/breadcrumb", func(c echo.Context) error {
+		component := pc.BreadcrumbPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 

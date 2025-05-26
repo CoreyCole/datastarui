@@ -183,6 +183,58 @@ templ userTypeDisplay(userType string) {
 
 - when making changes to templ files, be sure to run `templ generate` to check for any compile errors
 
+#### Common templ Gotchas and Solutions
+
+**URL Safety**: Always wrap href attributes with `templ.SafeURL()` for security:
+
+```go
+// ❌ Wrong - will cause compilation error
+<a href={ props.Href }>
+
+// ✅ Correct - prevents XSS attacks
+<a href={ templ.SafeURL(props.Href) }>
+```
+
+**Template Structure**: All content must be inside the layout wrapper:
+
+```go
+// ❌ Wrong - content outside @l.Root() will cause "expected nodes" error
+templ MyPage() {
+    <div>Outside content</div>
+    @l.Root("page") {
+        <div>Inside content</div>
+    }
+}
+
+// ✅ Correct - all content inside @l.Root()
+templ MyPage() {
+    @l.Root("page") {
+        <div>All content here</div>
+    }
+}
+```
+
+**Component Composition**: Use proper nesting for multi-part components:
+
+```go
+// ✅ Correct breadcrumb structure
+@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+    @breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+        @breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+            @breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+                Home
+            }
+        }
+        @breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+        @breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+            @breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+                Current Page
+            }
+        }
+    }
+}
+```
+
 ### Tailwind CSS Watch Process
 
 **IMPORTANT**: Tailwind CSS is running in watch mode during development. The developer has `tailwindcss --watch` running automatically, which means:
@@ -214,6 +266,64 @@ templ userTypeDisplay(userType string) {
 2. **Implement Datastar patterns**: Use appropriate signals and bindings
 3. **Test interactions**: Ensure smooth, JavaScript-like behavior
 4. **Optimize performance**: Minimize unnecessary re-renders
+
+### Step 4: Create Component Demo Page
+
+1. **Create demo page**: `pages/components/[component-name].templ`
+2. **Follow the button component pattern** for consistency
+3. **Include comprehensive examples** showcasing all variants and features
+4. **Add descriptive sections** explaining each example
+5. Add route to main.go and sidebar.go to to link to the new component demo page
+
+#### Demo Page Template Structure
+
+```go
+package pages
+
+import (
+	"github.com/coreycole/datastarui/components/[component-name]"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ [ComponentName]Page() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("[ComponentName]")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">[ComponentName]</h1>
+				<p class="text-lg text-muted-foreground">
+					Brief description of what the component does.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Example -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Basic Usage</h2>
+						<p class="text-sm text-muted-foreground">
+							Description of the basic example.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<!-- Component examples here -->
+					</div>
+				</div>
+				<!-- Additional examples... -->
+			</div>
+		</div>
+	}
+}
+```
+
+#### Demo Page Requirements
+
+- ✅ **Comprehensive coverage**: Show all variants, sizes, and states
+- ✅ **Interactive examples**: Include Datastar reactivity where applicable
+- ✅ **Clear descriptions**: Explain what each example demonstrates
+- ✅ **Visual organization**: Use cards and proper spacing for clarity
+- ✅ **Responsive design**: Ensure examples work on all screen sizes
 
 ## CSS Variables and Theming
 
