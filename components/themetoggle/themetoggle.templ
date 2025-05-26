@@ -1,0 +1,34 @@
+package themetoggle
+
+templ ThemeToggle(props ThemeToggleProps) {
+	<button
+		class={ "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0", props.Class }
+		data-on-click="
+			$theme = $theme === 'dark' ? 'light' : 'dark';
+			document.documentElement.classList.toggle('dark', $theme === 'dark');
+			localStorage.setItem('theme', $theme);
+		"
+		{ props.Attributes... }
+	>
+		<!-- Sun icon (visible in dark mode) -->
+		<svg
+			class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<circle cx="12" cy="12" r="5"></circle>
+			<path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+		</svg>
+		<!-- Moon icon (visible in light mode) -->
+		<svg
+			class="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+		</svg>
+		<span class="sr-only">Toggle theme</span>
+	</button>
+}

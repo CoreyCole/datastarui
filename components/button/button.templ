@@ -1,0 +1,36 @@
+package button
+
+templ Button(props ButtonProps) {
+	{{
+		// Set default values
+		buttonType := props.Type
+		if buttonType == "" {
+			buttonType = "button"
+		}
+
+		// Generate the CSS classes using our variant system
+		classes := buttonVariants(props.Variant, props.Size, props.Class)
+	}}
+	if props.AsChild {
+		<!-- When AsChild is true, we render a span that can be styled as a button -->
+		<span
+			class={ classes }
+			if props.Disabled {
+				aria-disabled="true"
+			}
+			{ props.Attributes... }
+		>
+			{ children... }
+		</span>
+	} else {
+		<!-- Default button element -->
+		<button
+			type={ buttonType }
+			class={ classes }
+			disabled?={ props.Disabled }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</button>
+	}
+}

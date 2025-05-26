@@ -10,6 +10,8 @@ import (
 	p "github.com/coreycole/datastarui/pages"
 )
 
+const port = "8080"
+
 func main() {
 	// Create a new Echo instance
 	e := echo.New()
@@ -17,18 +19,37 @@ func main() {
 	// Add middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
-	// Serve the templ component at the root route
+	// Serve the home page at the root route
 	e.GET("/", func(c echo.Context) error {
-		component := p.DropdownExample()
+		component := p.HomePage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 
+	// Serve the components page
+	e.GET("/components", func(c echo.Context) error {
+		component := p.ComponentsPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+
+	// Serve the docs page
+	e.GET("/docs", func(c echo.Context) error {
+		component := p.DocsPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+
+	// Serve the examples page
+	e.GET("/examples", func(c echo.Context) error {
+		component := p.ExamplesPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+
+	// Serve static files
 	e.Static("/", "static/")
 
 	// Start the server
-	log.Println("Server is running on http://localhost:8080")
-	if err := e.Start(":8080"); err != http.ErrServerClosed {
+	if err := e.Start(":" + port); err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }

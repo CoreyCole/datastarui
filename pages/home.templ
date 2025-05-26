@@ -1,0 +1,104 @@
+package pages
+
+import l "github.com/coreycole/datastarui/layouts"
+
+templ HomePage() {
+	@l.Root("home") {
+		<div class="min-h-screen bg-background">
+			<!-- Hero Section -->
+			<section class="container flex flex-col items-center justify-center gap-4 pb-8 pt-6 md:py-10">
+				<div class="mx-auto flex max-w-[980px] flex-col items-center gap-2 text-center">
+					<h1 class="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:text-5xl lg:leading-[1.1]">
+						Build your component library with
+						<span class="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+							Go, templ & Datastar
+						</span>
+					</h1>
+					<p class="max-w-[750px] text-lg text-muted-foreground sm:text-xl">
+						Beautifully designed components built with Go templates and Datastar. 
+						Copy and paste into your apps. Open source. Customizable. Accessible.
+					</p>
+				</div>
+				<div class="flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
+					<a href="/docs" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+						Get Started
+					</a>
+					<a href="/components" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+						Components
+					</a>
+				</div>
+			</section>
+			<!-- Features Section -->
+			<section class="container space-y-6 py-8 md:py-12 lg:py-24">
+				<div class="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+					<h2 class="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Features</h2>
+					<p class="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+						DatastarUI brings the power of modern component libraries to Go and templ with minimal JavaScript.
+					</p>
+				</div>
+				<div class="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Server-Side Rendered</h3>
+								<p class="text-sm text-muted-foreground">
+									Components are rendered on the server with Go templates. Fast initial page loads.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Minimal JavaScript</h3>
+								<p class="text-sm text-muted-foreground">
+									Only 15KB of JavaScript with Datastar. No heavy frameworks or build steps.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Type Safe</h3>
+								<p class="text-sm text-muted-foreground">
+									Built with Go's type system. Catch errors at compile time, not runtime.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Accessible</h3>
+								<p class="text-sm text-muted-foreground">
+									Built with accessibility in mind. Proper ARIA attributes and keyboard navigation.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Customizable</h3>
+								<p class="text-sm text-muted-foreground">
+									Easy to customize with Tailwind CSS. Change colors, spacing, and more.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="relative overflow-hidden rounded-lg border bg-background p-2">
+						<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
+							<div class="space-y-2">
+								<h3 class="font-bold">Copy & Paste</h3>
+								<p class="text-sm text-muted-foreground">
+									Copy and paste components into your Go projects. No package manager needed.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}
