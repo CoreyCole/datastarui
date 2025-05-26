@@ -40,6 +40,10 @@ func main() {
 		component := pc.BreadcrumbPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
+	e.GET("/components/dropdown", func(c echo.Context) error {
+		component := pc.DropdownPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
 
 	// Serve the docs page
 	e.GET("/docs", func(c echo.Context) error {

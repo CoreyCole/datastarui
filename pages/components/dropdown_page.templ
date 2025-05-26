@@ -1,0 +1,352 @@
+package pages
+
+import (
+	"github.com/coreycole/datastarui/components/dropdown"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ DropdownPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Dropdown")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Dropdown Menu</h1>
+				<p class="text-lg text-muted-foreground">
+					Displays a menu to the user — such as a set of actions or functions — triggered by a button.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Dropdown -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Basic Dropdown</h2>
+						<p class="text-sm text-muted-foreground">
+							A simple dropdown menu with various menu items.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="inline-block">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "basic-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "basic-dropdown",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Open Menu
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "basic-dropdown",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										ID: "basic-dropdown",
+									}) {
+										My Account
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "basic-dropdown",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "basic-dropdown",
+									}) {
+										Profile
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "basic-dropdown",
+									}) {
+										Billing
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "basic-dropdown",
+									}) {
+										Team
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "basic-dropdown",
+									}) {
+										Subscription
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Dropdown with Icons and Shortcuts -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">With Icons and Shortcuts</h2>
+						<p class="text-sm text-muted-foreground">
+							Dropdown menu items with icons and keyboard shortcuts.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="inline-block">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "icons-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "icons-dropdown",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Open Menu
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "icons-dropdown",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "icons-dropdown",
+									}) {
+										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+										</svg>
+										Profile
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+											ID: "icons-dropdown",
+										}) {
+											⇧⌘P
+										}
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "icons-dropdown",
+									}) {
+										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+										</svg>
+										Billing
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+											ID: "icons-dropdown",
+										}) {
+											⌘B
+										}
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "icons-dropdown",
+									}) {
+										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+										</svg>
+										Settings
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+											ID: "icons-dropdown",
+										}) {
+											⌘S
+										}
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "icons-dropdown",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID:      "icons-dropdown",
+										Variant: "destructive",
+									}) {
+										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+										</svg>
+										Log out
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+											ID: "icons-dropdown",
+										}) {
+											⇧⌘Q
+										}
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Grouped Dropdown -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Grouped Items</h2>
+						<p class="text-sm text-muted-foreground">
+							Dropdown menu with grouped items and labels.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="inline-block">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "grouped-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "grouped-dropdown",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Open Menu
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "grouped-dropdown",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+										ID: "grouped-dropdown",
+									}) {
+										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+											ID: "grouped-dropdown",
+										}) {
+											Personal
+										}
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+											ID: "grouped-dropdown",
+										}) {
+											Profile
+										}
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+											ID: "grouped-dropdown",
+										}) {
+											Settings
+										}
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "grouped-dropdown",
+									})
+									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+										ID: "grouped-dropdown",
+									}) {
+										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+											ID: "grouped-dropdown",
+										}) {
+											Team
+										}
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+											ID: "grouped-dropdown",
+										}) {
+											Team Settings
+										}
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+											ID: "grouped-dropdown",
+										}) {
+											Invite Users
+										}
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Multiple Dropdowns Test -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Multiple Dropdowns</h2>
+						<p class="text-sm text-muted-foreground">
+							Test that multiple dropdowns work independently with namespaced signals.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex gap-4">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-1"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "test-dropdown-1",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Dropdown 1
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "test-dropdown-1",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										ID: "test-dropdown-1",
+									}) {
+										First Menu
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "test-dropdown-1",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-1",
+									}) {
+										Option 1A
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-1",
+									}) {
+										Option 1B
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-1",
+									}) {
+										Option 1C
+									}
+								}
+							}
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-2"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "test-dropdown-2",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Dropdown 2
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "test-dropdown-2",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										ID: "test-dropdown-2",
+									}) {
+										Second Menu
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "test-dropdown-2",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-2",
+									}) {
+										Option 2A
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-2",
+									}) {
+										Option 2B
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-2",
+									}) {
+										Option 2C
+									}
+								}
+							}
+							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-3"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									ID:    "test-dropdown-3",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Dropdown 3
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									ID:    "test-dropdown-3",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										ID: "test-dropdown-3",
+									}) {
+										Third Menu
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+										ID: "test-dropdown-3",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-3",
+									}) {
+										Option 3A
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-3",
+									}) {
+										Option 3B
+									}
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										ID: "test-dropdown-3",
+									}) {
+										Option 3C
+									}
+								}
+							}
+						</div>
+						<p class="mt-4 text-sm text-muted-foreground">
+							Each dropdown should open and close independently. Before the fix, all dropdowns would open/close together.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

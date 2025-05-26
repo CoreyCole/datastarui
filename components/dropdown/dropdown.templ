@@ -1,0 +1,225 @@
+package dropdown
+
+import (
+	"crypto/rand"
+	"fmt"
+	"strconv"
+)
+
+// DropdownMenu renders the main dropdown wrapper with Datastar state management
+templ DropdownMenu(props DropdownMenuProps) {
+	{{
+		// Generate unique ID if not provided
+		dropdownID := props.ID
+		if dropdownID == "" {
+			// Generate a random ID
+			b := make([]byte, 4)
+			rand.Read(b)
+			dropdownID = fmt.Sprintf("dropdown_%x", b)
+		}
+
+		openState := "false"
+		if props.DefaultOpen {
+			openState = "true"
+		}
+		if props.Open {
+			openState = "true"
+		}
+
+		// Create a simple signal name using underscores (valid JS identifier)
+		signalName := fmt.Sprintf("dropdown_%s_open", dropdownID)
+		signalsJSON := "{\"" + signalName + "\": " + openState + "}"
+	}}
+	<div
+		data-slot="dropdown-menu"
+		data-signals={ signalsJSON }
+		class={ dropdownMenuVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
+templ DropdownMenuTrigger(props DropdownMenuTriggerProps) {
+	{{
+		// Create the signal reference and toggle expression
+		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
+		signalRef := "$" + signalName
+		toggleExpr := signalRef + " = !" + signalRef
+	}}
+	if props.AsChild {
+		<span
+			data-slot="dropdown-menu-trigger"
+			class={ dropdownMenuTriggerVariants(props.Class) }
+			data-on-click={ toggleExpr }
+			if props.Disabled {
+				aria-disabled="true"
+			}
+			{ props.Attributes... }
+		>
+			{ children... }
+		</span>
+	} else {
+		<button
+			data-slot="dropdown-menu-trigger"
+			type="button"
+			class={ dropdownMenuTriggerVariants(props.Class) }
+			data-on-click={ toggleExpr }
+			disabled?={ props.Disabled }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+// DropdownMenuContent renders the dropdown content panel
+templ DropdownMenuContent(props DropdownMenuContentProps) {
+	{{
+		// Calculate positioning classes based on props
+		alignClass := ""
+		switch props.Align {
+		case "start":
+			alignClass = "left-0"
+		case "end":
+			alignClass = "right-0"
+		case "center":
+			alignClass = "left-1/2 -translate-x-1/2"
+		default:
+			alignClass = "left-0"
+		}
+
+		sideClass := ""
+		sideOffset := props.SideOffset
+		if sideOffset == 0 {
+			sideOffset = 4 // Default offset like shadcn/ui
+		}
+
+		switch props.Side {
+		case "top":
+			sideClass = "bottom-full mb-" + strconv.Itoa(sideOffset)
+		case "bottom":
+			sideClass = "top-full mt-" + strconv.Itoa(sideOffset)
+		case "left":
+			sideClass = "right-full mr-" + strconv.Itoa(sideOffset)
+		case "right":
+			sideClass = "left-full ml-" + strconv.Itoa(sideOffset)
+		default:
+			sideClass = "top-full mt-" + strconv.Itoa(sideOffset)
+		}
+
+		positionClasses := "absolute " + sideClass + " " + alignClass
+
+		// Create signal references
+		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
+		signalRef := "$" + signalName
+		hideExpr := signalRef + " = false"
+	}}
+	<div
+		data-slot="dropdown-menu-content"
+		class={ dropdownMenuContentVariants(props.Class) + " " + positionClasses }
+		data-show={ signalRef }
+		data-on-click-outside={ hideExpr }
+		data-on-keydown.escape={ hideExpr }
+		role="menu"
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// DropdownMenuItem renders a clickable menu item
+templ DropdownMenuItem(props DropdownMenuItemProps) {
+	{{
+		// Create signal reference for hiding the dropdown
+		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
+		signalRef := "$" + signalName
+		hideExpr := signalRef + " = false"
+	}}
+	if props.AsChild {
+		<span
+			data-slot="dropdown-menu-item"
+			class={ dropdownMenuItemVariants(props.Variant, props.Class, props.Inset, props.Disabled) }
+			role="menuitem"
+			if props.Disabled {
+				aria-disabled="true"
+			}
+			{ templ.Attributes(map[string]any{
+				"data-inset": props.Inset,
+				"data-variant": props.Variant,
+				"data-disabled": props.Disabled,
+			})... }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</span>
+	} else {
+		<div
+			data-slot="dropdown-menu-item"
+			class={ dropdownMenuItemVariants(props.Variant, props.Class, props.Inset, props.Disabled) }
+			role="menuitem"
+			tabindex="0"
+			data-on-click={ hideExpr }
+			if props.Disabled {
+				aria-disabled="true"
+			}
+			{ templ.Attributes(map[string]any{
+				"data-inset": props.Inset,
+				"data-variant": props.Variant,
+				"data-disabled": props.Disabled,
+			})... }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</div>
+	}
+}
+
+// DropdownMenuLabel renders a non-interactive label
+templ DropdownMenuLabel(props DropdownMenuLabelProps) {
+	<div
+		data-slot="dropdown-menu-label"
+		class={ dropdownMenuLabelVariants(props.Class, props.Inset) }
+		role="presentation"
+		{ templ.Attributes(map[string]any{
+			"data-inset": props.Inset,
+		})... }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// DropdownMenuSeparator renders a visual separator
+templ DropdownMenuSeparator(props DropdownMenuSeparatorProps) {
+	<div
+		data-slot="dropdown-menu-separator"
+		class={ dropdownMenuSeparatorVariants(props.Class) }
+		role="separator"
+		{ props.Attributes... }
+	></div>
+}
+
+// DropdownMenuShortcut renders keyboard shortcut text
+templ DropdownMenuShortcut(props DropdownMenuShortcutProps) {
+	<span
+		data-slot="dropdown-menu-shortcut"
+		class={ dropdownMenuShortcutVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</span>
+}
+
+// DropdownMenuGroup renders a logical grouping of menu items
+templ DropdownMenuGroup(props DropdownMenuGroupProps) {
+	<div
+		data-slot="dropdown-menu-group"
+		class={ dropdownMenuGroupVariants(props.Class) }
+		role="group"
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
