@@ -34,7 +34,14 @@ templ FormPage() {
 					@card.CardContent(card.CardContentProps{}) {
 						<!-- Error/Success message placeholder -->
 						<div id="basic-form-errors"></div>
-						@form.Form(form.FormProps{ID: "basic-form", Action: "/form/form-page/basic-form", Class: "space-y-6"}) {
+						@form.Form(form.FormProps{
+							ID:     "basic-form",
+							Action: "/form/form-page/basic-form",
+							Class:  "space-y-6",
+							Attributes: templ.Attributes{
+								"data-indicator-fetching": "",
+							},
+						}) {
 							@form.FormItem(form.FormItemProps{}) {
 								@form.FormLabel(form.FormLabelProps{For: "username"}) {
 									Username
@@ -50,9 +57,18 @@ templ FormPage() {
 								@form.FormMessage(form.FormMessageProps{}) {
 								}
 							}
-							@button.Button(button.ButtonProps{Type: "submit"}) {
-								Submit
-							}
+							<div class="flex items-center gap-2">
+								@button.Button(button.ButtonProps{
+									Type: "submit",
+									Attributes: templ.Attributes{
+										"data-attr-disabled": "$fetching",
+										"data-text":          "$fetching ? 'Submitting...' : 'Submit'",
+									},
+								}) {
+									Submit
+								}
+								<div class="loading loading-spinner loading-sm text-primary" data-show="$fetching"></div>
+							</div>
 						}
 					}
 				}
@@ -67,7 +83,7 @@ templ FormPage() {
 						}
 					}
 					@card.CardContent(card.CardContentProps{}) {
-						<div data-signals="{isSubmitting: false}">
+						<div>
 							<!-- Error/Success message placeholder -->
 							<div id="validation-form-errors"></div>
 							@form.Form(form.FormProps{
@@ -113,16 +129,19 @@ templ FormPage() {
 									@form.FormMessage(form.FormMessageProps{}) {
 									}
 								}
-								@button.Button(button.ButtonProps{
-									Type: "submit",
-									Attributes: templ.Attributes{
-										"data-disabled": "$isSubmitting",
-										"data-text":     "$isSubmitting ? 'Submitting...' : 'Submit'",
-										"data-on-click": "$isSubmitting = true",
-									},
-								}) {
-									Submit
-								}
+								<div class="flex items-center gap-2">
+									@button.Button(button.ButtonProps{
+										Type: "submit",
+										Attributes: templ.Attributes{
+											"data-indicator-fetching": "",
+											"data-attr-disabled":      "$fetching",
+											"data-text":               "$fetching ? 'Submitting...' : 'Submit'",
+										},
+									}) {
+										Submit
+									}
+									<div class="loading loading-spinner loading-sm text-primary" data-show="$fetching"></div>
+								</div>
 							}
 						</div>
 					}
@@ -145,6 +164,9 @@ templ FormPage() {
 								ID:     "contact-form",
 								Action: "/form/form-page/contact-form",
 								Class:  "space-y-6",
+								Attributes: templ.Attributes{
+									"data-indicator-fetching": "",
+								},
 							}) {
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 									@form.FormItem(form.FormItemProps{}) {
@@ -208,10 +230,14 @@ templ FormPage() {
 										Please provide as much detail as possible.
 									}
 								}
-								<div class="flex gap-2">
+								<div class="flex gap-2 items-center">
 									@button.Button(button.ButtonProps{
 										Type:    "submit",
 										Variant: "default",
+										Attributes: templ.Attributes{
+											"data-attr-disabled": "$fetching",
+											"data-text":          "$fetching ? 'Sending...' : 'Send Message'",
+										},
 									}) {
 										Send Message
 									}
@@ -219,11 +245,13 @@ templ FormPage() {
 										Type:    "button",
 										Variant: "outline",
 										Attributes: templ.Attributes{
-											"data-on-click": "$contact = {name: '', email: '', subject: '', message: ''}",
+											"data-on-click":      "$contact = {name: '', email: '', subject: '', message: ''}",
+											"data-attr-disabled": "$fetching",
 										},
 									}) {
 										Clear
 									}
+									<div class="loading loading-spinner loading-sm text-primary" data-show="$fetching"></div>
 								</div>
 							}
 						</div>
