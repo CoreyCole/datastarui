@@ -11,6 +11,10 @@ A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains
 - 🔧 **Type-safe** component props with Go structs
 - 🌙 **Dark mode** support built-in
 - ♿ **Accessible** with proper ARIA attributes
+- **Type-safe form handling** with protobuf integration
+- **Automatic form parsing** using protobuf reflection
+- **Folder-based component organization** with dedicated demo pages
+- **Datastar reactive patterns** for interactive components
 
 ## 🚀 Quick Start
 
@@ -143,6 +147,67 @@ See the [Development Guide](datastarui.md) for detailed implementation instructi
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-______________________________________________________________________
+---
 
 **Built with ❤️ using Go, templ, Tailwind CSS, and Datastar**
+
+## Form Decoder
+
+DatastarUI includes an automatic form decoder that uses protobuf reflection to parse HTTP form data into strongly-typed protobuf messages.
+
+### Example Usage
+
+```go
+// Define protobuf message
+message AccountForm {
+  string name = 1;
+  string username = 2;
+}
+
+// Use the automatic decoder
+form, response, err := tabs.DecodeAccountForm(request)
+if err != nil {
+    return c.JSON(500, map[string]string{"error": err.Error()})
+}
+
+if !response.Success {
+    return c.JSON(400, response) // Validation errors
+}
+
+// Process the validated form data
+log.Printf("Account: Name=%s, Username=%s", form.Name, form.Username)
+```
+
+### Features
+
+- **Automatic field mapping**: Uses protobuf reflection to map form fields to struct fields
+- **Type conversion**: Supports strings, integers, floats, booleans, enums, and bytes
+- **Built-in validation**: Field-specific validation rules (length, format, etc.)
+- **Error handling**: Detailed validation error messages
+- **Zero configuration**: Works with any protobuf message type
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `go mod tidy`
+3. Generate protobuf code: `protoc --go_out=. --go_opt=paths=source_relative pages/components/*/\*.proto`
+4. Generate templ templates: `templ generate`
+5. Run the server: `go run main.go`
+
+## Component Structure
+
+```
+components/[component-name]/
+├── [component-name].templ     # Component template
+├── types.go                   # Props and types
+└── variants.go                # CSS variants
+
+pages/components/[component-name]/
+├── [component-name]_page.templ    # Demo page
+├── [component-name]_page.proto    # Form definitions
+└── [component-name]_page.pb.go    # Generated protobuf code
+```
+
+## Documentation
+
+See `datastarui.md` for comprehensive development guidelines and component implementation patterns.

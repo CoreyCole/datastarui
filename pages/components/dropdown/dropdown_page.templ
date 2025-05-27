@@ -1,6 +1,7 @@
-package pages
+package dropdown
 
 import (
+	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/dropdown"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -19,14 +20,16 @@ templ DropdownPage() {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Dropdown -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">Basic Dropdown</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Basic Dropdown
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							A simple dropdown menu with various menu items.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						<div class="inline-block">
 							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "basic-dropdown"}) {
 								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
@@ -70,17 +73,19 @@ templ DropdownPage() {
 								}
 							}
 						</div>
-					</div>
-				</div>
+					}
+				}
 				<!-- Dropdown with Icons and Shortcuts -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">With Icons and Shortcuts</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							With Icons and Shortcuts
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							Dropdown menu items with icons and keyboard shortcuts.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						<div class="inline-block">
 							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "icons-dropdown"}) {
 								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
@@ -153,17 +158,19 @@ templ DropdownPage() {
 								}
 							}
 						</div>
-					</div>
-				</div>
+					}
+				}
 				<!-- Grouped Dropdown -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">Grouped Items</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Grouped Items
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							Dropdown menu with grouped items and labels.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						<div class="inline-block">
 							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "grouped-dropdown"}) {
 								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
@@ -220,17 +227,19 @@ templ DropdownPage() {
 								}
 							}
 						</div>
-					</div>
-				</div>
+					}
+				}
 				<!-- Multiple Dropdowns Test -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">Multiple Dropdowns</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Multiple Dropdowns
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							Test that multiple dropdowns work independently with namespaced signals.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
 						<div class="flex gap-4">
 							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-1"}) {
 								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
@@ -341,11 +350,11 @@ templ DropdownPage() {
 								}
 							}
 						</div>
-						<p class="mt-4 text-sm text-muted-foreground">
+						<p class="text-sm text-muted-foreground">
 							Each dropdown should open and close independently. Before the fix, all dropdowns would open/close together.
 						</p>
-					</div>
-				</div>
+					}
+				}
 			</div>
 		</div>
 	}

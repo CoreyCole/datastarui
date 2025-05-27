@@ -8,7 +8,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	p "github.com/coreycole/datastarui/pages"
-	pc "github.com/coreycole/datastarui/pages/components"
+	"github.com/coreycole/datastarui/pages/components/breadcrumb"
+	"github.com/coreycole/datastarui/pages/components/button"
+	"github.com/coreycole/datastarui/pages/components/card"
+	"github.com/coreycole/datastarui/pages/components/dropdown"
+	"github.com/coreycole/datastarui/pages/components/form"
+	"github.com/coreycole/datastarui/pages/components/tabs"
 )
 
 const port = "4242"
@@ -33,15 +38,27 @@ func main() {
 		return c.Redirect(http.StatusFound, "/components/breadcrumb")
 	})
 	e.GET("/components/button", func(c echo.Context) error {
-		component := pc.ButtonPage()
+		component := button.ButtonPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/breadcrumb", func(c echo.Context) error {
-		component := pc.BreadcrumbPage()
+		component := breadcrumb.BreadcrumbPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/dropdown", func(c echo.Context) error {
-		component := pc.DropdownPage()
+		component := dropdown.DropdownPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/form", func(c echo.Context) error {
+		component := form.FormPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/tabs", func(c echo.Context) error {
+		component := tabs.TabsPage()
+		return component.Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/card", func(c echo.Context) error {
+		component := card.CardPage()
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 

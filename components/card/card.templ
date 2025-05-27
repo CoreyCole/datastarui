@@ -1,0 +1,106 @@
+package card
+
+// Card is the main card container component
+templ Card(props CardProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardVariants(props.Class)
+	}}
+	<div
+		data-slot="card"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardHeader contains the card title, description, and optional action
+templ CardHeader(props CardHeaderProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardHeaderVariants(props.Class)
+	}}
+	<div
+		data-slot="card-header"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardTitle displays the main title of the card
+templ CardTitle(props CardTitleProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardTitleVariants(props.Class)
+	}}
+	<div
+		data-slot="card-title"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardDescription displays the description text of the card
+templ CardDescription(props CardDescriptionProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardDescriptionVariants(props.Class)
+	}}
+	<div
+		data-slot="card-description"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardAction displays action elements (like buttons) in the card header
+templ CardAction(props CardActionProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardActionVariants(props.Class)
+	}}
+	<div
+		data-slot="card-action"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardContent contains the main content of the card
+templ CardContent(props CardContentProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardContentVariants(props.Class)
+	}}
+	<div
+		data-slot="card-content"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// CardFooter contains footer content like buttons or additional info
+templ CardFooter(props CardFooterProps) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := cardFooterVariants(props.Class)
+	}}
+	<div
+		data-slot="card-footer"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}

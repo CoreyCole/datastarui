@@ -1,7 +1,8 @@
-package pages
+package breadcrumb
 
 import (
 	"github.com/coreycole/datastarui/components/breadcrumb"
+	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/dropdown"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -20,14 +21,16 @@ templ BreadcrumbPage() {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Breadcrumb -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">Basic Breadcrumb</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Basic Breadcrumb
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							A simple breadcrumb with navigation links and current page.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
 							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
 								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
@@ -49,17 +52,19 @@ templ BreadcrumbPage() {
 								}
 							}
 						}
-					</div>
-				</div>
+					}
+				}
 				<!-- Breadcrumb with Ellipsis -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">With Ellipsis</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							With Ellipsis
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							Use ellipsis to indicate collapsed breadcrumb items.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
 							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
 								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
@@ -85,17 +90,19 @@ templ BreadcrumbPage() {
 								}
 							}
 						}
-					</div>
-				</div>
+					}
+				}
 				<!-- Breadcrumb with Dropdown -->
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<h2 class="text-2xl font-semibold tracking-tight">With Dropdown</h2>
-						<p class="text-sm text-muted-foreground">
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							With Dropdown
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
 							Breadcrumb ellipsis that opens a dropdown menu with hidden items.
-						</p>
-					</div>
-					<div class="rounded-lg border bg-card p-6">
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
 						{{
 							dropdownID := "breadcrumb-dropdown"
 						}}
@@ -156,44 +163,46 @@ templ BreadcrumbPage() {
 								}
 							}
 						}
-					</div>
-					<!-- Custom Separator -->
-					<div class="space-y-4">
-						<div class="space-y-2">
-							<h2 class="text-2xl font-semibold tracking-tight">Custom Separator</h2>
-							<p class="text-sm text-muted-foreground">
-								Override the default chevron separator with custom content.
-							</p>
-						</div>
-						<div class="rounded-lg border bg-card p-6">
-							@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-								@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-									@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-										@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
-											Home
-										}
+					}
+				}
+				<!-- Custom Separator -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Custom Separator
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							Override the default chevron separator with custom content.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+										Home
 									}
-									@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
-										<span class="text-muted-foreground">/</span>
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+									<span class="text-muted-foreground">/</span>
+								}
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+										Components
 									}
-									@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-										@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
-											Components
-										}
-									}
-									@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
-										<span class="text-muted-foreground">/</span>
-									}
-									@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-										@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
-											Breadcrumb
-										}
+								}
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+									<span class="text-muted-foreground">/</span>
+								}
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+										Breadcrumb
 									}
 								}
 							}
-						</div>
-					</div>
-				</div>
+						}
+					}
+				}
 			</div>
 		</div>
 	}

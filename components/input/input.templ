@@ -1,0 +1,34 @@
+package input
+
+templ Input(props InputProps) {
+	{{
+		// Generate CSS classes
+		classes := inputVariants(props.Class)
+
+		// Set default type
+		inputType := props.Type
+		if inputType == "" {
+			inputType = "text"
+		}
+	}}
+	<input
+		type={ inputType }
+		data-slot="input"
+		class={ classes }
+		if props.Placeholder != "" {
+			placeholder={ props.Placeholder }
+		}
+		if props.Value != "" {
+			value={ props.Value }
+		}
+		if props.Name != "" {
+			name={ props.Name }
+		}
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		disabled?={ props.Disabled }
+		required?={ props.Required }
+		{ props.Attributes... }
+	/>
+}

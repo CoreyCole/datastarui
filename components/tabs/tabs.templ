@@ -1,0 +1,114 @@
+package tabs
+
+import (
+	"crypto/rand"
+	"fmt"
+)
+
+// Tabs is the root container component that manages tab state
+templ Tabs(props TabsProps) {
+	{{
+		// Generate unique ID if not provided
+		tabsID := props.ID
+		if tabsID == "" {
+			// Generate a random ID
+			b := make([]byte, 4)
+			rand.Read(b)
+			tabsID = fmt.Sprintf("tabs_%x", b)
+		}
+
+		// Generate CSS classes
+		classes := tabsVariants(props.Class)
+
+		// Set up the default active tab
+		defaultValue := props.DefaultValue
+		if defaultValue == "" {
+			defaultValue = "tab1" // fallback default
+		}
+
+		// Use controlled value if provided, otherwise use default
+		activeTab := props.Value
+		if activeTab == "" {
+			activeTab = defaultValue
+		}
+
+		// Create a signal name using underscores (valid JS identifier)
+		signalName := fmt.Sprintf("tabs_%s_active", tabsID)
+		signalsJSON := "{\"" + signalName + "\": \"" + activeTab + "\"}"
+	}}
+	<div
+		data-slot="tabs"
+		data-signals={ signalsJSON }
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// TabsList contains the tab triggers
+templ TabsList(props TabsListProps) {
+	{{
+		// Generate CSS classes
+		classes := tabsListVariants(props.Class)
+	}}
+	<div
+		class={ classes }
+		role="tablist"
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// TabsTrigger is a clickable tab button
+templ TabsTrigger(props TabsTriggerProps) {
+	{{
+		// Generate CSS classes
+		classes := tabsTriggerVariants(props.Class)
+
+		// Create the signal reference and click expression
+		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
+		signalRef := "$" + signalName
+		clickExpr := signalRef + " = '" + props.Value + "'"
+	}}
+	<button
+		type="button"
+		data-slot="tabs-trigger"
+		class={ classes }
+		role="tab"
+		data-value={ props.Value }
+		data-on-click={ clickExpr }
+		data-attr-data-state={ signalRef + " === '" + props.Value + "' ? 'active' : 'inactive'" }
+		data-attr-aria-selected={ signalRef + " === '" + props.Value + "' ? 'true' : 'false'" }
+		data-attr-tabindex={ signalRef + " === '" + props.Value + "' ? '0' : '-1'" }
+		disabled?={ props.Disabled }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</button>
+}
+
+// TabsContent displays the content for the active tab
+templ TabsContent(props TabsContentProps) {
+	{{
+		// Generate CSS classes
+		classes := tabsContentVariants(props.Class)
+
+		// Create the signal reference
+		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
+		signalRef := "$" + signalName
+	}}
+	<div
+		data-slot="tabs-content"
+		class={ classes }
+		role="tabpanel"
+		data-value={ props.Value }
+		data-show={ signalRef + " === '" + props.Value + "'" }
+		data-attr-aria-hidden={ signalRef + " === '" + props.Value + "' ? 'false' : 'true'" }
+		tabindex="0"
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}

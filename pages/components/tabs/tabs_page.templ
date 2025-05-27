@@ -1,0 +1,396 @@
+package tabs
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/form"
+	"github.com/coreycole/datastarui/components/input"
+	"github.com/coreycole/datastarui/components/tabs"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ TabsPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Tabs")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Tabs</h1>
+				<p class="text-lg text-muted-foreground">
+					A set of layered sections of content—known as tab panels—that are displayed one at a time.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Tabs Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Basic Tabs
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							A simple tabs component with account and password sections.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-[400px]"}) {
+							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-2"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "basic_tabs", Value: "account"}) {
+									Account
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "basic_tabs", Value: "password"}) {
+									Password
+								}
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "basic_tabs", Value: "account"}) {
+								@card.Card(card.CardProps{}) {
+									@card.CardHeader(card.CardHeaderProps{}) {
+										@card.CardTitle(card.CardTitleProps{}) {
+											Account
+										}
+										@card.CardDescription(card.CardDescriptionProps{}) {
+											Make changes to your account here. Click save when you're done.
+										}
+									}
+									@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
+										<div>
+											@form.FormItem(form.FormItemProps{}) {
+												@form.FormLabel(form.FormLabelProps{For: "account-name"}) {
+													Name
+												}
+												@form.FormControl(form.FormControlProps{ID: "account-name"}) {
+													@input.Input(input.InputProps{
+														ID:          "account-name",
+														Name:        "name",
+														Placeholder: "Enter your name",
+														Value:       "Pedro Duarte",
+													})
+												}
+												@form.FormDescription(form.FormDescriptionProps{}) {
+													This is your display name.
+												}
+											}
+											@form.FormItem(form.FormItemProps{}) {
+												@form.FormLabel(form.FormLabelProps{For: "account-username"}) {
+													Username
+												}
+												@form.FormControl(form.FormControlProps{ID: "account-username"}) {
+													@input.Input(input.InputProps{
+														ID:          "account-username",
+														Name:        "username",
+														Placeholder: "Enter your username",
+														Value:       "@peduarte",
+													})
+												}
+												@form.FormDescription(form.FormDescriptionProps{}) {
+													This is your public display name.
+												}
+											}
+										</div>
+									}
+									@card.CardFooter(card.CardFooterProps{}) {
+										@button.Button(button.ButtonProps{Type: "submit"}) {
+											Save changes
+										}
+									}
+								}
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "basic_tabs", Value: "password"}) {
+								@card.Card(card.CardProps{}) {
+									@card.CardHeader(card.CardHeaderProps{}) {
+										@card.CardTitle(card.CardTitleProps{}) {
+											Password
+										}
+										@card.CardDescription(card.CardDescriptionProps{}) {
+											Change your password here. After saving, you'll be logged out.
+										}
+									}
+									@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
+										<div>
+											@form.FormItem(form.FormItemProps{}) {
+												@form.FormLabel(form.FormLabelProps{For: "password-current"}) {
+													Current password
+												}
+												@form.FormControl(form.FormControlProps{ID: "password-current"}) {
+													@input.Input(input.InputProps{
+														ID:          "password-current",
+														Name:        "current_password",
+														Type:        "password",
+														Placeholder: "Enter current password",
+													})
+												}
+											}
+											@form.FormItem(form.FormItemProps{}) {
+												@form.FormLabel(form.FormLabelProps{For: "password-new"}) {
+													New password
+												}
+												@form.FormControl(form.FormControlProps{ID: "password-new"}) {
+													@input.Input(input.InputProps{
+														ID:          "password-new",
+														Name:        "new_password",
+														Type:        "password",
+														Placeholder: "Enter new password",
+													})
+												}
+												@form.FormDescription(form.FormDescriptionProps{}) {
+													Your new password must be at least 8 characters.
+												}
+											}
+										</div>
+									}
+									@card.CardFooter(card.CardFooterProps{}) {
+										@button.Button(button.ButtonProps{Type: "submit"}) {
+											Save password
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				<!-- Interactive Counter Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Interactive Tabs with Datastar
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							Demonstrates Datastar reactivity within tab content.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-[400px]"}) {
+							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "counter"}) {
+									Counter
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "todo"}) {
+									Todo
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "settings"}) {
+									Settings
+								}
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "counter"}) {
+								<div data-signals="{count: 0}" class="space-y-4">
+									<div class="text-center">
+										<p class="text-2xl font-bold" data-text="$count"></p>
+										<p class="text-sm text-muted-foreground">Current count</p>
+									</div>
+									<div class="flex gap-2 justify-center">
+										@button.Button(button.ButtonProps{
+											Variant: "outline",
+											Attributes: templ.Attributes{
+												"data-on-click": "$count--",
+											},
+										}) {
+											Decrement
+										}
+										@button.Button(button.ButtonProps{
+											Attributes: templ.Attributes{
+												"data-on-click": "$count++",
+											},
+										}) {
+											Increment
+										}
+									</div>
+									<div class="text-center">
+										@button.Button(button.ButtonProps{
+											Variant: "secondary",
+											Size:    "sm",
+											Attributes: templ.Attributes{
+												"data-on-click": "$count = 0",
+											},
+										}) {
+											Reset
+										}
+									</div>
+								</div>
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "todo"}) {
+								<div data-signals="{todos: ['Learn Datastar', 'Build components'], newTodo: ''}" class="space-y-4">
+									<div class="flex gap-2">
+										@input.Input(input.InputProps{
+											Placeholder: "Add a new todo...",
+											Attributes: templ.Attributes{
+												"data-bind":       "newTodo",
+												"data-on-keydown": "evt.key === 'Enter' && $newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
+											},
+										})
+										@button.Button(button.ButtonProps{
+											Attributes: templ.Attributes{
+												"data-on-click": "$newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
+											},
+										}) {
+											Add
+										}
+									</div>
+									<div class="space-y-2">
+										<template data-for="(todo, index) in $todos">
+											<div class="flex items-center justify-between p-2 border rounded">
+												<span data-text="todo"></span>
+												@button.Button(button.ButtonProps{
+													Variant: "ghost",
+													Size:    "sm",
+													Attributes: templ.Attributes{
+														"data-on-click": "$todos.splice(index, 1)",
+													},
+												}) {
+													Remove
+												}
+											</div>
+										</template>
+									</div>
+								</div>
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "settings"}) {
+								<div data-signals="{theme: 'light', notifications: true, autoSave: false}" class="space-y-4">
+									<div class="space-y-2">
+										<label class="text-sm font-medium">Theme</label>
+										<select data-bind="theme" class="w-full p-2 border rounded">
+											<option value="light">Light</option>
+											<option value="dark">Dark</option>
+											<option value="auto">Auto</option>
+										</select>
+									</div>
+									<div class="flex items-center justify-between">
+										<label class="text-sm font-medium">Enable notifications</label>
+										<input type="checkbox" data-bind="notifications"/>
+									</div>
+									<div class="flex items-center justify-between">
+										<label class="text-sm font-medium">Auto-save</label>
+										<input type="checkbox" data-bind="autoSave"/>
+									</div>
+									<div class="p-3 bg-muted rounded text-sm">
+										<p><strong>Current settings:</strong></p>
+										<p>Theme: <span data-text="$theme"></span></p>
+										<p>Notifications: <span data-text="$notifications ? 'Enabled' : 'Disabled'"></span></p>
+										<p>Auto-save: <span data-text="$autoSave ? 'Enabled' : 'Disabled'"></span></p>
+									</div>
+								</div>
+							}
+						}
+					}
+				}
+				<!-- Vertical Tabs Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Vertical Tabs
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							Tabs can also be arranged vertically.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-[600px]"}) {
+							@tabs.TabsList(tabs.TabsListProps{Class: "flex-col h-auto w-48 mr-4"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "general", Class: "w-full justify-start"}) {
+									General
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "security", Class: "w-full justify-start"}) {
+									Security
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "integrations", Class: "w-full justify-start"}) {
+									Integrations
+								}
+								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "support", Class: "w-full justify-start"}) {
+									Support
+								}
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "general", Class: "flex-1"}) {
+								<div class="space-y-4">
+									<h3 class="text-lg font-semibold">General Settings</h3>
+									<p class="text-muted-foreground">
+										Manage your general account settings and preferences.
+									</p>
+									<div class="space-y-2">
+										<label class="text-sm font-medium">Display Name</label>
+										@input.Input(input.InputProps{
+											Placeholder: "Enter your display name",
+										})
+									</div>
+									<div class="space-y-2">
+										<label class="text-sm font-medium">Email</label>
+										@input.Input(input.InputProps{
+											Type:        "email",
+											Placeholder: "Enter your email",
+										})
+									</div>
+								</div>
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "security", Class: "flex-1"}) {
+								<div class="space-y-4">
+									<h3 class="text-lg font-semibold">Security Settings</h3>
+									<p class="text-muted-foreground">
+										Configure your security preferences and two-factor authentication.
+									</p>
+									<div class="space-y-2">
+										<label class="text-sm font-medium">Current Password</label>
+										@input.Input(input.InputProps{
+											Type:        "password",
+											Placeholder: "Enter current password",
+										})
+									</div>
+									<div class="space-y-2">
+										<label class="text-sm font-medium">New Password</label>
+										@input.Input(input.InputProps{
+											Type:        "password",
+											Placeholder: "Enter new password",
+										})
+									</div>
+								</div>
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "integrations", Class: "flex-1"}) {
+								<div class="space-y-4">
+									<h3 class="text-lg font-semibold">Integrations</h3>
+									<p class="text-muted-foreground">
+										Connect your account with third-party services.
+									</p>
+									<div class="space-y-3">
+										<div class="flex items-center justify-between p-3 border rounded">
+											<div>
+												<p class="font-medium">GitHub</p>
+												<p class="text-sm text-muted-foreground">Connect your GitHub account</p>
+											</div>
+											@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+												Connect
+											}
+										</div>
+										<div class="flex items-center justify-between p-3 border rounded">
+											<div>
+												<p class="font-medium">Slack</p>
+												<p class="text-sm text-muted-foreground">Get notifications in Slack</p>
+											</div>
+											@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+												Connect
+											}
+										</div>
+									</div>
+								</div>
+							}
+							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "support", Class: "flex-1"}) {
+								<div class="space-y-4">
+									<h3 class="text-lg font-semibold">Support</h3>
+									<p class="text-muted-foreground">
+										Get help and contact our support team.
+									</p>
+									<div class="space-y-3">
+										<div class="p-3 border rounded">
+											<p class="font-medium">Documentation</p>
+											<p class="text-sm text-muted-foreground">Browse our comprehensive documentation</p>
+										</div>
+										<div class="p-3 border rounded">
+											<p class="font-medium">Contact Support</p>
+											<p class="text-sm text-muted-foreground">Get in touch with our support team</p>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					}
+				}
+			</div>
+		</div>
+	}
+}

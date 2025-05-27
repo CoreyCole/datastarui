@@ -1,0 +1,364 @@
+package card
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/card"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ CardPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Card")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Card</h1>
+				<p class="text-lg text-muted-foreground">
+					Displays a card with header, content, and footer.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Card Example -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Basic Card</h2>
+						<p class="text-sm text-muted-foreground">
+							A simple card with header, content, and footer.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex justify-center">
+							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Card Title
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										Card Description
+									}
+								}
+								@card.CardContent(card.CardContentProps{}) {
+									<p>Card Content</p>
+								}
+								@card.CardFooter(card.CardFooterProps{}) {
+									<p>Card Footer</p>
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Notifications Card Example -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Notifications Card</h2>
+						<p class="text-sm text-muted-foreground">
+							A card showing notifications with interactive elements.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex justify-center">
+							@card.Card(card.CardProps{Class: "w-[380px]"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Notifications
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										You have 3 unread messages.
+									}
+								}
+								@card.CardContent(card.CardContentProps{Class: "grid gap-4"}) {
+									<div class="flex items-center space-x-4 rounded-md border p-4">
+										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+										</svg>
+										<div class="flex-1 space-y-1">
+											<p class="text-sm font-medium leading-none">
+												Push Notifications
+											</p>
+											<p class="text-sm text-muted-foreground">
+												Send notifications to device.
+											</p>
+										</div>
+										<div class="flex items-center space-x-2">
+											<input type="checkbox" class="rounded border-gray-300"/>
+										</div>
+									</div>
+									<div>
+										<div class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4">
+											<span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"></span>
+											<div class="space-y-1">
+												<p class="text-sm font-medium leading-none">
+													Your call has been confirmed.
+												</p>
+												<p class="text-sm text-muted-foreground">
+													1 hour ago
+												</p>
+											</div>
+										</div>
+										<div class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4">
+											<span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"></span>
+											<div class="space-y-1">
+												<p class="text-sm font-medium leading-none">
+													You have a new message!
+												</p>
+												<p class="text-sm text-muted-foreground">
+													1 hour ago
+												</p>
+											</div>
+										</div>
+										<div class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+											<span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"></span>
+											<div class="space-y-1">
+												<p class="text-sm font-medium leading-none">
+													Your subscription is expiring soon!
+												</p>
+												<p class="text-sm text-muted-foreground">
+													2 hours ago
+												</p>
+											</div>
+										</div>
+									</div>
+								}
+								@card.CardFooter(card.CardFooterProps{}) {
+									@button.Button(button.ButtonProps{Class: "w-full"}) {
+										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+										</svg>
+										Mark all as read
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Form Card Example -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Form Card</h2>
+						<p class="text-sm text-muted-foreground">
+							A card containing a form with inputs and actions.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex justify-center">
+							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Create project
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										Deploy your new project in one-click.
+									}
+								}
+								@card.CardContent(card.CardContentProps{}) {
+									<form>
+										<div class="grid w-full items-center gap-4">
+											<div class="flex flex-col space-y-1.5">
+												<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Name</label>
+												<input class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Name of your project"/>
+											</div>
+											<div class="flex flex-col space-y-1.5">
+												<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="framework">Framework</label>
+												<select class="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="framework">
+													<option value="">Select</option>
+													<option value="next">Next.js</option>
+													<option value="sveltekit">SvelteKit</option>
+													<option value="astro">Astro</option>
+													<option value="nuxt">Nuxt.js</option>
+												</select>
+											</div>
+										</div>
+									</form>
+								}
+								@card.CardFooter(card.CardFooterProps{Class: "flex justify-between"}) {
+									@button.Button(button.ButtonProps{Variant: "outline"}) {
+										Cancel
+									}
+									@button.Button(button.ButtonProps{}) {
+										Deploy
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Card with Action -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Card with Action</h2>
+						<p class="text-sm text-muted-foreground">
+							A card with an action button in the header.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex justify-center">
+							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Team Settings
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										Manage your team settings and preferences.
+									}
+									@card.CardAction(card.CardActionProps{}) {
+										@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+											Edit
+										}
+									}
+								}
+								@card.CardContent(card.CardContentProps{}) {
+									<div class="space-y-2">
+										<p class="text-sm">Team members: 12</p>
+										<p class="text-sm">Active projects: 8</p>
+										<p class="text-sm">Storage used: 2.4 GB</p>
+									</div>
+								}
+							}
+						</div>
+					</div>
+				</div>
+				<!-- Interactive Card Example -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Interactive Card</h2>
+						<p class="text-sm text-muted-foreground">
+							A card with Datastar interactivity for dynamic content.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="flex justify-center">
+							<div data-signals="{likes: 0, saved: false}">
+								@card.Card(card.CardProps{Class: "w-[350px]"}) {
+									@card.CardHeader(card.CardHeaderProps{}) {
+										@card.CardTitle(card.CardTitleProps{}) {
+											Interactive Post
+										}
+										@card.CardDescription(card.CardDescriptionProps{}) {
+											This card demonstrates Datastar reactivity.
+										}
+									}
+									@card.CardContent(card.CardContentProps{}) {
+										<p class="text-sm">
+											This is a sample post that you can interact with using the buttons below.
+										</p>
+									}
+									@card.CardFooter(card.CardFooterProps{Class: "flex justify-between"}) {
+										@button.Button(button.ButtonProps{
+											Variant: "outline",
+											Size:    "sm",
+											Attributes: templ.Attributes{
+												"data-on-click": "$likes++",
+											},
+										}) {
+											<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+											</svg>
+											<span data-text="$likes">0</span> Likes
+										}
+										@button.Button(button.ButtonProps{
+											Variant: "outline",
+											Size:    "sm",
+											Attributes: templ.Attributes{
+												"data-on-click": "$saved = !$saved",
+											},
+										}) {
+											<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+											</svg>
+											<span data-text="$saved ? 'Saved' : 'Save'">Save</span>
+										}
+									}
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Component Variations -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Component Variations</h2>
+						<p class="text-sm text-muted-foreground">
+							Different combinations of card components.
+						</p>
+					</div>
+					<div class="rounded-lg border bg-card p-6">
+						<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+							<!-- Content Only -->
+							@card.Card(card.CardProps{}) {
+								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+									Content Only
+								}
+							}
+							<!-- Header Only -->
+							@card.Card(card.CardProps{}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Header Only
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										This is a card with a header and a description.
+									}
+								}
+							}
+							<!-- Header and Content -->
+							@card.Card(card.CardProps{}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Header + Content
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										This is a card with a header and content.
+									}
+								}
+								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+									Content
+								}
+							}
+							<!-- Footer Only -->
+							@card.Card(card.CardProps{}) {
+								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+									Footer Only
+								}
+							}
+							<!-- Header + Footer -->
+							@card.Card(card.CardProps{Class: "flex flex-col"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Header + Footer
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										This is a card with a header and a footer.
+									}
+								}
+								<div class="flex-grow"></div>
+								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+									Footer
+								}
+							}
+							<!-- Complete Card -->
+							@card.Card(card.CardProps{Class: "flex flex-col"}) {
+								@card.CardHeader(card.CardHeaderProps{}) {
+									@card.CardTitle(card.CardTitleProps{}) {
+										Complete Card
+									}
+									@card.CardDescription(card.CardDescriptionProps{}) {
+										This card has all components.
+									}
+								}
+								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+									Content
+								}
+								<div class="flex-grow"></div>
+								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+									Footer
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,112 @@
+package form
+
+import "github.com/coreycole/datastarui/components/label"
+
+// Form wrapper component
+templ Form(props FormProps) {
+	<form
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		if props.Action != "" {
+			action={ templ.SafeURL(props.Action) }
+		}
+		if props.Method != "" {
+			method={ props.Method }
+		}
+		class={ props.Class }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</form>
+}
+
+// FormItem component - container for form field
+templ FormItem(props FormItemProps) {
+	{{
+		classes := formItemVariants(props.Class)
+	}}
+	<div
+		data-slot="form-item"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// FormLabel component - label for form field
+templ FormLabel(props FormLabelProps) {
+	{{
+		classes := formLabelVariants(props.Class, props.HasError)
+	}}
+	@label.Label(label.LabelProps{
+		Class: classes,
+		For:   props.For,
+		Attributes: templ.Attributes{
+			"data-slot":  "form-label",
+			"data-error": templ.Bool(props.HasError),
+		},
+	}) {
+		{ children... }
+	}
+}
+
+// FormControl component - wrapper for form input
+templ FormControl(props FormControlProps) {
+	<div
+		data-slot="form-control"
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		if props.AriaDescribedBy != "" {
+			aria-describedby={ props.AriaDescribedBy }
+		}
+		if props.AriaInvalid {
+			aria-invalid="true"
+		}
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// FormDescription component - help text for form field
+templ FormDescription(props FormDescriptionProps) {
+	{{
+		classes := formDescriptionVariants(props.Class)
+	}}
+	<p
+		data-slot="form-description"
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</p>
+}
+
+// FormMessage component - error message for form field
+templ FormMessage(props FormMessageProps) {
+	if props.Message != "" {
+		{{
+			classes := formMessageVariants(props.Class)
+		}}
+		<p
+			data-slot="form-message"
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			class={ classes }
+			{ props.Attributes... }
+		>
+			if props.Message != "" {
+				{ props.Message }
+			} else {
+				{ children... }
+			}
+		</p>
+	}
+}

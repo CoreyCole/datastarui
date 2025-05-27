@@ -1,0 +1,285 @@
+package pages
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/form"
+	"github.com/coreycole/datastarui/components/input"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ FormPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Form")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Form</h1>
+				<p class="text-lg text-muted-foreground">
+					Building forms with validation and accessibility. Includes form fields, labels, descriptions, and error messages.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Basic Form Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Basic Form
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							A simple form with input validation and descriptions.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						@form.Form(form.FormProps{ID: "basic-form", Method: "POST", Action: "/api/profile", Class: "space-y-6"}) {
+							@form.FormItem(form.FormItemProps{}) {
+								@form.FormLabel(form.FormLabelProps{For: "username"}) {
+									Username
+								}
+								@form.FormControl(form.FormControlProps{ID: "username", AriaDescribedBy: "username-description"}) {
+									@input.Input(input.InputProps{
+										ID:          "username",
+										Name:        "username",
+										Placeholder: "shadcn",
+									})
+								}
+								@form.FormDescription(form.FormDescriptionProps{ID: "username-description"}) {
+									This is your public display name.
+								}
+								@form.FormMessage(form.FormMessageProps{ID: "username-message"}) {
+								}
+							}
+							@button.Button(button.ButtonProps{Type: "submit"}) {
+								Submit
+							}
+						}
+					}
+				}
+				<!-- Form with Validation Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Form with Validation
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							Demonstrates form validation with error states and messages.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						<div data-signals="{formData: {email: '', password: ''}, errors: {}, isSubmitting: false}">
+							@form.Form(form.FormProps{
+								ID:    "validation-form",
+								Class: "space-y-6",
+								Attributes: templ.Attributes{
+									"data-on-submit": "event.preventDefault(); $isSubmitting = true; setTimeout(() => { if (!$formData.email) { $errors.email = 'Email is required'; } else if (!$formData.email.includes('@')) { $errors.email = 'Please enter a valid email'; } else { $errors.email = ''; } if (!$formData.password) { $errors.password = 'Password is required'; } else if ($formData.password.length < 8) { $errors.password = 'Password must be at least 8 characters'; } else { $errors.password = ''; } $isSubmitting = false; }, 1000)",
+								},
+							}) {
+								@form.FormItem(form.FormItemProps{}) {
+									@form.FormLabel(form.FormLabelProps{
+										For:      "email",
+										HasError: false,
+										Attributes: templ.Attributes{
+											"data-error": "$errors.email ? 'true' : 'false'",
+										},
+									}) {
+										Email
+									}
+									@form.FormControl(form.FormControlProps{
+										ID:              "email",
+										AriaDescribedBy: "email-description email-message",
+										Attributes: templ.Attributes{
+											"data-aria-invalid": "$errors.email ? 'true' : 'false'",
+										},
+									}) {
+										@input.Input(input.InputProps{
+											ID:          "email",
+											Name:        "email",
+											Type:        "email",
+											Placeholder: "Enter your email",
+											Attributes: templ.Attributes{
+												"data-model": "$formData.email",
+												"data-class": "$errors.email ? 'border-destructive' : ''",
+											},
+										})
+									}
+									@form.FormDescription(form.FormDescriptionProps{ID: "email-description"}) {
+										We'll never share your email with anyone else.
+									}
+									@form.FormMessage(form.FormMessageProps{
+										ID: "email-message",
+										Attributes: templ.Attributes{
+											"data-text": "$errors.email",
+										},
+									}) {
+									}
+								}
+								@form.FormItem(form.FormItemProps{}) {
+									@form.FormLabel(form.FormLabelProps{
+										For:      "password",
+										HasError: false,
+										Attributes: templ.Attributes{
+											"data-error": "$errors.password ? 'true' : 'false'",
+										},
+									}) {
+										Password
+									}
+									@form.FormControl(form.FormControlProps{
+										ID:              "password",
+										AriaDescribedBy: "password-description password-message",
+										Attributes: templ.Attributes{
+											"data-aria-invalid": "$errors.password ? 'true' : 'false'",
+										},
+									}) {
+										@input.Input(input.InputProps{
+											ID:          "password",
+											Name:        "password",
+											Type:        "password",
+											Placeholder: "Enter your password",
+											Attributes: templ.Attributes{
+												"data-model": "$formData.password",
+												"data-class": "$errors.password ? 'border-destructive' : ''",
+											},
+										})
+									}
+									@form.FormDescription(form.FormDescriptionProps{ID: "password-description"}) {
+										Must be at least 8 characters long.
+									}
+									@form.FormMessage(form.FormMessageProps{
+										ID: "password-message",
+										Attributes: templ.Attributes{
+											"data-text": "$errors.password",
+										},
+									}) {
+									}
+								}
+								@button.Button(button.ButtonProps{
+									Type: "submit",
+									Attributes: templ.Attributes{
+										"data-disabled": "$isSubmitting",
+										"data-text":     "$isSubmitting ? 'Submitting...' : 'Submit'",
+									},
+								}) {
+									Submit
+								}
+							}
+						</div>
+					}
+				}
+				<!-- Contact Form Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Contact Form
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							A more complex form with multiple field types and reactive validation.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						<div data-signals="{contact: {name: '', email: '', subject: '', message: ''}, submitted: false}">
+							@form.Form(form.FormProps{
+								ID:    "contact-form",
+								Class: "space-y-6",
+								Attributes: templ.Attributes{
+									"data-on-submit": "event.preventDefault(); $submitted = true; setTimeout(() => $submitted = false, 3000)",
+								},
+							}) {
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+									@form.FormItem(form.FormItemProps{}) {
+										@form.FormLabel(form.FormLabelProps{For: "name"}) {
+											Name
+										}
+										@form.FormControl(form.FormControlProps{ID: "name"}) {
+											@input.Input(input.InputProps{
+												ID:          "name",
+												Name:        "name",
+												Placeholder: "Your name",
+												Required:    true,
+												Attributes: templ.Attributes{
+													"data-model": "$contact.name",
+												},
+											})
+										}
+									}
+									@form.FormItem(form.FormItemProps{}) {
+										@form.FormLabel(form.FormLabelProps{For: "contact-email"}) {
+											Email
+										}
+										@form.FormControl(form.FormControlProps{ID: "contact-email"}) {
+											@input.Input(input.InputProps{
+												ID:          "contact-email",
+												Name:        "email",
+												Type:        "email",
+												Placeholder: "your.email@example.com",
+												Required:    true,
+												Attributes: templ.Attributes{
+													"data-model": "$contact.email",
+												},
+											})
+										}
+									}
+								</div>
+								@form.FormItem(form.FormItemProps{}) {
+									@form.FormLabel(form.FormLabelProps{For: "subject"}) {
+										Subject
+									}
+									@form.FormControl(form.FormControlProps{ID: "subject"}) {
+										@input.Input(input.InputProps{
+											ID:          "subject",
+											Name:        "subject",
+											Placeholder: "What's this about?",
+											Required:    true,
+											Attributes: templ.Attributes{
+												"data-model": "$contact.subject",
+											},
+										})
+									}
+								}
+								@form.FormItem(form.FormItemProps{}) {
+									@form.FormLabel(form.FormLabelProps{For: "message"}) {
+										Message
+									}
+									@form.FormControl(form.FormControlProps{ID: "message"}) {
+										<textarea
+											id="message"
+											name="message"
+											placeholder="Your message..."
+											required
+											rows="4"
+											class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+											data-model="$contact.message"
+										></textarea>
+									}
+									@form.FormDescription(form.FormDescriptionProps{}) {
+										Please provide as much detail as possible.
+									}
+								}
+								<div class="flex gap-2">
+									@button.Button(button.ButtonProps{
+										Type:    "submit",
+										Variant: "default",
+									}) {
+										Send Message
+									}
+									@button.Button(button.ButtonProps{
+										Type:    "button",
+										Variant: "outline",
+										Attributes: templ.Attributes{
+											"data-on-click": "$contact = {name: '', email: '', subject: '', message: ''}",
+										},
+									}) {
+										Clear
+									}
+								</div>
+								<div data-show="$submitted" class="p-4 bg-green-50 border border-green-200 rounded-md">
+									<p class="text-sm text-green-800">Thank you! Your message has been sent.</p>
+								</div>
+							}
+						</div>
+					}
+				}
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package tabs;
+
+option go_package = "github.com/coreycole/datastarui/pages/components/tabs";
+
+// Account form data
+message AccountForm {
+  string name = 1;
+  string username = 2;
+}
+
+// Password form data
+message PasswordForm {
+  string current_password = 1;
+  string new_password = 2;
+}
+
+// Response messages
+message FormResponse {
+  bool success = 1;
+  string message = 2;
+  repeated string errors = 3;
+}

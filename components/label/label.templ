@@ -1,0 +1,18 @@
+package label
+
+templ Label(props LabelProps) {
+	{{
+		// Generate CSS classes
+		classes := labelVariants(props.Class)
+	}}
+	<label
+		data-slot="label"
+		class={ classes }
+		if props.For != "" {
+			for={ props.For }
+		}
+		{ props.Attributes... }
+	>
+		{ children... }
+	</label>
+}
