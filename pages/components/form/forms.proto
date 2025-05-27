@@ -2,14 +2,11 @@ syntax = "proto3";
 
 package datastarui.forms;
 
-import "google/protobuf/timestamp.proto";
-
-option go_package = "github.com/coreycole/datastarui/proto/forms";
+option go_package = "github.com/coreycole/datastarui/pages/components/form";
 
 // Basic profile form data
 message ProfileForm {
   string username = 1;
-  google.protobuf.Timestamp updated_at = 2;
 }
 
 // Login form data
@@ -17,7 +14,6 @@ message LoginForm {
   string email = 1;
   string password = 2;
   bool remember_me = 3;
-  google.protobuf.Timestamp submitted_at = 4;
 }
 
 // Contact form data
@@ -26,7 +22,6 @@ message ContactForm {
   string email = 2;
   string subject = 3;
   string message = 4;
-  google.protobuf.Timestamp submitted_at = 5;
 }
 
 // Account settings form
@@ -34,7 +29,6 @@ message AccountForm {
   string name = 1;
   string username = 2;
   string email = 3;
-  google.protobuf.Timestamp updated_at = 4;
 }
 
 // Password change form
@@ -42,32 +36,4 @@ message PasswordForm {
   string current_password = 1;
   string new_password = 2;
   string confirm_password = 3;
-  google.protobuf.Timestamp updated_at = 4;
 }
-
-// Form validation error
-message ValidationError {
-  string field = 1;
-  string message = 2;
-  string code = 3;
-}
-
-// Generic form response
-message FormResponse {
-  bool success = 1;
-  string message = 2;
-  repeated ValidationError errors = 3;
-  google.protobuf.Timestamp timestamp = 4;
-  map<string, string> data = 5; // Additional response data
-}
-
-// Form submission metadata
-message FormSubmission {
-  string form_id = 1;
-  string user_id = 2;
-  string session_id = 3;
-  string ip_address = 4;
-  string user_agent = 5;
-  google.protobuf.Timestamp submitted_at = 6;
-  map<string, string> form_data = 7; // Raw form data
-} 

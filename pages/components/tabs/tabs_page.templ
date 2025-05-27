@@ -58,14 +58,12 @@ templ TabsPage() {
 												@form.FormLabel(form.FormLabelProps{For: "account-name"}) {
 													Name
 												}
-												@form.FormControl(form.FormControlProps{ID: "account-name"}) {
-													@input.Input(input.InputProps{
-														ID:          "account-name",
-														Name:        "name",
-														Placeholder: "Enter your name",
-														Value:       "Pedro Duarte",
-													})
-												}
+												@input.Input(input.InputProps{
+													ID:          "account-name",
+													Name:        "name",
+													Placeholder: "Enter your name",
+													Value:       "Pedro Duarte",
+												})
 												@form.FormDescription(form.FormDescriptionProps{}) {
 													This is your display name.
 												}
@@ -74,14 +72,12 @@ templ TabsPage() {
 												@form.FormLabel(form.FormLabelProps{For: "account-username"}) {
 													Username
 												}
-												@form.FormControl(form.FormControlProps{ID: "account-username"}) {
-													@input.Input(input.InputProps{
-														ID:          "account-username",
-														Name:        "username",
-														Placeholder: "Enter your username",
-														Value:       "@peduarte",
-													})
-												}
+												@input.Input(input.InputProps{
+													ID:          "account-username",
+													Name:        "username",
+													Placeholder: "Enter your username",
+													Value:       "@peduarte",
+												})
 												@form.FormDescription(form.FormDescriptionProps{}) {
 													This is your public display name.
 												}
@@ -111,27 +107,23 @@ templ TabsPage() {
 												@form.FormLabel(form.FormLabelProps{For: "password-current"}) {
 													Current password
 												}
-												@form.FormControl(form.FormControlProps{ID: "password-current"}) {
-													@input.Input(input.InputProps{
-														ID:          "password-current",
-														Name:        "current_password",
-														Type:        "password",
-														Placeholder: "Enter current password",
-													})
-												}
+												@input.Input(input.InputProps{
+													ID:          "password-current",
+													Name:        "current_password",
+													Type:        "password",
+													Placeholder: "Enter current password",
+												})
 											}
 											@form.FormItem(form.FormItemProps{}) {
 												@form.FormLabel(form.FormLabelProps{For: "password-new"}) {
 													New password
 												}
-												@form.FormControl(form.FormControlProps{ID: "password-new"}) {
-													@input.Input(input.InputProps{
-														ID:          "password-new",
-														Name:        "new_password",
-														Type:        "password",
-														Placeholder: "Enter new password",
-													})
-												}
+												@input.Input(input.InputProps{
+													ID:          "password-new",
+													Name:        "new_password",
+													Type:        "password",
+													Placeholder: "Enter new password",
+												})
 												@form.FormDescription(form.FormDescriptionProps{}) {
 													Your new password must be at least 8 characters.
 												}

@@ -4,15 +4,11 @@ templ Input(props InputProps) {
 	{{
 		// Generate CSS classes
 		classes := inputVariants(props.Class)
-
-		// Set default type
-		inputType := props.Type
-		if inputType == "" {
-			inputType = "text"
-		}
 	}}
 	<input
-		type={ inputType }
+		if props.Type != "" {
+			type={ props.Type }
+		}
 		data-slot="input"
 		class={ classes }
 		if props.Placeholder != "" {

@@ -1,6 +1,9 @@
 package form
 
-import "github.com/coreycole/datastarui/components/label"
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/components/label"
+)
 
 // Form wrapper component
 templ Form(props FormProps) {
@@ -9,10 +12,7 @@ templ Form(props FormProps) {
 			id={ props.ID }
 		}
 		if props.Action != "" {
-			action={ templ.SafeURL(props.Action) }
-		}
-		if props.Method != "" {
-			method={ props.Method }
+			data-on-submit={ fmt.Sprintf("@post('%s', {contentType: 'form'})", templ.SafeURL(props.Action)) }
 		}
 		class={ props.Class }
 		{ props.Attributes... }
@@ -50,25 +50,6 @@ templ FormLabel(props FormLabelProps) {
 	}) {
 		{ children... }
 	}
-}
-
-// FormControl component - wrapper for form input
-templ FormControl(props FormControlProps) {
-	<div
-		data-slot="form-control"
-		if props.ID != "" {
-			id={ props.ID }
-		}
-		if props.AriaDescribedBy != "" {
-			aria-describedby={ props.AriaDescribedBy }
-		}
-		if props.AriaInvalid {
-			aria-invalid="true"
-		}
-		{ props.Attributes... }
-	>
-		{ children... }
-	</div>
 }
 
 // FormDescription component - help text for form field

@@ -5,7 +5,6 @@ import "github.com/a-h/templ"
 type FormProps struct {
 	ID         string           // Form ID
 	Action     string           // Form action URL
-	Method     string           // Form method (GET, POST, etc.)
 	Class      string           // Additional CSS classes
 	Attributes templ.Attributes // Additional HTML attributes
 }
