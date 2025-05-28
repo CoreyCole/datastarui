@@ -59,7 +59,7 @@ templ Checkbox(props CheckboxProps) {
 			<span
 				data-slot="checkbox-indicator"
 				class={ checkboxIndicatorVariants("") }
-				data-show={ signalRef }
+				data-attr-style={ signalRef + " ? 'opacity: 1' : 'opacity: 0'" }
 			>
 				// Check icon SVG - using the same icon as shadcn/ui (CheckIcon from lucide-react)
 				<svg
