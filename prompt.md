@@ -366,27 +366,265 @@ e.POST("/forms/account", func(c echo.Context) error {
 - **Form clearing**: Automatic form reset on successful submission
 - **Type safety**: Protobuf validation and parsing
 
-## Implementation Requirements
-
-### 1. Pixel-Perfect Accuracy
-
-- **Copy CSS classes exactly** from the shadcn/ui source
-- **Preserve all Tailwind utilities** including complex selectors like `[&_svg]:size-4`
-- **Maintain exact spacing, sizing, and visual hierarchy**
-- **Support both light and dark themes** using CSS variables
-
-### 2. Behavioral Parity
-
-- **Mirror all React component props** and their default values
-- **Implement the same composition patterns** (AsChild, Slot-like behavior)
-- **Preserve accessibility attributes** and ARIA states
-- **Handle disabled states** and focus management identically
-
 ### 3. Datastar Integration
 
 - **Use Datastar signals** for reactive state: `data-signals-count="0"`
 - **Handle events** with Datastar: `data-on-click="$count++"`
 - **Bind reactive content**: `data-text="$count"`, `data-show="$visible"`
+
+#### Datastar Expressions
+
+Datastar expressions are JavaScript-like strings evaluated by Datastar attributes. They provide powerful declarative reactivity with some key differences from standard JavaScript.
+
+**Signal Access**: Signals use the `$` prefix and are automatically converted to `ctx.signals.signal('name').value`:
+
+```go
+// Basic signal usage
+data-text="$count"                   // Displays signal value
+data-show="$isVisible"               // Conditional visibility
+data-text="$user.name"               // Nested signal access
+data-text="$items.length"            // JavaScript properties work
+
+// Signal assignment
+data-on-click="$count++"             // Increment signal
+data-on-click="$user.name = 'John'"  // Set signal value
+```
+
+**Actions**: Actions use the `@` prefix for
+
+```go
+data-on-click="@post('/api/endpoint')"           // POST request
+data-on-click="$count++; @post('/api/count')"   // Multiple statements
+```
+
+**JavaScript Operators**: Standard JavaScript operators are available:
+
+```go
+// Logical operators
+data-on-click="$isReady && @post('/launch')"
+data-show="$user && $user.isActive"
+
+// Ternary operator - works with most attributes
+data-attr-class="$theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'"
+data-text="$count > 0 ? $count + ' items' : 'No items'"
+data-attr-disabled="$loading ? 'true' : 'false'"
+data-show="$user ? true : false"  // Though just $user is simpler
+
+// Nested ternary (use sparingly)
+data-text="$status === 'loading' ? 'Loading...' : $status === 'error' ? 'Error occurred' : 'Success'"
+
+// Ternary with complex expressions
+data-attr-href="$user.isAdmin ? '/admin/dashboard' : '/user/profile'"
+data-text="$items.length === 0 ? 'No items found' : $items.length === 1 ? '1 item' : $items.length + ' items'"
+
+// Comparison operators
+data-show="$status === 'success'"
+data-show="$count >= 10"
+```
+
+**Important Note**: The ternary operator works with most Datastar attributes (`data-text`, `data-show`, `data-attr-*`, etc.) but **NOT** with `data-class`, which requires object syntax.
+
+**Multiple Statements**: Use semicolons to separate statements:
+
+```go
+// Single line
+data-on-click="$count++; $message = 'Updated'; @post('/api/update')"
+
+// Multi-line (semicolons required)
+data-on-submit="
+    $submitting = true;
+    $errors = {};
+    @post('/api/form')
+"
+```
+
+**Event Context**: Access browser events with `evt`:
+
+```go
+data-on-input="$value = evt.target.value"
+data-on-keydown="evt.key === 'Enter' && @post('/search')"
+data-on-click="evt.preventDefault(); $modal = true"
+```
+
+**Namespaced Signals**: Only leaf nodes are signals:
+
+```go
+// ✅ Correct - both are valid signals
+data-signals-user.name="'John'" data-signals-count="0"
+data-text="$user.name"  // Valid
+data-text="$count"      // Valid
+
+// ❌ Wrong - namespace is not a signal
+data-text="$user"       // Invalid if user.name exists
+```
+
+**Key Rules**:
+
+- **Semicolons required**: Line breaks alone don't separate statements
+- **Implicit return**: Last statement is automatically returned
+- **No global $**: JavaScript globals starting with `$` are not accessible
+- **Signal-first**: `$signalName` is converted before JavaScript evaluation
+
+**Common Patterns**:
+
+```go
+// Conditional actions
+data-on-click="$isValid && @post('/submit')"
+
+// State updates with feedback
+data-on-click="$loading = true; @post('/api').then(() => $loading = false)"
+
+// Form validation
+data-on-blur="$touched.email = true; $errors.email = $email ? '' : 'Required'"
+
+// Toggle patterns
+data-on-click="$isOpen = !$isOpen"
+
+// Complex conditions
+data-show="$user && $user.role === 'admin' && !$loading"
+```
+
+#### Consistent ID Patterns and Signal Naming
+
+**Critical for Component Interactivity**: Datastar signals are global on the page, so consistent ID patterns and signal naming are essential for components to work correctly. We leverage Datastar's namespacing capabilities to create organized, collision-free signal structures.
+
+#### Datastar Namespacing
+
+Datastar supports namespaced signals using dot notation. Only leaf nodes are actual signals:
+
+```go
+// ✅ Correct - bar is the signal, foo is the namespace
+data-signals-foo.bar="1"        // Creates signal $foo.bar
+data-text="$foo.bar"            // Valid - accessing the signal
+
+// ❌ Wrong - foo is not a signal when foo.bar exists
+data-text="$foo"                // Invalid - foo is just a namespace
+```
+
+#### Recommended ID and Signal Patterns
+
+**ID Format**: Use hyphens for readability, avoid dots in IDs themselves:
+
+```go
+// ✅ Good ID patterns
+"basic-checkbox"
+"user-profile-form"
+"navigation-menu"
+"product-card-123"
+```
+
+**DatastarUI Component Signal Pattern**: Use the component ID as the namespace for all component signals:
+
+```go
+// Standard pattern: {[componentID]: {signal1: value, signal2: value}}
+// Examples:
+$terms.checked              // Checkbox component with ID "terms"
+$user-menu.open             // Dropdown component with ID "user-menu"
+$contact-form.submitting    // Form component with ID "contact-form"
+$product-123.selected       // Product card with ID "product-123"
+```
+
+**✅ DatastarUI Component Pattern - ID as Namespace:**
+
+```go
+templ Checkbox(props CheckboxProps) {
+    {{
+        // Create nested signal structure: {[id]: {checked: false}}
+        // This allows the ID to namespace all signals for this component instance
+        initialValue := "false"
+        if props.Checked {
+            initialValue = "true"
+        }
+        signals := "{\"" + props.ID + "\": {\"checked\": " + initialValue + "}}"
+        signalRef := "$" + props.ID + ".checked"
+        toggleExpr := signalRef + " = !" + signalRef
+    }}
+    <div data-signals={ signals }>
+        <button
+            id={ props.ID }
+            data-on-click={ toggleExpr }
+            data-attr-aria-checked={ signalRef + " ? 'true' : 'false'" }
+            data-show={ signalRef }
+        >
+            <!-- component content -->
+        </button>
+    </div>
+}
+
+templ CheckboxExampleUsage() {
+    <div>
+        @checkbox.Checkbox(checkbox.CheckboxProps{
+            ID: "terms",  // Creates signals: $terms.checked
+        })
+        <!-- Access signal from anywhere on page -->
+        <span data-text="$terms.checked ? 'Accepted' : 'Not accepted'"></span>
+    </div>
+}
+```
+
+**Multi-Signal Component Example:**
+
+```go
+templ Dropdown(props DropdownProps) {
+    {{
+        // Multiple signals namespaced under component ID
+        signals := "{\"" + props.ID + "\": {\"open\": false, \"selected\": null, \"loading\": false}}"
+    }}
+    <div data-signals={ signals }>
+        <button data-on-click="$" + props.ID + ".open = !$" + props.ID + ".open">
+            Toggle Dropdown
+        </button>
+        <div data-show="$" + props.ID + ".open">
+            <!-- dropdown content -->
+        </div>
+        <!-- Loading state -->
+        <div data-show="$" + props.ID + ".loading">Loading...</div>
+        <!-- Selected value -->
+        <span data-text="$" + props.ID + ".selected || 'None selected'"></span>
+    </div>
+}
+
+templ DropdownExampleUsage() {
+    <div>
+        @dropdown.Dropdown(dropdown.DropdownProps{
+            ID: "country-selector",  // Creates: $country-selector.open, $country-selector.selected, $country-selector.loading
+        })
+
+        <!-- Access any signal from anywhere on page -->
+        <div data-show="$country-selector.open">Dropdown is open!</div>
+        <div data-text="'Selected: ' + ($country-selector.selected || 'None')"></div>
+    </div>
+}
+```
+
+**Benefits of ID-as-Namespace Pattern:**
+
+1. **Collision Prevention**: Each component instance has its own signal namespace
+2. **Scalability**: Easy to add more signals to a component without conflicts
+3. **Predictable Structure**: `$componentID.signalName` is always the pattern
+4. **Global Access**: Any component's state can be accessed from anywhere on the page
+5. **Clean Organization**: Related signals are grouped under the component ID
+6. **Future-Proof**: Works for simple components (1 signal) and complex ones (many signals)
+
+**Page-Level Signal Organization**: For coordinating multiple components, use logical page-level namespaces:
+
+```go
+// Page-level coordination
+data-signals="{
+    forms: {
+        contact: {name: '', email: '', terms: false},
+        newsletter: {email: '', frequency: 'weekly'}
+    },
+    ui: {
+        modal: {visible: false},
+        loading: {submit: false}
+    }
+}"
+
+// Component signals remain separate and don't conflict
+// $contact-form.submitting (component)
+// $forms.contact.terms (page-level)
+```
 
 ### 4. Go/templ Patterns
 
@@ -510,50 +748,6 @@ templ ComponentPageBreadcrumbs(currentPage string) {
 4. **Include comprehensive examples** showcasing all variants and features
 5. **Add descriptive sections** explaining each example
 6. **Add route to main.go** and **sidebar.go** to link to the new component demo page
-
-### Step 5: Add Protobuf Definitions (For Form Components)
-
-If the component handles forms or structured data:
-
-1. **Create protobuf file**: `pages/components/[component-name]/[component-name]_page.proto`
-2. **Define message types** for form data structures
-3. **Include validation and response messages**
-4. **Generate Go code**: `protoc --go_out=. --go_opt=paths=source_relative pages/components/[component-name]/[component-name]_page.proto`
-
-Example protobuf workflow:
-
-```bash
-# Navigate to project root
-cd /d/cdev/datastarui
-
-# Create protobuf definition in component directory
-mkdir -p pages/components/tabs
-cat > pages/components/tabs/tabs_page.proto << 'EOF'
-syntax = "proto3";
-
-package pages.components;
-
-option go_package = "github.com/coreycole/datastarui/pages/components";
-
-message AccountForm {
-  string name = 1;
-  string username = 2;
-}
-
-message FormResponse {
-  bool success = 1;
-  string message = 2;
-  repeated string errors = 3;
-}
-EOF
-
-# Generate Go code (ensure protoc-gen-go is in PATH)
-export PATH="/c/Users/stapl/go/bin:$PATH"  # Windows path
-# export PATH="$HOME/go/bin:$PATH"         # Linux/Mac path
-protoc --go_out=. --go_opt=paths=source_relative pages/components/tabs/tabs_page.proto
-```
-
-**Note**: The protobuf generation must be run from the project root directory to ensure correct package paths. The generated `.pb.go` files will be created alongside the `.proto` files in their respective component directories.
 
 ### Step 6: Update Routing Structure
 
@@ -695,3 +889,146 @@ chmod +x shad-diffs/compare-tabs.sh
 4. **Interactive States**: Test all interactive states (onclick, hover, active, disabled)
 5. **Accessibility**: Check ARIA attributes and roles
 6. **Responsive Behavior**: Test on different screen sizes
+
+## The Datastar Way - Best Practices
+
+### Stop Overcomplicating It
+
+Most of the time, if you run into issues when using Datastar, you are probably **overcomplicating it™**.
+
+Datastar is a **hypermedia framework**, not a JavaScript framework. If you approach it like a JavaScript framework, you are likely to run into complications.
+
+### The Hypermedia Approach
+
+Between attribute plugins and action plugins, Datastar provides everything you need to build hypermedia-driven applications. Using this approach:
+
+- **Backend drives state** to the frontend and acts as the single source of truth
+- **Server determines** what actions the user can take next
+- **State flows down through props, events flow up** - always encapsulate state and send props down, events up
+
+### When You Need Additional JavaScript
+
+Any additional JavaScript functionality that doesn't work via `data-*` attributes and `datastar-execute-script` SSE events should be extracted into:
+
+1. **External scripts** (preferred for simple functions)
+2. **Web components** (preferred for reusable, encapsulated elements)
+
+### External Scripts Pattern
+
+When using external scripts, pass data via arguments and return results or dispatch custom events:
+
+```go
+// Synchronous function call
+<div data-signals-result="''">
+    <input data-bind-foo
+           data-on-input="$result = myfunction($foo)"
+    >
+    <span data-text="$result"></span>
+</div>
+```
+
+```javascript
+function myfunction(data) {
+  return `You entered ${data}`;
+}
+```
+
+**Asynchronous functions** must dispatch custom events (Datastar won't await them):
+
+```go
+// Asynchronous function with custom event
+<div data-signals-result="''"
+     data-on-mycustomevent__window="$result = evt.detail.value"
+>
+    <input data-bind-foo
+           data-on-input="myfunction($foo)"
+    >
+    <span data-text="$result"></span>
+</div>
+```
+
+```javascript
+async function myfunction(data) {
+  const value = await new Promise((resolve) => {
+    setTimeout(() => resolve(`You entered ${data}`), 1000);
+  });
+  window.dispatchEvent(new CustomEvent("mycustomevent", { detail: { value } }));
+}
+```
+
+### Web Components Pattern
+
+Web components create reusable, encapsulated custom elements with no external dependencies:
+
+```go
+// Using web component with attribute binding
+<div data-signals-result="''">
+    <input data-bind-foo />
+    <my-component
+        data-attr-src="$foo"
+        data-on-mycustomevent="$result = evt.detail.value"
+    ></my-component>
+    <span data-text="$result"></span>
+</div>
+```
+
+```javascript
+class MyComponent extends HTMLElement {
+  static get observedAttributes() {
+    return ["src"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    const value = `You entered ${newValue}`;
+    this.dispatchEvent(new CustomEvent("mycustomevent", { detail: { value } }));
+  }
+}
+
+customElements.define("my-component", MyComponent);
+```
+
+**Alternative: Using `data-bind` with web components:**
+
+```go
+// Binding directly to web component value
+<input data-bind-foo />
+<my-component
+    data-attr-src="$foo"
+    data-bind-result
+></my-component>
+<span data-text="$result"></span>
+```
+
+```javascript
+class MyComponent extends HTMLElement {
+  static get observedAttributes() {
+    return ["src"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.value = `You entered ${newValue}`;
+    this.dispatchEvent(new Event("change")); // Required for data-bind
+  }
+}
+
+customElements.define("my-component", MyComponent);
+```
+
+### Key Principles
+
+1. **Think hypermedia first** - let the server drive state and available actions
+2. **Use data-\* attributes** for all reactive behavior when possible
+3. **Extract complex logic** into external scripts or web components
+4. **Follow props down, events up** - encapsulate functionality and communicate via well-defined interfaces
+5. **Avoid JavaScript framework patterns** - resist the urge to manage state in the frontend
+6. **Keep it simple** - if it feels complicated, you're probably overengineering it
+
+### DatastarUI Component Guidelines
+
+When building DatastarUI components:
+
+- **Prefer server-driven state** over complex client-side logic
+- **Use Datastar expressions** for simple reactive behavior
+- **Extract complex interactions** into web components when needed
+- **Follow the hypermedia mindset** - components should be declarative and server-controlled
+- **Test with minimal JavaScript** - the goal is to eliminate JavaScript dependencies while maintaining full functionality

@@ -1,7 +1,7 @@
 package card
 
 import (
-	"github.com/coreycole/datastarui/templui/utils"
+	"github.com/coreycole/datastarui/utils"
 )
 
 // cardVariants generates the appropriate CSS classes for the main Card component

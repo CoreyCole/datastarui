@@ -10,6 +10,7 @@ func getSidebarSections() []sidebar.SidebarSection {
 				{Title: "Breadcrumb", Href: "/components/breadcrumb"},
 				{Title: "Button", Href: "/components/button"},
 				{Title: "Card", Href: "/components/card"},
+				{Title: "Checkbox", Href: "/components/checkbox"},
 				{Title: "Dropdown", Href: "/components/dropdown"},
 				{Title: "Form", Href: "/components/form"},
 				{Title: "Tabs", Href: "/components/tabs"},

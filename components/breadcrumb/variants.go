@@ -1,6 +1,6 @@
 package breadcrumb
 
-import "github.com/coreycole/datastarui/templui/utils"
+import "github.com/coreycole/datastarui/utils"
 
 // breadcrumbVariants generates CSS classes for the main Breadcrumb nav component
 func breadcrumbVariants(className string) string {

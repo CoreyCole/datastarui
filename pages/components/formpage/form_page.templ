@@ -1,4 +1,4 @@
-package form
+package formpage
 
 import (
 	"github.com/coreycole/datastarui/components/button"
@@ -54,8 +54,7 @@ templ FormPage() {
 								@form.FormDescription(form.FormDescriptionProps{}) {
 									This is your public display name.
 								}
-								@form.FormMessage(form.FormMessageProps{}) {
-								}
+								@form.FormMessage(form.FormMessageProps{})
 							}
 							<div class="flex items-center gap-2">
 								@button.Button(button.ButtonProps{

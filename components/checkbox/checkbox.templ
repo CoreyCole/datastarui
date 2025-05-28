@@ -1,0 +1,102 @@
+package checkbox
+
+import "github.com/coreycole/datastarui/utils"
+
+// Checkbox renders a checkbox input with shadcn/ui styling and internal Datastar reactivity
+templ Checkbox(props CheckboxProps) {
+	{{
+		// Create nested signal structure: {[id]: {checked: false}}
+		// This allows the ID to namespace all signals for this component instance
+		initialValue := "false"
+		if props.Checked {
+			initialValue = "true"
+		}
+		signals := "{\"" + props.ID + "\": {\"checked\": " + initialValue + "}}"
+		signalRef := "$" + props.ID + ".checked"
+		toggleExpr := signalRef + " = !" + signalRef
+	}}
+	<div data-signals={ signals }>
+		<button
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			type="button"
+			role="checkbox"
+			if props.AriaLabel != "" {
+				aria-label={ props.AriaLabel }
+			}
+			if props.AriaLabelledBy != "" {
+				aria-labelledby={ props.AriaLabelledBy }
+			}
+			if props.AriaDescribedBy != "" {
+				aria-describedby={ props.AriaDescribedBy }
+			}
+			if props.AriaInvalid {
+				aria-invalid="true"
+			}
+			if props.Disabled {
+				disabled
+				aria-disabled="true"
+			} else {
+				data-on-click={ toggleExpr }
+			}
+			if props.Required {
+				aria-required="true"
+			}
+			data-slot="checkbox"
+			class={ checkboxVariants(props.ClassName) }
+			data-attr-aria-checked={ signalRef + " ? 'true' : 'false'" }
+			data-attr-data-state={ signalRef + " ? 'checked' : 'unchecked'" }
+			if props.Checked {
+				aria-checked="true"
+				data-state="checked"
+			} else {
+				aria-checked="false"
+				data-state="unchecked"
+			}
+			{ utils.MergeAttributes(props.Attributes)... }
+		>
+			<span
+				data-slot="checkbox-indicator"
+				class={ checkboxIndicatorVariants("") }
+				data-show={ signalRef }
+			>
+				// Check icon SVG - using the same icon as shadcn/ui (CheckIcon from lucide-react)
+				<svg
+					class="size-3.5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M20 6 9 17l-5-5"></path>
+				</svg>
+			</span>
+			// Hidden input for form submission
+			if props.Name != "" {
+				<input
+					type="hidden"
+					name={ props.Name }
+					data-attr-value={ signalRef + " ? 'true' : 'false'" }
+					if props.Disabled {
+						disabled
+					}
+					style="position: absolute; opacity: 0; pointer-events: none;"
+				/>
+			}
+		</button>
+	</div>
+}
+
+// CheckboxIndicator renders the checkbox indicator (check mark)
+templ CheckboxIndicator(props CheckboxIndicatorProps) {
+	<span
+		data-slot="checkbox-indicator"
+		class={ checkboxIndicatorVariants(props.ClassName) }
+		{ utils.MergeAttributes(props.Attributes)... }
+	>
+		{ children... }
+	</span>
+}

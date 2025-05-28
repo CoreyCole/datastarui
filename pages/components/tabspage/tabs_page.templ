@@ -1,4 +1,4 @@
-package tabs
+package tabspage
 
 import (
 	"github.com/coreycole/datastarui/components/button"
@@ -380,6 +380,114 @@ templ TabsPage() {
 								</div>
 							}
 						}
+					}
+				}
+				<!-- Variant System Example -->
+				@card.Card(card.CardProps{}) {
+					@card.CardHeader(card.CardHeaderProps{}) {
+						@card.CardTitle(card.CardTitleProps{}) {
+							Variant System Demo
+						}
+						@card.CardDescription(card.CardDescriptionProps{}) {
+							Demonstrates the shadcn-like variant pattern with base classes and conditional styling using Datastar.
+						}
+					}
+					@card.CardContent(card.CardContentProps{}) {
+						<div class="space-y-6">
+							<!-- Standard Variant -->
+							<div>
+								<h4 class="text-sm font-medium mb-3">Standard Variant (New York v4 Style)</h4>
+								@tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-[500px]"}) {
+									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "overview"}) {
+											Overview
+										}
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "analytics"}) {
+											Analytics
+										}
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "reports"}) {
+											Reports
+										}
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "overview"}) {
+										<div class="p-4 border rounded-md">
+											<h5 class="font-medium">Overview Content</h5>
+											<p class="text-sm text-muted-foreground mt-1">
+												This tab uses the standard New York v4 variant with base classes from <code>tabsTriggerVariantsBase()</code>
+												and conditional active state classes applied via <code>data-class</code>.
+											</p>
+										</div>
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "analytics"}) {
+										<div class="p-4 border rounded-md">
+											<h5 class="font-medium">Analytics Content</h5>
+											<p class="text-sm text-muted-foreground mt-1">
+												Notice how the active state styling is applied reactively using Datastar signals.
+											</p>
+										</div>
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "reports"}) {
+										<div class="p-4 border rounded-md">
+											<h5 class="font-medium">Reports Content</h5>
+											<p class="text-sm text-muted-foreground mt-1">
+												The variant system separates base styling from state-dependent styling.
+											</p>
+										</div>
+									}
+								}
+							</div>
+							<!-- Custom Variant with Additional Classes -->
+							<div>
+								<h4 class="text-sm font-medium mb-3">Custom Variant (With Additional Classes)</h4>
+								@tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-[500px]"}) {
+									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-800"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "design", Class: "text-blue-600 dark:text-blue-400"}) {
+											🎨 Design
+										}
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "develop", Class: "text-green-600 dark:text-green-400"}) {
+											⚡ Develop
+										}
+										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "deploy", Class: "text-purple-600 dark:text-purple-400"}) {
+											🚀 Deploy
+										}
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "design"}) {
+										<div class="p-4 border rounded-md bg-blue-50 dark:bg-blue-950/20">
+											<h5 class="font-medium text-blue-900 dark:text-blue-100">Design Phase</h5>
+											<p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
+												Custom classes are merged with base variant classes. The blue color is added via the <code>Class</code> prop.
+											</p>
+										</div>
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "develop"}) {
+										<div class="p-4 border rounded-md bg-green-50 dark:bg-green-950/20">
+											<h5 class="font-medium text-green-900 dark:text-green-100">Development Phase</h5>
+											<p class="text-sm text-green-700 dark:text-green-300 mt-1">
+												Each tab can have its own custom styling while maintaining the base variant behavior.
+											</p>
+										</div>
+									}
+									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "deploy"}) {
+										<div class="p-4 border rounded-md bg-purple-50 dark:bg-purple-950/20">
+											<h5 class="font-medium text-purple-900 dark:text-purple-100">Deployment Phase</h5>
+											<p class="text-sm text-purple-700 dark:text-purple-300 mt-1">
+												The variant system uses <code>utils.TwMerge()</code> to properly combine classes.
+											</p>
+										</div>
+									}
+								}
+							</div>
+							<!-- Technical Explanation -->
+							<div class="p-4 bg-muted rounded-md">
+								<h4 class="text-sm font-medium mb-2">How the Variant System Works</h4>
+								<div class="text-xs text-muted-foreground space-y-1">
+									<p><strong>1. Base Classes:</strong> Applied via <code>tabsTriggerVariantsBase(props.Class)</code></p>
+									<p><strong>2. Conditional Classes:</strong> Applied via <code>data-class</code> when tab is active</p>
+									<p><strong>3. Custom Classes:</strong> Merged with base classes using <code>utils.TwMerge()</code></p>
+									<p><strong>4. State Management:</strong> Datastar signals control active state reactively</p>
+								</div>
+							</div>
+						</div>
 					}
 				}
 			</div>

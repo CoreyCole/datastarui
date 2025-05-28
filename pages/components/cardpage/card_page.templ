@@ -1,8 +1,9 @@
-package card
+package cardpage
 
 import (
 	"github.com/coreycole/datastarui/components/button"
 	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/checkbox"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
@@ -82,7 +83,9 @@ templ CardPage() {
 											</p>
 										</div>
 										<div class="flex items-center space-x-2">
-											<input type="checkbox" class="rounded border-gray-300"/>
+											@checkbox.Checkbox(checkbox.CheckboxProps{
+												ID: "push-notifications",
+											})
 										</div>
 									</div>
 									<div>

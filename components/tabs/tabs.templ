@@ -64,18 +64,22 @@ templ TabsList(props TabsListProps) {
 // TabsTrigger is a clickable tab button
 templ TabsTrigger(props TabsTriggerProps) {
 	{{
-		// Generate CSS classes
-		classes := tabsTriggerVariants(props.Class)
+		// Use the correct variant function that matches shadcn/ui exactly
+		baseClasses := tabsTriggerVariantsBase(props.Class)
 
 		// Create the signal reference and click expression
 		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
 		signalRef := "$" + signalName
 		clickExpr := signalRef + " = '" + props.Value + "'"
+
+		// Active state classes to be applied conditionally - using Datastar object syntax
+		activeClassesObj := "{'bg-background': " + signalRef + " === '" + props.Value + "', 'text-foreground': " + signalRef + " === '" + props.Value + "', 'shadow-sm': " + signalRef + " === '" + props.Value + "'}"
 	}}
 	<button
 		type="button"
 		data-slot="tabs-trigger"
-		class={ classes }
+		class={ baseClasses }
+		data-class={ activeClassesObj }
 		role="tab"
 		data-value={ props.Value }
 		data-on-click={ clickExpr }

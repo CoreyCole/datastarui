@@ -1,7 +1,7 @@
 package button
 
 import (
-	"github.com/coreycole/datastarui/templui/utils"
+	"github.com/coreycole/datastarui/utils"
 )
 
 // buttonVariants generates the appropriate CSS classes for the button based on variant and size

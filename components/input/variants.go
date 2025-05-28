@@ -1,6 +1,6 @@
 package input
 
-import "github.com/coreycole/datastarui/templui/utils"
+import "github.com/coreycole/datastarui/utils"
 
 func inputVariants(className string) string {
 	// Extract EXACT base classes from shadcn/ui New York v4 input
