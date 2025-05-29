@@ -1,0 +1,155 @@
+package dialog
+
+// Dialog container - creates encapsulated signals using ID as namespace
+templ Dialog(props DialogProps) {
+	{{
+		// Create nested signal structure: {[id]: {open: false}}
+		// This allows the ID to namespace all signals for this component instance
+		signalsJSON := "{\"" + props.ID + "\": {\"open\": false}}"
+	}}
+	<div data-signals={ signalsJSON } { props.Attributes... } class={ props.Class }>
+		{ children... }
+	</div>
+}
+
+// DialogTrigger - button or element that opens the dialog
+templ DialogTrigger(props DialogTriggerProps) {
+	{{
+		// Simple signal reference using dot notation
+		signalRef := "$" + props.DialogID + ".open"
+		clickHandler := signalRef + " = true"
+	}}
+	if props.AsChild {
+		// When AsChild is true, we apply the click handler to the child element
+		<div
+			data-on-click={ clickHandler }
+			{ props.Attributes... }
+			class={ props.Class }
+		>
+			{ children... }
+		</div>
+	} else {
+		<button
+			type="button"
+			data-on-click={ clickHandler }
+			{ props.Attributes... }
+			class={ props.Class }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+// DialogContent - the actual dialog element with overlay
+templ DialogContent(props DialogContentProps) {
+	{{
+		contentClasses := DialogContentVariants(props)
+		// Simple signal references using dot notation
+		signalRef := "$" + props.ID + ".open"
+		showCondition := signalRef
+		// Close when clicking outside using Datastar's __outside modifier
+		outsideClickHandler := signalRef + " = false"
+		// ESC key handler
+		escapeHandler := "evt.key === 'Escape' && (" + signalRef + " = false)"
+
+		// Overlay styles and classes
+		overlayStyles := "display: none"
+		overlayClasses := "fixed inset-0 z-50 flex items-center justify-center p-4"
+		if props.ShowOverlay {
+			overlayClasses += " bg-black/50 backdrop-blur-sm"
+		}
+	}}
+	<div
+		data-show={ showCondition }
+		data-on-click__outside={ outsideClickHandler }
+		data-on-keydown={ escapeHandler }
+		tabindex="-1"
+		style={ overlayStyles }
+		class={ overlayClasses }
+	>
+		<div
+			id={ props.ID }
+			role="dialog"
+			aria-modal="true"
+			class={ contentClasses }
+			{ props.Attributes... }
+		>
+			@DialogClose(DialogCloseProps{
+				DialogID: props.ID,
+				Class:    DialogCloseVariants(DialogCloseProps{DialogID: props.ID}),
+			}) {
+				<!-- Close button icon -->
+				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+				<span class="sr-only">Close</span>
+			}
+			{ children... }
+		</div>
+	</div>
+}
+
+// DialogOverlay - backdrop overlay (optional, can be styled via CSS backdrop pseudo-element)
+templ DialogOverlay(props DialogOverlayProps) {
+	<div
+		id={ props.ID }
+		class={ DialogOverlayVariants(props) }
+		{ props.Attributes... }
+	></div>
+}
+
+// DialogHeader - header section of the dialog
+templ DialogHeader(props DialogHeaderProps) {
+	<div class={ DialogHeaderVariants(props) } { props.Attributes... }>
+		{ children... }
+	</div>
+}
+
+// DialogFooter - footer section of the dialog
+templ DialogFooter(props DialogFooterProps) {
+	<div class={ DialogFooterVariants(props) } { props.Attributes... }>
+		{ children... }
+	</div>
+}
+
+// DialogTitle - title element in the dialog header
+templ DialogTitle(props DialogTitleProps) {
+	<h2 class={ DialogTitleVariants(props) } { props.Attributes... }>
+		{ children... }
+	</h2>
+}
+
+// DialogDescription - description element in the dialog header
+templ DialogDescription(props DialogDescriptionProps) {
+	<p class={ DialogDescriptionVariants(props) } { props.Attributes... }>
+		{ children... }
+	</p>
+}
+
+// DialogClose - button that closes the dialog
+templ DialogClose(props DialogCloseProps) {
+	{{
+		// Simple signal reference using dot notation
+		signalRef := "$" + props.DialogID + ".open"
+		clickHandler := signalRef + " = false"
+	}}
+	if props.AsChild {
+		// When AsChild is true, we apply the click handler to the child element
+		<div
+			data-on-click={ clickHandler }
+			{ props.Attributes... }
+			class={ props.Class }
+		>
+			{ children... }
+		</div>
+	} else {
+		<button
+			type="button"
+			data-on-click={ clickHandler }
+			{ props.Attributes... }
+			class={ props.Class }
+		>
+			{ children... }
+		</button>
+	}
+}
