@@ -123,6 +123,33 @@
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
+
+  /* Native Popover API animations */
+  [popover] {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 
+      opacity 200ms ease-out,
+      transform 200ms ease-out,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  [popover]:popover-open {
+    opacity: 1;
+    transform: scale(1);
+    
+    @starting-style {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+
+  /* Ensure anchor positioned popovers work correctly */
+  [popover][style*="position-anchor"] {
+    position: absolute;
+    margin: 0;
+  }
 }
 
 @layer utilities {

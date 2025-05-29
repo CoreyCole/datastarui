@@ -1,0 +1,222 @@
+package popoverpage
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/input"
+	"github.com/coreycole/datastarui/components/label"
+	"github.com/coreycole/datastarui/components/popover"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ PopoverPage() {
+	@l.Root("components") {
+		<div class="space-y-10">
+			<!-- Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Popover</h1>
+				<p class="text-muted-foreground">
+					Displays rich content in a portal, triggered by a button using the native Popover API.
+				</p>
+			</div>
+			<!-- Browser Support Check -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Browser Support Check</h2>
+				<div class="p-4 bg-muted/50 rounded-lg">
+					<div id="browser-support-status" class="text-sm"></div>
+					<script>
+						// Check Popover API support
+						const supportDiv = document.getElementById('browser-support-status');
+						if ('popover' in HTMLElement.prototype) {
+							supportDiv.innerHTML = '✅ Native Popover API is supported in this browser.';
+							supportDiv.className = 'text-sm text-green-600';
+						} else {
+							supportDiv.innerHTML = '❌ Native Popover API is NOT supported in this browser.';
+							supportDiv.className = 'text-sm text-red-600';
+						}
+						
+						// Add some debugging
+						console.log('Popover API support:', 'popover' in HTMLElement.prototype);
+						console.log('HTMLElement.prototype.showPopover:', typeof HTMLElement.prototype.showPopover);
+						console.log('HTMLElement.prototype.hidePopover:', typeof HTMLElement.prototype.hidePopover);
+						console.log('HTMLElement.prototype.togglePopover:', typeof HTMLElement.prototype.togglePopover);
+					</script>
+				</div>
+			</div>
+			<!-- Direct HTML Test -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Direct HTML Test</h2>
+				<p class="text-sm text-muted-foreground">
+					Testing with direct HTML to verify the native Popover API works.
+				</p>
+				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
+					<button
+						popovertarget="direct-popover"
+						class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+						onclick="console.log('Direct button clicked')"
+					>
+						Direct HTML Popover
+					</button>
+					<div
+						id="direct-popover"
+						popover="auto"
+						class="w-72 rounded-md border bg-white p-4 shadow-md"
+						style="border: 2px solid red; background: white; color: black;"
+					>
+						<p>This is a direct HTML popover to test if the native API works.</p>
+						<button onclick="this.parentElement.hidePopover()" class="mt-2 px-2 py-1 bg-gray-200 rounded text-sm">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- JavaScript Controlled Test -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">JavaScript Controlled Test</h2>
+				<p class="text-sm text-muted-foreground">
+					Testing with JavaScript control to verify functionality.
+				</p>
+				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
+					<button
+						id="js-show-button"
+						class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-2"
+					>
+						Show via JS
+					</button>
+					<button
+						id="js-hide-button"
+						class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+					>
+						Hide via JS
+					</button>
+					<div
+						id="js-popover"
+						popover="manual"
+						class="w-72 rounded-md border bg-white p-4 shadow-md"
+						style="border: 2px solid green; background: white; color: black;"
+					>
+						<p>This popover is controlled via JavaScript.</p>
+					</div>
+					<script>
+						document.getElementById('js-show-button').addEventListener('click', function() {
+							console.log('JS Show button clicked');
+							const popover = document.getElementById('js-popover');
+							if (popover && typeof popover.showPopover === 'function') {
+								popover.showPopover();
+							} else {
+								console.error('showPopover method not available');
+							}
+						});
+						
+						document.getElementById('js-hide-button').addEventListener('click', function() {
+							console.log('JS Hide button clicked');
+							const popover = document.getElementById('js-popover');
+							if (popover && typeof popover.hidePopover === 'function') {
+								popover.hidePopover();
+							} else {
+								console.error('hidePopover method not available');
+							}
+						});
+					</script>
+				</div>
+			</div>
+			<!-- Simple Test Example -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Simple Component Test</h2>
+				<p class="text-sm text-muted-foreground">
+					A minimal test to verify popover component functionality.
+				</p>
+				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
+					@button.Button(button.ButtonProps{
+						Variant: "default",
+						Attributes: templ.Attributes{
+							"popovertarget":       "simple-content",
+							"popovertargetaction": "toggle",
+						},
+					}) {
+						Component Popover
+					}
+					@popover.PopoverContent(popover.PopoverContentProps{
+						ID: "simple-content",
+					}) {
+						<p class="text-sm">Hello! This is a component-based popover.</p>
+					}
+				</div>
+			</div>
+			<!-- Basic Example -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Basic Example</h2>
+				<p class="text-sm text-muted-foreground">
+					A simple popover with form content using the native Popover API.
+				</p>
+				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
+					@popover.Popover(popover.PopoverProps{ID: "basic-popover-container"}) {
+						@button.Button(button.ButtonProps{
+							Variant: "outline",
+							Attributes: templ.Attributes{
+								"popovertarget":       "basic-content",
+								"popovertargetaction": "toggle",
+							},
+						}) {
+							Open popover
+						}
+						@popover.PopoverContent(popover.PopoverContentProps{
+							ID:    "basic-content",
+							Class: "w-80",
+						}) {
+							<div class="grid gap-4">
+								<div class="space-y-2">
+									<h4 class="font-medium leading-none">Dimensions</h4>
+									<p class="text-sm text-muted-foreground">
+										Set the dimensions for the layer.
+									</p>
+								</div>
+								<div class="grid gap-2">
+									<div class="grid grid-cols-3 items-center gap-4">
+										@label.Label(label.LabelProps{For: "width"}) {
+											Width
+										}
+										@input.Input(input.InputProps{
+											ID:    "width",
+											Value: "100%",
+											Class: "col-span-2 h-8",
+										})
+									</div>
+									<div class="grid grid-cols-3 items-center gap-4">
+										@label.Label(label.LabelProps{For: "maxWidth"}) {
+											Max. width
+										}
+										@input.Input(input.InputProps{
+											ID:    "maxWidth",
+											Value: "300px",
+											Class: "col-span-2 h-8",
+										})
+									</div>
+									<div class="grid grid-cols-3 items-center gap-4">
+										@label.Label(label.LabelProps{For: "height"}) {
+											Height
+										}
+										@input.Input(input.InputProps{
+											ID:    "height",
+											Value: "25px",
+											Class: "col-span-2 h-8",
+										})
+									</div>
+									<div class="grid grid-cols-3 items-center gap-4">
+										@label.Label(label.LabelProps{For: "maxHeight"}) {
+											Max. height
+										}
+										@input.Input(input.InputProps{
+											ID:    "maxHeight",
+											Value: "none",
+											Class: "col-span-2 h-8",
+										})
+									</div>
+								</div>
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+	}
+}

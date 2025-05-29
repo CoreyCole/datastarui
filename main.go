@@ -14,6 +14,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/checkboxpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
+	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
 )
 
@@ -49,6 +50,9 @@ func main() {
 	})
 	e.GET("/components/form", func(c echo.Context) error {
 		return formpage.FormPage().Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/popover", func(c echo.Context) error {
+		return popoverpage.PopoverPage().Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/tabs", func(c echo.Context) error {
 		return tabspage.TabsPage().Render(c.Request().Context(), c.Response().Writer)

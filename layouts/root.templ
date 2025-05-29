@@ -16,6 +16,20 @@ templ Root(currentPage string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<!-- Tailwind CSS -->
 			<link rel="stylesheet" href="/css/build.css"/>
+			<!-- Popover API Polyfill -->
+			<script type="module">
+				if (!('popover' in HTMLElement.prototype)) {
+					console.log('Loading Popover API polyfill...');
+					import("https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest");
+				}
+			</script>
+			<!-- CSS Anchor Positioning Polyfill -->
+			<script type="module">
+				if (!("anchorName" in document.documentElement.style)) {
+					console.log('Loading CSS Anchor Positioning polyfill from jsDelivr...');
+					import("https://cdn.jsdelivr.net/npm/@oddbird/css-anchor-positioning@latest/dist/css-anchor-positioning.js");
+				}
+			</script>
 			<!-- Theme initialization -->
 			<script>
 				// Initialize theme from localStorage or system preference

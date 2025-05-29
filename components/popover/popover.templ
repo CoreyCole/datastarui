@@ -1,0 +1,61 @@
+package popover
+
+import "github.com/coreycole/datastarui/utils"
+
+// Popover creates a popover container component
+templ Popover(props PopoverProps) {
+	<div
+		class={ utils.TwMerge("relative", props.Class) }
+	>
+		{ children... }
+	</div>
+}
+
+// PopoverTrigger creates a trigger button for the popover
+templ PopoverTrigger(props PopoverTriggerProps) {
+	if props.AsChild {
+		// When AsChild is true, we expect children to be passed and will add the popover attributes to them
+		<div
+			popovertarget={ props.PopoverID }
+			popovertargetaction="toggle"
+			style="display: contents;"
+			{ props.Attributes... }
+		>
+			{ children... }
+		</div>
+	} else {
+		// Default button trigger
+		<button
+			id={ props.ID }
+			popovertarget={ props.PopoverID }
+			popovertargetaction="toggle"
+			class={ props.Class }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+// PopoverContent creates the popover content panel
+templ PopoverContent(props PopoverContentProps) {
+	{{
+		// Set default popover API mode
+		popoverAPI := props.PopoverAPI
+		if popoverAPI == "" {
+			popoverAPI = "auto"
+		}
+
+		// Merge content styles
+		contentClasses := PopoverContentVariants(props)
+	}}
+	<div
+		id={ props.ID }
+		popover={ popoverAPI }
+		class={ contentClasses }
+		data-on-toggle="console.log('Popover toggled:', evt.newState)"
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
