@@ -180,11 +180,23 @@ templ PopoverPage() {
 				<p class="text-sm text-muted-foreground">
 					The <span class="text-md font-bold font-mono">Side</span> prop specifies where the popover appears relative to the trigger:
 				</p>
-				<ul class="text-sm text-muted-foreground ml-6 list-disc">
-					<li><span class="text-md font-bold font-mono">Side="top"</span> - popover appears above the trigger</li>
-					<li><span class="text-md font-bold font-mono">Side="bottom"</span> - popover appears below the trigger</li>
-					<li><span class="text-md font-bold font-mono">Side="left"</span> - popover appears to the left of the trigger</li>
-					<li><span class="text-md font-bold font-mono">Side="right"</span> - popover appears to the right of the trigger</li>
+				<ul class="text-sm text-muted-foreground ml-6 list-disc space-y-1">
+					<li class="flex items-start">
+						<span class="text-md font-bold font-mono w-32">Side: "top"</span>
+						<span class="ml-4">popover appears above the trigger</span>
+					</li>
+					<li class="flex items-start">
+						<span class="text-md font-bold font-mono w-32">Side: "bottom"</span>
+						<span class="ml-4">popover appears below the trigger</span>
+					</li>
+					<li class="flex items-start">
+						<span class="text-md font-bold font-mono w-32">Side: "left"</span>
+						<span class="ml-4">popover appears left of the trigger</span>
+					</li>
+					<li class="flex items-start">
+						<span class="text-md font-bold font-mono w-32">Side: "right"</span>
+						<span class="ml-4">popover appears right of the trigger</span>
+					</li>
 				</ul>
 				<div class="flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative">
 					<div class="grid grid-cols-3 gap-8 items-center">
@@ -296,8 +308,9 @@ templ PopoverPage() {
 						<h3 class="text-lg font-medium">Card Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								AsChild:   true,
-								PopoverID: "card-popover",
+								AsChild:    true,
+								PopoverID:  "card-popover",
+								AnchorName: "card-anchor",
 							}) {
 								<div class="bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow">
 									<div class="flex items-center gap-3">
@@ -314,8 +327,12 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:    "card-popover",
-								Class: "w-72",
+								ID:         "card-popover",
+								Class:      "w-72",
+								UseAnchor:  true,
+								AnchorName: "card-anchor",
+								Side:       "bottom",
+								Align:      "center",
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -355,8 +372,9 @@ templ PopoverPage() {
 						<h3 class="text-lg font-medium">Image Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								AsChild:   true,
-								PopoverID: "image-popover",
+								AsChild:    true,
+								PopoverID:  "image-popover",
+								AnchorName: "image-anchor",
 							}) {
 								<div class="relative cursor-pointer group">
 									<div class="w-32 h-32 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex items-center justify-center overflow-hidden">
@@ -370,8 +388,12 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:    "image-popover",
-								Class: "w-64",
+								ID:         "image-popover",
+								Class:      "w-64",
+								UseAnchor:  true,
+								AnchorName: "image-anchor",
+								Side:       "top",
+								Align:      "center",
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -403,8 +425,9 @@ templ PopoverPage() {
 						<h3 class="text-lg font-medium">Badge Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								AsChild:   true,
-								PopoverID: "badge-popover",
+								AsChild:    true,
+								PopoverID:  "badge-popover",
+								AnchorName: "badge-anchor",
 							}) {
 								<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
 									<div class="w-2 h-2 bg-green-600 rounded-full"></div>
@@ -415,8 +438,12 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:    "badge-popover",
-								Class: "w-56",
+								ID:         "badge-popover",
+								Class:      "w-56",
+								UseAnchor:  true,
+								AnchorName: "badge-anchor",
+								Side:       "bottom",
+								Align:      "center",
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -448,8 +475,9 @@ templ PopoverPage() {
 						<h3 class="text-lg font-medium">Interactive Element</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								AsChild:   true,
-								PopoverID: "interactive-popover",
+								AsChild:    true,
+								PopoverID:  "interactive-popover",
+								AnchorName: "interactive-anchor",
 							}) {
 								<div class="bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group">
 									<div class="flex flex-col items-center gap-2">
@@ -464,8 +492,12 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:    "interactive-popover",
-								Class: "w-64",
+								ID:         "interactive-popover",
+								Class:      "w-64",
+								UseAnchor:  true,
+								AnchorName: "interactive-anchor",
+								Side:       "top",
+								Align:      "center",
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
