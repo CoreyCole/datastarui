@@ -27,13 +27,11 @@
     --color-sky-500: oklch(68.5% 0.169 237.323);
     --color-blue-50: oklch(97% 0.014 254.604);
     --color-blue-100: oklch(93.2% 0.032 255.585);
-    --color-blue-200: oklch(88.2% 0.059 254.128);
     --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
-    --color-blue-800: oklch(42.4% 0.199 265.638);
     --color-blue-900: oklch(37.9% 0.146 265.522);
     --color-blue-950: oklch(28.2% 0.091 267.935);
     --color-purple-50: oklch(97.7% 0.014 308.299);
@@ -414,6 +412,9 @@
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
+  .ml-6 {
+    margin-left: calc(var(--spacing) * 6);
+  }
   .ml-auto {
     margin-left: auto;
   }
@@ -663,6 +664,9 @@
   }
   .resize {
     resize: both;
+  }
+  .list-disc {
+    list-style-type: disc;
   }
   .grid-flow-row {
     grid-auto-flow: row;
@@ -1202,9 +1206,6 @@
   .text-blue-700 {
     color: var(--color-blue-700);
   }
-  .text-blue-800 {
-    color: var(--color-blue-800);
-  }
   .text-blue-900 {
     color: var(--color-blue-900);
   }
@@ -1575,13 +1576,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-blue-50);
-      }
-    }
-  }
-  .hover\:bg-blue-200 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-200);
       }
     }
   }
@@ -2426,6 +2420,30 @@
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
+  @position-fallback --fallback {
+    @try {
+      top: anchor(bottom);
+      left: anchor(center);
+      translate: -50% 8px;
+    }
+    @try {
+      top: anchor(top);
+      left: anchor(center);
+      translate: -50% -100%;
+      margin-top: -8px;
+    }
+    @try {
+      top: anchor(center);
+      left: anchor(right);
+      translate: 8px -50%;
+    }
+    @try {
+      top: anchor(center);
+      left: anchor(left);
+      translate: -100% -50%;
+      margin-left: -8px;
+    }
+  }
   .anchor-positioned {
     position: absolute;
     position-fallback: --fallback;
@@ -2453,6 +2471,13 @@
       translate: -100% -50%;
       margin-left: -8px;
     }
+  }
+  .anchor-trigger.positioning {
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
+  }
+  .anchor-positioned.positioning {
+    border: 2px solid rgb(59 130 246);
+    background: rgb(59 130 246 / 0.05);
   }
   [popover] {
     opacity: 0;

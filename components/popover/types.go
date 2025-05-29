@@ -10,23 +10,22 @@ type PopoverProps struct {
 
 // PopoverTriggerProps defines the properties for the popover trigger button
 type PopoverTriggerProps struct {
-	ID         string
+	ID         string // Optional: ID for the trigger element itself
 	Class      string
-	PopoverID  string // ID of the popover to control
-	AnchorName string // CSS anchor name for positioning
-	AsChild    bool
+	PopoverID  string // Required: ID of the popover content to control (for popovertarget)
+	AnchorName string // Optional: CSS anchor name for positioning (when using anchor positioning)
+	AsChild    bool   // Whether to render as child element instead of button
 	Attributes templ.Attributes
 }
 
 // PopoverContentProps defines the properties for the popover content
 type PopoverContentProps struct {
-	ID         string
+	ID         string // Required: Must match PopoverTriggerProps.PopoverID
 	Class      string
 	UseAnchor  bool   // Whether to use CSS anchor positioning
-	AnchorName string // CSS anchor name to position relative to
-	Side       string // top, right, bottom, left
-	Align      string // start, center, end
-	SideOffset int    // offset in pixels
-	PopoverAPI string // "auto", "manual", or "" for auto
+	AnchorName string // CSS anchor name to position relative to (should match trigger's AnchorName)
+	Side       string // Positioning side: "top", "right", "bottom", "left"
+	Align      string // Alignment: "start", "center", "end"
+	SideOffset int    // Offset in pixels from the anchor (default: 8)
 	Attributes templ.Attributes
 }

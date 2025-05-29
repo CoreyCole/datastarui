@@ -175,123 +175,113 @@ templ PopoverPage() {
 			<div class="space-y-4">
 				<h2 class="text-2xl font-semibold tracking-tight">Anchor Positioning API</h2>
 				<p class="text-sm text-muted-foreground">
-					Using the new encapsulated positioning props to simplify anchor positioning without manual style attributes.
+					Using positioning props to simplify anchor positioning without manual style attributes. 
 				</p>
+				<p class="text-sm text-muted-foreground">
+					The <span class="text-md font-bold font-mono">Side</span> prop specifies where the popover appears relative to the trigger:
+				</p>
+				<ul class="text-sm text-muted-foreground ml-6 list-disc">
+					<li><span class="text-md font-bold font-mono">Side="top"</span> - popover appears above the trigger</li>
+					<li><span class="text-md font-bold font-mono">Side="bottom"</span> - popover appears below the trigger</li>
+					<li><span class="text-md font-bold font-mono">Side="left"</span> - popover appears to the left of the trigger</li>
+					<li><span class="text-md font-bold font-mono">Side="right"</span> - popover appears to the right of the trigger</li>
+				</ul>
 				<div class="flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative">
 					<div class="grid grid-cols-3 gap-8 items-center">
-						<!-- Bottom trigger -->
+						<!-- Top Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								ID:         "simple-bottom-trigger",
-								PopoverID:  "simple-bottom-content",
-								AnchorName: "bottom-anchor",
+								ID:         "top-side-trigger",
+								PopoverID:  "top-side-content",
+								AnchorName: "top-side-anchor",
 								Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 							}) {
-								Bottom Position
+								Top Side
 							}
 						</div>
-						<!-- Left trigger -->
+						@popover.PopoverContent(popover.PopoverContentProps{
+							ID:         "top-side-content",
+							Class:      "w-64",
+							UseAnchor:  true,
+							AnchorName: "top-side-anchor",
+							Side:       "top",
+							Align:      "center",
+						}) {
+							<div class="p-2">
+								<h4 class="font-medium mb-2">Top Side Popover</h4>
+								<p class="text-sm text-muted-foreground">This popover appears above the trigger using Side="top".</p>
+							</div>
+						}
+						<!-- Right Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerProps{
-							ID:         "simple-left-trigger",
-							PopoverID:  "simple-left-content",
-							AnchorName: "left-anchor",
+							ID:         "right-side-trigger",
+							PopoverID:  "right-side-content",
+							AnchorName: "right-side-anchor",
 							Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 						}) {
-							Left Position
+							Right Side
+						}
+						@popover.PopoverContent(popover.PopoverContentProps{
+							ID:         "right-side-content",
+							Class:      "w-64",
+							UseAnchor:  true,
+							AnchorName: "right-side-anchor",
+							Side:       "right",
+							Align:      "center",
+						}) {
+							<div class="p-2">
+								<h4 class="font-medium mb-2">Right Side Popover</h4>
+								<p class="text-sm text-muted-foreground">This popover appears to the right of the trigger using Side="right".</p>
+							</div>
 						}
 						<div></div>
-						<!-- Right trigger -->
+						<!-- Left Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerProps{
-							ID:         "simple-right-trigger",
-							PopoverID:  "simple-right-content",
-							AnchorName: "right-anchor",
+							ID:         "left-side-trigger",
+							PopoverID:  "left-side-content",
+							AnchorName: "left-side-anchor",
 							Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 						}) {
-							Right Position
+							Left Side
 						}
-						<!-- Top trigger -->
+						@popover.PopoverContent(popover.PopoverContentProps{
+							ID:         "left-side-content",
+							Class:      "w-64",
+							UseAnchor:  true,
+							AnchorName: "left-side-anchor",
+							Side:       "left",
+							Align:      "center",
+						}) {
+							<div class="p-2">
+								<h4 class="font-medium mb-2">Left Side Popover</h4>
+								<p class="text-sm text-muted-foreground">This popover appears to the left of the trigger using Side="left".</p>
+							</div>
+						}
+						<!-- Bottom Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								ID:         "simple-top-trigger",
-								PopoverID:  "simple-top-content",
-								AnchorName: "top-anchor",
+								ID:         "bottom-side-trigger",
+								PopoverID:  "bottom-side-content",
+								AnchorName: "bottom-side-anchor",
 								Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 							}) {
-								Top Position
+								Bottom Side
 							}
 						</div>
+						@popover.PopoverContent(popover.PopoverContentProps{
+							ID:         "bottom-side-content",
+							Class:      "w-64",
+							UseAnchor:  true,
+							AnchorName: "bottom-side-anchor",
+							Side:       "bottom",
+							Align:      "center",
+						}) {
+							<div class="p-2">
+								<h4 class="font-medium mb-2">Bottom Side Popover</h4>
+								<p class="text-sm text-muted-foreground">This popover appears below the trigger using Side="bottom".</p>
+							</div>
+						}
 					</div>
-					<!-- Simplified anchor positioned popovers -->
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID:         "simple-top-content",
-						Class:      "w-64",
-						UseAnchor:  true,
-						AnchorName: "top-anchor",
-						Side:       "bottom",
-						Align:      "center",
-						SideOffset: 8,
-					}) {
-						<div class="p-2">
-							<h4 class="font-medium mb-2">Simplified Top</h4>
-							<p class="text-sm text-muted-foreground">This popover uses the simplified positioning API with UseAnchor, Side, and Align props.</p>
-						</div>
-					}
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID:         "simple-left-content",
-						Class:      "w-64",
-						UseAnchor:  true,
-						AnchorName: "left-anchor",
-						Side:       "right",
-						Align:      "center",
-						SideOffset: 8,
-					}) {
-						<div class="p-2">
-							<h4 class="font-medium mb-2">Simplified Left</h4>
-							<p class="text-sm text-muted-foreground">No manual CSS positioning required - just set the props.</p>
-						</div>
-					}
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID:         "simple-center-content",
-						Class:      "w-64",
-						UseAnchor:  true,
-						AnchorName: "center-anchor",
-						Side:       "bottom",
-						Align:      "center",
-						SideOffset: 8,
-					}) {
-						<div class="p-2">
-							<h4 class="font-medium mb-2">Simplified Center</h4>
-							<p class="text-sm text-muted-foreground">The complexity is encapsulated in the component props.</p>
-						</div>
-					}
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID:         "simple-right-content",
-						Class:      "w-64",
-						UseAnchor:  true,
-						AnchorName: "right-anchor",
-						Side:       "left",
-						Align:      "center",
-						SideOffset: 8,
-					}) {
-						<div class="p-2">
-							<h4 class="font-medium mb-2">Simplified Right</h4>
-							<p class="text-sm text-muted-foreground">Clean API without manual anchor styling.</p>
-						</div>
-					}
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID:         "simple-bottom-content",
-						Class:      "w-64",
-						UseAnchor:  true,
-						AnchorName: "bottom-anchor",
-						Side:       "top",
-						Align:      "center",
-						SideOffset: 8,
-					}) {
-						<div class="p-2">
-							<h4 class="font-medium mb-2">Simplified Bottom</h4>
-							<p class="text-sm text-muted-foreground">Positioning logic is handled internally by the component.</p>
-						</div>
-					}
 				</div>
 			</div>
 			<!-- Custom Trigger with AsChild Example -->
@@ -516,48 +506,6 @@ templ PopoverPage() {
 					</div>
 				</div>
 			</div>
-			<!-- CSS Styles for Anchor Positioning -->
-			<style>
-				.anchor-positioned {
-					position: absolute;
-					position-fallback: --fallback;
-				}
-				
-				@position-fallback --fallback {
-					@try {
-						top: anchor(bottom);
-						left: anchor(center);
-						translate: -50% 8px;
-					}
-					@try {
-						top: anchor(top);
-						left: anchor(center);
-						translate: -50% -100%;
-						margin-top: -8px;
-					}
-					@try {
-						top: anchor(center);
-						left: anchor(right);
-						translate: 8px -50%;
-					}
-					@try {
-						top: anchor(center);
-						left: anchor(left);
-						translate: -100% -50%;
-						margin-left: -8px;
-					}
-				}
-				
-				/* Data-class example styles */
-				.anchor-trigger.positioning {
-					box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
-				}
-				
-				.anchor-positioned.positioning {
-					border: 2px solid rgb(59 130 246);
-					background: rgb(59 130 246 / 0.05);
-				}
-			</style>
 		</div>
 	}
 }

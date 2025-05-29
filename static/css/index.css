@@ -124,11 +124,6 @@
     scrollbar-color: hsl(var(--border)) transparent;
   }
 
-  .anchor-positioned {
-    position: absolute;
-    position-fallback: --fallback;
-  }
-
   @position-fallback --fallback {
     @try {
       top: anchor(bottom);
@@ -156,7 +151,47 @@
       margin-left: -8px;
     }
   }
-  
+
+  .anchor-positioned {
+    position: absolute;
+    position-fallback: --fallback;
+  }
+
+  @position-fallback --fallback {
+    @try {
+      top: anchor(bottom);
+      left: anchor(center);
+      translate: -50% 8px;
+    }
+    @try {
+      top: anchor(top);
+      left: anchor(center);
+      translate: -50% -100%;
+      margin-top: -8px;
+    }
+    @try {
+      top: anchor(center);
+      left: anchor(right);
+      translate: 8px -50%;
+    }
+    @try {
+      top: anchor(center);
+      left: anchor(left);
+      translate: -100% -50%;
+      margin-left: -8px;
+    }
+  }
+
+  /* Data-class example styles */
+  .anchor-trigger.positioning {
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
+  }
+
+  .anchor-positioned.positioning {
+    border: 2px solid rgb(59 130 246);
+    background: rgb(59 130 246 / 0.05);
+  }
+
   /* Native Popover API animations */
   [popover] {
     opacity: 0;

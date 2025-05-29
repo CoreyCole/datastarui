@@ -14,11 +14,10 @@ templ Popover(props PopoverProps) {
 // PopoverTrigger creates a trigger button for the popover
 templ PopoverTrigger(props PopoverTriggerProps) {
 	if props.AsChild {
-		// When AsChild is true, we expect children to be passed and will add the popover attributes to them
+		// When AsChild is true, use Datastar to handle click events on children
 		if props.AnchorName != "" {
 			<div
-				popovertarget={ props.PopoverID }
-				popovertargetaction="toggle"
+				data-on-click="document.getElementById('{ props.PopoverID }').togglePopover()"
 				style={ "display: contents; anchor-name: --" + props.AnchorName }
 				class={ props.Class }
 				{ props.Attributes... }
@@ -27,8 +26,7 @@ templ PopoverTrigger(props PopoverTriggerProps) {
 			</div>
 		} else {
 			<div
-				popovertarget={ props.PopoverID }
-				popovertargetaction="toggle"
+				data-on-click="document.getElementById('{ props.PopoverID }').togglePopover()"
 				style="display: contents;"
 				class={ props.Class }
 				{ props.Attributes... }
