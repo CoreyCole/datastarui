@@ -13,6 +13,7 @@ type PopoverTriggerProps struct {
 	ID         string
 	Class      string
 	PopoverID  string // ID of the popover to control
+	AnchorName string // CSS anchor name for positioning
 	AsChild    bool
 	Attributes templ.Attributes
 }
@@ -21,6 +22,8 @@ type PopoverTriggerProps struct {
 type PopoverContentProps struct {
 	ID         string
 	Class      string
+	UseAnchor  bool   // Whether to use CSS anchor positioning
+	AnchorName string // CSS anchor name to position relative to
 	Side       string // top, right, bottom, left
 	Align      string // start, center, end
 	SideOffset int    // offset in pixels

@@ -15,45 +15,89 @@ templ Popover(props PopoverProps) {
 templ PopoverTrigger(props PopoverTriggerProps) {
 	if props.AsChild {
 		// When AsChild is true, we expect children to be passed and will add the popover attributes to them
-		<div
-			popovertarget={ props.PopoverID }
-			popovertargetaction="toggle"
-			style="display: contents;"
-			{ props.Attributes... }
-		>
-			{ children... }
-		</div>
+		if props.AnchorName != "" {
+			<div
+				popovertarget={ props.PopoverID }
+				popovertargetaction="toggle"
+				style={ "display: contents; anchor-name: --" + props.AnchorName }
+				class={ props.Class }
+				{ props.Attributes... }
+			>
+				{ children... }
+			</div>
+		} else {
+			<div
+				popovertarget={ props.PopoverID }
+				popovertargetaction="toggle"
+				style="display: contents;"
+				class={ props.Class }
+				{ props.Attributes... }
+			>
+				{ children... }
+			</div>
+		}
 	} else {
 		// Default button trigger
-		<button
-			id={ props.ID }
-			popovertarget={ props.PopoverID }
-			popovertargetaction="toggle"
-			class={ props.Class }
-			{ props.Attributes... }
-		>
-			{ children... }
-		</button>
+		if props.AnchorName != "" {
+			<button
+				id={ props.ID }
+				popovertarget={ props.PopoverID }
+				popovertargetaction="toggle"
+				style={ "anchor-name: --" + props.AnchorName }
+				class={ props.Class }
+				{ props.Attributes... }
+			>
+				{ children... }
+			</button>
+		} else {
+			<button
+				id={ props.ID }
+				popovertarget={ props.PopoverID }
+				popovertargetaction="toggle"
+				class={ props.Class }
+				{ props.Attributes... }
+			>
+				{ children... }
+			</button>
+		}
 	}
 }
 
 // PopoverContent creates the popover content panel
 templ PopoverContent(props PopoverContentProps) {
 	{{
-		// Set default popover API mode
-		popoverAPI := props.PopoverAPI
-		if popoverAPI == "" {
-			popoverAPI = "auto"
+		contentClasses := PopoverContentVariants(props)
+
+		// Generate positioning styles
+		positioningStyle := ""
+
+		if props.UseAnchor && props.AnchorName != "" {
+			// Simplified positioning API
+			positioningStyle = "position: absolute; position-anchor: --" + props.AnchorName + "; z-index: 50; "
+
+			if props.Side != "" || props.Align != "" {
+				sideOffset := props.SideOffset
+				if sideOffset == 0 {
+					sideOffset = 8 // default offset
+				}
+				anchorCSS := GetAnchorPosition(props.Side, props.Align, sideOffset)
+				positioningStyle += anchorCSS + ";"
+			}
+		} else {
+			// Default positioning without anchor - still need position absolute for native popover + anchor positioning
+			positioningStyle = "position: absolute; z-index: 50;"
 		}
 
-		// Merge content styles
-		contentClasses := PopoverContentVariants(props)
+		// Add anchor-positioned class if using anchor positioning
+		if props.UseAnchor && props.AnchorName != "" {
+			contentClasses += " anchor-positioned"
+		}
 	}}
 	<div
 		id={ props.ID }
-		popover={ popoverAPI }
+		popover="auto"
 		class={ contentClasses }
-		data-on-toggle="console.log('Popover toggled:', evt.newState)"
+		style={ positioningStyle }
 		{ props.Attributes... }
 	>
 		{ children... }

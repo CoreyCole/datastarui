@@ -20,40 +20,47 @@ func GetAnchorPosition(side, align string, sideOffset int) string {
 
 	switch side {
 	case "top":
+		// Popover appears above the anchor
 		switch align {
 		case "start":
-			return "bottom: anchor(top); left: anchor(left); translate: 0 -" + offset
+			return "top: anchor(top); left: anchor(left); translate: 0 calc(-100% - " + offset + ")"
 		case "end":
-			return "bottom: anchor(top); right: anchor(right); translate: 0 -" + offset
+			return "top: anchor(top); left: anchor(right); translate: -100% calc(-100% - " + offset + ")"
 		default: // center
-			return "bottom: anchor(top); left: anchor(center); translate: -50% -" + offset
+			return "top: anchor(top); left: anchor(center); translate: -50% calc(-100% - " + offset + ")"
 		}
-	case "right":
-		switch align {
-		case "start":
-			return "left: anchor(right); top: anchor(top); translate: " + offset + " 0"
-		case "end":
-			return "left: anchor(right); bottom: anchor(bottom); translate: " + offset + " 0"
-		default: // center
-			return "left: anchor(right); top: anchor(center); translate: " + offset + " -50%"
-		}
-	case "left":
-		switch align {
-		case "start":
-			return "right: anchor(left); top: anchor(top); translate: -" + offset + " 0"
-		case "end":
-			return "right: anchor(left); bottom: anchor(bottom); translate: -" + offset + " 0"
-		default: // center
-			return "right: anchor(left); top: anchor(center); translate: -" + offset + " -50%"
-		}
-	default: // bottom
+	case "bottom":
+		// Popover appears below the anchor
 		switch align {
 		case "start":
 			return "top: anchor(bottom); left: anchor(left); translate: 0 " + offset
 		case "end":
-			return "top: anchor(bottom); right: anchor(right); translate: 0 " + offset
+			return "top: anchor(bottom); left: anchor(right); translate: -100% " + offset
 		default: // center
 			return "top: anchor(bottom); left: anchor(center); translate: -50% " + offset
 		}
+	case "right":
+		// Popover appears to the right of the anchor
+		switch align {
+		case "start":
+			return "top: anchor(top); left: anchor(right); translate: " + offset + " 0"
+		case "end":
+			return "top: anchor(bottom); left: anchor(right); translate: " + offset + " -100%"
+		default: // center
+			return "top: anchor(center); left: anchor(right); translate: " + offset + " -50%"
+		}
+	case "left":
+		// Popover appears to the left of the anchor
+		switch align {
+		case "start":
+			return "top: anchor(top); left: anchor(left); translate: calc(-100% - " + offset + ") 0"
+		case "end":
+			return "top: anchor(bottom); left: anchor(left); translate: calc(-100% - " + offset + ") -100%"
+		default: // center
+			return "top: anchor(center); left: anchor(left); translate: calc(-100% - " + offset + ") -50%"
+		}
+	default:
+		// Default to bottom
+		return "top: anchor(bottom); left: anchor(center); translate: -50% " + offset
 	}
 }

@@ -1,9 +1,30 @@
 package layouts
 
 import (
+	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
 )
+
+templ ComponentPageBreadcrumbs(currentPage string) {
+	<div>
+		@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+			@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+					@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs"}) {
+						Docs
+					}
+				}
+				@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+					@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+						{ currentPage }
+					}
+				}
+			}
+		}
+	</div>
+}
 
 templ Root(currentPage string) {
 	<!DOCTYPE html>
