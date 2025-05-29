@@ -26,8 +26,26 @@ templ Root(currentPage string) {
 			<!-- CSS Anchor Positioning Polyfill -->
 			<script type="module">
 				if (!("anchorName" in document.documentElement.style)) {
-					console.log('Loading CSS Anchor Positioning polyfill from jsDelivr...');
-					import("https://cdn.jsdelivr.net/npm/@oddbird/css-anchor-positioning@latest/dist/css-anchor-positioning.js");
+					console.log('🔧 CSS Anchor Positioning is not natively supported');
+					console.log('📦 Loading CSS Anchor Positioning polyfill from jsDelivr...');
+					window.CSS_ANCHOR_POLYFILL_LOADING = true;
+					
+					import("https://cdn.jsdelivr.net/npm/@oddbird/css-anchor-positioning@latest/dist/css-anchor-positioning.js")
+						.then(() => {
+							console.log('✅ CSS Anchor Positioning polyfill loaded successfully!');
+							window.CSS_ANCHOR_POLYFILL_LOADED = true;
+							window.CSS_ANCHOR_POLYFILL_LOADING = false;
+							
+							// Dispatch custom event to notify components
+							window.dispatchEvent(new CustomEvent('css-anchor-polyfill-loaded'));
+						})
+						.catch((error) => {
+							console.error('❌ Failed to load CSS Anchor Positioning polyfill:', error);
+							window.CSS_ANCHOR_POLYFILL_LOADING = false;
+						});
+				} else {
+					console.log('✅ CSS Anchor Positioning is natively supported - no polyfill needed');
+					window.CSS_ANCHOR_POLYFILL_LOADED = false;
 				}
 			</script>
 			<!-- Theme initialization -->

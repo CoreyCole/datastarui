@@ -49,7 +49,7 @@ func PopoverPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-10\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- Browser Support Check --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Browser Support Check</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"browser-support-status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check Popover API support\n\t\t\t\t\t\tconst supportDiv = document.getElementById('browser-support-status');\n\t\t\t\t\t\tif ('popover' in HTMLElement.prototype) {\n\t\t\t\t\t\t\tsupportDiv.innerHTML = '✅ Native Popover API is supported in this browser.';\n\t\t\t\t\t\t\tsupportDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\tsupportDiv.innerHTML = '❌ Native Popover API is NOT supported in this browser.';\n\t\t\t\t\t\t\tsupportDiv.className = 'text-sm text-red-600';\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Add some debugging\n\t\t\t\t\t\tconsole.log('Popover API support:', 'popover' in HTMLElement.prototype);\n\t\t\t\t\t\tconsole.log('HTMLElement.prototype.showPopover:', typeof HTMLElement.prototype.showPopover);\n\t\t\t\t\t\tconsole.log('HTMLElement.prototype.hidePopover:', typeof HTMLElement.prototype.hidePopover);\n\t\t\t\t\t\tconsole.log('HTMLElement.prototype.togglePopover:', typeof HTMLElement.prototype.togglePopover);\n\t\t\t\t\t</script></div></div><!-- Direct HTML Test --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Direct HTML Test</h2><p class=\"text-sm text-muted-foreground\">Testing with direct HTML to verify the native Popover API works.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\"><button popovertarget=\"direct-popover\" class=\"px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700\" onclick=\"console.log(&#39;Direct button clicked&#39;)\">Direct HTML Popover</button><div id=\"direct-popover\" popover=\"auto\" class=\"w-72 rounded-md border bg-white p-4 shadow-md\" style=\"border: 2px solid red; background: white; color: black;\"><p>This is a direct HTML popover to test if the native API works.</p><button onclick=\"this.parentElement.hidePopover()\" class=\"mt-2 px-2 py-1 bg-gray-200 rounded text-sm\">Close</button></div></div></div><!-- JavaScript Controlled Test --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">JavaScript Controlled Test</h2><p class=\"text-sm text-muted-foreground\">Testing with JavaScript control to verify functionality.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\"><button id=\"js-show-button\" class=\"px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-2\">Show via JS</button> <button id=\"js-hide-button\" class=\"px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700\">Hide via JS</button><div id=\"js-popover\" popover=\"manual\" class=\"w-72 rounded-md border bg-white p-4 shadow-md\" style=\"border: 2px solid green; background: white; color: black;\"><p>This popover is controlled via JavaScript.</p></div><script>\n\t\t\t\t\t\tdocument.getElementById('js-show-button').addEventListener('click', function() {\n\t\t\t\t\t\t\tconsole.log('JS Show button clicked');\n\t\t\t\t\t\t\tconst popover = document.getElementById('js-popover');\n\t\t\t\t\t\t\tif (popover && typeof popover.showPopover === 'function') {\n\t\t\t\t\t\t\t\tpopover.showPopover();\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tconsole.error('showPopover method not available');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t});\n\t\t\t\t\t\t\n\t\t\t\t\t\tdocument.getElementById('js-hide-button').addEventListener('click', function() {\n\t\t\t\t\t\t\tconsole.log('JS Hide button clicked');\n\t\t\t\t\t\t\tconst popover = document.getElementById('js-popover');\n\t\t\t\t\t\t\tif (popover && typeof popover.hidePopover === 'function') {\n\t\t\t\t\t\t\t\tpopover.hidePopover();\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tconsole.error('hidePopover method not available');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t});\n\t\t\t\t\t</script></div></div><!-- Simple Test Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Simple Component Test</h2><p class=\"text-sm text-muted-foreground\">A minimal test to verify popover component functionality.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-10\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- CSS Anchor Positioning Polyfill Status --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">CSS Anchor Positioning Status</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"anchor-support-status\" class=\"text-sm mb-2\"></div><div id=\"polyfill-status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check CSS Anchor Positioning support\n\t\t\t\t\t\tconst anchorSupportDiv = document.getElementById('anchor-support-status');\n\t\t\t\t\t\tconst polyfillDiv = document.getElementById('polyfill-status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst hasNativeSupport = \"anchorName\" in document.documentElement.style;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfunction updatePolyfillStatus() {\n\t\t\t\t\t\t\tif (hasNativeSupport) {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '✅ Native CSS Anchor Positioning is supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-green-600 mb-2';\n\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '📘 Polyfill not needed - using native implementation.';\n\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-blue-600';\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-red-600 mb-2';\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tif (window.CSS_ANCHOR_POLYFILL_LOADING) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill is loading...';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-orange-600';\n\t\t\t\t\t\t\t\t} else if (window.CSS_ANCHOR_POLYFILL_LOADED) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active and working!';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t// Check again after a delay for polyfill completion\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill loaded (anchor positioning available)';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Initial check\n\t\t\t\t\t\tupdatePolyfillStatus();\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Listen for polyfill load completion\n\t\t\t\t\t\twindow.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Fallback check after delay\n\t\t\t\t\t\tsetTimeout(updatePolyfillStatus, 1500);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Enhanced debugging\n\t\t\t\t\t\tconsole.log('CSS Anchor Positioning native support:', hasNativeSupport);\n\t\t\t\t\t\tconsole.log('Browser:', navigator.userAgent);\n\t\t\t\t\t\tconsole.log('Document style has anchorName:', \"anchorName\" in document.documentElement.style);\n\t\t\t\t\t\tconsole.log('Polyfill loading flag:', window.CSS_ANCHOR_POLYFILL_LOADING);\n\t\t\t\t\t\tconsole.log('Polyfill loaded flag:', window.CSS_ANCHOR_POLYFILL_LOADED);\n\t\t\t\t\t</script></div></div><!-- Direct HTML Test --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Direct HTML Test</h2><p class=\"text-sm text-muted-foreground\">Testing with direct HTML to verify the native Popover API works.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\"><button popovertarget=\"direct-popover\" class=\"px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700\" onclick=\"console.log(&#39;Direct button clicked&#39;)\">Direct HTML Popover</button><div id=\"direct-popover\" popover=\"auto\" class=\"w-72 rounded-md border bg-white p-4 shadow-md\" style=\"border: 2px solid red; background: white; color: black;\"><p>This is a direct HTML popover to test if the native API works.</p><button onclick=\"this.parentElement.hidePopover()\" class=\"mt-2 px-2 py-1 bg-gray-200 rounded text-sm\">Close</button></div></div></div><!-- JavaScript Controlled Test --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">JavaScript Controlled Test</h2><p class=\"text-sm text-muted-foreground\">Testing with JavaScript control to verify functionality.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\"><button id=\"js-show-button\" class=\"px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-2\">Show via JS</button> <button id=\"js-hide-button\" class=\"px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700\">Hide via JS</button><div id=\"js-popover\" popover=\"manual\" class=\"w-72 rounded-md border bg-white p-4 shadow-md\" style=\"border: 2px solid green; background: white; color: black;\"><p>This popover is controlled via JavaScript.</p></div><script>\n\t\t\t\t\t\tdocument.getElementById('js-show-button').addEventListener('click', function() {\n\t\t\t\t\t\t\tconsole.log('JS Show button clicked');\n\t\t\t\t\t\t\tconst popover = document.getElementById('js-popover');\n\t\t\t\t\t\t\tif (popover && typeof popover.showPopover === 'function') {\n\t\t\t\t\t\t\t\tpopover.showPopover();\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tconsole.error('showPopover method not available');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t});\n\t\t\t\t\t\t\n\t\t\t\t\t\tdocument.getElementById('js-hide-button').addEventListener('click', function() {\n\t\t\t\t\t\t\tconsole.log('JS Hide button clicked');\n\t\t\t\t\t\t\tconst popover = document.getElementById('js-popover');\n\t\t\t\t\t\t\tif (popover && typeof popover.hidePopover === 'function') {\n\t\t\t\t\t\t\t\tpopover.hidePopover();\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tconsole.error('hidePopover method not available');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t});\n\t\t\t\t\t</script></div></div><!-- Simple Test Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Simple Component Test</h2><p class=\"text-sm text-muted-foreground\">A minimal test to verify popover component functionality.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -320,7 +320,331 @@ func PopoverPage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div><!-- Anchor Positioning Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Anchor Positioning Example</h2><p class=\"text-sm text-muted-foreground\">Using CSS Anchor Positioning to precisely position the popover relative to its trigger.</p><div class=\"flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative\" data-signals-positioning=\"false\"><div class=\"grid grid-cols-3 gap-8 items-center\"><!-- Top trigger --><div class=\"flex justify-center\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var12 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Top Position")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = button.Button(button.ButtonProps{
+				Variant: "outline",
+				Class:   "anchor-trigger",
+				Attributes: templ.Attributes{
+					"popovertarget":       "anchor-top-content",
+					"popovertargetaction": "toggle",
+					"style":               "anchor-name: --top-anchor",
+					"data-class":          "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div></div><div></div><!-- Left trigger -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "Left Position")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = button.Button(button.ButtonProps{
+				Variant: "outline",
+				Class:   "anchor-trigger",
+				Attributes: templ.Attributes{
+					"popovertarget":       "anchor-left-content",
+					"popovertargetaction": "toggle",
+					"style":               "anchor-name: --left-anchor",
+					"data-class":          "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<!-- Center trigger -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var14 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Center Position")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = button.Button(button.ButtonProps{
+				Variant: "default",
+				Class:   "anchor-trigger",
+				Attributes: templ.Attributes{
+					"popovertarget":       "anchor-center-content",
+					"popovertargetaction": "toggle",
+					"style":               "anchor-name: --center-anchor",
+					"data-class":          "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<!-- Right trigger -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var15 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "Right Position")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = button.Button(button.ButtonProps{
+				Variant: "outline",
+				Class:   "anchor-trigger",
+				Attributes: templ.Attributes{
+					"popovertarget":       "anchor-right-content",
+					"popovertargetaction": "toggle",
+					"style":               "anchor-name: --right-anchor",
+					"data-class":          "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div></div><div></div><!-- Bottom trigger --><div class=\"flex justify-center\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var16 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "Bottom Position")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = button.Button(button.ButtonProps{
+				Variant: "outline",
+				Class:   "anchor-trigger",
+				Attributes: templ.Attributes{
+					"popovertarget":       "anchor-bottom-content",
+					"popovertargetaction": "toggle",
+					"style":               "anchor-name: --bottom-anchor",
+					"data-class":          "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div></div><!-- Anchor positioned popovers -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var17 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Top Anchored</h4><p class=\"text-sm text-muted-foreground\">This popover is positioned below the top trigger using CSS anchor positioning.</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:    "anchor-top-content",
+				Class: "w-64 anchor-positioned",
+				Attributes: templ.Attributes{
+					"style":      "position-anchor: --top-anchor; top: anchor(bottom); left: anchor(center); translate: -50% 8px;",
+					"data-class": "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var18 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Left Anchored</h4><p class=\"text-sm text-muted-foreground\">This popover is positioned to the right of the left trigger.</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:    "anchor-left-content",
+				Class: "w-64 anchor-positioned",
+				Attributes: templ.Attributes{
+					"style":      "position-anchor: --left-anchor; top: anchor(center); left: anchor(right); translate: 8px -50%;",
+					"data-class": "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var19 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Center Anchored</h4><p class=\"text-sm text-muted-foreground\">This popover is centered below the main trigger button.</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:    "anchor-center-content",
+				Class: "w-64 anchor-positioned",
+				Attributes: templ.Attributes{
+					"style":      "position-anchor: --center-anchor; top: anchor(bottom); left: anchor(center); translate: -50% 8px;",
+					"data-class": "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var20 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Right Anchored</h4><p class=\"text-sm text-muted-foreground\">This popover is positioned to the left of the right trigger.</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:    "anchor-right-content",
+				Class: "w-64 anchor-positioned",
+				Attributes: templ.Attributes{
+					"style":      "position-anchor: --right-anchor; top: anchor(center); left: anchor(left); translate: -100% -50%; margin-left: -8px;",
+					"data-class": "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Bottom Anchored</h4><p class=\"text-sm text-muted-foreground\">This popover is positioned above the bottom trigger.</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:    "anchor-bottom-content",
+				Class: "w-64 anchor-positioned",
+				Attributes: templ.Attributes{
+					"style":      "position-anchor: --bottom-anchor; top: anchor(top); left: anchor(center); translate: -50% -100%; margin-top: -8px;",
+					"data-class": "{positioning: $positioning}",
+				},
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div><!-- Simple state management for the demo --><div class=\"text-center\"><button class=\"px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors\" data-on-click=\"$positioning = !$positioning\">Toggle Positioning State</button><p class=\"text-xs text-muted-foreground mt-1\">Click to toggle data-class example (positioning: <span data-text=\"$positioning\"></span>)</p></div></div><!-- CSS Styles for Anchor Positioning --><style>\n\t\t\t\t.anchor-positioned {\n\t\t\t\t\tposition: absolute;\n\t\t\t\t\tposition-fallback: --fallback;\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t@position-fallback --fallback {\n\t\t\t\t\t@try {\n\t\t\t\t\t\ttop: anchor(bottom);\n\t\t\t\t\t\tleft: anchor(center);\n\t\t\t\t\t\ttranslate: -50% 8px;\n\t\t\t\t\t}\n\t\t\t\t\t@try {\n\t\t\t\t\t\ttop: anchor(top);\n\t\t\t\t\t\tleft: anchor(center);\n\t\t\t\t\t\ttranslate: -50% -100%;\n\t\t\t\t\t\tmargin-top: -8px;\n\t\t\t\t\t}\n\t\t\t\t\t@try {\n\t\t\t\t\t\ttop: anchor(center);\n\t\t\t\t\t\tleft: anchor(right);\n\t\t\t\t\t\ttranslate: 8px -50%;\n\t\t\t\t\t}\n\t\t\t\t\t@try {\n\t\t\t\t\t\ttop: anchor(center);\n\t\t\t\t\t\tleft: anchor(left);\n\t\t\t\t\t\ttranslate: -100% -50%;\n\t\t\t\t\t\tmargin-left: -8px;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t/* Data-class example styles */\n\t\t\t\t.anchor-trigger.positioning {\n\t\t\t\t\tbox-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t.anchor-positioned.positioning {\n\t\t\t\t\tborder: 2px solid rgb(59 130 246);\n\t\t\t\t\tbackground: rgb(59 130 246 / 0.05);\n\t\t\t\t}\n\t\t\t</style></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
