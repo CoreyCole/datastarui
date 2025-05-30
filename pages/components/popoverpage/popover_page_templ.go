@@ -10,8 +10,6 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"github.com/coreycole/datastarui/components/button"
-	"github.com/coreycole/datastarui/components/input"
-	"github.com/coreycole/datastarui/components/label"
 	"github.com/coreycole/datastarui/components/popover"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -49,7 +47,7 @@ func PopoverPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-10\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- CSS Anchor Positioning Polyfill Status --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">CSS Anchor Positioning Status</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"anchor-support-status\" class=\"text-sm mb-2\"></div><div id=\"polyfill-status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check CSS Anchor Positioning support\n\t\t\t\t\t\tconst anchorSupportDiv = document.getElementById('anchor-support-status');\n\t\t\t\t\t\tconst polyfillDiv = document.getElementById('polyfill-status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst hasNativeSupport = \"anchorName\" in document.documentElement.style;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfunction updatePolyfillStatus() {\n\t\t\t\t\t\t\tif (hasNativeSupport) {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '✅ Native CSS Anchor Positioning is supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-green-600 mb-2';\n\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '📘 Polyfill not needed - using native implementation.';\n\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-blue-600';\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-red-600 mb-2';\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tif (window.CSS_ANCHOR_POLYFILL_LOADING) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill is loading...';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-orange-600';\n\t\t\t\t\t\t\t\t} else if (window.CSS_ANCHOR_POLYFILL_LOADED) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active and working!';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t// Check again after a delay for polyfill completion\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill loaded (anchor positioning available)';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Initial check\n\t\t\t\t\t\tupdatePolyfillStatus();\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Listen for polyfill load completion\n\t\t\t\t\t\twindow.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Fallback check after delay\n\t\t\t\t\t\tsetTimeout(updatePolyfillStatus, 1500);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Enhanced debugging\n\t\t\t\t\t\tconsole.log('CSS Anchor Positioning native support:', hasNativeSupport);\n\t\t\t\t\t\tconsole.log('Browser:', navigator.userAgent);\n\t\t\t\t\t\tconsole.log('Document style has anchorName:', \"anchorName\" in document.documentElement.style);\n\t\t\t\t\t\tconsole.log('Polyfill loading flag:', window.CSS_ANCHOR_POLYFILL_LOADING);\n\t\t\t\t\t\tconsole.log('Polyfill loaded flag:', window.CSS_ANCHOR_POLYFILL_LOADED);\n\t\t\t\t\t</script></div></div><!-- Simple Test Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Simple Component Test</h2><p class=\"text-sm text-muted-foreground\">A minimal test to verify popover component functionality.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-10\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- CSS Anchor Positioning Polyfill Status --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">CSS Anchor Positioning Status</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"anchor-support-status\" class=\"text-sm mb-2\"></div><div id=\"polyfill-status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check CSS Anchor Positioning support\n\t\t\t\t\t\tconst anchorSupportDiv = document.getElementById('anchor-support-status');\n\t\t\t\t\t\tconst polyfillDiv = document.getElementById('polyfill-status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst hasNativeSupport = \"anchorName\" in document.documentElement.style;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfunction updatePolyfillStatus() {\n\t\t\t\t\t\t\tif (hasNativeSupport) {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '✅ Native CSS Anchor Positioning is supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-green-600 mb-2';\n\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '📘 Polyfill not needed - using native implementation.';\n\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-blue-600';\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-red-600 mb-2';\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tif (window.CSS_ANCHOR_POLYFILL_LOADING) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill is loading...';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-orange-600';\n\t\t\t\t\t\t\t\t} else if (window.CSS_ANCHOR_POLYFILL_LOADED) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active and working!';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t// Check again after a delay for polyfill completion\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill loaded (anchor positioning available)';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Initial check\n\t\t\t\t\t\tupdatePolyfillStatus();\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Listen for polyfill load completion\n\t\t\t\t\t\twindow.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Fallback check after delay\n\t\t\t\t\t\tsetTimeout(updatePolyfillStatus, 1500);\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Enhanced debugging\n\t\t\t\t\t\tconsole.log('CSS Anchor Positioning native support:', hasNativeSupport);\n\t\t\t\t\t\tconsole.log('Browser:', navigator.userAgent);\n\t\t\t\t\t\tconsole.log('Document style has anchorName:', \"anchorName\" in document.documentElement.style);\n\t\t\t\t\t\tconsole.log('Polyfill loading flag:', window.CSS_ANCHOR_POLYFILL_LOADING);\n\t\t\t\t\t\tconsole.log('Polyfill loaded flag:', window.CSS_ANCHOR_POLYFILL_LOADED);\n\t\t\t\t\t</script></div></div><!-- Anchor Positioning API Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Anchor Positioning API</h2><p class=\"text-sm text-muted-foreground\">Using positioning props to simplify anchor positioning without manual style attributes. </p><p class=\"text-sm text-muted-foreground\">The <span class=\"text-md font-bold font-mono\">Side</span> prop specifies where the popover appears relative to the trigger:</p><ul class=\"text-sm text-muted-foreground ml-6 list-disc space-y-1\"><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"top\"</span> <span class=\"ml-4\">popover appears above the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"bottom\"</span> <span class=\"ml-4\">popover appears below the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"left\"</span> <span class=\"ml-4\">popover appears left of the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"right\"</span> <span class=\"ml-4\">popover appears right of the trigger</span></li></ul><div class=\"flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative\"><div class=\"grid grid-cols-3 gap-8 items-center\"><!-- Top Side --><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -65,19 +63,22 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Component Popover")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Top Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = button.Button(button.ButtonProps{
-				Variant: "default",
-				Attributes: templ.Attributes{
-					"popovertarget":       "simple-content",
-					"popovertargetaction": "toggle",
-				},
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				ID:         "top-side-trigger",
+				PopoverID:  "top-side-content",
+				AnchorName: "top-side-anchor",
+				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -93,19 +94,24 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<p class=\"text-sm\">Hello! This is a component-based popover.</p>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Top Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears above the trigger using Side=\"top\".</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID: "simple-content",
+				ID:         "top-side-content",
+				Class:      "w-64",
+				UseAnchor:  true,
+				AnchorName: "top-side-anchor",
+				Side:       "top",
+				Align:      "center",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><!-- Basic Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Basic Example</h2><p class=\"text-sm text-muted-foreground\">A simple popover with form content using the native Popover API.</p><div class=\"flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Right Side -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -121,206 +127,201 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-					if !templ_7745c5c3_IsBuffer {
-						defer func() {
-							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-							if templ_7745c5c3_Err == nil {
-								templ_7745c5c3_Err = templ_7745c5c3_BufErr
-							}
-						}()
-					}
-					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Open popover")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					return nil
-				})
-				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "outline",
-					Attributes: templ.Attributes{
-						"popovertarget":       "basic-content",
-						"popovertargetaction": "toggle",
-					},
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-					if !templ_7745c5c3_IsBuffer {
-						defer func() {
-							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-							if templ_7745c5c3_Err == nil {
-								templ_7745c5c3_Err = templ_7745c5c3_BufErr
-							}
-						}()
-					}
-					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"grid gap-4\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Dimensions</h4><p class=\"text-sm text-muted-foreground\">Set the dimensions for the layer.</p></div><div class=\"grid gap-2\"><div class=\"grid grid-cols-3 items-center gap-4\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var8 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "Width")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "width"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = input.Input(input.InputProps{
-						ID:    "width",
-						Value: "100%",
-						Class: "col-span-2 h-8",
-					}).Render(ctx, templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"grid grid-cols-3 items-center gap-4\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Max. width")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "maxWidth"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = input.Input(input.InputProps{
-						ID:    "maxWidth",
-						Value: "300px",
-						Class: "col-span-2 h-8",
-					}).Render(ctx, templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"grid grid-cols-3 items-center gap-4\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "Height")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "height"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = input.Input(input.InputProps{
-						ID:    "height",
-						Value: "25px",
-						Class: "col-span-2 h-8",
-					}).Render(ctx, templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"grid grid-cols-3 items-center gap-4\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var11 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "Max. height")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "maxHeight"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = input.Input(input.InputProps{
-						ID:    "maxHeight",
-						Value: "none",
-						Class: "col-span-2 h-8",
-					}).Render(ctx, templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div></div>")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					return nil
-				})
-				templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-					ID:    "basic-content",
-					Class: "w-80",
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Right Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.Popover(popover.PopoverProps{ID: "basic-popover-container"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				ID:         "right-side-trigger",
+				PopoverID:  "right-side-content",
+				AnchorName: "right-side-anchor",
+				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div><!-- Anchor Positioning API Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Anchor Positioning API</h2><p class=\"text-sm text-muted-foreground\">Using positioning props to simplify anchor positioning without manual style attributes. </p><p class=\"text-sm text-muted-foreground\">The <span class=\"text-md font-bold font-mono\">Side</span> prop specifies where the popover appears relative to the trigger:</p><ul class=\"text-sm text-muted-foreground ml-6 list-disc space-y-1\"><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"top\"</span> <span class=\"ml-4\">popover appears above the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"bottom\"</span> <span class=\"ml-4\">popover appears below the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"left\"</span> <span class=\"ml-4\">popover appears left of the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"right\"</span> <span class=\"ml-4\">popover appears right of the trigger</span></li></ul><div class=\"flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative\"><div class=\"grid grid-cols-3 gap-8 items-center\"><!-- Top Side --><div class=\"flex justify-center\">")
+			templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Right Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the right of the trigger using Side=\"right\".</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:         "right-side-content",
+				Class:      "w-64",
+				UseAnchor:  true,
+				AnchorName: "right-side-anchor",
+				Side:       "right",
+				Align:      "center",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div></div><!-- Left Side -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "Left Side")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				ID:         "left-side-trigger",
+				PopoverID:  "left-side-content",
+				AnchorName: "left-side-anchor",
+				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var8 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Left Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the left of the trigger using Side=\"left\".</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:         "left-side-content",
+				Class:      "w-64",
+				UseAnchor:  true,
+				AnchorName: "left-side-anchor",
+				Side:       "left",
+				Align:      "center",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<!-- Bottom Side --><div class=\"flex justify-center\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "Bottom Side")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				ID:         "bottom-side-trigger",
+				PopoverID:  "bottom-side-content",
+				AnchorName: "bottom-side-anchor",
+				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Bottom Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears below the trigger using Side=\"bottom\".</p></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:         "bottom-side-content",
+				Class:      "w-64",
+				UseAnchor:  true,
+				AnchorName: "bottom-side-anchor",
+				Side:       "bottom",
+				Align:      "center",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div></div><!-- Custom Trigger with AsChild Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3><div class=\"flex justify-center\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var11 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"font-medium text-sm\">User Profile</p><p class=\"text-xs text-gray-500\">Click for details</p></div></div></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				AsChild:    true,
+				PopoverID:  "card-popover",
+				AnchorName: "card-anchor",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -336,82 +337,78 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Top Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">John Doe</h4><p class=\"text-sm text-muted-foreground\">Software Engineer at Acme Corp</p></div><div class=\"flex items-center gap-4 text-sm\"><div class=\"flex items-center gap-1\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> john@example.com</div></div><div class=\"flex gap-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				ID:         "top-side-trigger",
-				PopoverID:  "top-side-content",
-				AnchorName: "top-side-anchor",
-				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
+				templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "Message")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = button.Button(button.ButtonProps{
+					Variant: "default",
+					Class:   "flex-1 h-8 text-xs",
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
 				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Top Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears above the trigger using Side=\"top\".</p></div>")
+				templ_7745c5c3_Var14 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "View Profile")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = button.Button(button.ButtonProps{
+					Variant: "outline",
+					Class:   "flex-1 h-8 text-xs",
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "top-side-content",
-				Class:      "w-64",
+				ID:         "card-popover",
+				Class:      "w-72",
 				UseAnchor:  true,
-				AnchorName: "top-side-anchor",
-				Side:       "top",
+				AnchorName: "card-anchor",
+				Side:       "bottom",
 				Align:      "center",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<!-- Right Side -->")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var14 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Right Side")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				ID:         "right-side-trigger",
-				PopoverID:  "right-side-content",
-				AnchorName: "right-side-anchor",
-				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></div><!-- Image Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Image Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -427,24 +424,17 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Right Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the right of the trigger using Side=\"right\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<img class=\"w-32\" src=\"/img/datastar-rocket.webp\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "right-side-content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "right-side-anchor",
-				Side:       "right",
-				Align:      "center",
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				AsChild:    true,
+				PopoverID:  "image-popover",
+				AnchorName: "image-anchor",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div></div><!-- Left Side -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -460,18 +450,24 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "Left Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Datastar Rocket</h4><p class=\"text-sm text-muted-foreground\">The Datastar logo representing a lightweight, fast hypermedia framework.</p></div><div class=\"flex flex-col gap-4 text-xs text-muted-foreground\"><div><span class=\"font-medium\">15KB</span> Hypermedia Framework</div><div><span class=\"font-medium block\">Dependencies:</span> CSS Anchor Polyfil for Firefox</div></div><div class=\"pt-2\"><p class=\"text-xs text-muted-foreground\">🚀 Fast, lightweight, and powerful for building reactive UIs without the complexity of traditional JavaScript frameworks.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				ID:         "left-side-trigger",
-				PopoverID:  "left-side-content",
-				AnchorName: "left-side-anchor",
-				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:         "image-popover",
+				Class:      "w-64",
+				UseAnchor:  true,
+				AnchorName: "image-anchor",
+				Side:       "top",
+				Align:      "center",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Custom Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Badge Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -487,24 +483,17 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Left Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the left of the trigger using Side=\"left\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Online Status <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "left-side-content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "left-side-anchor",
-				Side:       "left",
-				Align:      "center",
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				AsChild:    true,
+				PopoverID:  "badge-popover",
+				AnchorName: "badge-anchor",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<!-- Bottom Side --><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -520,22 +509,24 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "Bottom Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Status Details</h4><p class=\"text-sm text-muted-foreground\">User is currently online and available for collaboration.</p></div><div class=\"space-y-2 text-sm\"><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Last seen:</span> <span>Now</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Timezone:</span> <span>PST (UTC-8)</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Available until:</span> <span>6:00 PM</span></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				ID:         "bottom-side-trigger",
-				PopoverID:  "bottom-side-content",
-				AnchorName: "bottom-side-anchor",
-				Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
+			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
+				ID:         "badge-popover",
+				Class:      "w-56",
+				UseAnchor:  true,
+				AnchorName: "badge-anchor",
+				Side:       "bottom",
+				Align:      "center",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div></div><!-- Custom Interactive Element --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Interactive Element</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -551,24 +542,17 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Bottom Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears below the trigger using Side=\"bottom\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group\"><div class=\"flex flex-col items-center gap-2\"><div class=\"w-8 h-8 bg-gray-100 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors\"><svg class=\"w-4 h-4 text-gray-600 group-hover:text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6v6m0 0v6m0-6h6m-6 0H6\"></path></svg></div><span class=\"text-sm font-medium text-gray-700 group-hover:text-blue-700\">Add Item</span> <span class=\"text-xs text-gray-500\">Click to see options</span></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "bottom-side-content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "bottom-side-anchor",
-				Side:       "bottom",
-				Align:      "center",
+			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
+				AsChild:    true,
+				PopoverID:  "interactive-popover",
+				AnchorName: "interactive-anchor",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div></div><!-- Custom Trigger with AsChild Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -584,33 +568,32 @@ func PopoverPage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"font-medium text-sm\">User Profile</p><p class=\"text-xs text-gray-500\">Click for details</p></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Add New Item</h4><p class=\"text-sm text-muted-foreground\">Choose what type of item you'd like to create.</p></div><div class=\"grid gap-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				AsChild:    true,
-				PopoverID:  "card-popover",
-				AnchorName: "card-anchor",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">John Doe</h4><p class=\"text-sm text-muted-foreground\">Software Engineer at Acme Corp</p></div><div class=\"flex items-center gap-4 text-sm\"><div class=\"flex items-center gap-1\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> john@example.com</div></div><div class=\"flex gap-2\">")
+				templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "📄 Document")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = button.Button(button.ButtonProps{
+					Variant: "ghost",
+					Class:   "justify-start h-8 text-sm",
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -626,15 +609,15 @@ func PopoverPage() templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "Message")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "📁 Folder")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "default",
-					Class:   "flex-1 h-8 text-xs",
+					Variant: "ghost",
+					Class:   "justify-start h-8 text-sm",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -651,201 +634,20 @@ func PopoverPage() templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "View Profile")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "🖼️ Image")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "outline",
-					Class:   "flex-1 h-8 text-xs",
+					Variant: "ghost",
+					Class:   "justify-start h-8 text-sm",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "card-popover",
-				Class:      "w-72",
-				UseAnchor:  true,
-				AnchorName: "card-anchor",
-				Side:       "bottom",
-				Align:      "center",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></div><!-- Image Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Image Trigger</h3><div class=\"flex justify-center\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var24 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<img class=\"w-32\" src=\"/img/datastar-rocket.webp\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				AsChild:    true,
-				PopoverID:  "image-popover",
-				AnchorName: "image-anchor",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var25 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Datastar Rocket</h4><p class=\"text-sm text-muted-foreground\">The Datastar logo representing a lightweight, fast hypermedia framework.</p></div><div class=\"flex flex-col gap-4 text-xs text-muted-foreground\"><div><span class=\"font-medium\">15KB</span> Hypermedia Framework</div><div><span class=\"font-medium block\">Dependencies:</span> CSS Anchor Polyfil for Firefox</div></div><div class=\"pt-2\"><p class=\"text-xs text-muted-foreground\">🚀 Fast, lightweight, and powerful for building reactive UIs without the complexity of traditional JavaScript frameworks.</p></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "image-popover",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "image-anchor",
-				Side:       "top",
-				Align:      "center",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div></div><!-- Custom Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Badge Trigger</h3><div class=\"flex justify-center\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var26 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Online Status <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				AsChild:    true,
-				PopoverID:  "badge-popover",
-				AnchorName: "badge-anchor",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var27 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Status Details</h4><p class=\"text-sm text-muted-foreground\">User is currently online and available for collaboration.</p></div><div class=\"space-y-2 text-sm\"><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Last seen:</span> <span>Now</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Timezone:</span> <span>PST (UTC-8)</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Available until:</span> <span>6:00 PM</span></div></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentProps{
-				ID:         "badge-popover",
-				Class:      "w-56",
-				UseAnchor:  true,
-				AnchorName: "badge-anchor",
-				Side:       "bottom",
-				Align:      "center",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div><!-- Custom Interactive Element --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Interactive Element</h3><div class=\"flex justify-center\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var28 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<div class=\"bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group\"><div class=\"flex flex-col items-center gap-2\"><div class=\"w-8 h-8 bg-gray-100 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors\"><svg class=\"w-4 h-4 text-gray-600 group-hover:text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6v6m0 0v6m0-6h6m-6 0H6\"></path></svg></div><span class=\"text-sm font-medium text-gray-700 group-hover:text-blue-700\">Add Item</span> <span class=\"text-xs text-gray-500\">Click to see options</span></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				return nil
-			})
-			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerProps{
-				AsChild:    true,
-				PopoverID:  "interactive-popover",
-				AnchorName: "interactive-anchor",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var29 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-				if !templ_7745c5c3_IsBuffer {
-					defer func() {
-						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err == nil {
-							templ_7745c5c3_Err = templ_7745c5c3_BufErr
-						}
-					}()
-				}
-				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Add New Item</h4><p class=\"text-sm text-muted-foreground\">Choose what type of item you'd like to create.</p></div><div class=\"grid gap-2\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Var30 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_Var24 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 					if !templ_7745c5c3_IsBuffer {
@@ -857,7 +659,7 @@ func PopoverPage() templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "📄 Document")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "🔗 Link")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -866,86 +668,11 @@ func PopoverPage() templ.Component {
 				templ_7745c5c3_Err = button.Button(button.ButtonProps{
 					Variant: "ghost",
 					Class:   "justify-start h-8 text-sm",
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Var31 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-					if !templ_7745c5c3_IsBuffer {
-						defer func() {
-							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-							if templ_7745c5c3_Err == nil {
-								templ_7745c5c3_Err = templ_7745c5c3_BufErr
-							}
-						}()
-					}
-					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "📁 Folder")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					return nil
-				})
-				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "ghost",
-					Class:   "justify-start h-8 text-sm",
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Var32 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-					if !templ_7745c5c3_IsBuffer {
-						defer func() {
-							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-							if templ_7745c5c3_Err == nil {
-								templ_7745c5c3_Err = templ_7745c5c3_BufErr
-							}
-						}()
-					}
-					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "🖼️ Image")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					return nil
-				})
-				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "ghost",
-					Class:   "justify-start h-8 text-sm",
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Var33 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-					if !templ_7745c5c3_IsBuffer {
-						defer func() {
-							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-							if templ_7745c5c3_Err == nil {
-								templ_7745c5c3_Err = templ_7745c5c3_BufErr
-							}
-						}()
-					}
-					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "🔗 Link")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					return nil
-				})
-				templ_7745c5c3_Err = button.Button(button.ButtonProps{
-					Variant: "ghost",
-					Class:   "justify-start h-8 text-sm",
-				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "</div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -958,11 +685,11 @@ func PopoverPage() templ.Component {
 				AnchorName: "interactive-anchor",
 				Side:       "top",
 				Align:      "center",
-			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

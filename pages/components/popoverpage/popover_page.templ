@@ -2,8 +2,6 @@ package popoverpage
 
 import (
 	"github.com/coreycole/datastarui/components/button"
-	"github.com/coreycole/datastarui/components/input"
-	"github.com/coreycole/datastarui/components/label"
 	"github.com/coreycole/datastarui/components/popover"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -71,104 +69,6 @@ templ PopoverPage() {
 						console.log('Polyfill loading flag:', window.CSS_ANCHOR_POLYFILL_LOADING);
 						console.log('Polyfill loaded flag:', window.CSS_ANCHOR_POLYFILL_LOADED);
 					</script>
-				</div>
-			</div>
-			<!-- Simple Test Example -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Simple Component Test</h2>
-				<p class="text-sm text-muted-foreground">
-					A minimal test to verify popover component functionality.
-				</p>
-				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
-					@button.Button(button.ButtonProps{
-						Variant: "default",
-						Attributes: templ.Attributes{
-							"popovertarget":       "simple-content",
-							"popovertargetaction": "toggle",
-						},
-					}) {
-						Component Popover
-					}
-					@popover.PopoverContent(popover.PopoverContentProps{
-						ID: "simple-content",
-					}) {
-						<p class="text-sm">Hello! This is a component-based popover.</p>
-					}
-				</div>
-			</div>
-			<!-- Basic Example -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Basic Example</h2>
-				<p class="text-sm text-muted-foreground">
-					A simple popover with form content using the native Popover API.
-				</p>
-				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
-					@popover.Popover(popover.PopoverProps{ID: "basic-popover-container"}) {
-						@button.Button(button.ButtonProps{
-							Variant: "outline",
-							Attributes: templ.Attributes{
-								"popovertarget":       "basic-content",
-								"popovertargetaction": "toggle",
-							},
-						}) {
-							Open popover
-						}
-						@popover.PopoverContent(popover.PopoverContentProps{
-							ID:    "basic-content",
-							Class: "w-80",
-						}) {
-							<div class="grid gap-4">
-								<div class="space-y-2">
-									<h4 class="font-medium leading-none">Dimensions</h4>
-									<p class="text-sm text-muted-foreground">
-										Set the dimensions for the layer.
-									</p>
-								</div>
-								<div class="grid gap-2">
-									<div class="grid grid-cols-3 items-center gap-4">
-										@label.Label(label.LabelProps{For: "width"}) {
-											Width
-										}
-										@input.Input(input.InputProps{
-											ID:    "width",
-											Value: "100%",
-											Class: "col-span-2 h-8",
-										})
-									</div>
-									<div class="grid grid-cols-3 items-center gap-4">
-										@label.Label(label.LabelProps{For: "maxWidth"}) {
-											Max. width
-										}
-										@input.Input(input.InputProps{
-											ID:    "maxWidth",
-											Value: "300px",
-											Class: "col-span-2 h-8",
-										})
-									</div>
-									<div class="grid grid-cols-3 items-center gap-4">
-										@label.Label(label.LabelProps{For: "height"}) {
-											Height
-										}
-										@input.Input(input.InputProps{
-											ID:    "height",
-											Value: "25px",
-											Class: "col-span-2 h-8",
-										})
-									</div>
-									<div class="grid grid-cols-3 items-center gap-4">
-										@label.Label(label.LabelProps{For: "maxHeight"}) {
-											Max. height
-										}
-										@input.Input(input.InputProps{
-											ID:    "maxHeight",
-											Value: "none",
-											Class: "col-span-2 h-8",
-										})
-									</div>
-								</div>
-							</div>
-						}
-					}
 				</div>
 			</div>
 			<!-- Anchor Positioning API Example -->
