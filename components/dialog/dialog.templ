@@ -1,23 +1,58 @@
 package dialog
 
-// Dialog container - creates encapsulated signals using ID as namespace
+// Dialog container - native HTML dialog element with Datastar refs and state tracking
 templ Dialog(props DialogProps) {
 	{{
-		// Create nested signal structure: {[id]: {open: false}}
-		// This allows the ID to namespace all signals for this component instance
-		signalsJSON := "{\"" + props.ID + "\": {\"open\": false}}"
+		// Create nested signal structure: {[id]: {open: false, returnValue: null}}
+		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
+
+		// Create dynamic data-ref attribute name (lowercase to match HTML behavior)
+		refAttrName := "data-ref-" + props.ID + "dialog"
+		dialogAttrs := templ.Attributes{
+			refAttrName: "", // data-ref just needs to exist, value doesn't matter
+		}
+
+		// Merge with user-provided attributes
+		for k, v := range props.Attributes {
+			dialogAttrs[k] = v
+		}
+
+		// Add closedby attribute if specified
+		if props.ClosedBy != "" {
+			dialogAttrs["closedby"] = props.ClosedBy
+		}
+
+		// Add event handlers for native dialog events to sync signals
+		toggleHandler := "$" + props.ID + ".open = evt.newState === 'open'"
+		closeHandler := "$" + props.ID + ".open = false; $" + props.ID + ".returnValue = evt.target.returnValue"
+
+		dialogAttrs["data-on-toggle"] = toggleHandler
+		dialogAttrs["data-on-close"] = closeHandler
 	}}
-	<div data-signals={ signalsJSON } { props.Attributes... } class={ props.Class }>
-		{ children... }
+	<div data-signals={ signalsJSON }>
+		<dialog
+			id={ props.ID }
+			{ dialogAttrs... }
+			class={ props.Class }
+		>
+			{ children... }
+		</dialog>
 	</div>
 }
 
-// DialogTrigger - button or element that opens the dialog
+// DialogTrigger - button or element that opens the dialog using native methods
 templ DialogTrigger(props DialogTriggerProps) {
 	{{
-		// Simple signal reference using dot notation
-		signalRef := "$" + props.DialogID + ".open"
-		clickHandler := signalRef + " = true"
+		// Create click handler using the dialog ref and update signal
+		var clickHandler string
+		dialogRef := "$" + props.DialogID + "dialog"
+		openSignal := "$" + props.DialogID + ".open = true"
+
+		if props.Modal {
+			clickHandler = openSignal + "; " + dialogRef + ".showModal()"
+		} else {
+			clickHandler = openSignal + "; " + dialogRef + ".show()"
+		}
 	}}
 	if props.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
@@ -40,39 +75,45 @@ templ DialogTrigger(props DialogTriggerProps) {
 	}
 }
 
-// DialogContent - the actual dialog element with overlay
+// DialogContent - wrapper for dialog content (for backwards compatibility with existing code)
 templ DialogContent(props DialogContentProps) {
 	{{
 		contentClasses := DialogContentVariants(props)
-		// Simple signal references using dot notation
-		signalRef := "$" + props.ID + ".open"
-		showCondition := signalRef
-		// Close when clicking outside using Datastar's __outside modifier
-		outsideClickHandler := signalRef + " = false"
-		// ESC key handler
-		escapeHandler := "evt.key === 'Escape' && (" + signalRef + " = false)"
 
-		// Overlay styles and classes
-		overlayStyles := "display: none"
-		overlayClasses := "fixed inset-0 z-50 flex items-center justify-center p-4"
-		if props.ShowOverlay {
-			overlayClasses += " bg-black/50 backdrop-blur-sm"
+		// Create dynamic data-ref attribute name (lowercase to match HTML behavior)
+		refAttrName := "data-ref-" + props.ID + "dialog"
+		dialogAttrs := templ.Attributes{
+			refAttrName: "", // data-ref just needs to exist
 		}
+
+		// Merge with user-provided attributes
+		for k, v := range props.Attributes {
+			dialogAttrs[k] = v
+		}
+
+		// Add native dialog event handlers to sync signals
+		toggleHandler := "$'" + props.ID + "'.open = evt.newState === 'open'"
+		closeHandler := "$'" + props.ID + "'.open = false; $'" + props.ID + "'.returnValue = evt.target.returnValue"
+
+		dialogAttrs["data-on-toggle"] = toggleHandler
+		dialogAttrs["data-on-close"] = closeHandler
+
+		// Add outside click handler if overlay is shown
+		if props.ShowOverlay {
+			outsideClickHandler := "$" + props.ID + ".open = false; $" + props.ID + "dialog.close('outside-click')"
+			dialogAttrs["data-on-click__outside"] = outsideClickHandler
+		}
+
+		// Create signals for this dialog instance
+		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
 	}}
-	<div
-		data-show={ showCondition }
-		data-on-click__outside={ outsideClickHandler }
-		data-on-keydown={ escapeHandler }
-		tabindex="-1"
-		style={ overlayStyles }
-		class={ overlayClasses }
-	>
-		<div
+	<div data-signals={ signalsJSON }>
+		<dialog
 			id={ props.ID }
+			{ dialogAttrs... }
 			role="dialog"
 			aria-modal="true"
 			class={ contentClasses }
-			{ props.Attributes... }
 		>
 			@DialogClose(DialogCloseProps{
 				DialogID: props.ID,
@@ -85,11 +126,11 @@ templ DialogContent(props DialogContentProps) {
 				<span class="sr-only">Close</span>
 			}
 			{ children... }
-		</div>
+		</dialog>
 	</div>
 }
 
-// DialogOverlay - backdrop overlay (optional, can be styled via CSS backdrop pseudo-element)
+// DialogOverlay - backdrop overlay (for styling compatibility - native dialog uses ::backdrop)
 templ DialogOverlay(props DialogOverlayProps) {
 	<div
 		id={ props.ID }
@@ -126,12 +167,19 @@ templ DialogDescription(props DialogDescriptionProps) {
 	</p>
 }
 
-// DialogClose - button that closes the dialog
+// DialogClose - button that closes the dialog using native close() method
 templ DialogClose(props DialogCloseProps) {
 	{{
-		// Simple signal reference using dot notation
-		signalRef := "$" + props.DialogID + ".open"
-		clickHandler := signalRef + " = false"
+		// Create click handler using the dialog ref and update signal
+		dialogRef := "$" + props.DialogID + "dialog"
+		closeSignal := "$" + props.DialogID + ".open = false"
+
+		var clickHandler string
+		if props.ReturnValue != "" {
+			clickHandler = closeSignal + "; " + dialogRef + ".close('" + props.ReturnValue + "')"
+		} else {
+			clickHandler = closeSignal + "; " + dialogRef + ".close()"
+		}
 	}}
 	if props.AsChild {
 		// When AsChild is true, we apply the click handler to the child element

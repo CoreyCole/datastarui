@@ -3,767 +3,497 @@ description:
 globs: *.templ
 alwaysApply: false
 ---
-# Complete Guide to Datastar: The Hypermedia Framework
+# DatastarUI Component Development Guide
 
-Datastar is a lightweight, powerful framework that brings together the best of frontend reactivity and backend integration in a cohesive, hypermedia-driven approach. This guide will help you understand Datastar's core concepts and show you how to build dynamic, interactive web applications without the complexity of traditional JavaScript frameworks.
+## Project Overview
 
-## Table of Contents
+DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfect visual and behavioral parity while eliminating JavaScript dependencies (except for the 15KB Datastar library for reactivity).
 
-1. [Introduction](mdc:#introduction)
-2. [Key Concepts](mdc:#key-concepts)
-3. [Getting Started](mdc:#getting-started)
-4. [Frontend Reactivity](mdc:#frontend-reactivity)
-   - [Signals and State Management](mdc:#signals-and-state-management)
-   - [Two-way Data Binding](mdc:#two-way-data-binding)
-   - [Computed Properties](mdc:#computed-properties)
-   - [Conditional Rendering](mdc:#conditional-rendering)
-   - [Class and Attribute Binding](mdc:#class-and-attribute-binding)
-5. [Event Handling](mdc:#event-handling)
-   - [Basic Events](mdc:#basic-events)
-   - [Keyboard Events](mdc:#keyboard-events)
-   - [Mouse Events](mdc:#mouse-events)
-   - [Event Modifiers](mdc:#event-modifiers)
-6. [Backend Integration](mdc:#backend-integration)
-   - [Server-Sent Events (SSE)](mdc:#server-sent-events-sse)
-   - [HTTP Actions](mdc:#http-actions)
-   - [Loading Indicators](mdc:#loading-indicators)
-7. [Building UI Components](mdc:#building-ui-components)
-   - [Forms](mdc:#forms)
-   - [Dropdowns](mdc:#dropdowns)
-   - [Tabs](mdc:#tabs)
-   - [Modals](mdc:#modals)
-8. [Advanced Techniques](mdc:#advanced-techniques)
-   - [Dynamic DOM Updates](mdc:#dynamic-dom-updates)
-   - [Batch Operations](mdc:#batch-operations)
-   - [Working with Custom Events](mdc:#working-with-custom-events)
-   - [Integration with JavaScript Libraries](mdc:#integration-with-javascript-libraries)
-9. [Best Practices](mdc:#best-practices)
-10. [Troubleshooting](mdc:#troubleshooting)
-11. [Conclusion](mdc:#conclusion)
-12. [Important Naming Convention](mdc:#important-naming-convention)
+### Key Features
 
-## Introduction
+- **Pixel-perfect shadcn/ui components** ported to Go/templ
+- **Datastar signals** for interactive components
 
-Datastar is a modern web framework that combines frontend reactivity (like Alpine.js) with backend integration (like htmx) into a single, cohesive solution. It allows you to:
+### Project Structure
 
-- Build reactive UIs with declarative HTML attributes
-- Manage application state with signals
-- Communicate with the server through Server-Sent Events (SSE)
-- Update the DOM and application state directly from the server
-- Create complex, interactive web applications without complex JavaScript
-
-Datastar's philosophy centers around hypermedia - the idea that the web is a network of interconnected resources. Instead of fighting against the web's natural architecture with complex client-side routing and state management, Datastar embraces hypermedia to create simpler, more maintainable applications.
-
-## Key Concepts
-
-Before diving deeper, let's understand some core concepts of Datastar:
-
-### Signals
-
-Signals are reactive variables that automatically track and propagate changes. When a signal's value changes, any part of the UI that depends on that signal automatically updates. Signals are created with `data-bind`, `data-signals`, or `data-computed` attributes. IMPORTANT: Only use signals when frontend reactivity is required.
-
-### Data Attributes
-
-Datastar uses HTML `data-*` attributes for everything - from binding data to handling events. These attributes create a declarative API that's easy to read and maintain.
-
-### Server-Sent Events (SSE)
-
-Datastar uses SSE to establish a one-way communication channel from the server to the client. This allows the server to push updates to the client without the client having to poll for changes.
-
-### Actions
-
-Actions are helper functions that can be called within Datastar expressions. They have the syntax `@actionName()` and can perform tasks like making HTTP requests or manipulating multiple signals at once.
-
-### Basic Example
-
-Here's a simple counter example to get started:
-
-```html
-<div data-signals-count="0">
-  <button data-on-click="$count++">Increment</button>
-  <button data-on-click="$count--">Decrement</button>
-  <p>Current count: <span data-text="$count"></span></p>
-</div>
+```
+datastarui/
+├── components/                    # Reusable UI components
+│   ├── button/
+│   │   ├── button.templ          # Component template
+│   │   ├── types.go              # Props and types
+│   │   └── variants.go           # CSS variants
+│   ├── form/                     # Form components
+│   ├── input/                    # Input component
+│   └── ...                       # Other components
+├── pages/
+│   ├── components/               # Component demo pages
+│   │   ├── buttonpage/
+│   │   │   └── button_page.templ # Button demo page
+│   │   └── ...                   # Other demo pages
+│   ├── home_page.templ           # Home page
+│   └── docs_page.templ           # Documentation page
+├── layouts/                      # Page layouts and navigation
+├── static/                       # Static assets (CSS, JS)
+└── main.go                       # Server and routing
 ```
 
-This creates a counter with increment and decrement buttons, and a display that updates automatically when the count changes.
+## IMPORTANT
 
-## Frontend Reactivity
+The developer is running a live reload server wathcing for file changes. Do not try to run the compiled binary as it is already running. Templ files will be automatically generated, but feel free to run `templ generate` to check for errors.
 
-### Signals and State Management
+The root directory for datastarui is `/d/cdev/datastarui`. Do not run `go run main.go` that is automatically live reloading on file changes.
 
-Signals are at the core of Datastar's reactivity system. There are multiple ways to create and use signals:
+### Tailwind CSS Watch Process
 
-#### Creating Signals
+**IMPORTANT**: Tailwind CSS is running in watch mode during development. The developer has `tailwindcss --watch` running automatically, which means:
 
-```html
-<!-- Method 1: Direct signal creation -->
-<div data-signals-user="'John'"></div>
+- CSS changes in `static/css/index.css` are automatically compiled to `static/css/build.css`
+- The watch process monitors all `.templ` files for class changes
+- Only run `tailwind` or similar commands if there are CSS compilation issues that need debugging
 
-<!-- Method 2: Multiple signals with object syntax -->
-<div
-  data-signals="{
-  count: 0,
-  user: {
-    name: 'John',
-    email: 'john@example.com'
-  }
-}"
-></div>
+## The Datastar Way - Best Practices
 
-<!-- Method 3: Via data-bind (discussed below) -->
-<input data-bind-username />
+### Stop Overcomplicating It
+
+Most of the time, if you run into issues when using Datastar, you are probably **overcomplicating it™**.
+
+Datastar is a **hypermedia framework**, not a JavaScript framework. If you approach it like a JavaScript framework, you are likely to run into complications.
+
+### The Hypermedia Approach
+
+Between attribute plugins and action plugins, Datastar provides everything you need to build hypermedia-driven applications. Using this approach:
+
+- **Backend drives state** to the frontend and acts as the single source of truth
+- **Server determines** what actions the user can take next
+- **State flows down through props, events flow up** - always encapsulate state and send props down, events up
+
+
+**Alternative: Using `data-bind` with web components:**
+
+```go
+// Binding directly to web component value
+<input data-bind-foo />
+<my-component
+    data-attr-src="$foo"
+    data-bind-result
+></my-component>
+<span data-text="$result"></span>
 ```
-
-#### Accessing Signals
-
-Once created, signals can be accessed using the `$` prefix:
-
-```html
-<div data-text="$user"></div>
-<div data-text="$user.name"></div>
-```
-
-#### Signal Scope
-
-Signals in Datastar are global - they're accessible from anywhere in the DOM. However, you can use namespacing with dot notation to organize signals:
-
-```html
-<div data-signals-form.username="'John'"></div>
-<div data-signals-form.email="'john@example.com'"></div>
-
-<div data-text="$form.username"></div>
-```
-
-### Two-way Data Binding
-
-Datastar provides two-way data binding through the `data-bind` attribute:
-
-```html
-<!-- Basic input binding -->
-<input data-bind-username />
-
-<!-- Alternative syntax -->
-<input data-bind="username" />
-
-<!-- For checkboxes -->
-<input type="checkbox" data-bind-isActive />
-
-<!-- For radio buttons -->
-<input type="radio" value="option1" data-bind-selectedOption />
-<input type="radio" value="option2" data-bind="selectedOption" />
-
-<!-- For selects -->
-<select data-bind-country>
-  <option value="us">United States</option>
-  <option value="ca">Canada</option>
-</select>
-```
-
-When the input value changes, the signal automatically updates, and when the signal changes, the input value updates.
-
-### Computed Properties
-
-Computed properties automatically recalculate when their dependencies change:
-
-```html
-<div data-signals="{firstName: 'John', lastName: 'Doe'}">
-  <input data-bind="firstName" placeholder="First name" />
-  <input data-bind="lastName" placeholder="Last name" />
-
-  <div data-computed-fullName="$firstName + ' ' + $lastName">
-    <p>Full name: <span data-text="$fullName"></span></p>
-  </div>
-</div>
-```
-
-### Conditional Rendering
-
-Hide or show elements based on signal values:
-
-```html
-<div data-signals-isLoggedIn="false">
-  <!-- Show when logged in -->
-  <div data-show="$isLoggedIn">
-    Welcome back! <button data-on-click="$isLoggedIn = false">Logout</button>
-  </div>
-
-  <!-- Show when logged out -->
-  <div data-show="!$isLoggedIn">
-    <button data-on-click="$isLoggedIn = true">Login</button>
-  </div>
-</div>
-```
-
-### Class and Attribute Binding
-
-Dynamically add/remove classes or set attributes:
-
-```html
-<!-- Class binding -->
-<div data-signals-isActive="false">
-  <button data-class-active="$isActive" data-on-click="$isActive = !$isActive">
-    Toggle Active
-  </button>
-</div>
-
-<!-- Multiple classes with object syntax -->
-<button
-  data-class="{
-  'bg-blue-500': $isActive,
-  'text-white': $isActive,
-  'bg-gray-200': !$isActive
-}"
->
-  Styled Button
-</button>
-
-<!-- Attribute binding -->
-<button data-attr-disabled="$count === 0" data-on-click="$count--">
-  Decrement
-</button>
-
-<!-- Multiple attributes -->
-<a
-  data-attr="{
-  href: $link,
-  target: $isExternal ? '_blank' : '_self',
-  rel: $isExternal ? 'noopener noreferrer' : ''
-}"
->
-  Link
-</a>
-```
-
-## Event Handling
-
-### Basic Events
-
-Handle events with the `data-on-` prefix:
-
-```html
-<!-- Click events -->
-<button data-on-click="alert('Button clicked')">Click me</button>
-
-<!-- Update signals -->
-<button data-on-click="$count++">Increment</button>
-
-<!-- Form events -->
-<form data-on-submit="evt.preventDefault(); submitForm()">
-  <input data-bind-email type="email" />
-  <button type="submit">Submit</button>
-</form>
-```
-
-### Keyboard Events
-
-Handle keyboard input with access to the event object:
-
-```html
-<!-- Enter key press -->
-<input
-  data-bind-search
-  data-on-keydown="evt.key === 'Enter' && performSearch($search)"
-/>
-
-<!-- Key combinations -->
-<div
-  data-on-keydown__window="
-  evt.ctrlKey && evt.key === 's' && (
-    evt.preventDefault(),
-    saveDocument()
-  )
-"
->
-  Press Ctrl+S to save
-</div>
-
-<!-- Multiple key handlers -->
-<div
-  data-on-keydown="
-  evt.key === 'ArrowUp' && navigateUp() ||
-  evt.key === 'ArrowDown' && navigateDown() ||
-  evt.key === 'Escape' && closeModal()
-"
->
-  Key navigation area
-</div>
-```
-
-### Mouse Events
-
-Handle various mouse interactions:
-
-```html
-<!-- Hover effects -->
-<div
-  data-signals-isHovered="false"
-  data-on-mouseenter="$isHovered = true"
-  data-on-mouseleave="$isHovered = false"
-  data-class-hovered="$isHovered"
->
-  Hover over me
-</div>
-
-<!-- Mouse position tracking -->
-<div
-  data-signals="{mouseX: 0, mouseY: 0}"
-  data-on-mousemove="$mouseX = evt.clientX; $mouseY = evt.clientY"
->
-  Mouse position:
-  <span data-text="$mouseX"></span>,
-  <span data-text="$mouseY"></span>
-</div>
-```
-
-### Event Modifiers
-
-DataStar offers several ways to modify event behavior:
-
-```html
-<!-- Global events (window level) -->
-<div data-on-scroll__window="handleScroll()"></div>
-
-<!-- Debouncing input -->
-<input
-  data-bind-search
-  data-on-input__debounce.300ms="performSearch($search)"
-/>
-
-<!-- Custom event case -->
-<my-component data-on-custom-event__case.camel="handleEvent()"></my-component>
-```
-
-## Backend Integration
-
-### Server-Sent Events (SSE)
-
-Datastar uses SSE to establish a connection between the client and server. The server can then push updates to the client without the client having to poll for changes.
-
-Basic client-side setup:
-
-```html
-<div id="content">Initial content</div>
-<button data-on-click="@get('/api/stream-data')">Load Data</button>
-```
-
-Server-side example (Node.js):
 
 ```javascript
-app.get("/api/stream-data", (req, res) => {
-  // Set SSE headers
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive",
-  });
+class MyComponent extends HTMLElement {
+  static get observedAttributes() {
+    return ["src"];
+  }
 
-  // Send HTML fragment update
-  res.write("event: datastar-merge-fragments\n");
-  res.write("data: selector #content\n");
-  res.write(
-    "data: fragments <div>New content loaded at " + new Date() + "</div>\n\n"
-  );
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.value = `You entered ${newValue}`;
+    this.dispatchEvent(new Event("change")); // Required for data-bind
+  }
+}
 
-  // Update signals
-  res.write("event: datastar-merge-signals\n");
-  res.write(
-    'data: signals {loading: false, lastUpdated: "' + new Date() + '"}\n\n'
-  );
-
-  // End the response
-  res.end();
-});
+customElements.define("my-component", MyComponent);
 ```
 
-### HTTP Actions
+### Key Principles
 
-Datastar provides actions for making HTTP requests:
+1. **Think hypermedia first** - let the server drive state and available actions
+2. **Use data-\* attributes** for all reactive behavior when possible
+3. **Extract complex logic** into external scripts or web components
+4. **Follow props down, events up** - encapsulate functionality and communicate via well-defined interfaces
+5. **Avoid JavaScript framework patterns** - resist the urge to manage state in the frontend
+6. **Keep it simple** - if it feels complicated, you're probably overengineering it
 
-```html
-<!-- GET request -->
-<button data-on-click="@get('/api/data')">Fetch Data</button>
+### DatastarUI Component Guidelines
 
-<!-- POST request with form data -->
-<form data-signals="{name: '', email: ''}">
-  <input data-bind="name" placeholder="Name" />
-  <input data-bind="email" type="email" placeholder="Email" />
+When building DatastarUI components:
 
-  <button data-on-click="@post('/api/users')">Submit</button>
-</form>
+- **Prefer server-driven state** over complex client-side logic
+- **Use Datastar expressions** for simple reactive behavior
+- **Extract complex interactions** into web components when needed
+- **Follow the hypermedia mindset** - components should be declarative and server-controlled
+- **Test with minimal JavaScript** - the goal is to eliminate JavaScript dependencies while maintaining full functionality
 
-<!-- PUT, PATCH, DELETE requests -->
-<button data-on-click="@put('/api/users/123')">Update</button>
-<button data-on-click="@patch('/api/users/123')">Partial Update</button>
-<button data-on-click="@delete('/api/users/123')">Delete</button>
-```
+# Go/templ Patterns
 
-When these actions are called, all signals are automatically included in the request body, allowing the server to access and modify them.
+- **Use templ.Attributes** for flexible HTML attribute passing
 
-### Loading Indicators
-
-Show loading states while requests are in progress:
-
-```html
-<button data-on-click="@get('/api/slow-operation')" data-indicator-loading>
-  Perform Operation
-</button>
-
-<!-- Show loading indicator while request is in flight -->
-<div data-show="$loading" class="spinner">Loading...</div>
-
-<!-- Disable button while loading -->
-<button
-  data-on-click="@get('/api/data')"
-  data-indicator-loading
-  data-attr-disabled="$loading"
->
-  Fetch Data
-</button>
-```
-
-## Building UI Components
-
-### Forms
-
-Create reactive forms with validation:
-
-```html
-<form
-  data-signals="{
-    username: '',
-    email: '',
-    password: '',
-    errors: {}
-  }"
-  data-computed-isValid="
-    $username.length >= 3 && 
-    $email.includes('@') && 
-    $password.length >= 8
-  "
-  data-on-submit="
-    evt.preventDefault();
-    $isValid && @post('/api/register')
-  "
->
-  <div>
-    <label>Username</label>
-    <input
-      data-bind="username"
-      data-on-input="
-        $errors.username = $username.length < 3 
-          ? 'Username must be at least 3 characters' 
-          : ''
-      "
-    />
-    <div
-      data-show="$errors.username"
-      data-text="$errors.username"
-      class="error"
-    ></div>
-  </div>
-
-  <div>
-    <label>Email</label>
-    <input
-      type="email"
-      data-bind="email"
-      data-on-input="
-        $errors.email = !$email.includes('@') 
-          ? 'Invalid email address' 
-          : ''
-      "
-    />
-    <div
-      data-show="$errors.email"
-      data-text="$errors.email"
-      class="error"
-    ></div>
-  </div>
-
-  <div>
-    <label>Password</label>
-    <input
-      type="password"
-      data-bind="password"
-      data-on-input="
-        $errors.password = $password.length < 8 
-          ? 'Password must be at least 8 characters' 
-          : ''
-      "
-    />
-    <div
-      data-show="$errors.password"
-      data-text="$errors.password"
-      class="error"
-    ></div>
-  </div>
-
-  <button type="submit" data-attr-disabled="!$isValid">Register</button>
-</form>
-```
-
-### Dropdowns
-
-Create interactive dropdown menus:
-
-```html
-<div
-  data-signals-dropdown.isOpen="false"
-  data-ref-dropdown_container
-  data-on-click__window="
-    $dropdown.isOpen && 
-    !$dropdown_container.contains(evt.target) && 
-    ($dropdown.isOpen = false)
-  "
->
-  <!-- Dropdown Toggle Button -->
-  <button
-    data-on-click="$dropdown.isOpen = !$dropdown.isOpen"
-    aria-expanded="true"
-    data-attr-aria-expanded="$dropdown.isOpen"
-  >
-    Menu <span data-text="$dropdown.isOpen ? '▲' : '▼'"></span>
-  </button>
-
-  <!-- Dropdown Content -->
-  <div data-show="$dropdown.isOpen" class="dropdown-menu" style="display: none">
-    <a href="#" class="dropdown-item">Profile</a>
-    <a href="#" class="dropdown-item">Settings</a>
-    <a href="#" class="dropdown-item">Logout</a>
-  </div>
-</div>
-```
-
-### Tabs
-
-Create tabbed interfaces:
-
-```html
-<div data-signals-activeTab="'tab1'">
-  <!-- Tab navigation -->
-  <div class="tabs">
-    <button
-      data-on-click="$activeTab = 'tab1'"
-      data-class-active="$activeTab === 'tab1'"
-    >
-      Tab 1
-    </button>
-    <button
-      data-on-click="$activeTab = 'tab2'"
-      data-class-active="$activeTab === 'tab2'"
-    >
-      Tab 2
-    </button>
-    <button
-      data-on-click="$activeTab = 'tab3'"
-      data-class-active="$activeTab === 'tab3'"
-    >
-      Tab 3
-    </button>
-  </div>
-
-  <!-- Tab content -->
-  <div data-show="$activeTab === 'tab1'" class="tab-content">
-    Content for Tab 1
-  </div>
-  <div data-show="$activeTab === 'tab2'" class="tab-content">
-    Content for Tab 2
-  </div>
-  <div data-show="$activeTab === 'tab3'" class="tab-content">
-    Content for Tab 3
-  </div>
-</div>
-```
-
-### Modals
-
-Create modal dialogs:
-
-```html
-<div data-signals-modal.isOpen="false">
-  <!-- Modal Trigger -->
-  <button data-on-click="$modal.isOpen = true">Open Modal</button>
-
-  <!-- Modal Overlay -->
-  <div
-    data-show="$modal.isOpen"
-    data-on-click="$modal.isOpen = false"
-    class="modal-overlay"
-    style="display: none"
-  >
-    <!-- Modal Content -->
-    <div data-on-click="evt.stopPropagation()" class="modal-content">
-      <h2>Modal Title</h2>
-      <p>Modal content goes here...</p>
-
-      <button data-on-click="$modal.isOpen = false">Close</button>
+```go
+templ RefExample(props RefExampleProps) {
+    {{
+        refName := props.ID + "_ref"
+        refAttrName := "data-ref-" + refName
+        exampleAttrs := templ.Attributes{
+            refAttrName: "", // data-ref just needs to exist, value doesn't matter
+        }   
+        // surround the string in backticks "`" for javascript template literal syntax
+        content := "`I'm using the content of '${$" + refName + ".innerHTML}'`"
+    }}
+    <div>
+      <div { exampleAttrs... }>{ "I'm a div that is getting referenced" }</div>
+      <div data-text={ content }></div>
     </div>
-  </div>
-</div>
+}
 ```
 
-## Advanced Techniques
+- **Implement conditional rendering** with templ's `switch` statements
 
-### Dynamic DOM Updates
+```go
+templ userTypeDisplay(userType string) {
+	switch userType {
+		case "test":
+			<span>{ "Test user" }</span>
+		case "admin":
+			<span>{ "Admin user" }</span>
+		default:
+			<span>{ "Unknown user" }</span>
+	}
+}
+```
 
-Update specific parts of the DOM using server responses:
+#### Common templ Gotchas and Solutions
+
+**URL Safety**: Always wrap href attributes with `templ.SafeURL()` for security:
+
+```go
+// ❌ Wrong - will cause compilation error
+<a href={ props.Href }>
+
+// ✅ Correct - prevents XSS attacks
+<a href={ templ.SafeURL(props.Href) }>
+```
+
+**Template Structure**: All content must be inside the layout wrapper:
+
+```go
+// ❌ Wrong - content outside @l.Root() will cause "expected nodes" error
+templ MyPage() {
+    <div>Outside content</div>
+    @l.Root("page") {
+        <div>Inside content</div>
+    }
+}
+
+// ✅ Correct - all content inside @l.Root()
+templ MyPage() {
+    @l.Root("page") {
+        <div>All content here</div>
+    }
+}
+```
+
+**Component Composition**: Use proper nesting for multi-part components:
+
+```go
+// ✅ Correct breadcrumb structure
+templ ComponentPageBreadcrumbs(currentPage string) {
+	<div>
+		@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
+			@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+					@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs"}) {
+						Docs
+					}
+				}
+				@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+					@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+						{ currentPage }
+					}
+				}
+			}
+		}
+	</div>
+}
+```
+
+**✅ DatastarUI Component Pattern - ID as Namespace:**
+
+```go
+templ Checkbox(props CheckboxProps) {
+    {{
+        // Create nested signal structure: {[id]: {checked: false}}
+        // This allows the ID to namespace all signals for this component instance
+        initialValue := "false"
+        if props.Checked {
+            initialValue = "true"
+        }
+        signals := "{\"" + props.ID + "\": {\"checked\": " + initialValue + "}}"
+        signalRef := "$" + props.ID + ".checked"
+        toggleExpr := signalRef + " = !" + signalRef
+    }}
+    <div data-signals={ signals }>
+        <button
+            id={ props.ID }
+            data-on-click={ toggleExpr }
+            data-attr-aria-checked={ signalRef + " ? 'true' : 'false'" }
+            data-show={ signalRef }
+        >
+            <!-- component content -->
+        </button>
+    </div>
+}
+
+templ CheckboxExampleUsage() {
+    <div>
+        @checkbox.Checkbox(checkbox.CheckboxProps{
+            ID: "terms",  // Creates signals: $terms.checked
+        })
+        <!-- Access signal from anywhere on page -->
+        <span data-text="$terms.checked ? 'Accepted' : 'Not accepted'"></span>
+    </div>
+}
+```
+
+**IMPORTANT SNAKE CASE SIGNAL NAMES**: lowercase and underscores `props.ID`
+
+* Since we use `props.ID` to create the signal name, we follow a convention using underscores "_" not dashes "-" and only lowercase.
+* Component should throw an error if `props.ID` contains uppercase, dashses or periods.
+
+**Multi-Signal Component Example:**
+
+**Namespaced Signals**: Only leaf nodes are signals:
+
+```go
+// ✅ Correct - both are valid signals
+data-signals-user.name="'John'" data-signals-count="0"
+data-text="$user.name"  // Valid
+data-text="$count"      // Valid
+
+// ❌ Wrong - namespace is not a signal
+data-text="$user"       // Invalid if user.name exists
+```
+
+```go
+templ Dropdown(props DropdownProps) {
+    {{
+        // Multiple signals namespaced under component ID
+        signals := "{\"" + props.ID + "\": {\"open\": false, \"selected\": null, \"loading\": false}}"
+    }}
+    <div data-signals={ signals }>
+        <button data-on-click="$" + props.ID + ".open = !$" + props.ID + ".open">
+            Toggle Dropdown
+        </button>
+        <div data-show="$" + props.ID + ".open">
+            <!-- dropdown content -->
+        </div>
+        <!-- Loading state -->
+        <div data-show="$" + props.ID + ".loading">Loading...</div>
+        <!-- Selected value -->
+        <span data-text="$" + props.ID + ".selected || 'None selected'"></span>
+    </div>
+}
+
+templ DropdownExampleUsage() {
+    <div>
+        @dropdown.Dropdown(dropdown.DropdownProps{
+            ID: "country-selector",  // Creates: $country-selector.open, $country-selector.selected, $country-selector.loading
+        })
+
+        <!-- Access any signal from anywhere on page -->
+        <div data-show="$country-selector.open">Dropdown is open!</div>
+        <div data-text="'Selected: ' + ($country-selector.selected || 'None')"></div>
+    </div>
+}
+```
+
+#### Datastar Fetching Signal
+
+The data-indicator attribute accepts the name of a signal whose value is set to true when a fetch request initiated from the same element is in progress, otherwise false. If the signal does not exist in the signals, it will be added.
+
+Note: If you use the data-indicator attribute, you MUST also make sure to have a unique id attribute on the element that is making the fetch request. The is because the element might not exist otherwise nor be stable when the fetch request is completed.
 
 ```html
-<div id="user-profile">
-  <!-- Content will be updated by the server -->
-</div>
-
-<button data-on-click="@get('/api/user/profile')">Load Profile</button>
-```
-
-Server response:
-
-```
-event: datastar-merge-fragments
-data: selector #user-profile
-data: fragments
-data: <div class="profile-card">
-data:   <img src="/images/user.jpg" alt="User avatar">
-data:   <h2>John Doe</h2>
-data:   <p>john@example.com</p>
-data: </div>
-```
-
-### Batch Operations
-
-Perform operations on multiple signals at once:
-
-```html
-<div
-  data-signals="{
-  filters: {
-    category1: false,
-    category2: false,
-    category3: false
+<style>
+  .indicator {
+    opacity: 0;
+    transition: opacity 300ms ease-out;
   }
-}"
->
-  <div>
-    <input type="checkbox" data-bind="filters.category1" /> Category 1
-    <input type="checkbox" data-bind="filters.category2" /> Category 2
-    <input type="checkbox" data-bind="filters.category3" /> Category 3
-  </div>
-
-  <button data-on-click="@setAll('filters.*', true)">Select All</button>
-  <button data-on-click="@setAll('filters.*', false)">Clear All</button>
-  <button data-on-click="@toggleAll('filters.*')">Toggle All</button>
-</div>
-```
-
-### Working with Custom Events
-
-Dispatch and listen for custom events:
-
-```html
-<div data-signals-message="''">
-  <!-- Listen for custom event -->
-  <div data-on-notification__window="$message = evt.detail.text">
-    <p data-text="$message"></p>
-  </div>
-
-  <!-- Dispatch custom event -->
-  <button
-    data-on-click="
-    window.dispatchEvent(
-      new CustomEvent('notification', {
-        detail: { text: 'Hello from DataStar!' }
-      })
-    )
-  "
-  >
-    Send Notification
-  </button>
-</div>
-```
-
-### Integration with JavaScript Libraries
-
-Use external JavaScript libraries with Datastar:
-
-```html
-<div
-  data-signals="{chartData: [10, 20, 30, 40, 50]}"
-  data-ref-chart_container
-  data-on-signal-change.chartData="renderChart($chart_container, $chartData)"
->
-  <canvas id="myChart"></canvas>
-
-  <button data-on-click="$chartData = [50, 40, 30, 20, 10]">
-    Update Chart
-  </button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  function renderChart(container, data) {
-    const canvas = container.querySelector("canvas");
-    new Chart(canvas, {
-      type: "bar",
-      data: {
-        labels: ["A", "B", "C", "D", "E"],
-        datasets: [
-          {
-            label: "My Dataset",
-            data: data,
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-          },
-        ],
-      },
-    });
+  .indicator.loading {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
   }
-</script>
+</style>
+<button
+  id="greetingBtn"
+  data-indicator-fetching
+  data-on-click="@get('/examples/fetch_indicator/greet')"
+  data-attr-disabled="$fetching"
+>
+  Click me for a greeting
+</button>
+<div class="indicator" data-class="{loading: $fetching}">Loading Indicator</div>
+<div id="greeting"></div>
 ```
 
-## Best Practices
+### Datastar Forms
 
-1. **Use Namespaces for Signals**: Organize related signals with namespaces like `user.name`, `user.email`.
+Setting the contentType option to form tells the @get() action to look for the closest form, perform validation on it, and send all form elements within it to the backend. A selector option can be provided to specify a form element. No signals are sent to the backend in this type of request.
 
-2. **Keep DOM Structure Clean**: Avoid deeply nested elements with multiple attributes - extract complex components.
+```html
+<form>
+  <input name="foo" required placeholder="Type foo contents" />
+  <button data-on-click="@get('/endpoint', {contentType: 'form'})">
+    Submit GET request
+  </button>
+  <button data-on-click="@post('/endpoint', {contentType: 'form'})">
+    Submit POST request
+  </button>
+</form>
 
-3. **Prefer Server-Side Validation**: While client-side validation improves UX, always validate on the server.
+<button
+  data-on-click="@get('/endpoint', {contentType: 'form', selector: '#myform'})"
+>
+  Submit GET request from outside the form
+</button>
+```
 
-4. **Use Element References**: For performance-sensitive operations, use `data-ref` to avoid DOM queries.
+#### DatastarUI Forms
 
-5. **Handle Loading States**: Always provide feedback with `data-indicator` when performing asynchronous operations.
+```go
+// Form components use the shadcn/ui form pattern
+@form.Form(form.FormProps{ID: "account-form", Method: "POST", Action: "/api/account"}) {
+    @form.FormItem(form.FormItemProps{}) {
+        @form.FormLabel(form.FormLabelProps{For: "username"}) {
+            Username
+        }
+        @form.FormControl(form.FormControlProps{ID: "username"}) {
+            @input.Input(input.InputProps{
+                ID:          "username",
+                Name:        "username",
+                Placeholder: "Enter username",
+            })
+        }
+        @form.FormDescription(form.FormDescriptionProps{}) {
+            This is your public display name.
+        }
+        @form.FormMessage(form.FormMessageProps{}) {
+            // Error messages appear here
+        }
+    }
+}
+```
 
-6. **Keep Expressions Simple**: Break complex expressions into computed signals for readability.
+### Datastar Expressions
 
-7. **Think Hypermedia-First**: Let the server drive application state when appropriate, instead of managing everything client-side.
+Datastar expressions are JavaScript-like strings evaluated by Datastar attributes. They provide powerful declarative reactivity with some key differences from standard JavaScript.
 
-8. **Progressive Enhancement**: Build applications that work without JavaScript first, then enhance with Datastar.
+**Signal Access**: Signals use the `$` prefix and are automatically converted to `ctx.signals.signal('name').value`:
 
-## Troubleshooting
+```go
+// Basic signal usage
+data-text="$count"                   // Displays signal value
+data-show="$isVisible"               // Conditional visibility
+data-text="$user.name"               // Nested signal access
+data-text="$items.length"            // JavaScript properties work
 
-**Problem**: Signal doesn't update when changed
-**Solution**: Check if the signal is defined properly. Remember that signals must be defined before they're used in the DOM.
+// Signal assignment
+data-on-click="$count++"             // Increment signal
+data-on-click="$user.name = 'John'"  // Set signal value
+```
 
-**Problem**: Event handler not firing
-**Solution**: Verify the event name is correct. Use browser devtools to confirm the event is being dispatched.
+**Actions**: Actions use the `@` prefix for
 
-**Problem**: Server-sent events not working
-**Solution**: Check that your server is setting the correct headers (`Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`).
+```go
+data-on-click="@post('/api/endpoint')"           // POST request
+data-on-click="$count++; @post('/api/count')"   // Multiple statements
+```
 
-**Problem**: DOM not updating after server response
-**Solution**: Ensure your server is sending properly formatted events (e.g., `datastar-merge-fragments`). Check that element IDs match between client and server.
+**JavaScript Operators**: Standard JavaScript operators are available:
 
-**Problem**: Click-outside detection not working
-**Solution**: Ensure the element reference (`data-ref`) is set before the click handler. Check that the condition in the handler is correct.
+```go
+// Logical operators
+data-on-click="$isReady && @post('/launch')"
+data-show="$user && $user.isActive"
 
-## Conclusion
+// Ternary operator - works with most attributes
+data-attr-class="$theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'"
+data-text="$count > 0 ? $count + ' items' : 'No items'"
+data-attr-disabled="$loading ? 'true' : 'false'"
+data-show="$user ? true : false"  // Though just $user is simpler
 
-Datastar offers a refreshing approach to building web applications by combining the best aspects of frontend reactivity and backend integration. By leveraging hypermedia principles and declarative HTML, it allows developers to create dynamic, interactive experiences without the complexity of traditional JavaScript frameworks.
+// Nested ternary (use sparingly)
+data-text="$status === 'loading' ? 'Loading...' : $status === 'error' ? 'Error occurred' : 'Success'"
 
-Whether you're building a simple form or a complex application, Datastar's intuitive API and flexible architecture make it a powerful tool for modern web development. As you continue to explore Datastar, you'll discover new patterns and techniques that can help you build better, more maintainable web applications.
+// Ternary with complex expressions
+data-attr-href="$user.isAdmin ? '/admin/dashboard' : '/user/profile'"
+data-text="$items.length === 0 ? 'No items found' : $items.length === 1 ? '1 item' : $items.length + ' items'"
 
-Remember that Datastar is designed to work with the web platform, not against it. Embrace this philosophy, and you'll find that many complex problems become surprisingly simple to solve.
+// Comparison operators
+data-show="$status === 'success'"
+data-show="$count >= 10"
+```
 
-## IMPORTANT NAMING CONVENTION
+**Important Note**: The ternary operator works with most Datastar attributes (`data-text`, `data-show`, `data-attr-*`, etc.) but **NOT** with `data-class`, which requires object syntax.
 
+**Multiple Statements**: Use semicolons to separate statements:
 
-Please note that the framework's name is always spelled "Datastar" with a lowercase "s", not "DataStar". If I catch you spelling it with a capital S, we will have a big problem on our hands. I might need to use in in the blood sacrifice at D\* Conf.
+```go
+// Single line
+data-on-click="$count++; $message = 'Updated'; @post('/api/update')"
+
+// Multi-line (semicolons required)
+data-on-submit="
+    $errors = {};
+    @post('/api/form')
+"
+```
+
+**Event Context**: Access browser events with `evt`:
+
+```go
+data-on-input="$value = evt.target.value"
+data-on-keydown="evt.key === 'Enter' && @post('/search')"
+data-on-click="evt.preventDefault(); $modal = true"
+```
+
+## Development Workflow
+
+### Step 1: Analyze Source Component
+
+1. Locate the component in `ui/apps/v4/registry/new-york-v4/ui/[component].tsx`
+2. Extract the `cva` configuration (base classes, variants, defaults)
+3. Identify all props and their types
+4. Note any special behaviors or composition patterns
+
+### Step 2: Create Component Structure
+
+1. Create the component directory: `components/[component-name]/`
+2. Define types in `types.go` with all necessary props
+3. Implement variants in `variants.go` with exact CSS classes
+4. Build the template in `[component-name].templ`
+
+### Step 3: Add Interactivity
+
+1. **Identify reactive needs**: What state changes are required?
+2. **Implement Datastar patterns**: Use appropriate signals and bindings
+3. **Test interactions**: Ensure smooth, JavaScript-like behavior
+4. **Optimize performance**: Minimize unnecessary re-renders
+
+### Step 4: Create Component Demo Page
+
+1. **Create demo page directory**: `pages/components/[component-name]/`
+2. **Create demo page**: `pages/components/[component-name]/[component-name]_page.templ`
+3. **Follow the button component pattern** for consistency
+4. **Include comprehensive examples** showcasing all variants and features
+5. **Add descriptive sections** explaining each example
+6. **Add route to main.go** and **sidebar.go** to link to the new component demo page
+
+### Step 6: Update Routing Structure
+
+Update the main.go file to use the new folder-based imports:
+
+```go
+import (
+    "github.com/coreycole/datastarui/pages/components/button"
+    "github.com/coreycole/datastarui/pages/components/tabs"
+    // ... other component imports
+)
+
+// Route handlers
+e.GET("/components/button", func(c echo.Context) error {
+    component := button.ButtonPage()
+    return component.Render(c.Request().Context(), c.Response().Writer)
+})
+```

@@ -2,23 +2,24 @@ package dialog
 
 import "github.com/a-h/templ"
 
-// DialogProps defines the props for the Dialog container
+// DialogProps defines the props for the Dialog container (native <dialog> element)
 type DialogProps struct {
 	ID         string
 	Class      string
+	ClosedBy   string // "none", "closerequest", "any" - controls how dialog can be dismissed
 	Attributes templ.Attributes
 }
 
 // DialogTriggerProps defines the props for the DialogTrigger component
 type DialogTriggerProps struct {
-	ID         string
 	DialogID   string
+	Modal      bool // true for showModal(), false for show()
 	AsChild    bool
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogContentProps defines the props for the DialogContent component
+// DialogContentProps defines the props for the DialogContent component (for backwards compatibility)
 type DialogContentProps struct {
 	ID          string
 	Class       string
@@ -60,8 +61,9 @@ type DialogDescriptionProps struct {
 
 // DialogCloseProps defines the props for the DialogClose component
 type DialogCloseProps struct {
-	DialogID   string
-	AsChild    bool
-	Class      string
-	Attributes templ.Attributes
+	DialogID    string
+	ReturnValue string // Optional return value when closing the dialog
+	AsChild     bool
+	Class       string
+	Attributes  templ.Attributes
 }

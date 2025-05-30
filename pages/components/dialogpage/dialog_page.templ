@@ -15,789 +15,437 @@ templ DialogPage() {
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Dialog</h1>
 				<p class="text-muted-foreground">
-					A modal dialog that interrupts the user with important content and expects a response using the native HTML dialog element with Datastar reactivity.
+					A modal dialog using the native HTML dialog element with Datastar reactivity. Supports both modal and non-modal dialogs with various dismiss behaviors.
 				</p>
 			</div>
-			<!-- Interactive Form Example with Return Values -->
+			<!-- Native Dialog Features Demo -->
 			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Interactive Form Example</h2>
+				<h2 class="text-2xl font-semibold tracking-tight">Native Dialog Features</h2>
 				<p class="text-sm text-muted-foreground">
-					This example demonstrates form submission with return values and proper state management using Datastar signals.
+					Demonstrates modal vs non-modal dialogs and different closedby behaviors using the native HTML dialog element.
 				</p>
-				<div
-					class="space-y-4 p-6 bg-muted/50 rounded-lg"
-					data-signals="{formData: {name: '', email: '', result: ''}}"
-				>
-					<!-- Display current form data -->
-					<div class="space-y-2">
-						<h3 class="font-medium">Current State:</h3>
-						<div class="text-sm bg-background p-3 rounded border">
-							<div>Name: <span data-text="$formData.name || 'Not set'"></span></div>
-							<div>Email: <span data-text="$formData.email || 'Not set'"></span></div>
-							<div>Dialog Result: <span data-text="$formData.result || 'No result yet'"></span></div>
-						</div>
-					</div>
-					@dialog.Dialog(dialog.DialogProps{ID: "form-dialog"}) {
-						@dialog.DialogTrigger(dialog.DialogTriggerProps{
-							DialogID: "form-dialog",
-							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
-						}) {
-							Open Form Dialog
-						}
-						@dialog.DialogContent(dialog.DialogContentProps{
-							ID:          "form-dialog",
-							Size:        "md",
-							ShowOverlay: true,
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<!-- Modal Dialog -->
+					<div class="space-y-4 p-4 border rounded-lg">
+						<h3 class="font-medium">Modal Dialog</h3>
+						<p class="text-sm text-muted-foreground">
+							Uses showModal() - blocks interaction with page, ESC key closes, backdrop click closes.
+						</p>
+						@dialog.Dialog(dialog.DialogProps{
+							ID:       "modal_demo",
+							ClosedBy: "any", // Can be closed by ESC, outside click, or close button
 						}) {
 							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
 								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-									User Information
+									Modal Dialog
 								}
 								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-									Please provide your information. The form data will be reflected in the page state.
+									This is a modal dialog that blocks interaction with the rest of the page.
 								}
 							}
-							<form
-								method="dialog"
-								data-on-submit="
-									$formData.name = evt.target.name.value;
-									$formData.email = evt.target.email.value;
-									$formData.result = 'Form submitted successfully at ' + new Date().toLocaleTimeString();
-									$form-dialog.open = false;
-								"
-								class="space-y-4"
-							>
-								<div class="space-y-2">
-									@label.Label(label.LabelProps{For: "name"}) {
-										Name
-									}
-									@input.Input(input.InputProps{
-										ID:          "name",
-										Name:        "name",
-										Placeholder: "Enter your name",
-										Required:    true,
-									})
+							<div class="py-4">
+								<p class="text-sm">Try pressing ESC or clicking outside to close this dialog.</p>
+								<!-- Show dialog state inside the dialog -->
+								<div class="mt-4 p-3 bg-blue-50 rounded border">
+									<p class="text-sm font-medium text-blue-900">Dialog State (from inside):</p>
+									<p class="text-xs text-blue-700">Open: <span data-text="$modal_demo.open ? 'Yes' : 'No'"></span></p>
 								</div>
-								<div class="space-y-2">
-									@label.Label(label.LabelProps{For: "email"}) {
-										Email
-									}
-									@input.Input(input.InputProps{
-										ID:          "email",
-										Name:        "email",
-										Type:        "email",
-										Placeholder: "Enter your email",
-										Required:    true,
-									})
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "form-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Type:    "button",
-											Variant: "outline",
-										}) {
-											Cancel
-										}
-									}
-									@button.Button(button.ButtonProps{
-										Type:    "submit",
-										Variant: "default",
-									}) {
-										Submit
-									}
-								}
-							</form>
-						}
-					}
-				</div>
-			</div>
-			<!-- Event Handling Example -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Event Handling & Lifecycle</h2>
-				<p class="text-sm text-muted-foreground">
-					This example demonstrates the complete dialog event lifecycle including open, close, cancel, and escape key handling.
-				</p>
-				<div
-					class="space-y-4 p-6 bg-muted/50 rounded-lg"
-					data-signals="{events: {log: [], isOpen: false}}"
-				>
-					<!-- Event log display -->
-					<div class="space-y-2">
-						<h3 class="font-medium">Event Log:</h3>
-						<div class="text-sm bg-background p-3 rounded border max-h-32 overflow-y-auto">
-							<div data-show="$events.log.length === 0" class="text-gray-500 italic">
-								No events yet. Try opening and closing the dialog with different methods.
-							</div>
-							<div data-show="$events.log.length > 0">
-								<div data-text="$events.log.slice(-5).reverse().join('\n')" class="whitespace-pre-line"></div>
-							</div>
-						</div>
-					</div>
-					@dialog.Dialog(dialog.DialogProps{ID: "events-dialog"}) {
-						@dialog.DialogTrigger(dialog.DialogTriggerProps{
-							DialogID: "events-dialog",
-							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2",
-						}) {
-							Open Event Demo Dialog
-						}
-						@dialog.DialogContent(dialog.DialogContentProps{
-							ID:          "events-dialog",
-							Size:        "lg",
-							ShowOverlay: true,
-							Attributes: templ.Attributes{
-								"data-on-cancel": "$events.log.push('❌ CANCEL event (ESC key) at ' + new Date().toLocaleTimeString()); $events.isOpen = false",
-								"data-on-toggle": "$events.log.push('🔄 TOGGLE event - state: ' + (evt.newState || 'unknown') + ' at ' + new Date().toLocaleTimeString()); $events.isOpen = evt.newState === 'open'",
-							},
-						}) {
-							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-									Event Handling Demo
-								}
-								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-									Try different ways to close this dialog and watch the event log.
-								}
-							}
-							<div class="space-y-4 py-4">
-								<div class="bg-blue-50 p-4 rounded border border-blue-200">
-									<h4 class="font-medium text-blue-900 mb-2">Dialog State:</h4>
-									<div class="text-sm text-blue-800">
-										<div>Open: <span data-text="$events-dialog.open ? 'Yes' : 'No'"></span></div>
-									</div>
-								</div>
-								<div class="space-y-3">
-									<h4 class="font-medium">Ways to close this dialog:</h4>
-									<ul class="text-sm space-y-1 text-muted-foreground">
-										<li>• Press <kbd class="px-1.5 py-0.5 text-xs bg-gray-100 border rounded">ESC</kbd> key (triggers cancel event)</li>
-										<li>• Click the X button in the top-right</li>
-										<li>• Click "Just Close" button</li>
-										<li>• Click "Close with Value" button</li>
-										<li>• Submit the form below</li>
-									</ul>
-								</div>
-								<form
-									method="dialog"
-									class="space-y-3"
-									data-on-submit="
-										$events.log.push('📝 Form submitted with value: ' + (evt.target.resultValue.value || 'empty') + ' at ' + new Date().toLocaleTimeString());
-										$events-dialog.open = false;
-									"
-								>
-									<div class="space-y-2">
-										@label.Label(label.LabelProps{For: "result-value"}) {
-											Form Result Value (optional)
-										}
-										@input.Input(input.InputProps{
-											ID:          "result-value",
-											Name:        "resultValue",
-											Placeholder: "Enter a return value...",
-										})
-									</div>
-									<div class="flex gap-2">
-										@button.Button(button.ButtonProps{
-											Type:    "submit",
-											Variant: "default",
-										}) {
-											Submit Form
-										}
-									</div>
-								</form>
 							</div>
 							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
 								@dialog.DialogClose(dialog.DialogCloseProps{
-									DialogID: "events-dialog",
-									Attributes: templ.Attributes{
-										"data-on-click": "$events.log.push('🔘 Close button clicked at ' + new Date().toLocaleTimeString())",
-									},
+									DialogID: "modal_demo",
 								}) {
 									@button.Button(button.ButtonProps{
-										Variant: "outline",
+										Variant: "default",
 									}) {
-										Just Close
+										Close
 									}
 								}
-								<button
-									type="button"
-									class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-									data-on-click="
-										$events.log.push('💾 Close with custom value at ' + new Date().toLocaleTimeString());
-										$events-dialog.open = false;
-									"
-								>
-									Close with Value
-								</button>
 							}
 						}
-					}
-					<!-- Additional status info -->
-					<div class="text-xs text-muted-foreground">
-						<p><strong>Tip:</strong> Open your browser's console to see native dialog events as well.</p>
-					</div>
-				</div>
-			</div>
-			<!-- Basic Example -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Basic Example</h2>
-				<p class="text-sm text-muted-foreground">
-					A simple dialog with form content using the native HTML dialog element.
-				</p>
-				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
-					@dialog.Dialog(dialog.DialogProps{ID: "basic-dialog"}) {
 						@dialog.DialogTrigger(dialog.DialogTriggerProps{
-							DialogID: "basic-dialog",
-							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2",
+							DialogID: "modal_demo",
+							Modal:    true,
+							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 						}) {
-							Edit Profile
+							Open Modal Dialog
 						}
-						@dialog.DialogContent(dialog.DialogContentProps{
-							ID:          "basic-dialog",
-							Size:        "lg",
-							ShowOverlay: true,
+						<!-- Show dialog state outside the dialog -->
+						<div class="text-xs text-muted-foreground mt-2">
+							<div>Dialog Status: <span data-text="$modal_demo.open ? 'Open' : 'Closed'" class="font-medium"></span></div>
+							<div data-show="$modal_demo.open" class="text-green-600">✓ Dialog is currently open</div>
+							<div data-show="!$modal_demo.open" class="text-gray-500">○ Dialog is currently closed</div>
+						</div>
+					</div>
+					<!-- Non-Modal Dialog -->
+					<div class="space-y-4 p-4 border rounded-lg">
+						<h3 class="font-medium">Non-Modal Dialog</h3>
+						<p class="text-sm text-muted-foreground">
+							Uses show() - allows interaction with page, only close button dismisses by default.
+						</p>
+						@dialog.Dialog(dialog.DialogProps{
+							ID:       "nonmodal_demo",
+							ClosedBy: "closerequest", // Can be closed by ESC or close button, but not outside click
 						}) {
 							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
 								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-									Edit profile
+									Non-Modal Dialog
 								}
 								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-									Make changes to your profile here. Click save when you're done.
+									This dialog allows interaction with the rest of the page.
 								}
 							}
-							<div class="grid gap-4 py-4">
-								<div class="grid grid-cols-4 items-center gap-4">
-									@label.Label(label.LabelProps{
-										For:   "name",
-										Class: "text-right",
-									}) {
-										Name
-									}
-									@input.Input(input.InputProps{
-										ID:    "name",
-										Value: "Pedro Duarte",
-										Class: "col-span-3",
-									})
-								</div>
-								<div class="grid grid-cols-4 items-center gap-4">
-									@label.Label(label.LabelProps{
-										For:   "username",
-										Class: "text-right",
-									}) {
-										Username
-									}
-									@input.Input(input.InputProps{
-										ID:    "username",
-										Value: "@peduarte",
-										Class: "col-span-3",
-									})
-								</div>
+							<div class="py-4">
+								<p class="text-sm">You can still interact with the page behind this dialog. ESC will close it.</p>
 							</div>
 							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-								@button.Button(button.ButtonProps{
-									Variant: "default",
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID: "nonmodal_demo",
 								}) {
-									Save changes
+									@button.Button(button.ButtonProps{
+										Variant: "default",
+									}) {
+										Close
+									}
 								}
 							}
 						}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							DialogID: "nonmodal_demo",
+							Modal:    false,
+							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2",
+						}) {
+							Open Non-Modal Dialog
+						}
+						<!-- Show dialog state -->
+						<div class="text-xs text-muted-foreground mt-2">
+							<div>Dialog Status: <span data-text="$nonmodal_demo.open ? 'Open' : 'Closed'" class="font-medium"></span></div>
+							<div data-show="$nonmodal_demo.open" class="text-green-600">✓ Dialog is currently open</div>
+						</div>
+					</div>
+					<!-- Restricted Close Dialog -->
+					<div class="space-y-4 p-4 border rounded-lg">
+						<h3 class="font-medium">Restricted Close</h3>
+						<p class="text-sm text-muted-foreground">
+							Uses closedby="none" - can only be closed using the close button.
+						</p>
+						@dialog.Dialog(dialog.DialogProps{
+							ID:       "restricted_demo",
+							ClosedBy: "none", // Can only be closed by close button
+						}) {
+							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+									Restricted Dialog
+								}
+								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+									This dialog can only be closed with the close button.
+								}
+							}
+							<div class="py-4">
+								<p class="text-sm">ESC key and outside clicks won't close this dialog. Only the close button works.</p>
+							</div>
+							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID: "restricted_demo",
+								}) {
+									@button.Button(button.ButtonProps{
+										Variant: "destructive",
+									}) {
+										Force Close
+									}
+								}
+							}
+						}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							DialogID: "restricted_demo",
+							Modal:    true,
+							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2",
+						}) {
+							Open Restricted Dialog
+						}
+						<!-- Show dialog state -->
+						<div class="text-xs text-muted-foreground mt-2">
+							<div>Dialog Status: <span data-text="$restricted_demo.open ? 'Open' : 'Closed'" class="font-medium"></span></div>
+							<div data-show="$restricted_demo.open" class="text-red-600">⚠ Restricted dialog is open</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Dialog State Tracking Demo -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Dialog State Tracking</h2>
+				<p class="text-sm text-muted-foreground">
+					Demonstrates how to use the open state signal to react to dialog changes elsewhere in the UI.
+				</p>
+				<div class="space-y-6 p-6 bg-muted/50 rounded-lg">
+					<!-- Global State Display -->
+					<div class="space-y-3">
+						<h3 class="font-medium">Global Dialog State Monitor</h3>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+							<div class="bg-background p-3 rounded border">
+								<div class="font-medium">Modal Demo</div>
+								<div data-text="$modal_demo.open ? '🟢 Open' : '⚫ Closed'"></div>
+							</div>
+							<div class="bg-background p-3 rounded border">
+								<div class="font-medium">Non-Modal Demo</div>
+								<div data-text="$nonmodal_demo.open ? '🟢 Open' : '⚫ Closed'"></div>
+							</div>
+							<div class="bg-background p-3 rounded border">
+								<div class="font-medium">Restricted Demo</div>
+								<div data-text="$restricted_demo.open ? '🟢 Open' : '⚫ Closed'"></div>
+							</div>
+						</div>
+					</div>
+					<!-- Conditional UI based on dialog state -->
+					<div class="space-y-3">
+						<h3 class="font-medium">Conditional UI Elements</h3>
+						<div class="space-y-2">
+							<div
+								data-show="$modal_demo.open || $nonmodal_demo.open || $restricted_demo.open"
+								class="p-3 bg-yellow-50 border border-yellow-200 rounded text-yellow-800"
+							>
+								<div class="font-medium">⚠ Active Dialog Alert</div>
+								<div class="text-sm">One or more dialogs are currently open.</div>
+							</div>
+							<div
+								data-show="!$modal_demo.open && !$nonmodal_demo.open && !$restricted_demo.open"
+								class="p-3 bg-green-50 border border-green-200 rounded text-green-800"
+							>
+								<div class="font-medium">✓ All Clear</div>
+								<div class="text-sm">No dialogs are currently open.</div>
+							</div>
+						</div>
+					</div>
+					<!-- Button states based on dialog state -->
+					<div class="space-y-3">
+						<h3 class="font-medium">Dynamic Button States</h3>
+						<div class="flex gap-3 flex-wrap">
+							<button
+								data-attr-disabled="$modal_demo.open ? 'true' : 'false'"
+								data-attr-class="$modal_demo.open ? 'opacity-50 cursor-not-allowed' : ''"
+								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+							>
+								<span data-text="$modal_demo.open ? 'Modal Open...' : 'Action Available'"></span>
+							</button>
+							<button
+								data-on-click="alert('This only works when no dialogs are open!')"
+								data-attr-disabled="$modal_demo.open || $nonmodal_demo.open || $restricted_demo.open ? 'true' : 'false'"
+								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+							>
+								Protected Action
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Form with Return Values -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Form Dialog with Return Values</h2>
+				<p class="text-sm text-muted-foreground">
+					Demonstrates form submission and return values using the native dialog method="dialog" feature.
+				</p>
+				<div
+					class="space-y-4 p-6 bg-muted/50 rounded-lg"
+					data-signals="{formResult: {returnValue: '', submitted: false}}"
+				>
+					<!-- Display return value -->
+					<div class="space-y-2">
+						<h3 class="font-medium">Dialog Result:</h3>
+						<div class="text-sm bg-background p-3 rounded border">
+							<div>Return Value: <span data-text="$formResult.returnValue || 'None'"></span></div>
+							<div>Form Submitted: <span data-text="$formResult.submitted ? 'Yes' : 'No'"></span></div>
+						</div>
+					</div>
+					@dialog.Dialog(dialog.DialogProps{
+						ID: "form_demo",
+						Attributes: templ.Attributes{
+							"data-on-close": "$formResult.returnValue = evt.target.returnValue; $formResult.submitted = evt.target.returnValue === 'submitted'",
+						},
+					}) {
+						@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+							@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+								User Information Form
+							}
+							@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+								Fill out the form and submit to see return values in action.
+							}
+						}
+						<form method="dialog" class="space-y-4">
+							<div class="space-y-2">
+								@label.Label(label.LabelProps{For: "form-name"}) {
+									Name
+								}
+								@input.Input(input.InputProps{
+									ID:          "form-name",
+									Name:        "name",
+									Placeholder: "Enter your name",
+									Required:    true,
+								})
+							</div>
+							<div class="space-y-2">
+								@label.Label(label.LabelProps{For: "form-email"}) {
+									Email
+								}
+								@input.Input(input.InputProps{
+									ID:          "form-email",
+									Name:        "email",
+									Type:        "email",
+									Placeholder: "Enter your email",
+									Required:    true,
+								})
+							</div>
+							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID:    "form_demo",
+									ReturnValue: "cancelled",
+								}) {
+									@button.Button(button.ButtonProps{
+										Type:    "button",
+										Variant: "outline",
+									}) {
+										Cancel
+									}
+								}
+								<button
+									type="submit"
+									value="submitted"
+									class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+								>
+									Submit Form
+								</button>
+							}
+						</form>
+					}
+					@dialog.DialogTrigger(dialog.DialogTriggerProps{
+						DialogID: "form_demo",
+						Modal:    true,
+						Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2",
+					}) {
+						Open Form Dialog
 					}
 				</div>
 			</div>
-			<!-- Size Variants -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Size Variants</h2>
-				<p class="text-sm text-muted-foreground">
-					Different dialog sizes to fit various content types.
-				</p>
-				<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-					<!-- Small Dialog -->
-					<div class="space-y-2">
-						<h3 class="text-lg font-medium">Small</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "small-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								DialogID: "small-dialog",
-								Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full",
-							}) {
-								Small Dialog
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "small-dialog",
-								Size:        "sm",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Small Dialog
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										This is a small dialog with limited content.
-									}
-								}
-								<div class="py-4">
-									<p class="text-sm">Perfect for simple confirmations or brief messages.</p>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "small-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "outline",
-											Class:   "w-full",
-										}) {
-											Close
-										}
-									}
-								}
-							}
-						}
-					</div>
-					<!-- Medium Dialog -->
-					<div class="space-y-2">
-						<h3 class="text-lg font-medium">Medium</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "medium-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								DialogID: "medium-dialog",
-								Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full",
-							}) {
-								Medium Dialog
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "medium-dialog",
-								Size:        "md",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Medium Dialog
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										This is a medium-sized dialog for moderate content.
-									}
-								}
-								<div class="py-4 space-y-4">
-									<p class="text-sm">Good for forms with several fields or detailed information.</p>
-									@input.Input(input.InputProps{
-										Placeholder: "Enter some information...",
-									})
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "medium-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "outline",
-											Class:   "w-full",
-										}) {
-											Close
-										}
-									}
-								}
-							}
-						}
-					</div>
-					<!-- Large Dialog -->
-					<div class="space-y-2">
-						<h3 class="text-lg font-medium">Large</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "large-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								DialogID: "large-dialog",
-								Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full",
-							}) {
-								Large Dialog
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "large-dialog",
-								Size:        "lg",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Large Dialog
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										This is a large dialog with extensive content options.
-									}
-								}
-								<div class="py-4 space-y-4">
-									<p class="text-sm">Ideal for complex forms, detailed views, or rich content.</p>
-									<div class="grid grid-cols-2 gap-4">
-										@input.Input(input.InputProps{
-											Placeholder: "First field...",
-										})
-										@input.Input(input.InputProps{
-											Placeholder: "Second field...",
-										})
-									</div>
-									<div class="space-y-2">
-										@label.Label(label.LabelProps{For: "description"}) {
-											Description
-										}
-										<textarea
-											id="description"
-											class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-											placeholder="Enter a detailed description..."
-										></textarea>
-									</div>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "large-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "outline",
-										}) {
-											Cancel
-										}
-									}
-									@button.Button(button.ButtonProps{
-										Variant: "default",
-									}) {
-										Save
-									}
-								}
-							}
-						}
-					</div>
-					<!-- Extra Large Dialog -->
-					<div class="space-y-2">
-						<h3 class="text-lg font-medium">Extra Large</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "xl-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								DialogID: "xl-dialog",
-								Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full",
-							}) {
-								XL Dialog
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "xl-dialog",
-								Size:        "xl",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Extra Large Dialog
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										This is an extra large dialog for comprehensive content.
-									}
-								}
-								<div class="py-4 space-y-6">
-									<p class="text-sm">Perfect for dashboards, detailed forms, or content-heavy interfaces.</p>
-									<div class="grid grid-cols-3 gap-4">
-										@input.Input(input.InputProps{
-											Placeholder: "Field 1...",
-										})
-										@input.Input(input.InputProps{
-											Placeholder: "Field 2...",
-										})
-										@input.Input(input.InputProps{
-											Placeholder: "Field 3...",
-										})
-									</div>
-									<div class="grid grid-cols-2 gap-6">
-										<div class="space-y-2">
-											@label.Label(label.LabelProps{For: "notes"}) {
-												Notes
-											}
-											<textarea
-												id="notes"
-												class="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-												placeholder="Additional notes..."
-											></textarea>
-										</div>
-										<div class="space-y-2">
-											@label.Label(label.LabelProps{For: "comments"}) {
-												Comments
-											}
-											<textarea
-												id="comments"
-												class="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-												placeholder="Your comments..."
-											></textarea>
-										</div>
-									</div>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "xl-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "outline",
-										}) {
-											Cancel
-										}
-									}
-									@button.Button(button.ButtonProps{
-										Variant: "default",
-									}) {
-										Save Changes
-									}
-								}
-							}
-						}
-					</div>
-				</div>
-			</div>
-			<!-- Custom Triggers -->
+			<!-- Custom Triggers with AsChild -->
 			<div class="space-y-4">
 				<h2 class="text-2xl font-semibold tracking-tight">Custom Triggers with AsChild</h2>
 				<p class="text-sm text-muted-foreground">
 					Using the AsChild prop to create custom trigger elements instead of standard buttons.
 				</p>
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<!-- Card Trigger -->
 					<div class="space-y-4">
 						<h3 class="text-lg font-medium">Card Trigger</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "card-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								AsChild:  true,
-								DialogID: "card-dialog",
-							}) {
-								<div class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow">
-									<div class="flex items-center gap-3">
-										<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-											<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-											</svg>
-										</div>
-										<div>
-											<p class="font-medium text-sm">User Profile</p>
-											<p class="text-xs text-gray-500">Click for details</p>
-										</div>
-									</div>
-								</div>
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "card-dialog",
-								Size:        "md",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										User Profile Details
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										View and edit user profile information.
-									}
-								}
-								<div class="py-4 space-y-4">
-									<div class="flex items-center gap-4">
-										<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-											<svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-											</svg>
-										</div>
-										<div>
-											<h3 class="font-semibold">John Doe</h3>
-											<p class="text-sm text-muted-foreground">Software Engineer</p>
-											<p class="text-sm text-muted-foreground">john@example.com</p>
-										</div>
-									</div>
-									<div class="space-y-2">
-										@label.Label(label.LabelProps{For: "bio"}) {
-											Bio
-										}
-										<textarea
-											id="bio"
-											class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-											placeholder="Tell us about yourself..."
-										></textarea>
-									</div>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "card-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "outline",
-										}) {
-											Cancel
-										}
-									}
-									@button.Button(button.ButtonProps{
-										Variant: "default",
-									}) {
-										Save Profile
-									}
-								}
-							}
-						}
-					</div>
-					<!-- Image Trigger -->
-					<div class="space-y-4">
-						<h3 class="text-lg font-medium">Image Trigger</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "image-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								AsChild:  true,
-								DialogID: "image-dialog",
-							}) {
-								<div class="cursor-pointer hover:opacity-80 transition-opacity">
-									<img class="w-full h-32 object-cover rounded-lg" src="/img/datastar-rocket.webp" alt="Datastar Logo"/>
-									<p class="text-xs text-center mt-2 text-muted-foreground">Click to view details</p>
-								</div>
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "image-dialog",
-								Size:        "lg",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Image Details
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										Information about this image and its properties.
-									}
-								}
-								<div class="py-4 space-y-4">
-									<div class="flex justify-center">
-										<img class="max-w-full h-48 object-contain rounded-lg" src="/img/datastar-rocket.webp" alt="Datastar Logo"/>
-									</div>
-									<div class="grid grid-cols-2 gap-4 text-sm">
-										<div>
-											<span class="font-medium">File Name:</span>
-											<p class="text-muted-foreground">datastar-rocket.webp</p>
-										</div>
-										<div>
-											<span class="font-medium">Format:</span>
-											<p class="text-muted-foreground">WebP</p>
-										</div>
-										<div>
-											<span class="font-medium">Description:</span>
-											<p class="text-muted-foreground">Datastar framework logo</p>
-										</div>
-										<div>
-											<span class="font-medium">Usage:</span>
-											<p class="text-muted-foreground">Brand identity</p>
-										</div>
-									</div>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "image-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "default",
-											Class:   "w-full",
-										}) {
-											Close
-										}
-									}
-								}
-							}
-						}
-					</div>
-					<!-- Custom Badge Trigger -->
-					<div class="space-y-4">
-						<h3 class="text-lg font-medium">Badge Trigger</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "badge-dialog"}) {
-							@dialog.DialogTrigger(dialog.DialogTriggerProps{
-								AsChild:  true,
-								DialogID: "badge-dialog",
-							}) {
-								<div class="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
-									<div class="w-2 h-2 bg-green-600 rounded-full"></div>
-									Status: Active
-									<svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-									</svg>
-								</div>
-							}
-							@dialog.DialogContent(dialog.DialogContentProps{
-								ID:          "badge-dialog",
-								Size:        "sm",
-								ShowOverlay: true,
-							}) {
-								@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-									@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-										Status Information
-									}
-									@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-										Current system status and details.
-									}
-								}
-								<div class="py-4 space-y-3">
-									<div class="flex items-center justify-between">
-										<span class="text-sm font-medium">Current Status:</span>
-										<div class="flex items-center gap-2">
-											<div class="w-2 h-2 bg-green-600 rounded-full"></div>
-											<span class="text-sm text-green-600">Active</span>
-										</div>
-									</div>
-									<div class="flex items-center justify-between">
-										<span class="text-sm font-medium">Last Updated:</span>
-										<span class="text-sm text-muted-foreground">2 minutes ago</span>
-									</div>
-									<div class="flex items-center justify-between">
-										<span class="text-sm font-medium">Uptime:</span>
-										<span class="text-sm text-muted-foreground">99.9%</span>
-									</div>
-									<div class="flex items-center justify-between">
-										<span class="text-sm font-medium">Next Check:</span>
-										<span class="text-sm text-muted-foreground">In 30 seconds</span>
-									</div>
-								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
-										DialogID: "badge-dialog",
-									}) {
-										@button.Button(button.ButtonProps{
-											Variant: "default",
-											Class:   "w-full",
-										}) {
-											Refresh Status
-										}
-									}
-								}
-							}
-						}
-					</div>
-				</div>
-			</div>
-			<!-- Dialog without overlay -->
-			<div class="space-y-4">
-				<h2 class="text-2xl font-semibold tracking-tight">Dialog without Backdrop</h2>
-				<p class="text-sm text-muted-foreground">
-					Dialogs can be displayed without the dark backdrop overlay for less intrusive interactions.
-				</p>
-				<div class="flex items-center justify-center min-h-[200px] bg-muted/50 rounded-lg">
-					@dialog.Dialog(dialog.DialogProps{ID: "no-overlay-dialog"}) {
-						@dialog.DialogTrigger(dialog.DialogTriggerProps{
-							DialogID: "no-overlay-dialog",
-							Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2",
-						}) {
-							Open Dialog (No Backdrop)
-						}
-						@dialog.DialogContent(dialog.DialogContentProps{
-							ID:          "no-overlay-dialog",
-							Size:        "md",
-							ShowOverlay: false,
-						}) {
+						@dialog.Dialog(dialog.DialogProps{ID: "card_dialog"}) {
 							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
 								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
-									Quick Action
+									User Profile Details
 								}
 								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
-									This dialog appears without a backdrop for quick, non-blocking interactions.
+									View user profile information.
 								}
 							}
-							<div class="py-4">
-								<p class="text-sm">
-									Perfect for tooltips, quick forms, or actions that don't require full user attention.
-								</p>
+							<div class="py-4 space-y-4">
+								<div class="flex items-center gap-4">
+									<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+										<svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+										</svg>
+									</div>
+									<div>
+										<h3 class="font-semibold">John Doe</h3>
+										<p class="text-sm text-muted-foreground">Software Engineer</p>
+										<p class="text-sm text-muted-foreground">john@example.com</p>
+									</div>
+								</div>
 							</div>
 							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
 								@dialog.DialogClose(dialog.DialogCloseProps{
-									DialogID: "no-overlay-dialog",
+									DialogID: "card_dialog",
+								}) {
+									@button.Button(button.ButtonProps{
+										Variant: "default",
+										Class:   "w-full",
+									}) {
+										Close
+									}
+								}
+							}
+						}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							AsChild:  true,
+							DialogID: "card_dialog",
+							Modal:    true,
+						}) {
+							<div class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow">
+								<div class="flex items-center gap-3">
+									<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+										<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+										</svg>
+									</div>
+									<div>
+										<p class="font-medium text-sm">User Profile</p>
+										<p class="text-xs text-gray-500">Click for details</p>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+					<!-- Badge Trigger -->
+					<div class="space-y-4">
+						<h3 class="text-lg font-medium">Status Badge</h3>
+						@dialog.Dialog(dialog.DialogProps{ID: "status_dialog"}) {
+							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+									System Status
+								}
+								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+									Current system status and details.
+								}
+							}
+							<div class="py-4 space-y-3">
+								<div class="flex items-center justify-between">
+									<span class="text-sm font-medium">Status:</span>
+									<div class="flex items-center gap-2">
+										<div class="w-2 h-2 bg-green-600 rounded-full"></div>
+										<span class="text-sm text-green-600">Active</span>
+									</div>
+								</div>
+								<div class="flex items-center justify-between">
+									<span class="text-sm font-medium">Uptime:</span>
+									<span class="text-sm text-muted-foreground">99.9%</span>
+								</div>
+								<div class="flex items-center justify-between">
+									<span class="text-sm font-medium">Last Check:</span>
+									<span class="text-sm text-muted-foreground">2 minutes ago</span>
+								</div>
+							</div>
+							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID: "status_dialog",
 								}) {
 									@button.Button(button.ButtonProps{
 										Variant: "default",
 									}) {
-										Got it
+										Refresh
 									}
 								}
 							}
 						}
-					}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							AsChild:  true,
+							DialogID: "status_dialog",
+							Modal:    true,
+						}) {
+							<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
+								<div class="w-2 h-2 bg-green-600 rounded-full"></div>
+								Status: Active
+								<svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</div>
+						}
+					</div>
 				</div>
 			</div>
 		</div>
