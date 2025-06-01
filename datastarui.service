@@ -1,0 +1,17 @@
+[Unit]
+Description=datastarui
+ConditionPathExists=/home/ubuntu/datastarui/datastarui
+After=network.target
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/datastarui
+ExecStart=/home/ubuntu/go_webserver/datastarui
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/home/ubuntu/datastarui/log/datastarui.log
+StandardError=append:/home/ubuntu/datastarui/log/datastarui.error.log
+SyslogIdentifier=datastarui
+[Install]
+WantedBy=multi-user.target

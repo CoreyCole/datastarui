@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/Oudwins/tailwind-merge-go v0.2.0
-	github.com/a-h/templ v0.3.865
+	github.com/a-h/templ v0.3.887
 	github.com/labstack/echo/v4 v4.13.3
 )
 
