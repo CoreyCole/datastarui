@@ -81,26 +81,18 @@ func RegisterDialogPageHandlers(e *echo.Echo) {
 		</div>`
 		sse.MergeFragments(successHTML)
 
-		// Update the form data signals to show submission success
-		formDataJSON, _ := json.Marshal(map[string]interface{}{
-			"form_demo": map[string]interface{}{
+		// Update signals in a single merged call to ensure reliable state updates
+		allSignalsJSON, _ := json.Marshal(map[string]interface{}{
+			"form_dialog": map[string]interface{}{
 				"name":      name,
 				"email":     email,
 				"submitted": true,
 			},
-		})
-		sse.MergeSignals(formDataJSON)
-
-		// Close the dialog by setting signal and calling native close method
-		dialogJSON, _ := json.Marshal(map[string]interface{}{
 			"form_demo": map[string]interface{}{
 				"open": false,
 			},
 		})
-		sse.MergeSignals(dialogJSON)
-
-		// Also close the native dialog element
-		sse.MergeFragments(`<script>document.getElementById('form_demo').close();</script>`)
+		sse.MergeSignals(allSignalsJSON)
 
 		// Log the submission (in a real app, you'd save to database)
 		log.Printf("Dialog form submitted - Name: %s, Email: %s", name, email)

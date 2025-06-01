@@ -333,74 +333,38 @@
     }
   }
 
-  /* Native Dialog Styles */
-  dialog {
-    padding: 0;
-    margin: auto;
-    border: none;
-    border-radius: var(--radius);
-    background: transparent;
-    max-width: calc(100vw - 2rem);
-    max-height: calc(100vh - 2rem);
-    z-index: 50;
-  }
-
-  dialog::backdrop {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
-    z-index: 49;
-  }
-
-  /* Ensure dialog content has solid background and proper z-index */
-  dialog .bg-background {
-    background-color: hsl(var(--background)) !important;
-    opacity: 1 !important;
-  }
-
   /* Ensure form elements in dialogs are interactive */
-  dialog input,
-  dialog textarea,
-  dialog select,
-  dialog button {
+  [role="dialog"] input,
+  [role="dialog"] textarea,
+  [role="dialog"] select,
+  [role="dialog"] button {
     pointer-events: auto;
     z-index: 51;
     position: relative;
   }
 
   /* Ensure form elements have proper focus styles and text colors */
-  dialog input:focus-visible,
-  dialog textarea:focus-visible,
-  dialog select:focus-visible {
+  [role="dialog"] input:focus-visible,
+  [role="dialog"] textarea:focus-visible,
+  [role="dialog"] select:focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
     z-index: 52;
   }
 
-  dialog[open] {
-    animation: dialog-show 0.2s ease-out;
-  }
-
-  dialog::backdrop {
-    animation: backdrop-show 0.2s ease-out;
-  }
-
+  /* Dialog show animation */
   @keyframes dialog-show {
     from {
       opacity: 0;
-      transform: scale(0.95) translateY(-10px);
+      transform: translate(-50%, -50%) scale(0.95);
     }
     to {
       opacity: 1;
-      transform: scale(1) translateY(0);
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 
-  @keyframes backdrop-show {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  [role="dialog"][data-state="open"] {
+    animation: dialog-show 0.2s ease-out;
   }
 }

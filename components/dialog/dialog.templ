@@ -1,76 +1,56 @@
 package dialog
 
-// Dialog container - native HTML dialog element with Datastar refs and state tracking
+// Dialog container - pure Datastar signal-based modal using data-show
 templ Dialog(props DialogProps) {
 	{{
 		// Create nested signal structure: {[id]: {open: false, returnValue: null}}
 		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
 
-		// Create unique ref using dialog ID: data-ref="dialog_[id]" creates $dialog_[id] signal
-		refName := "dialog_" + props.ID
-		dialogAttrs := templ.Attributes{
-			"data-ref": refName,
-			// Remove data-show as it conflicts with native dialog behavior
-		}
+		// Dialog backdrop overlay
+		backdropClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
 
-		// Merge with user-provided attributes
-		for k, v := range props.Attributes {
-			dialogAttrs[k] = v
-		}
-
-		// Add closedby attribute if specified
-		if props.ClosedBy != "" {
-			dialogAttrs["closedby"] = props.ClosedBy
-		}
-
-		// Add event handlers for native dialog events to sync signals
-		toggleHandler := "$" + props.ID + ".open = evt.newState === 'open'"
-		closeHandler := "$" + props.ID + ".open = false; $" + props.ID + ".returnValue = evt.target.returnValue"
-
-		dialogAttrs["data-on-toggle"] = toggleHandler
-		dialogAttrs["data-on-close"] = closeHandler
-
-		// Add backdrop click handler if overlay is not disabled
-		if !props.DisableOverlay {
-			// Handle backdrop clicks to close modal dialogs using logical operators instead of if statement
-			backdropClickHandler := "evt.target === evt.currentTarget && ($" + props.ID + ".open = false, evt.currentTarget.close('backdrop-click'))"
-			dialogAttrs["data-on-click"] = backdropClickHandler
-		}
-
-		// Dialog should not have positioning classes - native dialog handles positioning
-		dialogClasses := "p-0 border-0 bg-transparent"
-		if props.Class != "" {
-			dialogClasses += " " + props.Class
-		}
+		// Dialog positioning classes - centered on screen
+		dialogClasses := "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
 
 		// Generate the CSS classes for the inner dialog content container using our variant system
 		containerClasses := DialogVariants(props)
+
+		// Create unique backdrop click handler
+		backdropClickHandler := "evt.target === evt.currentTarget && ($" + props.ID + ".open = false)"
+
+		// ESC key handler for closing dialog
+		escapeHandler := "evt.key === 'Escape' && ($" + props.ID + ".open = false)"
 	}}
 	<div data-signals={ signalsJSON }>
-		<dialog
-			id={ props.ID }
-			{ dialogAttrs... }
-			class={ dialogClasses }
+		<!-- Dialog backdrop overlay -->
+		<div
+			data-show={ "$" + props.ID + ".open" }
+			class={ backdropClasses }
+			data-on-click={ backdropClickHandler }
+			data-on-keydown={ escapeHandler }
+			tabindex="-1"
 		>
-			<div class={ containerClasses }>
-				{ children... }
+			<!-- Dialog content container -->
+			<div
+				id={ props.ID }
+				class={ dialogClasses }
+				role="dialog"
+				aria-modal="true"
+				data-on-click="evt.stopPropagation()"
+			>
+				<div class={ containerClasses }>
+					{ children... }
+				</div>
 			</div>
-		</dialog>
+		</div>
 	</div>
 }
 
-// DialogTrigger - button or element that opens the dialog using native methods
+// DialogTrigger - button or element that opens the dialog using Datastar signals
 templ DialogTrigger(props DialogTriggerProps) {
 	{{
-		// Create click handler using document.getElementById for reliable DOM access
-		var clickHandler string
-		openSignal := "$" + props.DialogID + ".open = true"
-
-		if props.Modal {
-			clickHandler = openSignal + "; document.getElementById('" + props.DialogID + "').showModal()"
-		} else {
-			clickHandler = openSignal + "; document.getElementById('" + props.DialogID + "').show()"
-		}
+		// Create click handler using Datastar signals
+		clickHandler := "$" + props.DialogID + ".open = true"
 	}}
 	if props.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
@@ -108,7 +88,7 @@ templ DialogContent(props DialogContentProps) {
 	</div>
 }
 
-// DialogOverlay - backdrop overlay (for styling compatibility - native dialog uses ::backdrop)
+// DialogOverlay - backdrop overlay (for styling compatibility)
 templ DialogOverlay(props DialogOverlayProps) {
 	<div
 		id={ props.ID }
@@ -177,17 +157,18 @@ templ DialogDescription(props DialogDescriptionProps) {
 	</p>
 }
 
-// DialogClose - button that closes the dialog using native close() method
+// DialogClose - button that closes the dialog using Datastar signals
 templ DialogClose(props DialogCloseProps) {
 	{{
-		// Create click handler using document.getElementById for reliable DOM access
+		// Create click handler using Datastar signals
 		closeSignal := "$" + props.DialogID + ".open = false"
 
+		// Set return value if specified
 		var clickHandler string
 		if props.ReturnValue != "" {
-			clickHandler = closeSignal + "; document.getElementById('" + props.DialogID + "').close('" + props.ReturnValue + "')"
+			clickHandler = closeSignal + "; $" + props.DialogID + ".returnValue = '" + props.ReturnValue + "'"
 		} else {
-			clickHandler = closeSignal + "; document.getElementById('" + props.DialogID + "').close()"
+			clickHandler = closeSignal
 		}
 
 		// Default button classes matching the Button component design

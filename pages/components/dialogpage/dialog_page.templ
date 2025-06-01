@@ -15,18 +15,17 @@ templ DialogPage() {
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Dialog</h1>
 				<p class="text-muted-foreground">
-					A modal dialog using the native HTML dialog element with Datastar reactivity. Supports both modal and non-modal dialogs with various dismiss behaviors.
+					A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.
 				</p>
 			</div>
 			<!-- Modal Dialog -->
 			<div class="space-y-4 p-4 border rounded-lg">
 				<h3 class="font-medium">Modal Dialog</h3>
 				<p class="text-sm text-muted-foreground">
-					Uses showModal() - blocks interaction with page, ESC key closes, backdrop click closes.
+					Uses Datastar signals - ESC key closes, backdrop click closes.
 				</p>
 				@dialog.Dialog(dialog.DialogProps{
-					ID:       "modal_demo",
-					ClosedBy: "any", // Can be closed by ESC, outside click, or close button
+					ID: "modal_demo",
 				}) {
 					@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
 						@dialog.DialogTitle(dialog.DialogTitleProps{}) {
@@ -55,7 +54,6 @@ templ DialogPage() {
 				}
 				@dialog.DialogTrigger(dialog.DialogTriggerProps{
 					DialogID: "modal_demo",
-					Modal:    true,
 					Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 				}) {
 					Open Modal Dialog
@@ -76,17 +74,6 @@ templ DialogPage() {
 				<!-- Success message area -->
 				<div id="form-success-message"></div>
 				<div class="space-y-4 p-6 bg-muted/50 rounded-lg">
-					<!-- Initialize form signals separately -->
-					<div data-signals='{"form_demo": {"name": "", "email": "", "submitted": false}}'></div>
-					<!-- Display current form values -->
-					<div class="space-y-2">
-						<h3 class="font-medium">Current Form Values:</h3>
-						<div class="text-sm bg-background p-3 rounded border space-y-1">
-							<div>Name: <span data-text="$form_demo.name || 'Not entered'"></span></div>
-							<div>Email: <span data-text="$form_demo.email || 'Not entered'"></span></div>
-							<div>Form Submitted: <span data-text="$form_demo.submitted ? 'Yes' : 'No'"></span></div>
-						</div>
-					</div>
 					@dialog.Dialog(dialog.DialogProps{
 						ID: "form_demo",
 					}) {
@@ -101,11 +88,12 @@ templ DialogPage() {
 						@dialog.DialogContent(dialog.DialogContentProps{}) {
 							<div id="form-dialog-errors"></div>
 							@form.Form(form.FormProps{
-								ID:     "form-dialog",
+								ID:     "form_dialog",
 								Action: "/dialog/dialog-page/form-submit",
 								Class:  "space-y-6",
 								Attributes: templ.Attributes{
 									"data-indicator-fetching": "",
+									"data-target":             "#form-dialog-errors",
 								},
 							}) {
 								<div class="grid gap-4">
@@ -116,13 +104,10 @@ templ DialogPage() {
 										@input.Input(input.InputProps{
 											ID:          "form-name",
 											Name:        "name",
-											FormID:      "form-dialog",
+											FormID:      "form_dialog",
 											Placeholder: "Enter your name",
 											Required:    true,
 											Type:        "text",
-											Attributes: templ.Attributes{
-												"data-bind": "$form_demo.name",
-											},
 										})
 										@form.FormDescription(form.FormDescriptionProps{}) {
 											Your full name for the form submission.
@@ -135,13 +120,10 @@ templ DialogPage() {
 										@input.Input(input.InputProps{
 											ID:          "form-email",
 											Name:        "email",
-											FormID:      "form-dialog",
+											FormID:      "form_dialog",
 											Type:        "email",
 											Placeholder: "Enter your email",
 											Required:    true,
-											Attributes: templ.Attributes{
-												"data-bind": "$form_demo.email",
-											},
 										})
 										@form.FormDescription(form.FormDescriptionProps{}) {
 											We'll use this to send you a confirmation.
@@ -168,16 +150,20 @@ templ DialogPage() {
 							}
 						}
 					}
+					<!-- Display current form values -->
+					<div class="space-y-2">
+						<h3 class="font-medium">Current Form Values:</h3>
+						<div class="text-sm bg-background p-3 rounded border space-y-1">
+							<div>Name: <span data-text="$form_dialog.name || 'Not entered'"></span></div>
+							<div>Email: <span data-text="$form_dialog.email || 'Not entered'"></span></div>
+							<div>Form Submitted: <span data-text="$form_dialog.submitted || false ? 'Yes' : 'No'"></span></div>
+						</div>
+					</div>
 					@dialog.DialogTrigger(dialog.DialogTriggerProps{
 						DialogID: "form_demo",
-						Modal:    true,
-						AsChild:  true,
+						Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 					}) {
-						@button.Button(button.ButtonProps{
-							Variant: "secondary",
-						}) {
-							Open Form Dialog
-						}
+						Open Form Dialog
 					}
 				</div>
 			</div>
@@ -227,7 +213,6 @@ templ DialogPage() {
 						@dialog.DialogTrigger(dialog.DialogTriggerProps{
 							AsChild:  true,
 							DialogID: "card_dialog",
-							Modal:    true,
 						}) {
 							<div class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow">
 								<div class="flex items-center gap-3">
@@ -280,14 +265,13 @@ templ DialogPage() {
 									DialogID: "status_dialog",
 									Variant:  "default",
 								}) {
-									Refresh
+									Close
 								}
 							}
 						}
 						@dialog.DialogTrigger(dialog.DialogTriggerProps{
 							AsChild:  true,
 							DialogID: "status_dialog",
-							Modal:    true,
 						}) {
 							<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
 								<div class="w-2 h-2 bg-green-600 rounded-full"></div>

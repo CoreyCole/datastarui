@@ -2,19 +2,16 @@ package dialog
 
 import "github.com/a-h/templ"
 
-// DialogProps defines the props for the Dialog container (native <dialog> element)
+// DialogProps defines the props for the Dialog container (using Datastar signals)
 type DialogProps struct {
-	ID             string
-	Class          string
-	ClosedBy       string // "none", "closerequest", "any" - controls how dialog can be dismissed
-	DisableOverlay bool   // Whether to disable the background overlay
-	Attributes     templ.Attributes
+	ID         string
+	Class      string
+	Attributes templ.Attributes
 }
 
 // DialogTriggerProps defines the props for the DialogTrigger component
 type DialogTriggerProps struct {
 	DialogID   string
-	Modal      bool // true for showModal(), false for show()
 	AsChild    bool
 	Class      string
 	Attributes templ.Attributes

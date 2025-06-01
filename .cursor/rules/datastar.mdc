@@ -12,7 +12,8 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 ### Key Features
 
 - **Pixel-perfect shadcn/ui components** ported to Go/templ
-- **Datastar signals** for interactive components
+- **Globally Scoped Datastar signals** for interactive components. Signals are global on the page & scoped using `props.ID`. Datastar evaluated signals in the order they appear on the page.
+- **Simple Usage Examples** signal creation complexity is managed by the DatastarUI components. The usage examples do not use `data-signals` attributes.
 
 ### Project Structure
 

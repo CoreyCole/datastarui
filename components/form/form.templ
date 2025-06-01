@@ -12,8 +12,11 @@ templ Form(props FormProps) {
 		// Convert form ID to valid signal name (replace hyphens with underscores)
 		signalName := strings.ReplaceAll(props.ID, "-", "_")
 
-		// Instead of creating a nested data-signals scope, add signals directly to the form element
-		// This prevents conflicts with parent signal scopes like dialogs
+		// Create nested signal structure: {[id]: {submitted: false, name: "", email: ""}}
+		// This follows the same pattern as dialog component for consistency
+		signalsJSON := "{\"" + signalName + "\": {\"submitted\": false, \"name\": \"\", \"email\": \"\"}}"
+
+		// Set up form attributes
 		var formAttrs templ.Attributes
 		formAttrs = make(templ.Attributes)
 
@@ -25,27 +28,30 @@ templ Form(props FormProps) {
 		// Add form-specific attributes
 		if props.ID != "" {
 			formAttrs["id"] = props.ID
-
-			// Add form signals directly to the form element instead of a wrapper
-			// This merges signals into the global scope instead of creating a nested scope
-			// Initialize with a complete structure including common field names
-			signalKey := fmt.Sprintf("data-signals-%s", signalName)
-			formAttrs[signalKey] = `{"submitted": false, "name": "", "email": ""}`
 		}
 
 		if props.Action != "" {
-			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'})", templ.SafeURL(props.Action))
+			// Check if there's a target specified in attributes
+			target := ""
+			if targetAttr, exists := props.Attributes["data-target"]; exists {
+				target = fmt.Sprintf(", target: '%s'", targetAttr)
+				// Remove data-target from attributes as we've handled it
+				delete(formAttrs, "data-target")
+			}
+			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(props.Action), target)
 		}
 
 		if props.Class != "" {
 			formAttrs["class"] = props.Class
 		}
 	}}
-	<form
-		{ formAttrs... }
-	>
-		{ children... }
-	</form>
+	<div data-signals={ signalsJSON }>
+		<form
+			{ formAttrs... }
+		>
+			{ children... }
+		</form>
+	</div>
 }
 
 // FormItem component - container for form field
