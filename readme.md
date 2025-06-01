@@ -1,6 +1,6 @@
 # DatastarUI
 
-A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains pixel-perfect visual and behavioral parity while eliminating JavaScript dependencies (except for the lightweight 15KB [Datastar](https://data-star.dev/) library for reactivity).
+A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains pixel-perfect visual and behavioral parity with minimal JavaScript (lightweight 15KB [Datastar](https://data-star.dev/) library for reactivity).
 
 ## ✨ Features
 
@@ -190,9 +190,8 @@ log.Printf("Account: Name=%s, Username=%s", form.Name, form.Username)
 
 1. Clone the repository
 2. Install dependencies: `go mod tidy`
-3. Generate protobuf code: `protoc --go_out=. --go_opt=paths=source_relative pages/components/*/\*.proto`
-4. Generate templ templates: `templ generate`
-5. Run the server: `go run main.go`
+3. Watch for tailwind build changes `just tailwind`
+4. Run server and watch for changes `just watch` (uses `.air.toml`)
 
 ## Component Structure
 
@@ -204,8 +203,6 @@ components/[component-name]/
 
 pages/components/[component-name]/
 ├── [component-name]_page.templ    # Demo page
-├── [component-name]_page.proto    # Form definitions
-└── [component-name]_page.pb.go    # Generated protobuf code
 ```
 
 ## Documentation
