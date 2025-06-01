@@ -1,13 +1,13 @@
 [Unit]
 Description=datastarui
-ConditionPathExists=/home/ubuntu/datastarui/datastarui
+ConditionPathExists=/home/ubuntu/datastarui/datastarui-linux
 After=network.target
 [Service]
 Type=simple
 User=ubuntu
 Group=ubuntu
 WorkingDirectory=/home/ubuntu/datastarui
-ExecStart=/home/ubuntu/go_webserver/datastarui
+ExecStart=/home/ubuntu/datastarui/datastarui-linux
 Restart=on-failure
 RestartSec=10
 StandardOutput=append:/home/ubuntu/datastarui/log/datastarui.log
