@@ -134,7 +134,7 @@ The project uses the same design tokens as shadcn/ui:
 1. **Add Datastar reactivity** where needed
 1. **Create comprehensive demos** showing all variants
 
-See the [Development Guide](datastarui.md) for detailed implementation instructions.
+See the [Development Guide](./.cursor/rules/datastar.mdc) for detailed implementation instructions.
 
 ## 📖 Documentation
 
@@ -207,4 +207,4 @@ pages/components/[component-name]/
 
 ## Documentation
 
-See `datastarui.md` for comprehensive development guidelines and component implementation patterns.
+See [`.cursor\rules\datastar.mdc`](./.cursor\rules\datastar.mdc) for comprehensive development guidelines and component implementation patterns.
