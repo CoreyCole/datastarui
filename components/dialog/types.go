@@ -4,10 +4,11 @@ import "github.com/a-h/templ"
 
 // DialogProps defines the props for the Dialog container (native <dialog> element)
 type DialogProps struct {
-	ID         string
-	Class      string
-	ClosedBy   string // "none", "closerequest", "any" - controls how dialog can be dismissed
-	Attributes templ.Attributes
+	ID             string
+	Class          string
+	ClosedBy       string // "none", "closerequest", "any" - controls how dialog can be dismissed
+	DisableOverlay bool   // Whether to disable the background overlay
+	Attributes     templ.Attributes
 }
 
 // DialogTriggerProps defines the props for the DialogTrigger component
@@ -21,11 +22,8 @@ type DialogTriggerProps struct {
 
 // DialogContentProps defines the props for the DialogContent component (for backwards compatibility)
 type DialogContentProps struct {
-	ID          string
-	Class       string
-	Size        string // "sm", "md", "lg", "xl", "full"
-	ShowOverlay bool   // Whether to show the backdrop overlay
-	Attributes  templ.Attributes
+	Class      string
+	Attributes templ.Attributes
 }
 
 // DialogOverlayProps defines the props for the DialogOverlay component
@@ -63,7 +61,7 @@ type DialogDescriptionProps struct {
 type DialogCloseProps struct {
 	DialogID    string
 	ReturnValue string // Optional return value when closing the dialog
-	AsChild     bool
+	Variant     string // Button variant: "default", "destructive", "outline", "secondary", "ghost", "link"
 	Class       string
 	Attributes  templ.Attributes
 }

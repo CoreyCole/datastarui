@@ -6,10 +6,11 @@ templ Dialog(props DialogProps) {
 		// Create nested signal structure: {[id]: {open: false, returnValue: null}}
 		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
 
-		// Create dynamic data-ref attribute name (lowercase to match HTML behavior)
-		refAttrName := "data-ref-" + props.ID + "dialog"
+		// Create unique ref using dialog ID: data-ref="dialog_[id]" creates $dialog_[id] signal
+		refName := "dialog_" + props.ID
 		dialogAttrs := templ.Attributes{
-			refAttrName: "", // data-ref just needs to exist, value doesn't matter
+			"data-ref": refName,
+			// Remove data-show as it conflicts with native dialog behavior
 		}
 
 		// Merge with user-provided attributes
@@ -28,14 +29,32 @@ templ Dialog(props DialogProps) {
 
 		dialogAttrs["data-on-toggle"] = toggleHandler
 		dialogAttrs["data-on-close"] = closeHandler
+
+		// Add backdrop click handler if overlay is not disabled
+		if !props.DisableOverlay {
+			// Handle backdrop clicks to close modal dialogs using logical operators instead of if statement
+			backdropClickHandler := "evt.target === evt.currentTarget && ($" + props.ID + ".open = false, evt.currentTarget.close('backdrop-click'))"
+			dialogAttrs["data-on-click"] = backdropClickHandler
+		}
+
+		// Dialog should not have positioning classes - native dialog handles positioning
+		dialogClasses := "p-0 border-0 bg-transparent"
+		if props.Class != "" {
+			dialogClasses += " " + props.Class
+		}
+
+		// Generate the CSS classes for the inner dialog content container using our variant system
+		containerClasses := DialogVariants(props)
 	}}
 	<div data-signals={ signalsJSON }>
 		<dialog
 			id={ props.ID }
 			{ dialogAttrs... }
-			class={ props.Class }
+			class={ dialogClasses }
 		>
-			{ children... }
+			<div class={ containerClasses }>
+				{ children... }
+			</div>
 		</dialog>
 	</div>
 }
@@ -43,15 +62,14 @@ templ Dialog(props DialogProps) {
 // DialogTrigger - button or element that opens the dialog using native methods
 templ DialogTrigger(props DialogTriggerProps) {
 	{{
-		// Create click handler using the dialog ref and update signal
+		// Create click handler using document.getElementById for reliable DOM access
 		var clickHandler string
-		dialogRef := "$" + props.DialogID + "dialog"
 		openSignal := "$" + props.DialogID + ".open = true"
 
 		if props.Modal {
-			clickHandler = openSignal + "; " + dialogRef + ".showModal()"
+			clickHandler = openSignal + "; document.getElementById('" + props.DialogID + "').showModal()"
 		} else {
-			clickHandler = openSignal + "; " + dialogRef + ".show()"
+			clickHandler = openSignal + "; document.getElementById('" + props.DialogID + "').show()"
 		}
 	}}
 	if props.AsChild {
@@ -75,58 +93,18 @@ templ DialogTrigger(props DialogTriggerProps) {
 	}
 }
 
-// DialogContent - wrapper for dialog content (for backwards compatibility with existing code)
+// DialogContent - content section of the dialog
 templ DialogContent(props DialogContentProps) {
 	{{
-		contentClasses := DialogContentVariants(props)
-
-		// Create dynamic data-ref attribute name (lowercase to match HTML behavior)
-		refAttrName := "data-ref-" + props.ID + "dialog"
-		dialogAttrs := templ.Attributes{
-			refAttrName: "", // data-ref just needs to exist
-		}
-
-		// Merge with user-provided attributes
-		for k, v := range props.Attributes {
-			dialogAttrs[k] = v
-		}
-
-		// Add native dialog event handlers to sync signals
-		toggleHandler := "$'" + props.ID + "'.open = evt.newState === 'open'"
-		closeHandler := "$'" + props.ID + "'.open = false; $'" + props.ID + "'.returnValue = evt.target.returnValue"
-
-		dialogAttrs["data-on-toggle"] = toggleHandler
-		dialogAttrs["data-on-close"] = closeHandler
-
-		// Add outside click handler if overlay is shown
-		if props.ShowOverlay {
-			outsideClickHandler := "$" + props.ID + ".open = false; $" + props.ID + "dialog.close('outside-click')"
-			dialogAttrs["data-on-click__outside"] = outsideClickHandler
-		}
-
-		// Create signals for this dialog instance
-		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
+		// Generate the CSS classes using our variant system
+		classes := DialogContentVariants(props)
 	}}
-	<div data-signals={ signalsJSON }>
-		<dialog
-			id={ props.ID }
-			{ dialogAttrs... }
-			role="dialog"
-			aria-modal="true"
-			class={ contentClasses }
-		>
-			@DialogClose(DialogCloseProps{
-				DialogID: props.ID,
-				Class:    DialogCloseVariants(DialogCloseProps{DialogID: props.ID}),
-			}) {
-				<!-- Close button icon -->
-				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-				</svg>
-				<span class="sr-only">Close</span>
-			}
-			{ children... }
-		</dialog>
+	<div
+		data-slot="dialog-content"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
 	</div>
 }
 
@@ -141,28 +119,60 @@ templ DialogOverlay(props DialogOverlayProps) {
 
 // DialogHeader - header section of the dialog
 templ DialogHeader(props DialogHeaderProps) {
-	<div class={ DialogHeaderVariants(props) } { props.Attributes... }>
+	{{
+		// Generate the CSS classes using our variant system
+		classes := DialogHeaderVariants(props)
+	}}
+	<div
+		data-slot="dialog-header"
+		class={ classes }
+		{ props.Attributes... }
+	>
 		{ children... }
 	</div>
 }
 
 // DialogFooter - footer section of the dialog
 templ DialogFooter(props DialogFooterProps) {
-	<div class={ DialogFooterVariants(props) } { props.Attributes... }>
+	{{
+		// Generate the CSS classes using our variant system
+		classes := DialogFooterVariants(props)
+	}}
+	<div
+		data-slot="dialog-footer"
+		class={ classes }
+		{ props.Attributes... }
+	>
 		{ children... }
 	</div>
 }
 
 // DialogTitle - title element in the dialog header
 templ DialogTitle(props DialogTitleProps) {
-	<h2 class={ DialogTitleVariants(props) } { props.Attributes... }>
+	{{
+		// Generate the CSS classes using our variant system
+		classes := DialogTitleVariants(props)
+	}}
+	<h2
+		data-slot="dialog-title"
+		class={ classes }
+		{ props.Attributes... }
+	>
 		{ children... }
 	</h2>
 }
 
 // DialogDescription - description element in the dialog header
 templ DialogDescription(props DialogDescriptionProps) {
-	<p class={ DialogDescriptionVariants(props) } { props.Attributes... }>
+	{{
+		// Generate the CSS classes using our variant system
+		classes := DialogDescriptionVariants(props)
+	}}
+	<p
+		data-slot="dialog-description"
+		class={ classes }
+		{ props.Attributes... }
+	>
 		{ children... }
 	</p>
 }
@@ -170,34 +180,52 @@ templ DialogDescription(props DialogDescriptionProps) {
 // DialogClose - button that closes the dialog using native close() method
 templ DialogClose(props DialogCloseProps) {
 	{{
-		// Create click handler using the dialog ref and update signal
-		dialogRef := "$" + props.DialogID + "dialog"
+		// Create click handler using document.getElementById for reliable DOM access
 		closeSignal := "$" + props.DialogID + ".open = false"
 
 		var clickHandler string
 		if props.ReturnValue != "" {
-			clickHandler = closeSignal + "; " + dialogRef + ".close('" + props.ReturnValue + "')"
+			clickHandler = closeSignal + "; document.getElementById('" + props.DialogID + "').close('" + props.ReturnValue + "')"
 		} else {
-			clickHandler = closeSignal + "; " + dialogRef + ".close()"
+			clickHandler = closeSignal + "; document.getElementById('" + props.DialogID + "').close()"
+		}
+
+		// Default button classes matching the Button component design
+		baseClasses := "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
+
+		// Add variant-specific classes based on props.Variant (default to "default")
+		variant := props.Variant
+		if variant == "" {
+			variant = "default"
+		}
+
+		var variantClasses string
+		switch variant {
+		case "destructive":
+			variantClasses = "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+		case "outline":
+			variantClasses = "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+		case "secondary":
+			variantClasses = "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+		case "ghost":
+			variantClasses = "text-foreground hover:bg-accent hover:text-accent-foreground"
+		case "link":
+			variantClasses = "text-primary underline-offset-4 hover:underline"
+		default: // "default"
+			variantClasses = "bg-primary text-primary-foreground hover:bg-primary/90"
+		}
+
+		buttonClasses := baseClasses + " " + variantClasses
+		if props.Class != "" {
+			buttonClasses += " " + props.Class
 		}
 	}}
-	if props.AsChild {
-		// When AsChild is true, we apply the click handler to the child element
-		<div
-			data-on-click={ clickHandler }
-			{ props.Attributes... }
-			class={ props.Class }
-		>
-			{ children... }
-		</div>
-	} else {
-		<button
-			type="button"
-			data-on-click={ clickHandler }
-			{ props.Attributes... }
-			class={ props.Class }
-		>
-			{ children... }
-		</button>
-	}
+	<button
+		type="button"
+		data-on-click={ clickHandler }
+		{ props.Attributes... }
+		class={ buttonClasses }
+	>
+		{ children... }
+	</button>
 }

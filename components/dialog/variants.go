@@ -4,35 +4,20 @@ import (
 	"github.com/coreycole/datastarui/utils"
 )
 
+// DialogVariants returns the CSS classes for the main Dialog container component
+func DialogVariants(props DialogProps) string {
+	// Dialog-specific styling - optimized for modal dialogs with consistent padding
+	baseClasses := "max-w-lg w-full max-h-[90vh] overflow-auto bg-background border shadow-lg rounded-lg p-6"
+
+	return utils.TwMerge(baseClasses, props.Class)
+}
+
 // DialogContentVariants returns the CSS classes for the DialogContent component
 func DialogContentVariants(props DialogContentProps) string {
-	// Base classes for the dialog content - simplified for better centering
-	// The parent dialog element handles positioning, this focuses on content styling
-	baseClasses := "grid gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg relative max-h-[80vh] overflow-y-auto"
+	// Base classes for dialog content - no horizontal padding since container handles it
+	baseClasses := "py-4"
 
-	// Size variants
-	sizeVariant := ""
-	switch props.Size {
-	case "sm":
-		sizeVariant = "w-full max-w-sm"
-	case "md":
-		sizeVariant = "w-full max-w-md"
-	case "lg":
-		sizeVariant = "w-full max-w-lg"
-	case "xl":
-		sizeVariant = "w-full max-w-xl"
-	case "2xl":
-		sizeVariant = "w-full max-w-2xl"
-	case "full":
-		sizeVariant = "w-full max-w-[calc(100%-2rem)]"
-	default:
-		sizeVariant = "w-full max-w-lg" // Default size
-	}
-
-	// Combine base classes with size variant
-	classes := baseClasses + " " + sizeVariant
-
-	return utils.TwMerge(classes, props.Class)
+	return utils.TwMerge(baseClasses, props.Class)
 }
 
 // DialogOverlayVariants returns the CSS classes for the DialogOverlay component
@@ -44,20 +29,23 @@ func DialogOverlayVariants(props DialogOverlayProps) string {
 
 // DialogHeaderVariants returns the CSS classes for the DialogHeader component
 func DialogHeaderVariants(props DialogHeaderProps) string {
-	baseClasses := "flex flex-col gap-2 text-center sm:text-left"
+	// Dialog header styling - no padding since container handles it, just spacing between elements
+	baseClasses := "flex flex-col gap-2 text-left"
 
 	return utils.TwMerge(baseClasses, props.Class)
 }
 
 // DialogFooterVariants returns the CSS classes for the DialogFooter component
 func DialogFooterVariants(props DialogFooterProps) string {
-	baseClasses := "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+	// Footer with top margin to separate from content, no horizontal padding
+	baseClasses := "flex flex-row gap-3 justify-end pt-4"
 
 	return utils.TwMerge(baseClasses, props.Class)
 }
 
 // DialogTitleVariants returns the CSS classes for the DialogTitle component
 func DialogTitleVariants(props DialogTitleProps) string {
+	// Dialog title styling - focused on readability and hierarchy
 	baseClasses := "text-lg leading-none font-semibold"
 
 	return utils.TwMerge(baseClasses, props.Class)
@@ -65,6 +53,7 @@ func DialogTitleVariants(props DialogTitleProps) string {
 
 // DialogDescriptionVariants returns the CSS classes for the DialogDescription component
 func DialogDescriptionVariants(props DialogDescriptionProps) string {
+	// Dialog description styling - similar to card but optimized for dialog context
 	baseClasses := "text-sm text-muted-foreground"
 
 	return utils.TwMerge(baseClasses, props.Class)
