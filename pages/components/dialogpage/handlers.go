@@ -79,7 +79,12 @@ func RegisterDialogPageHandlers(e *echo.Echo) {
 		successHTML := `<div id="form-success-message" class="p-4 bg-green-50 border border-green-200 rounded-md mb-4">
 			<p class="text-sm text-green-800">✓ Form submitted successfully! Name: ` + name + `, Email: ` + email + `</p>
 		</div>`
-		sse.MergeFragments(successHTML)
+
+		// Clear any existing errors in the dialog
+		clearErrorsHTML := `<div id="form-dialog-errors"></div>`
+
+		// Merge both success message and clear errors
+		sse.MergeFragments(successHTML + clearErrorsHTML)
 
 		// Update signals in a single merged call to ensure reliable state updates
 		allSignalsJSON, _ := json.Marshal(map[string]interface{}{
