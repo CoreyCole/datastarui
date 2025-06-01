@@ -138,7 +138,7 @@ See the [Development Guide](datastarui.md) for detailed implementation instructi
 
 ## 📖 Documentation
 
-- [Component Development Guide](datastarui.md) - Detailed implementation patterns
+- [Component Development Guide](./.cursor/rules/datastar.mdc) - Detailed implementation patterns
 - [Datastar Documentation](https://data-star.dev/) - Reactivity framework
 - [templ Documentation](https://templ.guide/) - Go templating
 - [shadcn/ui](https://ui.shadcn.com/) - Original component library
