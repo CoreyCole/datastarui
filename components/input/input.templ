@@ -1,30 +1,59 @@
 package input
 
+import "strings"
+
 templ Input(props InputProps) {
 	{{
 		// Generate CSS classes
 		classes := inputVariants(props.Class)
-	}}
-	<input
-		if props.Type != "" {
-			type={ props.Type }
+
+		// Set up input attributes
+		var inputAttrs templ.Attributes
+		inputAttrs = make(templ.Attributes)
+
+		// Copy user-provided attributes first
+		for k, v := range props.Attributes {
+			inputAttrs[k] = v
 		}
-		data-slot="input"
-		class={ classes }
+
+		// Standard input attributes
+		inputAttrs["data-slot"] = "input"
+		inputAttrs["class"] = classes
+
+		if props.Type != "" {
+			inputAttrs["type"] = props.Type
+		}
 		if props.Placeholder != "" {
-			placeholder={ props.Placeholder }
+			inputAttrs["placeholder"] = props.Placeholder
 		}
 		if props.Value != "" {
-			value={ props.Value }
+			inputAttrs["value"] = props.Value
 		}
 		if props.Name != "" {
-			name={ props.Name }
+			inputAttrs["name"] = props.Name
 		}
 		if props.ID != "" {
-			id={ props.ID }
+			inputAttrs["id"] = props.ID
 		}
-		disabled?={ props.Disabled }
-		required?={ props.Required }
-		{ props.Attributes... }
+		if props.Disabled {
+			inputAttrs["disabled"] = true
+		}
+		if props.Required {
+			inputAttrs["required"] = true
+		}
+
+		// Set up data-bind if FormID and Name are provided
+		if props.FormID != "" && props.Name != "" {
+			// Convert form ID to valid signal name (replace hyphens with underscores)
+			signalName := strings.ReplaceAll(props.FormID, "-", "_")
+			dataBindValue := signalName + "." + props.Name
+			inputAttrs["data-bind"] = dataBindValue
+
+			// Don't try to initialize nested signals here - let the form handle it
+			// The data-bind will automatically create the signal if it doesn't exist
+		}
+	}}
+	<input
+		{ inputAttrs... }
 	/>
 }

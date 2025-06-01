@@ -12,6 +12,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/buttonpage"
 	"github.com/coreycole/datastarui/pages/components/cardpage"
 	"github.com/coreycole/datastarui/pages/components/checkboxpage"
+	"github.com/coreycole/datastarui/pages/components/dialogpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
@@ -63,6 +64,9 @@ func main() {
 	e.GET("/components/checkbox", func(c echo.Context) error {
 		return checkboxpage.CheckboxPage().Render(c.Request().Context(), c.Response().Writer)
 	})
+	e.GET("/components/dialog", func(c echo.Context) error {
+		return dialogpage.DialogPage().Render(c.Request().Context(), c.Response().Writer)
+	})
 
 	// Serve the docs page
 	e.GET("/docs", func(c echo.Context) error {
@@ -77,6 +81,7 @@ func main() {
 	// Register form demo handlers
 	formpage.RegisterFormPageHandlers(e)
 	checkboxpage.RegisterCheckboxHandlers(e)
+	dialogpage.RegisterDialogPageHandlers(e)
 
 	// Serve static files
 	e.Static("/", "static/")

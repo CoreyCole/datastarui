@@ -209,6 +209,18 @@
       transform: scale(0.95);
     }
   }
+
+  /* Ensure all form inputs have proper text colors */
+  input,
+  textarea,
+  select {
+    color: hsl(var(--foreground));
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
 }
 
 @layer utilities {
@@ -319,5 +331,40 @@
       padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
+  }
+
+  /* Ensure form elements in dialogs are interactive */
+  [role="dialog"] input,
+  [role="dialog"] textarea,
+  [role="dialog"] select,
+  [role="dialog"] button {
+    pointer-events: auto;
+    z-index: 51;
+    position: relative;
+  }
+
+  /* Ensure form elements have proper focus styles and text colors */
+  [role="dialog"] input:focus-visible,
+  [role="dialog"] textarea:focus-visible,
+  [role="dialog"] select:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    z-index: 52;
+  }
+
+  /* Dialog show animation */
+  @keyframes dialog-show {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  [role="dialog"][data-state="open"] {
+    animation: dialog-show 0.2s ease-out;
   }
 }

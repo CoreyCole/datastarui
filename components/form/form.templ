@@ -3,22 +3,55 @@ package form
 import (
 	"fmt"
 	"github.com/coreycole/datastarui/components/label"
+	"strings"
 )
 
 // Form wrapper component
 templ Form(props FormProps) {
-	<form
+	{{
+		// Convert form ID to valid signal name (replace hyphens with underscores)
+		signalName := strings.ReplaceAll(props.ID, "-", "_")
+
+		// Create nested signal structure: {[id]: {submitted: false, name: "", email: ""}}
+		// This follows the same pattern as dialog component for consistency
+		signalsJSON := "{\"" + signalName + "\": {\"submitted\": false, \"name\": \"\", \"email\": \"\"}}"
+
+		// Set up form attributes
+		var formAttrs templ.Attributes
+		formAttrs = make(templ.Attributes)
+
+		// Copy user-provided attributes first
+		for k, v := range props.Attributes {
+			formAttrs[k] = v
+		}
+
+		// Add form-specific attributes
 		if props.ID != "" {
-			id={ props.ID }
+			formAttrs["id"] = props.ID
 		}
+
 		if props.Action != "" {
-			data-on-submit={ fmt.Sprintf("@post('%s', {contentType: 'form'})", templ.SafeURL(props.Action)) }
+			// Check if there's a target specified in attributes
+			target := ""
+			if targetAttr, exists := props.Attributes["data-target"]; exists {
+				target = fmt.Sprintf(", target: '%s'", targetAttr)
+				// Remove data-target from attributes as we've handled it
+				delete(formAttrs, "data-target")
+			}
+			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(props.Action), target)
 		}
-		class={ props.Class }
-		{ props.Attributes... }
-	>
-		{ children... }
-	</form>
+
+		if props.Class != "" {
+			formAttrs["class"] = props.Class
+		}
+	}}
+	<div data-signals={ signalsJSON }>
+		<form
+			{ formAttrs... }
+		>
+			{ children... }
+		</form>
+	</div>
 }
 
 // FormItem component - container for form field

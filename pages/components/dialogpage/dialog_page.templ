@@ -1,0 +1,289 @@
+package dialogpage
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/dialog"
+	"github.com/coreycole/datastarui/components/form"
+	"github.com/coreycole/datastarui/components/input"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ DialogPage() {
+	@l.Root("components") {
+		<div class="space-y-10">
+			<!-- Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Dialog</h1>
+				<p class="text-muted-foreground">
+					A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.
+				</p>
+			</div>
+			<!-- Modal Dialog -->
+			<div class="space-y-4 p-4 border rounded-lg">
+				<h3 class="font-medium">Modal Dialog</h3>
+				<p class="text-sm text-muted-foreground">
+					Uses Datastar signals - ESC key closes, backdrop click closes.
+				</p>
+				@dialog.Dialog(dialog.DialogProps{
+					ID: "modal_demo",
+				}) {
+					@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+						@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+							Modal Dialog
+						}
+						@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+							This is a modal dialog that blocks interaction with the rest of the page.
+						}
+					}
+					@dialog.DialogContent(dialog.DialogContentProps{}) {
+						<p class="text-sm">Try pressing ESC or clicking outside to close this dialog.</p>
+						<!-- Show dialog state inside the dialog -->
+						<div class="mt-4 p-3 bg-blue-50 rounded border">
+							<p class="text-sm font-medium text-blue-900">Dialog State (from inside):</p>
+							<p class="text-xs text-blue-700">Open: <span data-text="$modal_demo.open ? 'Yes' : 'No'"></span></p>
+						</div>
+					}
+					@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+						@dialog.DialogClose(dialog.DialogCloseProps{
+							DialogID: "modal_demo",
+							Variant:  "default",
+						}) {
+							Close
+						}
+					}
+				}
+				@dialog.DialogTrigger(dialog.DialogTriggerProps{
+					DialogID: "modal_demo",
+					Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
+				}) {
+					Open Modal Dialog
+				}
+				<!-- Show dialog state outside the dialog -->
+				<div class="text-xs text-muted-foreground mt-2">
+					<div>Dialog Status: <span data-text="$modal_demo.open ? 'Open' : 'Closed'" class="font-medium"></span></div>
+					<div data-show="$modal_demo.open" class="text-green-600">✓ Dialog is currently open</div>
+					<div data-show="!$modal_demo.open" class="text-gray-500">○ Dialog is currently closed</div>
+				</div>
+			</div>
+			<!-- Form with Datastar State Management -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Form Dialog with Datastar State</h2>
+				<p class="text-sm text-muted-foreground">
+					Demonstrates form state management using Datastar signals, showing real-time form values.
+				</p>
+				<!-- Success message area -->
+				<div id="form-success-message"></div>
+				<div class="space-y-4 p-6 bg-muted/50 rounded-lg">
+					@dialog.Dialog(dialog.DialogProps{
+						ID: "form_demo",
+					}) {
+						@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+							@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+								User Information Form
+							}
+							@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+								Fill out the form and see the values update in real-time.
+							}
+						}
+						@dialog.DialogContent(dialog.DialogContentProps{}) {
+							<div id="form-dialog-errors"></div>
+							@form.Form(form.FormProps{
+								ID:     "form_dialog",
+								Action: "/dialog/dialog-page/form-submit",
+								Class:  "space-y-6",
+								Attributes: templ.Attributes{
+									"data-indicator-fetching": "",
+									"data-target":             "#form-dialog-errors",
+								},
+							}) {
+								<div class="grid gap-4">
+									@form.FormItem(form.FormItemProps{}) {
+										@form.FormLabel(form.FormLabelProps{For: "form-name"}) {
+											Name
+										}
+										@input.Input(input.InputProps{
+											ID:          "form-name",
+											Name:        "name",
+											FormID:      "form_dialog",
+											Placeholder: "Enter your name",
+											Required:    true,
+											Type:        "text",
+										})
+										@form.FormDescription(form.FormDescriptionProps{}) {
+											Your full name for the form submission.
+										}
+									}
+									@form.FormItem(form.FormItemProps{}) {
+										@form.FormLabel(form.FormLabelProps{For: "form-email"}) {
+											Email
+										}
+										@input.Input(input.InputProps{
+											ID:          "form-email",
+											Name:        "email",
+											FormID:      "form_dialog",
+											Type:        "email",
+											Placeholder: "Enter your email",
+											Required:    true,
+										})
+										@form.FormDescription(form.FormDescriptionProps{}) {
+											We'll use this to send you a confirmation.
+										}
+									}
+								</div>
+								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+									@dialog.DialogClose(dialog.DialogCloseProps{
+										DialogID: "form_demo",
+										Variant:  "outline",
+									}) {
+										Cancel
+									}
+									@button.Button(button.ButtonProps{
+										Type: "submit",
+										Attributes: templ.Attributes{
+											"data-attr-disabled": "$fetching",
+											"data-text":          "$fetching ? 'Submitting...' : 'Submit Form'",
+										},
+									}) {
+										Submit Form
+									}
+								}
+							}
+						}
+					}
+					<!-- Display current form values -->
+					<div class="space-y-2">
+						<h3 class="font-medium">Current Form Values:</h3>
+						<div class="text-sm bg-background p-3 rounded border space-y-1">
+							<div>Name: <span data-text="$form_dialog.name || 'Not entered'"></span></div>
+							<div>Email: <span data-text="$form_dialog.email || 'Not entered'"></span></div>
+							<div>Form Submitted: <span data-text="$form_dialog.submitted || false ? 'Yes' : 'No'"></span></div>
+						</div>
+					</div>
+					@dialog.DialogTrigger(dialog.DialogTriggerProps{
+						DialogID: "form_demo",
+						Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
+					}) {
+						Open Form Dialog
+					}
+				</div>
+			</div>
+			<!-- Custom Triggers with AsChild -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Custom Triggers with AsChild</h2>
+				<p class="text-sm text-muted-foreground">
+					Using the AsChild prop to create custom trigger elements instead of standard buttons.
+				</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<!-- Card Trigger -->
+					<div class="space-y-4">
+						<h3 class="text-lg font-medium">Card Trigger</h3>
+						@dialog.Dialog(dialog.DialogProps{ID: "card_dialog"}) {
+							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+									User Profile Details
+								}
+								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+									View user profile information.
+								}
+							}
+							@dialog.DialogContent(dialog.DialogContentProps{}) {
+								<div class="flex items-center gap-4">
+									<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+										<svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+										</svg>
+									</div>
+									<div>
+										<h3 class="font-semibold">John Doe</h3>
+										<p class="text-sm text-muted-foreground">Software Engineer</p>
+										<p class="text-sm text-muted-foreground">john@example.com</p>
+									</div>
+								</div>
+							}
+							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID: "card_dialog",
+									Variant:  "default",
+									Class:    "w-full",
+								}) {
+									Close
+								}
+							}
+						}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							AsChild:  true,
+							DialogID: "card_dialog",
+						}) {
+							<div class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow">
+								<div class="flex items-center gap-3">
+									<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+										<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+										</svg>
+									</div>
+									<div>
+										<p class="text-gray-500 font-medium text-sm">User Profile</p>
+										<p class="text-xs text-muted-foreground">Click for details</p>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+					<!-- Badge Trigger -->
+					<div class="space-y-4">
+						<h3 class="text-lg font-medium">Status Badge</h3>
+						@dialog.Dialog(dialog.DialogProps{ID: "status_dialog"}) {
+							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
+								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+									System Status
+								}
+								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+									Current system status and details.
+								}
+							}
+							@dialog.DialogContent(dialog.DialogContentProps{}) {
+								<div class="space-y-3">
+									<div class="flex items-center justify-between">
+										<span class="text-sm font-medium">Status:</span>
+										<div class="flex items-center gap-2">
+											<div class="w-2 h-2 bg-green-600 rounded-full"></div>
+											<span class="text-sm text-green-600">Active</span>
+										</div>
+									</div>
+									<div class="flex items-center justify-between">
+										<span class="text-sm font-medium">Uptime:</span>
+										<span class="text-sm text-muted-foreground">99.9%</span>
+									</div>
+									<div class="flex items-center justify-between">
+										<span class="text-sm font-medium">Last Check:</span>
+										<span class="text-sm text-muted-foreground">2 minutes ago</span>
+									</div>
+								</div>
+							}
+							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
+								@dialog.DialogClose(dialog.DialogCloseProps{
+									DialogID: "status_dialog",
+									Variant:  "default",
+								}) {
+									Close
+								}
+							}
+						}
+						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+							AsChild:  true,
+							DialogID: "status_dialog",
+						}) {
+							<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
+								<div class="w-2 h-2 bg-green-600 rounded-full"></div>
+								Status: Active
+								<svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
