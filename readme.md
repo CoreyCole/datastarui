@@ -11,10 +11,6 @@ A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains
 - 🔧 **Type-safe** component props with Go structs
 - 🌙 **Dark mode** support built-in
 - ♿ **Accessible** with proper ARIA attributes
-- **Type-safe form handling** with protobuf integration
-- **Automatic form parsing** using protobuf reflection
-- **Folder-based component organization** with dedicated demo pages
-- **Datastar reactive patterns** for interactive components
 
 ## 🚀 Quick Start
 
