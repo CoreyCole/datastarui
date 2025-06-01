@@ -39,35 +39,15 @@ templ PopoverPage() {
 								anchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';
 								anchorSupportDiv.className = 'text-sm text-red-600 mb-2';
 								
-								if (window.CSS_ANCHOR_POLYFILL_LOADING) {
-									polyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill is loading...';
-									polyfillDiv.className = 'text-sm text-orange-600';
-								} else if (window.CSS_ANCHOR_POLYFILL_LOADED) {
-									polyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active and working!';
-									polyfillDiv.className = 'text-sm text-green-600';
-								} else {
-									// Check again after a delay for polyfill completion
-									polyfillDiv.innerHTML = '🔧 CSS Anchor Positioning polyfill loaded (anchor positioning available)';
+								if (window.CSS_ANCHOR_POLYFILL_LOADED) {
+									polyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active!';
 									polyfillDiv.className = 'text-sm text-green-600';
 								}
 							}
 						}
 						
-						// Initial check
-						updatePolyfillStatus();
-						
 						// Listen for polyfill load completion
 						window.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);
-						
-						// Fallback check after delay
-						setTimeout(updatePolyfillStatus, 1500);
-						
-						// Enhanced debugging
-						console.log('CSS Anchor Positioning native support:', hasNativeSupport);
-						console.log('Browser:', navigator.userAgent);
-						console.log('Document style has anchorName:', "anchorName" in document.documentElement.style);
-						console.log('Polyfill loading flag:', window.CSS_ANCHOR_POLYFILL_LOADING);
-						console.log('Polyfill loaded flag:', window.CSS_ANCHOR_POLYFILL_LOADED);
 					</script>
 				</div>
 			</div>
