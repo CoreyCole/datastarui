@@ -2,6 +2,8 @@
 
 A Go/templ port of [shadcn/ui](https://ui.shadcn.com/) components that maintains pixel-perfect visual and behavioral parity with minimal JavaScript (lightweight 15KB [Datastar](https://data-star.dev/) library for reactivity).
 
+See [datastar-ui.com](https://datastar-ui.com) for component demos.
+
 ## ✨ Features
 
 - 🚀 **Server-side rendered** components with Go/templ
