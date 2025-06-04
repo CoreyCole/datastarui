@@ -169,18 +169,21 @@ templ SelectTrigger(props SelectTriggerProps) {
 		// Generate the CSS classes using our variant system
 		classes := selectTriggerVariants(props.Class)
 
-		// Simplified function to find current selection index - scoped to parent select
-		findCurrentIndexJs := "(this.closest('[data-slot=\"select\"]').querySelector('[data-select-item][data-value=\"' + " + signals.Signal("value") + " + '\"]')?.dataset?.index || '0')"
+		// Simpler approach to find current selection index - use the select container's ID for specificity
+		findCurrentIndexJs := "Array.from(document.querySelectorAll('[data-select-id=\"" + props.ID + "\"] [data-select-item]:not([data-disabled])')).findIndex(el => el.dataset.value === " + signals.Signal("value") + ")"
 
-		// Click handler - toggle open and highlight current selection using ternary expression
+		// Set highlighted to current selection index, or 0 if no selection (findIndex returns -1 when not found)
+		setHighlightedJs := signals.Set("highlighted", "Math.max(0, "+findCurrentIndexJs+")")
+
+		// Click handler - toggle open and highlight current selection
 		clickExpr := signals.Toggle("open") + "; " +
-			signals.Signal("open") + " ? " + signals.Set("highlighted", findCurrentIndexJs) + " : null"
+			signals.Signal("open") + " ? " + setHighlightedJs + " : null"
 
 		// Keyboard handler - open and highlight current selection when closed
 		triggerKeyHandler := "(evt.key === 'ArrowDown' || evt.key === 'ArrowUp' || evt.key === ' ' || evt.key === 'Enter') && !" + signals.Signal("open") + " ? (" +
 			"evt.preventDefault(), evt.stopPropagation(), " +
 			signals.Set("open", "true") + ", " +
-			signals.Set("highlighted", findCurrentIndexJs) +
+			setHighlightedJs +
 			") : null"
 	}}
 	<button
