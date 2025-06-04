@@ -65,24 +65,24 @@ templ CheckboxPage() {
 					@card.CardContent(card.CardContentProps{}) {
 						<div class="flex flex-row items-start gap-3">
 							@checkbox.Checkbox(checkbox.CheckboxProps{
-								ID:      "terms-2",
-								Checked: true,
-							})
-							<div class="grid gap-2">
-								@label.Label(label.LabelProps{
-									For: "terms-2",
-								}) {
-									Accept terms and conditions
-								}
-								<p class="text-muted-foreground text-sm">
-									By clicking this checkbox, you agree to the terms and conditions.
-								</p>
-							</div>
+								ID: "terms_2",
+							}) {
+								<div class="grid gap-2">
+									@label.Label(label.LabelProps{
+										For: "terms_2",
+									}) {
+										Accept terms and conditions
+									}
+									<p class="text-sm text-muted-foreground">
+										You agree to our Terms of Service and Privacy Policy.
+									</p>
+								</div>
+							}
 						</div>
 						<div class="mt-2 p-3 bg-muted rounded-lg max-w-sm">
 							<p class="text-sm">
 								<strong>State:</strong>
-								<span data-text="$terms-2.checked ? 'Accepted' : 'Not accepted'"></span>
+								<span data-text="$terms_2.checked ? 'Accepted' : 'Not accepted'"></span>
 							</p>
 						</div>
 					}
@@ -133,7 +133,7 @@ templ CheckboxPage() {
 							Class: "max-w-sm hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950",
 						}) {
 							@checkbox.Checkbox(checkbox.CheckboxProps{
-								ID:        "toggle-2",
+								ID:        "toggle_2",
 								Checked:   true,
 								ClassName: "data-[state=checked]:border-blue-600 max-w-sm data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700",
 							})
@@ -149,7 +149,7 @@ templ CheckboxPage() {
 						<div class="mt-2 p-3 bg-muted rounded-lg max-w-sm">
 							<p class="text-sm">
 								<strong>State:</strong>
-								<span data-text="$toggle-2.checked ? 'Enabled' : 'Disabled'"></span>
+								<span data-text="$toggle_2.checked ? 'Enabled' : 'Disabled'"></span>
 							</p>
 						</div>
 					}
@@ -238,9 +238,9 @@ templ CheckboxPage() {
 							}
 							@card.CardContent(card.CardContentProps{}) {
 								<!-- Error/Success message placeholder -->
-								<div id="checkbox-form-errors"></div>
+								<div id="checkbox_form_errors"></div>
 								@form.Form(form.FormProps{
-									ID:     "checkbox-form",
+									ID:     "checkbox_form",
 									Action: "/forms/checkbox-demo",
 									Class:  "space-y-4",
 									Attributes: templ.Attributes{
@@ -273,12 +273,12 @@ templ CheckboxPage() {
 									@form.FormItem(form.FormItemProps{}) {
 										<div class="flex items-center gap-3">
 											@checkbox.Checkbox(checkbox.CheckboxProps{
-												ID:       "terms-form",
-												Name:     "terms-form",
+												ID:       "terms_form",
+												Name:     "terms_form",
 												Required: true,
 											})
 											@form.FormLabel(form.FormLabelProps{
-												For:   "terms-form",
+												For:   "terms_form",
 												Class: "text-sm font-normal",
 											}) {
 												I agree to the 

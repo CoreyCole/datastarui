@@ -72,7 +72,7 @@ templ DialogPage() {
 					Demonstrates form state management using Datastar signals, showing real-time form values.
 				</p>
 				<!-- Success message area -->
-				<div id="form-success-message"></div>
+				<div id="form_success_message"></div>
 				<div class="space-y-4 p-6 bg-muted/50 rounded-lg">
 					@dialog.Dialog(dialog.DialogProps{
 						ID: "form_demo",
@@ -86,23 +86,23 @@ templ DialogPage() {
 							}
 						}
 						@dialog.DialogContent(dialog.DialogContentProps{}) {
-							<div id="form-dialog-errors"></div>
+							<div id="form_dialog_errors"></div>
 							@form.Form(form.FormProps{
 								ID:     "form_dialog",
 								Action: "/dialog/dialog-page/form-submit",
 								Class:  "space-y-6",
 								Attributes: templ.Attributes{
 									"data-indicator-fetching": "",
-									"data-target":             "#form-dialog-errors",
+									"data-target":             "#form_dialog_errors",
 								},
 							}) {
 								<div class="grid gap-4">
 									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "form-name"}) {
+										@form.FormLabel(form.FormLabelProps{For: "form_name"}) {
 											Name
 										}
 										@input.Input(input.InputProps{
-											ID:          "form-name",
+											ID:          "form_name",
 											Name:        "name",
 											FormID:      "form_dialog",
 											Placeholder: "Enter your name",
@@ -114,11 +114,11 @@ templ DialogPage() {
 										}
 									}
 									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "form-email"}) {
+										@form.FormLabel(form.FormLabelProps{For: "form_email"}) {
 											Email
 										}
 										@input.Input(input.InputProps{
-											ID:          "form-email",
+											ID:          "form_email",
 											Name:        "email",
 											FormID:      "form_dialog",
 											Type:        "email",

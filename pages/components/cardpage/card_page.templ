@@ -4,6 +4,9 @@ import (
 	"github.com/coreycole/datastarui/components/button"
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/checkbox"
+	"github.com/coreycole/datastarui/components/input"
+	"github.com/coreycole/datastarui/components/label"
+	selectui "github.com/coreycole/datastarui/components/select"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
@@ -84,8 +87,11 @@ templ CardPage() {
 										</div>
 										<div class="flex items-center space-x-2">
 											@checkbox.Checkbox(checkbox.CheckboxProps{
-												ID: "push-notifications",
+												ID: "push_notifications",
 											})
+											@label.Label(label.LabelProps{}) {
+												Push Notifications
+											}
 										</div>
 									</div>
 									<div>
@@ -160,17 +166,25 @@ templ CardPage() {
 										<div class="grid w-full items-center gap-4">
 											<div class="flex flex-col space-y-1.5">
 												<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Name</label>
-												<input class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Name of your project"/>
+												@input.Input(input.InputProps{
+													ID:          "name",
+													Type:        "text",
+													Placeholder: "Name of your project",
+												})
 											</div>
 											<div class="flex flex-col space-y-1.5">
 												<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="framework">Framework</label>
-												<select class="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="framework">
-													<option value="">Select</option>
-													<option value="next">Next.js</option>
-													<option value="sveltekit">SvelteKit</option>
-													<option value="astro">Astro</option>
-													<option value="nuxt">Nuxt.js</option>
-												</select>
+												@selectui.Select(selectui.SelectProps{
+													ID:          "framework",
+													Name:        "framework",
+													Placeholder: "Select",
+													Options: []selectui.SelectOption{
+														{Value: "next", Label: "Next.js"},
+														{Value: "sveltekit", Label: "SvelteKit"},
+														{Value: "astro", Label: "Astro"},
+														{Value: "nuxt", Label: "Nuxt.js"},
+													},
+												})
 											</div>
 										</div>
 									</form>

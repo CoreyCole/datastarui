@@ -36,7 +36,7 @@ func RegisterDialogPageHandlers(e *echo.Echo) {
 		if err != nil {
 			log.Printf("Error parsing form: %v", err)
 			sse := datastar.NewSSE(c.Response().Writer, c.Request())
-			sse.MergeFragments(`<div id="form-dialog-errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
+			sse.MergeFragments(`<div id="form_dialog_errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
 				<p class="text-sm text-red-800">Error processing form</p>
 			</div>`)
 			return nil
@@ -70,18 +70,18 @@ func RegisterDialogPageHandlers(e *echo.Echo) {
 
 		// If there are validation errors, add the error div
 		if len(errors) > 0 {
-			errorHTML := generateErrorHTML("form-dialog", errors)
+			errorHTML := generateErrorHTML("form_dialog", errors)
 			sse.MergeFragments(errorHTML)
 			return nil
 		}
 
 		// Show success message in the main page (not in the dialog)
-		successHTML := `<div id="form-success-message" class="p-4 bg-green-50 border border-green-200 rounded-md mb-4">
+		successHTML := `<div id="form_success_message" class="p-4 bg-green-50 border border-green-200 rounded-md mb-4">
 			<p class="text-sm text-green-800">✓ Form submitted successfully! Name: ` + name + `, Email: ` + email + `</p>
 		</div>`
 
 		// Clear any existing errors in the dialog
-		clearErrorsHTML := `<div id="form-dialog-errors"></div>`
+		clearErrorsHTML := `<div id="form_dialog_errors"></div>`
 
 		// Merge both success message and clear errors
 		sse.MergeFragments(successHTML + clearErrorsHTML)

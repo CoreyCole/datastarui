@@ -42,7 +42,7 @@ func RegisterFormPageHandlers(e *echo.Echo) {
 		if err != nil {
 			log.Printf("Error parsing form: %v", err)
 			sse := datastar.NewSSE(c.Response().Writer, c.Request())
-			sse.MergeFragments(`<div id="basic-form-errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
+			sse.MergeFragments(`<div id="basic_form_errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
 				<p class="text-sm text-red-800">Error processing form</p>
 			</div>`)
 			return nil
@@ -87,7 +87,7 @@ func RegisterFormPageHandlers(e *echo.Echo) {
 		if err != nil {
 			log.Printf("Error parsing form: %v", err)
 			sse := datastar.NewSSE(c.Response().Writer, c.Request())
-			sse.MergeFragments(`<div id="validation-form-errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
+			sse.MergeFragments(`<div id="validation_form_errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
 				<p class="text-sm text-red-800">Error processing form</p>
 			</div>`)
 			return nil
@@ -147,7 +147,7 @@ func RegisterFormPageHandlers(e *echo.Echo) {
 		if err != nil {
 			log.Printf("Error parsing form: %v", err)
 			sse := datastar.NewSSE(c.Response().Writer, c.Request())
-			sse.MergeFragments(`<div id="contact-form-errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
+			sse.MergeFragments(`<div id="contact_form_errors" class="p-4 bg-red-50 border border-red-200 rounded-md mb-4">
 				<p class="text-sm text-red-800">Error processing form</p>
 			</div>`)
 			return nil

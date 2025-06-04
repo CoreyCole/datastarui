@@ -33,14 +33,10 @@ templ FormPage() {
 					}
 					@card.CardContent(card.CardContentProps{}) {
 						<!-- Error/Success message placeholder -->
-						<div id="basic-form-errors"></div>
+						<div id="basic_form_errors"></div>
 						@form.Form(form.FormProps{
-							ID:     "basic-form",
-							Action: "/form/form-page/basic-form",
-							Class:  "space-y-6",
-							Attributes: templ.Attributes{
-								"data-indicator-fetching": "",
-							},
+							ID:     "basic_form",
+							Action: "/components/form/basic",
 						}) {
 							@form.FormItem(form.FormItemProps{}) {
 								@form.FormLabel(form.FormLabelProps{For: "username"}) {
@@ -84,11 +80,10 @@ templ FormPage() {
 					@card.CardContent(card.CardContentProps{}) {
 						<div>
 							<!-- Error/Success message placeholder -->
-							<div id="validation-form-errors"></div>
+							<div id="validation_form_errors"></div>
 							@form.Form(form.FormProps{
-								ID:     "validation-form",
-								Action: "/form/form-page/validation-form",
-								Class:  "space-y-6",
+								ID:     "validation_form",
+								Action: "/components/form/validation",
 							}) {
 								@form.FormItem(form.FormItemProps{}) {
 									@form.FormLabel(form.FormLabelProps{For: "email"}) {
@@ -100,10 +95,10 @@ templ FormPage() {
 										Type:        "email",
 										Placeholder: "Enter your email",
 										Attributes: templ.Attributes{
-											"aria-describedby": "email-description",
+											"aria-describedby": "email_description",
 										},
 									})
-									@form.FormDescription(form.FormDescriptionProps{ID: "email-description"}) {
+									@form.FormDescription(form.FormDescriptionProps{ID: "email_description"}) {
 										We'll never share your email with anyone else.
 									}
 									@form.FormMessage(form.FormMessageProps{}) {
@@ -119,10 +114,10 @@ templ FormPage() {
 										Type:        "password",
 										Placeholder: "Enter your password",
 										Attributes: templ.Attributes{
-											"aria-describedby": "password-description",
+											"aria-describedby": "password_description",
 										},
 									})
-									@form.FormDescription(form.FormDescriptionProps{ID: "password-description"}) {
+									@form.FormDescription(form.FormDescriptionProps{ID: "password_description"}) {
 										Must be at least 8 characters long.
 									}
 									@form.FormMessage(form.FormMessageProps{}) {
@@ -158,14 +153,10 @@ templ FormPage() {
 					@card.CardContent(card.CardContentProps{}) {
 						<div data-signals="{contact: {name: '', email: '', subject: '', message: ''}}">
 							<!-- Error/Success message placeholder -->
-							<div id="contact-form-errors"></div>
+							<div id="contact_form_errors"></div>
 							@form.Form(form.FormProps{
-								ID:     "contact-form",
-								Action: "/form/form-page/contact-form",
-								Class:  "space-y-6",
-								Attributes: templ.Attributes{
-									"data-indicator-fetching": "",
-								},
+								ID:     "contact_form",
+								Action: "/components/form/contact",
 							}) {
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 									@form.FormItem(form.FormItemProps{}) {
@@ -183,11 +174,11 @@ templ FormPage() {
 										})
 									}
 									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "contact-email"}) {
+										@form.FormLabel(form.FormLabelProps{For: "contact_email"}) {
 											Email
 										}
 										@input.Input(input.InputProps{
-											ID:          "contact-email",
+											ID:          "contact_email",
 											Name:        "email",
 											Type:        "email",
 											Placeholder: "your.email@example.com",

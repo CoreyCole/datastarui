@@ -5,6 +5,7 @@ import (
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/form"
 	"github.com/coreycole/datastarui/components/input"
+	"github.com/coreycole/datastarui/components/label"
 	"github.com/coreycole/datastarui/components/tabs"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -55,32 +56,22 @@ templ TabsPage() {
 									@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
 										<div>
 											@form.FormItem(form.FormItemProps{}) {
-												@form.FormLabel(form.FormLabelProps{For: "account-name"}) {
+												@label.Label(label.LabelProps{}) {
 													Name
 												}
 												@input.Input(input.InputProps{
-													ID:          "account-name",
-													Name:        "name",
-													Placeholder: "Enter your name",
-													Value:       "Pedro Duarte",
+													ID:          "account_name",
+													Placeholder: "Pedro Duarte",
 												})
-												@form.FormDescription(form.FormDescriptionProps{}) {
-													This is your display name.
-												}
 											}
 											@form.FormItem(form.FormItemProps{}) {
-												@form.FormLabel(form.FormLabelProps{For: "account-username"}) {
+												@label.Label(label.LabelProps{}) {
 													Username
 												}
 												@input.Input(input.InputProps{
-													ID:          "account-username",
-													Name:        "username",
-													Placeholder: "Enter your username",
-													Value:       "@peduarte",
+													ID:          "account_username",
+													Placeholder: "@peduarte",
 												})
-												@form.FormDescription(form.FormDescriptionProps{}) {
-													This is your public display name.
-												}
 											}
 										</div>
 									}
@@ -101,34 +92,25 @@ templ TabsPage() {
 											Change your password here. After saving, you'll be logged out.
 										}
 									}
-									@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
-										<div>
-											@form.FormItem(form.FormItemProps{}) {
-												@form.FormLabel(form.FormLabelProps{For: "password-current"}) {
-													Current password
-												}
-												@input.Input(input.InputProps{
-													ID:          "password-current",
-													Name:        "current_password",
-													Type:        "password",
-													Placeholder: "Enter current password",
-												})
+									@card.CardContent(card.CardContentProps{Class: "space-y-2"}) {
+										@form.FormItem(form.FormItemProps{}) {
+											@label.Label(label.LabelProps{}) {
+												Current password
 											}
-											@form.FormItem(form.FormItemProps{}) {
-												@form.FormLabel(form.FormLabelProps{For: "password-new"}) {
-													New password
-												}
-												@input.Input(input.InputProps{
-													ID:          "password-new",
-													Name:        "new_password",
-													Type:        "password",
-													Placeholder: "Enter new password",
-												})
-												@form.FormDescription(form.FormDescriptionProps{}) {
-													Your new password must be at least 8 characters.
-												}
+											@input.Input(input.InputProps{
+												ID:   "password_current",
+												Type: "password",
+											})
+										}
+										@form.FormItem(form.FormItemProps{}) {
+											@label.Label(label.LabelProps{}) {
+												New password
 											}
-										</div>
+											@input.Input(input.InputProps{
+												ID:   "password_new",
+												Type: "password",
+											})
+										}
 									}
 									@card.CardFooter(card.CardFooterProps{}) {
 										@button.Button(button.ButtonProps{Type: "submit"}) {

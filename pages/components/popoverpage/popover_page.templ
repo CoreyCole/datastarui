@@ -20,12 +20,12 @@ templ PopoverPage() {
 			<div class="space-y-4">
 				<h2 class="text-2xl font-semibold tracking-tight">CSS Anchor Positioning Status</h2>
 				<div class="p-4 bg-muted/50 rounded-lg">
-					<div id="anchor-support-status" class="text-sm mb-2"></div>
-					<div id="polyfill-status" class="text-sm"></div>
+					<div id="anchor_support_status" class="text-sm mb-2"></div>
+					<div id="polyfill_status" class="text-sm"></div>
 					<script>
 						// Check CSS Anchor Positioning support
-						const anchorSupportDiv = document.getElementById('anchor-support-status');
-						const polyfillDiv = document.getElementById('polyfill-status');
+						const anchorSupportDiv = document.getElementById('anchor_support_status');
+						const polyfillDiv = document.getElementById('polyfill_status');
 						
 						const hasNativeSupport = "anchorName" in document.documentElement.style;
 						
@@ -83,19 +83,19 @@ templ PopoverPage() {
 						<!-- Top Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								ID:         "top-side-trigger",
-								PopoverID:  "top-side-content",
-								AnchorName: "top-side-anchor",
+								ID:         "top_side_trigger",
+								PopoverID:  "top_side_content",
+								AnchorName: "top_side_anchor",
 								Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 							}) {
 								Top Side
 							}
 						</div>
 						@popover.PopoverContent(popover.PopoverContentProps{
-							ID:         "top-side-content",
+							ID:         "top_side_content",
 							Class:      "w-64",
 							UseAnchor:  true,
-							AnchorName: "top-side-anchor",
+							AnchorName: "top_side_anchor",
 							Side:       "top",
 							Align:      "center",
 						}) {
@@ -106,18 +106,18 @@ templ PopoverPage() {
 						}
 						<!-- Right Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerProps{
-							ID:         "right-side-trigger",
-							PopoverID:  "right-side-content",
-							AnchorName: "right-side-anchor",
+							ID:         "right_side_trigger",
+							PopoverID:  "right_side_content",
+							AnchorName: "right_side_anchor",
 							Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 						}) {
 							Right Side
 						}
 						@popover.PopoverContent(popover.PopoverContentProps{
-							ID:         "right-side-content",
+							ID:         "right_side_content",
 							Class:      "w-64",
 							UseAnchor:  true,
-							AnchorName: "right-side-anchor",
+							AnchorName: "right_side_anchor",
 							Side:       "right",
 							Align:      "center",
 						}) {
@@ -129,18 +129,18 @@ templ PopoverPage() {
 						<div></div>
 						<!-- Left Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerProps{
-							ID:         "left-side-trigger",
-							PopoverID:  "left-side-content",
-							AnchorName: "left-side-anchor",
+							ID:         "left_side_trigger",
+							PopoverID:  "left_side_content",
+							AnchorName: "left_side_anchor",
 							Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 						}) {
 							Left Side
 						}
 						@popover.PopoverContent(popover.PopoverContentProps{
-							ID:         "left-side-content",
+							ID:         "left_side_content",
 							Class:      "w-64",
 							UseAnchor:  true,
-							AnchorName: "left-side-anchor",
+							AnchorName: "left_side_anchor",
 							Side:       "left",
 							Align:      "center",
 						}) {
@@ -152,19 +152,19 @@ templ PopoverPage() {
 						<!-- Bottom Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
-								ID:         "bottom-side-trigger",
-								PopoverID:  "bottom-side-content",
-								AnchorName: "bottom-side-anchor",
+								ID:         "bottom_side_trigger",
+								PopoverID:  "bottom_side_content",
+								AnchorName: "bottom_side_anchor",
 								Class:      "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-32",
 							}) {
 								Bottom Side
 							}
 						</div>
 						@popover.PopoverContent(popover.PopoverContentProps{
-							ID:         "bottom-side-content",
+							ID:         "bottom_side_content",
 							Class:      "w-64",
 							UseAnchor:  true,
-							AnchorName: "bottom-side-anchor",
+							AnchorName: "bottom_side_anchor",
 							Side:       "bottom",
 							Align:      "center",
 						}) {
@@ -189,8 +189,8 @@ templ PopoverPage() {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
 								AsChild:    true,
-								PopoverID:  "card-popover",
-								AnchorName: "card-anchor",
+								PopoverID:  "card_popover",
+								AnchorName: "card_anchor",
 							}) {
 								<div class="bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow">
 									<div class="flex items-center gap-3">
@@ -207,10 +207,10 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:         "card-popover",
+								ID:         "card_popover",
 								Class:      "w-72",
 								UseAnchor:  true,
-								AnchorName: "card-anchor",
+								AnchorName: "card_anchor",
 								Side:       "bottom",
 								Align:      "center",
 							}) {
@@ -253,16 +253,16 @@ templ PopoverPage() {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
 								AsChild:    true,
-								PopoverID:  "image-popover",
-								AnchorName: "image-anchor",
+								PopoverID:  "image_popover",
+								AnchorName: "image_anchor",
 							}) {
 								<img class="w-32" src="/img/datastar-rocket.webp"/>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:         "image-popover",
+								ID:         "image_popover",
 								Class:      "w-64",
 								UseAnchor:  true,
-								AnchorName: "image-anchor",
+								AnchorName: "image_anchor",
 								Side:       "top",
 								Align:      "center",
 							}) {
@@ -296,8 +296,8 @@ templ PopoverPage() {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
 								AsChild:    true,
-								PopoverID:  "badge-popover",
-								AnchorName: "badge-anchor",
+								PopoverID:  "badge_popover",
+								AnchorName: "badge_anchor",
 							}) {
 								<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
 									<div class="w-2 h-2 bg-green-600 rounded-full"></div>
@@ -308,10 +308,10 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:         "badge-popover",
+								ID:         "badge_popover",
 								Class:      "w-56",
 								UseAnchor:  true,
-								AnchorName: "badge-anchor",
+								AnchorName: "badge_anchor",
 								Side:       "bottom",
 								Align:      "center",
 							}) {
@@ -346,8 +346,8 @@ templ PopoverPage() {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerProps{
 								AsChild:    true,
-								PopoverID:  "interactive-popover",
-								AnchorName: "interactive-anchor",
+								PopoverID:  "interactive_popover",
+								AnchorName: "interactive_anchor",
 							}) {
 								<div class="bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group">
 									<div class="flex flex-col items-center gap-2">
@@ -362,10 +362,10 @@ templ PopoverPage() {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentProps{
-								ID:         "interactive-popover",
+								ID:         "interactive_popover",
 								Class:      "w-64",
 								UseAnchor:  true,
-								AnchorName: "interactive-anchor",
+								AnchorName: "interactive_anchor",
 								Side:       "top",
 								Align:      "center",
 							}) {

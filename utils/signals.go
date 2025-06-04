@@ -97,29 +97,3 @@ func (sm *SignalManager) ConditionalMultiAction(condition string, actions ...str
 	}
 	return fmt.Sprintf("%s ? (%s) : void 0", condition, actionsStr)
 }
-
-// MultiSignals creates a SignalManager with multiple signal namespaces
-// Example:
-//
-//	signals := MultiSignals(map[string]interface{}{
-//	    "dialog1": DialogSignals{Open: false},
-//	    "dialog2": DialogSignals{Open: true},
-//	})
-func MultiSignals(signalsMap map[string]interface{}) *SignalManager {
-	jsonBytes, err := json.Marshal(signalsMap)
-	if err != nil {
-		jsonBytes = []byte("{}")
-	}
-
-	return &SignalManager{
-		ID:          "", // No single ID for multi-signals
-		Signals:     signalsMap,
-		DataSignals: string(jsonBytes),
-	}
-}
-
-// MultiSignalRef returns a reference to a specific signal property in a multi-signal context
-// Example: MultiSignalRef("dialog1", "open") returns "$dialog1.open"
-func MultiSignalRef(namespace, property string) string {
-	return fmt.Sprintf("$%s.%s", namespace, property)
-}
