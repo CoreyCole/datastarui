@@ -1,0 +1,400 @@
+package selectcomponent 
+
+import (
+	"crypto/rand"
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+)
+
+// SelectSignals defines the signal structure for select components
+type SelectSignals struct {
+	Open        bool   `json:"open"`
+	Value       string `json:"value"`
+	Label       string `json:"label"`
+	Highlighted int    `json:"highlighted"` // Index of currently highlighted item (-1 = none)
+}
+
+// Select renders the main select wrapper with Datastar state management
+// If Options are provided, it will automatically render the complete select UI
+templ Select(props SelectProps) {
+	{{
+		// Generate unique ID if not provided (following dropdown pattern exactly)
+		selectID := props.ID
+		if selectID == "" {
+			// Generate a random ID
+			b := make([]byte, 4)
+			rand.Read(b)
+			selectID = fmt.Sprintf("select_%x", b)
+		}
+
+		openState := false
+		if props.DefaultOpen || props.Open {
+			openState = true
+		}
+
+		// Determine initial value
+		initialValue := props.Value
+		if initialValue == "" {
+			initialValue = props.DefaultValue
+		}
+
+		// Find initial label if value is set and options are provided
+		initialLabel := ""
+		if initialValue != "" && len(props.Options) > 0 {
+			for _, option := range props.Options {
+				if option.Value == initialValue {
+					initialLabel = option.Label
+					break
+				}
+			}
+		}
+
+		// Create signals using the new structured system
+		signals := utils.Signals(selectID, SelectSignals{
+			Open:        openState,
+			Value:       initialValue,
+			Label:       initialLabel, // Set initial label if found
+			Highlighted: -1,           // No item highlighted initially
+		})
+
+		// Click outside handler - use conditional pattern from Datastar docs
+		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+	}}
+	<div
+		data-slot="select"
+		data-select-id={ selectID }
+		data-signals={ signals.DataSignals }
+		data-on-click__outside={ clickOutsideHandler }
+		class={ selectVariants(props.Class) }
+		{ props.Attributes... }
+	>
+		if props.Name != "" {
+			<!-- Hidden input for form submission -->
+			<input
+				type="hidden"
+				name={ props.Name }
+				data-bind={ signals.Signal("value") }
+				if props.Required {
+					required
+				}
+			/>
+		}
+		if len(props.Options) > 0 {
+			<!-- Auto-render complete select UI when options are provided -->
+			@SelectTrigger(SelectTriggerProps{
+				ID:       selectID,
+				Disabled: props.Disabled,
+			}) {
+				@SelectValue(SelectValueProps{
+					ID:          selectID,
+					Placeholder: props.Placeholder,
+				})
+			}
+			@SelectContent(SelectContentProps{
+				ID: selectID,
+			}) {
+				@renderSelectOptions(selectID, props.Options)
+			}
+		} else {
+			<!-- Manual composition when no options provided -->
+			{ children... }
+		}
+	</div>
+}
+
+// renderSelectOptions renders a slice of SelectOptions with proper grouping
+templ renderSelectOptions(selectID string, options []SelectOption) {
+	{{
+		// Group options by their Group field
+		groupedOptions := make(map[string][]SelectOption)
+		ungroupedOptions := []SelectOption{}
+
+		for _, option := range options {
+			if option.Group != "" {
+				groupedOptions[option.Group] = append(groupedOptions[option.Group], option)
+			} else {
+				ungroupedOptions = append(ungroupedOptions, option)
+			}
+		}
+
+		// Calculate global index for keyboard navigation
+		globalIndex := 0
+	}}
+	<!-- Render ungrouped options first -->
+	if len(ungroupedOptions) > 0 {
+		for _, option := range ungroupedOptions {
+			@SelectItem(SelectItemProps{
+				ID:       selectID,
+				Value:    option.Value,
+				Index:    globalIndex,
+				Disabled: option.Disabled,
+			}) {
+				{ option.Label }
+			}
+			{{ globalIndex++ }}
+		}
+	}
+	<!-- Render grouped options -->
+	for groupName, groupOptions := range groupedOptions {
+		if len(ungroupedOptions) > 0 || groupName != "" {
+			@SelectSeparator(SelectSeparatorProps{})
+		}
+		@SelectGroup(SelectGroupProps{}) {
+			if groupName != "" {
+				@SelectLabel(SelectLabelProps{}) {
+					{ groupName }
+				}
+			}
+			for _, option := range groupOptions {
+				@SelectItem(SelectItemProps{
+					ID:       selectID,
+					Value:    option.Value,
+					Index:    globalIndex,
+					Disabled: option.Disabled,
+				}) {
+					{ option.Label }
+				}
+				{{ globalIndex++ }}
+			}
+		}
+	}
+}
+
+// SelectTrigger - button that opens/closes the select dropdown
+templ SelectTrigger(props SelectTriggerProps) {
+	{{
+		// Create signals manager for this select
+		signals := utils.Signals(props.ID, SelectSignals{})
+
+		// Generate the CSS classes using our variant system
+		classes := selectTriggerVariants(props.Class)
+
+		// Simplified function to find current selection index - scoped to parent select
+		findCurrentIndexJs := "(this.closest('[data-slot=\"select\"]').querySelector('[data-select-item][data-value=\"' + " + signals.Signal("value") + " + '\"]')?.dataset?.index || '0')"
+
+		// Click handler - toggle open and highlight current selection using ternary expression
+		clickExpr := signals.Toggle("open") + "; " +
+			signals.Signal("open") + " ? " + signals.Set("highlighted", findCurrentIndexJs) + " : null"
+
+		// Keyboard handler - open and highlight current selection when closed
+		triggerKeyHandler := "(evt.key === 'ArrowDown' || evt.key === 'ArrowUp' || evt.key === ' ' || evt.key === 'Enter') && !" + signals.Signal("open") + " ? (" +
+			"evt.preventDefault(), evt.stopPropagation(), " +
+			signals.Set("open", "true") + ", " +
+			signals.Set("highlighted", findCurrentIndexJs) +
+			") : null"
+	}}
+	<button
+		data-slot="select-trigger"
+		type="button"
+		role="combobox"
+		data-attr-aria-expanded={ signals.Signal("open") }
+		class={ classes }
+		disabled?={ props.Disabled }
+		data-on-click={ clickExpr }
+		data-on-keydown={ triggerKeyHandler }
+		{ props.Attributes... }
+	>
+		{ children... }
+		<!-- ChevronDown icon -->
+		<svg
+			class="h-4 w-4 opacity-50 shrink-0"
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="m6 9 6 6 6-6"></path>
+		</svg>
+	</button>
+}
+
+// SelectValue displays the currently selected value or placeholder
+templ SelectValue(props SelectValueProps) {
+	{{
+		// Create signals manager for this select to access the label
+		signals := utils.Signals(props.ID, SelectSignals{})
+
+		// Create expression to show label or placeholder
+		displayText := signals.Signal("label") + " || '" + props.Placeholder + "'"
+	}}
+	<span
+		data-slot="select-value"
+		class="pointer-events-none truncate"
+		data-text={ displayText }
+		{ props.Attributes... }
+	>
+		if props.Placeholder != "" {
+			{ props.Placeholder }
+		}
+	</span>
+}
+
+// SelectContent - dropdown content container
+templ SelectContent(props SelectContentProps) {
+	{{
+		// Create signals manager for this select
+		signals := utils.Signals(props.ID, SelectSignals{})
+
+		// Generate the CSS classes using our variant system
+		classes := selectContentVariants(props.Position, props.Class)
+
+		// Create expressions
+		showExpr := signals.Signal("open")
+
+		// Get the maximum selectable item count for bounds checking - scoped to this select only
+		maxItemsJs := "document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelectorAll('[data-select-item]:not([data-disabled])').length - 1"
+
+		// Enhanced keyboard navigation - only respond if THIS select is open
+		selectOpenCheck := "document.querySelector('[data-select-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
+
+		// Arrow Down: increment highlighted (with upper bound)
+		arrowDownHandler := "evt.key === 'ArrowDown' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
+			signals.Set("highlighted", "Math.min("+maxItemsJs+", "+signals.Signal("highlighted")+" + 1)") + ") : null"
+
+		// Arrow Up: decrement highlighted (with lower bound)
+		arrowUpHandler := "evt.key === 'ArrowUp' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
+			signals.Set("highlighted", "Math.max(0, "+signals.Signal("highlighted")+" - 1)") + ") : null"
+
+		// Enter/Space: select highlighted item - scoped to this select only
+		selectHandler := "(evt.key === 'Enter' || evt.key === ' ') && " + selectOpenCheck + " && " +
+			signals.Signal("highlighted") + " >= 0 ? (evt.preventDefault(), evt.stopPropagation(), " +
+			"document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelector('[data-select-item][data-index=\"' + " + signals.Signal("highlighted") + " + '\"]')?.click()) : null"
+
+		// Escape: close dropdown
+		escapeHandler := "evt.key === 'Escape' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
+			signals.Set("open", "false") + ") : null"
+
+		// Tab: close dropdown but allow default tab behavior to continue
+		tabHandler := "evt.key === 'Tab' && " + selectOpenCheck + " ? " + signals.Set("open", "false") + " : null"
+
+		// Combine all keyboard handlers
+		keyHandler := arrowDownHandler + "; " + arrowUpHandler + "; " + selectHandler + "; " + escapeHandler + "; " + tabHandler
+
+		// Generate viewport classes
+		viewportClasses := selectViewportVariants(props.Position, "")
+	}}
+	<div
+		data-slot="select-content"
+		class={ classes }
+		data-show={ showExpr }
+		data-on-keydown__window={ keyHandler }
+		role="listbox"
+		tabindex="-1"
+		style="position: absolute; top: 100%; left: 0; right: 0; z-index: 50; display: none;"
+		{ props.Attributes... }
+	>
+		<div class={ viewportClasses }>
+			{ children... }
+		</div>
+	</div>
+}
+
+// SelectItem - individual option in the select dropdown
+templ SelectItem(props SelectItemProps) {
+	{{
+		// Create signals manager for this select
+		signals := utils.Signals(props.ID, SelectSignals{})
+
+		// Generate the CSS classes using our variant system
+		classes := selectItemVariants(props.Class)
+
+		// Create individual action expressions
+		setValue := signals.Set("value", "'"+props.Value+"'")
+		setLabel := signals.Set("label", "evt.currentTarget.querySelector('.select-item-text').textContent")
+		closeDropdown := signals.Set("open", "false")
+		resetHighlight := signals.Set("highlighted", "-1")
+
+		// Create click expression with semicolon separation (for click events)
+		selectExpr := setValue + "; " + setLabel + "; " + closeDropdown + "; " + resetHighlight
+
+		// Create keyboard handler using conditional expression instead of if statement
+		itemKeyHandler := "(evt.key === ' ' || evt.key === 'Enter') ? (evt.preventDefault(), evt.stopPropagation(), " +
+			signals.ConditionalMultiAction("true", setValue, setLabel, closeDropdown, resetHighlight) + ") : null"
+
+		// Add highlighted class conditionally
+		highlightedClass := signals.Signal("highlighted") + " === " + fmt.Sprintf("%d", props.Index) + " ? ' bg-accent text-accent-foreground' : ''"
+	}}
+	<div
+		data-slot="select-item"
+		data-select-item
+		class={ classes }
+		data-attr-class={ highlightedClass }
+		role="option"
+		data-value={ props.Value }
+		data-index={ fmt.Sprintf("%d", props.Index) }
+		tabindex="0"
+		if !props.Disabled {
+			data-on-click={ selectExpr }
+			data-on-keydown={ itemKeyHandler }
+		}
+		if props.Disabled {
+			data-disabled="true"
+		}
+		{ props.Attributes... }
+	>
+		<span class="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+			<!-- Check icon for selected state -->
+			<svg
+				class="h-4 w-4"
+				data-show={ signals.Signal("value") + " === '" + props.Value + "'" }
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M20 6 9 17l-5-5"></path>
+			</svg>
+		</span>
+		<span class="select-item-text truncate">
+			{ children... }
+		</span>
+	</div>
+}
+
+// SelectLabel renders a label for a group of items
+templ SelectLabel(props SelectLabelProps) {
+	{{
+		classes := selectLabelVariants(props.Class)
+	}}
+	<div
+		data-slot="select-label"
+		class={ classes }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SelectSeparator renders a visual separator between groups
+templ SelectSeparator(props SelectSeparatorProps) {
+	{{
+		classes := selectSeparatorVariants(props.Class)
+	}}
+	<div
+		data-slot="select-separator"
+		class={ classes }
+		{ props.Attributes... }
+	></div>
+}
+
+// SelectGroup renders a group container for items
+templ SelectGroup(props SelectGroupProps) {
+	<div
+		data-slot="select-group"
+		role="group"
+		class={ props.Class }
+		{ props.Attributes... }
+	>
+		{ children... }
+	</div>
+}

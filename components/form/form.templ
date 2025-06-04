@@ -3,18 +3,25 @@ package form
 import (
 	"fmt"
 	"github.com/coreycole/datastarui/components/label"
-	"strings"
+	"github.com/coreycole/datastarui/utils"
 )
+
+// FormSignals defines the signal structure for form components
+type FormSignals struct {
+	Submitted bool   `json:"submitted"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+}
 
 // Form wrapper component
 templ Form(props FormProps) {
 	{{
-		// Convert form ID to valid signal name (replace hyphens with underscores)
-		signalName := strings.ReplaceAll(props.ID, "-", "_")
-
-		// Create nested signal structure: {[id]: {submitted: false, name: "", email: ""}}
-		// This follows the same pattern as dialog component for consistency
-		signalsJSON := "{\"" + signalName + "\": {\"submitted\": false, \"name\": \"\", \"email\": \"\"}}"
+		// Create signals using the new structured system
+		signals := utils.Signals(props.ID, FormSignals{
+			Submitted: false,
+			Name:      "",
+			Email:     "",
+		})
 
 		// Set up form attributes
 		var formAttrs templ.Attributes
@@ -45,7 +52,7 @@ templ Form(props FormProps) {
 			formAttrs["class"] = props.Class
 		}
 	}}
-	<div data-signals={ signalsJSON }>
+	<div data-signals={ signals.DataSignals }>
 		<form
 			{ formAttrs... }
 		>

@@ -3,8 +3,14 @@ package dropdown
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/coreycole/datastarui/utils"
 	"strconv"
 )
+
+// DropdownSignals defines the signal structure for dropdown components
+type DropdownSignals struct {
+	Open bool `json:"open"`
+}
 
 // DropdownMenu renders the main dropdown wrapper with Datastar state management
 templ DropdownMenu(props DropdownMenuProps) {
@@ -18,21 +24,23 @@ templ DropdownMenu(props DropdownMenuProps) {
 			dropdownID = fmt.Sprintf("dropdown_%x", b)
 		}
 
-		openState := "false"
-		if props.DefaultOpen {
-			openState = "true"
-		}
-		if props.Open {
-			openState = "true"
+		openState := false
+		if props.DefaultOpen || props.Open {
+			openState = true
 		}
 
-		// Create a simple signal name using underscores (valid JS identifier)
-		signalName := fmt.Sprintf("dropdown_%s_open", dropdownID)
-		signalsJSON := "{\"" + signalName + "\": " + openState + "}"
+		// Create signals using the new structured system
+		signals := utils.Signals(dropdownID, DropdownSignals{
+			Open: openState,
+		})
+
+		// Click outside handler - use conditional pattern from Datastar docs
+		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 	}}
 	<div
 		data-slot="dropdown-menu"
-		data-signals={ signalsJSON }
+		data-signals={ signals.DataSignals }
+		data-on-click__outside={ clickOutsideHandler }
 		class={ dropdownMenuVariants(props.Class) }
 		{ props.Attributes... }
 	>
@@ -43,10 +51,9 @@ templ DropdownMenu(props DropdownMenuProps) {
 // DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
 templ DropdownMenuTrigger(props DropdownMenuTriggerProps) {
 	{{
-		// Create the signal reference and toggle expression
-		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
-		signalRef := "$" + signalName
-		toggleExpr := signalRef + " = !" + signalRef
+		// Create signals manager for this dropdown
+		signals := utils.Signals(props.ID, DropdownSignals{})
+		toggleExpr := signals.Toggle("open")
 	}}
 	if props.AsChild {
 		<span
@@ -111,18 +118,20 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 
 		positionClasses := "absolute " + sideClass + " " + alignClass
 
-		// Create signal references
-		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
-		signalRef := "$" + signalName
-		hideExpr := signalRef + " = false"
+		// Create signals manager for this dropdown
+		signals := utils.Signals(props.ID, DropdownSignals{})
+		showExpr := signals.Signal("open")
+
+		// ESC key handler for closing dropdown - use window-level handler for consistency with dialog
+		escapeHandler := "evt.key === 'Escape' && " + signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 	}}
 	<div
 		data-slot="dropdown-menu-content"
 		class={ dropdownMenuContentVariants(props.Class) + " " + positionClasses }
-		data-show={ signalRef }
-		data-on-click-outside={ hideExpr }
-		data-on-keydown.escape={ hideExpr }
+		data-show={ showExpr }
+		data-on-keydown__window={ escapeHandler }
 		role="menu"
+		style="display: none;"
 		{ props.Attributes... }
 	>
 		{ children... }
@@ -132,10 +141,9 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 // DropdownMenuItem renders a clickable menu item
 templ DropdownMenuItem(props DropdownMenuItemProps) {
 	{{
-		// Create signal reference for hiding the dropdown
-		signalName := fmt.Sprintf("dropdown_%s_open", props.ID)
-		signalRef := "$" + signalName
-		hideExpr := signalRef + " = false"
+		// Create signals manager for this dropdown
+		signals := utils.Signals(props.ID, DropdownSignals{})
+		hideExpr := signals.Set("open", "false")
 	}}
 	if props.AsChild {
 		<span

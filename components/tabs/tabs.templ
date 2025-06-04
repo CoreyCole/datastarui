@@ -3,7 +3,13 @@ package tabs
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/coreycole/datastarui/utils"
 )
+
+// TabsSignals defines the signal structure for tabs components
+type TabsSignals struct {
+	Active string `json:"active"`
+}
 
 // Tabs is the root container component that manages tab state
 templ Tabs(props TabsProps) {
@@ -32,13 +38,14 @@ templ Tabs(props TabsProps) {
 			activeTab = defaultValue
 		}
 
-		// Create a signal name using underscores (valid JS identifier)
-		signalName := fmt.Sprintf("tabs_%s_active", tabsID)
-		signalsJSON := "{\"" + signalName + "\": \"" + activeTab + "\"}"
+		// Create signals using the new structured system
+		signals := utils.Signals(tabsID, TabsSignals{
+			Active: activeTab,
+		})
 	}}
 	<div
 		data-slot="tabs"
-		data-signals={ signalsJSON }
+		data-signals={ signals.DataSignals }
 		class={ classes }
 		{ props.Attributes... }
 	>
@@ -64,13 +71,15 @@ templ TabsList(props TabsListProps) {
 // TabsTrigger is a clickable tab button
 templ TabsTrigger(props TabsTriggerProps) {
 	{{
+		// Create signals manager for this tabs component
+		signals := utils.Signals(props.ID, TabsSignals{})
+
 		// Use the correct variant function that matches shadcn/ui exactly
 		baseClasses := tabsTriggerVariantsBase(props.Class)
 
-		// Create the signal reference and click expression
-		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
-		signalRef := "$" + signalName
-		clickExpr := signalRef + " = '" + props.Value + "'"
+		// Create expressions using the new signals system
+		signalRef := signals.Signal("active")
+		clickExpr := signals.Set("active", "'"+props.Value+"'")
 
 		// Active state classes to be applied conditionally - using Datastar object syntax
 		activeClassesObj := "{'bg-background': " + signalRef + " === '" + props.Value + "', 'text-foreground': " + signalRef + " === '" + props.Value + "', 'shadow-sm': " + signalRef + " === '" + props.Value + "'}"
@@ -96,19 +105,22 @@ templ TabsTrigger(props TabsTriggerProps) {
 // TabsContent displays the content for the active tab
 templ TabsContent(props TabsContentProps) {
 	{{
+		// Create signals manager for this tabs component
+		signals := utils.Signals(props.ID, TabsSignals{})
+
 		// Generate CSS classes
 		classes := tabsContentVariants(props.Class)
 
-		// Create the signal reference
-		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
-		signalRef := "$" + signalName
+		// Create expressions using the new signals system
+		signalRef := signals.Signal("active")
+		showExpr := signalRef + " === '" + props.Value + "'"
 	}}
 	<div
 		data-slot="tabs-content"
 		class={ classes }
 		role="tabpanel"
 		data-value={ props.Value }
-		data-show={ signalRef + " === '" + props.Value + "'" }
+		data-show={ showExpr }
 		data-attr-aria-hidden={ signalRef + " === '" + props.Value + "' ? 'false' : 'true'" }
 		tabindex="0"
 		{ props.Attributes... }

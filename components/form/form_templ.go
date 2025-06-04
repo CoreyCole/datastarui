@@ -11,8 +11,15 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"github.com/coreycole/datastarui/components/label"
-	"strings"
+	"github.com/coreycole/datastarui/utils"
 )
+
+// FormSignals defines the signal structure for form components
+type FormSignals struct {
+	Submitted bool   `json:"submitted"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+}
 
 // Form wrapper component
 func Form(props FormProps) templ.Component {
@@ -37,12 +44,12 @@ func Form(props FormProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		// Convert form ID to valid signal name (replace hyphens with underscores)
-		signalName := strings.ReplaceAll(props.ID, "-", "_")
-
-		// Create nested signal structure: {[id]: {submitted: false, name: "", email: ""}}
-		// This follows the same pattern as dialog component for consistency
-		signalsJSON := "{\"" + signalName + "\": {\"submitted\": false, \"name\": \"\", \"email\": \"\"}}"
+		// Create signals using the new structured system
+		signals := utils.Signals(props.ID, FormSignals{
+			Submitted: false,
+			Name:      "",
+			Email:     "",
+		})
 
 		// Set up form attributes
 		var formAttrs templ.Attributes
@@ -77,9 +84,9 @@ func Form(props FormProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(signalsJSON)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 48, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 55, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -273,7 +280,7 @@ func FormDescription(props FormDescriptionProps) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 96, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 103, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -363,7 +370,7 @@ func FormMessage(props FormMessageProps) templ.Component {
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 114, Col: 17}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 121, Col: 17}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -403,7 +410,7 @@ func FormMessage(props FormMessageProps) templ.Component {
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 120, Col: 19}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 127, Col: 19}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {

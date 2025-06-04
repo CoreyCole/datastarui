@@ -1,10 +1,21 @@
 package dialog
 
+import "github.com/coreycole/datastarui/utils"
+
+// DialogSignals defines the signal structure for dialog components
+type DialogSignals struct {
+	Open        bool        `json:"open"`
+	ReturnValue interface{} `json:"returnValue"`
+}
+
 // Dialog container - pure Datastar signal-based modal using data-show
 templ Dialog(props DialogProps) {
 	{{
-		// Create nested signal structure: {[id]: {open: false, returnValue: null}}
-		signalsJSON := "{\"" + props.ID + "\": {\"open\": false, \"returnValue\": null}}"
+		// Create signals using the new structured system with proper initial state
+		signals := utils.Signals(props.ID, DialogSignals{
+			Open:        props.DefaultOpen,
+			ReturnValue: nil,
+		})
 
 		// Dialog backdrop overlay
 		backdropClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
@@ -16,19 +27,21 @@ templ Dialog(props DialogProps) {
 		containerClasses := DialogVariants(props)
 
 		// Create unique backdrop click handler
-		backdropClickHandler := "evt.target === evt.currentTarget && ($" + props.ID + ".open = false)"
+		backdropClickHandler := signals.ConditionalAction("evt.target === evt.currentTarget", "open", "false")
 
-		// ESC key handler for closing dialog
-		escapeHandler := "evt.key === 'Escape' && ($" + props.ID + ".open = false)"
+		// ESC key handler for closing dialog - use window-level handler like other modal components
+		escapeHandler := "evt.key === 'Escape' && " + signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 	}}
-	<div data-signals={ signalsJSON }>
+	<div data-signals={ signals.DataSignals }>
 		<!-- Dialog backdrop overlay -->
 		<div
-			data-show={ "$" + props.ID + ".open" }
+			data-show={ signals.Signal("open") }
 			class={ backdropClasses }
 			data-on-click={ backdropClickHandler }
-			data-on-keydown={ escapeHandler }
-			tabindex="-1"
+			data-on-keydown__window={ escapeHandler }
+			if !props.DefaultOpen {
+				style="display: none;"
+			}
 		>
 			<!-- Dialog content container -->
 			<div
@@ -36,7 +49,9 @@ templ Dialog(props DialogProps) {
 				class={ dialogClasses }
 				role="dialog"
 				aria-modal="true"
+				tabindex="-1"
 				data-on-click="evt.stopPropagation()"
+				data-on-mount="evt.target.focus()"
 			>
 				<div class={ containerClasses }>
 					{ children... }
@@ -49,8 +64,9 @@ templ Dialog(props DialogProps) {
 // DialogTrigger - button or element that opens the dialog using Datastar signals
 templ DialogTrigger(props DialogTriggerProps) {
 	{{
-		// Create click handler using Datastar signals
-		clickHandler := "$" + props.DialogID + ".open = true"
+		// Create signals manager for the target dialog
+		signals := utils.Signals(props.DialogID, DialogSignals{})
+		clickHandler := signals.Set("open", "true")
 	}}
 	if props.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
@@ -160,15 +176,15 @@ templ DialogDescription(props DialogDescriptionProps) {
 // DialogClose - button that closes the dialog using Datastar signals
 templ DialogClose(props DialogCloseProps) {
 	{{
-		// Create click handler using Datastar signals
-		closeSignal := "$" + props.DialogID + ".open = false"
+		// Create signals manager for the target dialog
+		signals := utils.Signals(props.DialogID, DialogSignals{})
 
 		// Set return value if specified
 		var clickHandler string
 		if props.ReturnValue != "" {
-			clickHandler = closeSignal + "; $" + props.DialogID + ".returnValue = '" + props.ReturnValue + "'"
+			clickHandler = signals.Set("open", "false") + "; " + signals.Set("returnValue", "'"+props.ReturnValue+"'")
 		} else {
-			clickHandler = closeSignal
+			clickHandler = signals.Set("open", "false")
 		}
 
 		// Default button classes matching the Button component design

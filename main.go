@@ -16,6 +16,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
+	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
 )
 
@@ -66,6 +67,9 @@ func main() {
 	})
 	e.GET("/components/dialog", func(c echo.Context) error {
 		return dialogpage.DialogPage().Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/select", func(c echo.Context) error {
+		return selectpage.SelectPage().Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the docs page

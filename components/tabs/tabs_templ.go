@@ -11,7 +11,13 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/coreycole/datastarui/utils"
 )
+
+// TabsSignals defines the signal structure for tabs components
+type TabsSignals struct {
+	Active string `json:"active"`
+}
 
 // Tabs is the root container component that manages tab state
 func Tabs(props TabsProps) templ.Component {
@@ -60,9 +66,10 @@ func Tabs(props TabsProps) templ.Component {
 			activeTab = defaultValue
 		}
 
-		// Create a signal name using underscores (valid JS identifier)
-		signalName := fmt.Sprintf("tabs_%s_active", tabsID)
-		signalsJSON := "{\"" + signalName + "\": \"" + activeTab + "\"}"
+		// Create signals using the new structured system
+		signals := utils.Signals(tabsID, TabsSignals{
+			Active: activeTab,
+		})
 		var templ_7745c5c3_Var2 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
@@ -73,9 +80,9 @@ func Tabs(props TabsProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(signalsJSON)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 41, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 48, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -208,13 +215,15 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
+		// Create signals manager for this tabs component
+		signals := utils.Signals(props.ID, TabsSignals{})
+
 		// Use the correct variant function that matches shadcn/ui exactly
 		baseClasses := tabsTriggerVariantsBase(props.Class)
 
-		// Create the signal reference and click expression
-		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
-		signalRef := "$" + signalName
-		clickExpr := signalRef + " = '" + props.Value + "'"
+		// Create expressions using the new signals system
+		signalRef := signals.Signal("active")
+		clickExpr := signals.Set("active", "'"+props.Value+"'")
 
 		// Active state classes to be applied conditionally - using Datastar object syntax
 		activeClassesObj := "{'bg-background': " + signalRef + " === '" + props.Value + "', 'text-foreground': " + signalRef + " === '" + props.Value + "', 'shadow-sm': " + signalRef + " === '" + props.Value + "'}"
@@ -243,7 +252,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(activeClassesObj)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 82, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 91, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -256,7 +265,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(props.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 84, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 93, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -269,7 +278,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(clickExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 85, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 94, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -282,7 +291,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " === '" + props.Value + "' ? 'active' : 'inactive'")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 86, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 95, Col: 89}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -295,7 +304,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " === '" + props.Value + "' ? 'true' : 'false'")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 87, Col: 87}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 96, Col: 87}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -308,7 +317,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " === '" + props.Value + "' ? '0' : '-1'")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 88, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 97, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -367,12 +376,15 @@ func TabsContent(props TabsContentProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
+		// Create signals manager for this tabs component
+		signals := utils.Signals(props.ID, TabsSignals{})
+
 		// Generate CSS classes
 		classes := tabsContentVariants(props.Class)
 
-		// Create the signal reference
-		signalName := fmt.Sprintf("tabs_%s_active", props.ID)
-		signalRef := "$" + signalName
+		// Create expressions using the new signals system
+		signalRef := signals.Signal("active")
+		showExpr := signalRef + " === '" + props.Value + "'"
 		var templ_7745c5c3_Var18 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var18...)
 		if templ_7745c5c3_Err != nil {
@@ -398,7 +410,7 @@ func TabsContent(props TabsContentProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(props.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 110, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 122, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -409,9 +421,9 @@ func TabsContent(props TabsContentProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " === '" + props.Value + "'")
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 111, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 123, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -424,7 +436,7 @@ func TabsContent(props TabsContentProps) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " === '" + props.Value + "' ? 'false' : 'true'")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 112, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 124, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {

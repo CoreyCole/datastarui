@@ -4,9 +4,10 @@ import "github.com/a-h/templ"
 
 // DialogProps defines the props for the Dialog container (using Datastar signals)
 type DialogProps struct {
-	ID         string
-	Class      string
-	Attributes templ.Attributes
+	ID          string
+	DefaultOpen bool // Whether the dialog should be open by default
+	Class       string
+	Attributes  templ.Attributes
 }
 
 // DialogTriggerProps defines the props for the DialogTrigger component

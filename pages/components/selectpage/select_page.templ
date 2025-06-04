@@ -1,0 +1,510 @@
+package selectpage
+
+import (
+	"github.com/coreycole/datastarui/components/form"
+	selectui "github.com/coreycole/datastarui/components/select"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ SelectPage() {
+	@l.Root("components") {
+		<div class="container mx-auto p-8 space-y-12">
+			<div>
+				<h1 class="text-3xl font-bold mb-2">Select Component</h1>
+				<p class="text-muted-foreground">
+					Displays a list of options for the user to pick from—triggered by a button.
+				</p>
+			</div>
+			<!-- Slice-based API Examples -->
+			<section class="space-y-6">
+				<h2 class="text-2xl font-semibold">Props examples</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<!-- Simple Options -->
+					<div class="space-y-2">
+						<h3 class="text-lg font-medium">Simple Options</h3>
+						@selectui.Select(selectui.SelectProps{
+							ID:          "slice_theme_select",
+							Name:        "theme",
+							Placeholder: "Select a theme...",
+							Options: []selectui.SelectOption{
+								{Value: "light", Label: "Light"},
+								{Value: "dark", Label: "Dark"},
+								{Value: "system", Label: "System"},
+							},
+						})
+					</div>
+					<!-- Grouped Options -->
+					<div class="space-y-2">
+						<h3 class="text-lg font-medium">Grouped Options</h3>
+						@selectui.Select(selectui.SelectProps{
+							ID:          "slice_language_select",
+							Name:        "language",
+							Placeholder: "Select a language...",
+							Options: []selectui.SelectOption{
+								{Value: "en", Label: "English", Group: "Popular"},
+								{Value: "es", Label: "Spanish", Group: "Popular"},
+								{Value: "fr", Label: "French", Group: "Popular"},
+								{Value: "de", Label: "German", Group: "Other"},
+								{Value: "it", Label: "Italian", Group: "Other"},
+								{Value: "pt", Label: "Portuguese", Group: "Other"},
+							},
+						})
+					</div>
+					<!-- With Disabled Options -->
+					<div class="space-y-2">
+						<h3 class="text-lg font-medium">With Disabled Options</h3>
+						@selectui.Select(selectui.SelectProps{
+							ID:          "slice_account_select",
+							Name:        "account",
+							Placeholder: "Choose account type...",
+							Options: []selectui.SelectOption{
+								{Value: "free", Label: "Free"},
+								{Value: "pro", Label: "Pro"},
+								{Value: "enterprise", Label: "Enterprise (Contact Sales)", Disabled: true},
+							},
+						})
+					</div>
+					<!-- Pre-selected Value -->
+					<div class="space-y-2">
+						<h3 class="text-lg font-medium">Pre-selected Value</h3>
+						@selectui.Select(selectui.SelectProps{
+							ID:          "slice_priority_select",
+							Name:        "priority",
+							Value:       "medium", // Pre-selected
+							Placeholder: "Select priority...",
+							Options: []selectui.SelectOption{
+								{Value: "low", Label: "Low Priority"},
+								{Value: "medium", Label: "Medium Priority"},
+								{Value: "high", Label: "High Priority"},
+							},
+						})
+					</div>
+				</div>
+			</section>
+			<!-- Form Integration -->
+			<section class="space-y-6">
+				<h2 class="text-2xl font-semibold">Form Integration</h2>
+				@form.Form(form.FormProps{
+					ID:     "user_profile_form",
+					Action: "/api/profile",
+					Class:  "space-y-6 max-w-lg",
+				}) {
+					<!-- Theme Selection -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "form_theme_select",
+						}) {
+							Theme Preference
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:       "form_theme_select",
+							Name:     "theme",
+							Required: true,
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "form_theme_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "form_theme_select",
+									Placeholder: "Choose your preferred theme",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "form_theme_select",
+							}) {
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "form_theme_select",
+									Value: "light",
+									Index: 0,
+								}) {
+									Light
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "form_theme_select",
+									Value: "dark",
+									Index: 1,
+								}) {
+									Dark
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "form_theme_select",
+									Value: "system",
+									Index: 2,
+								}) {
+									System
+								}
+							}
+						}
+						@form.FormDescription(form.FormDescriptionProps{}) {
+							Select the theme that best suits your preference.
+						}
+					}
+					<!-- Language Selection -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "form_language_select",
+						}) {
+							Language
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:   "form_language_select",
+							Name: "language",
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "form_language_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "form_language_select",
+									Placeholder: "Select a language",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "form_language_select",
+							}) {
+								@selectui.SelectGroup(selectui.SelectGroupProps{}) {
+									@selectui.SelectLabel(selectui.SelectLabelProps{}) {
+										Popular
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "en",
+										Index: 0,
+									}) {
+										English
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "es",
+										Index: 1,
+									}) {
+										Spanish
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "fr",
+										Index: 2,
+									}) {
+										French
+									}
+								}
+								@selectui.SelectSeparator(selectui.SelectSeparatorProps{})
+								@selectui.SelectGroup(selectui.SelectGroupProps{}) {
+									@selectui.SelectLabel(selectui.SelectLabelProps{}) {
+										Other
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "de",
+										Index: 3,
+									}) {
+										German
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "it",
+										Index: 4,
+									}) {
+										Italian
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_language_select",
+										Value: "pt",
+										Index: 5,
+									}) {
+										Portuguese
+									}
+								}
+							}
+						}
+						@form.FormDescription(form.FormDescriptionProps{}) {
+							Choose your preferred language for the interface.
+						}
+					}
+					<!-- Timezone Selection -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "form_timezone_select",
+						}) {
+							Timezone
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:       "form_timezone_select",
+							Name:     "timezone",
+							Required: true,
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "form_timezone_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "form_timezone_select",
+									Placeholder: "Select timezone",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "form_timezone_select",
+							}) {
+								@selectui.SelectGroup(selectui.SelectGroupProps{}) {
+									@selectui.SelectLabel(selectui.SelectLabelProps{}) {
+										North America
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "est",
+										Index: 0,
+									}) {
+										Eastern Standard Time (EST)
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "cst",
+										Index: 1,
+									}) {
+										Central Standard Time (CST)
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "mst",
+										Index: 2,
+									}) {
+										Mountain Standard Time (MST)
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "pst",
+										Index: 3,
+									}) {
+										Pacific Standard Time (PST)
+									}
+								}
+								@selectui.SelectSeparator(selectui.SelectSeparatorProps{})
+								@selectui.SelectGroup(selectui.SelectGroupProps{}) {
+									@selectui.SelectLabel(selectui.SelectLabelProps{}) {
+										Europe
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "gmt",
+										Index: 4,
+									}) {
+										Greenwich Mean Time (GMT)
+									}
+									@selectui.SelectItem(selectui.SelectItemProps{
+										ID:    "form_timezone_select",
+										Value: "cet",
+										Index: 5,
+									}) {
+										Central European Time (CET)
+									}
+								}
+							}
+						}
+						@form.FormDescription(form.FormDescriptionProps{}) {
+							Your timezone will be used for scheduling and notifications.
+						}
+					}
+					<!-- Account Type (with disabled option) -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "form_account_select",
+						}) {
+							Account Type
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:       "form_account_select",
+							Name:     "account_type",
+							Required: true,
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "form_account_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "form_account_select",
+									Placeholder: "Choose account type",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "form_account_select",
+							}) {
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "form_account_select",
+									Value: "free",
+									Index: 0,
+								}) {
+									Free
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "form_account_select",
+									Value: "pro",
+									Index: 1,
+								}) {
+									Pro
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:       "form_account_select",
+									Value:    "enterprise",
+									Index:    2,
+									Disabled: true,
+								}) {
+									Enterprise (Contact Sales)
+								}
+							}
+						}
+						@form.FormDescription(form.FormDescriptionProps{}) {
+							Select the account type that best fits your needs.
+						}
+					}
+					<!-- Submit Button -->
+					<div class="flex justify-end">
+						<button
+							type="submit"
+							class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+						>
+							Save Profile
+						</button>
+					</div>
+				}
+			</section>
+			<!-- Tab Navigation Test -->
+			<section class="space-y-6">
+				<h2 class="text-2xl font-semibold">Tab Navigation Test</h2>
+				<p class="text-muted-foreground">
+					Use the Tab key to navigate through these form elements and test focus behavior.
+				</p>
+				@form.Form(form.FormProps{
+					ID:    "tab_test_form",
+					Class: "space-y-4 max-w-md",
+				}) {
+					<!-- Text Input -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "name_input",
+						}) {
+							Name
+						}
+						<input
+							id="name_input"
+							name="name"
+							type="text"
+							placeholder="Enter your name"
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						/>
+					}
+					<!-- First Select -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "tab_category_select",
+						}) {
+							Category
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:   "tab_category_select",
+							Name: "category",
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "tab_category_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "tab_category_select",
+									Placeholder: "Select category",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "tab_category_select",
+							}) {
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_category_select",
+									Value: "work",
+									Index: 0,
+								}) {
+									Work
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_category_select",
+									Value: "personal",
+									Index: 1,
+								}) {
+									Personal
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_category_select",
+									Value: "other",
+									Index: 2,
+								}) {
+									Other
+								}
+							}
+						}
+					}
+					<!-- Second Select -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "tab_priority_select",
+						}) {
+							Priority
+						}
+						@selectui.Select(selectui.SelectProps{
+							ID:   "tab_priority_select",
+							Name: "priority",
+						}) {
+							@selectui.SelectTrigger(selectui.SelectTriggerProps{
+								ID: "tab_priority_select",
+							}) {
+								@selectui.SelectValue(selectui.SelectValueProps{
+									ID:          "tab_priority_select",
+									Placeholder: "Select priority",
+								})
+							}
+							@selectui.SelectContent(selectui.SelectContentProps{
+								ID: "tab_priority_select",
+							}) {
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_priority_select",
+									Value: "low",
+									Index: 0,
+								}) {
+									Low
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_priority_select",
+									Value: "medium",
+									Index: 1,
+								}) {
+									Medium
+								}
+								@selectui.SelectItem(selectui.SelectItemProps{
+									ID:    "tab_priority_select",
+									Value: "high",
+									Index: 2,
+								}) {
+									High
+								}
+							}
+						}
+					}
+					<!-- Another Text Input -->
+					@form.FormItem(form.FormItemProps{}) {
+						@form.FormLabel(form.FormLabelProps{
+							For: "email_input",
+						}) {
+							Email
+						}
+						<input
+							id="email_input"
+							name="email"
+							type="email"
+							placeholder="Enter your email"
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						/>
+					}
+					<!-- Submit Button -->
+					<button
+						type="submit"
+						class="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+					>
+						Submit
+					</button>
+				}
+			</section>
+		</div>
+	}
+}
