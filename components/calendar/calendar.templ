@@ -71,9 +71,9 @@ templ CalendarHeader(props CalendarHeaderProps) {
 		// Signal references
 		currentDateRef := signals.Signal("currentDate")
 
-		// Navigation expressions
-		prevMonthExpr := signals.Set("currentDate", "new Date(new Date("+currentDateRef+").setMonth(new Date("+currentDateRef+").getMonth() - 1)).toISOString().slice(0, 8) + '01'")
-		nextMonthExpr := signals.Set("currentDate", "new Date(new Date("+currentDateRef+").setMonth(new Date("+currentDateRef+").getMonth() + 1)).toISOString().slice(0, 8) + '01'")
+		// Navigation expressions - simplified UTC approach
+		prevMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() - 1, 1)).toISOString().slice(0, 10)")
+		nextMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() + 1, 1)).toISOString().slice(0, 10)")
 
 		// Month display expression
 		monthDisplayExpr := "new Date(" + currentDateRef + ").toLocaleString('default', { month: 'long', year: 'numeric' })"
@@ -178,33 +178,18 @@ templ CalendarDay(props CalendarDayProps) {
 			todayRef, modeRef, rangeStartRef, rangeEndRef,
 			rangeStartRef, rangeEndRef)
 
-		// Simple click handler using ternary operators as shown in the guide
+		// Elegant range selection using utility functions
 		clickHandler := fmt.Sprintf(`
 			%s;
-			%s === 'single' ? (
-				%s,
-				this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))
-			) : (
-				!%s || (%s && %s) ? (
-					%s,
-					%s
-				) : (
-					dayDateStr >= %s ? %s : (%s, %s),
-					this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { rangeStart: %s, rangeEnd: %s } }))
-				)
-			)
+			%s
 		`,
 			daySetupExpr,
-			modeRef,
-			signals.Set("selectedDate", "dayDateStr"),
-			rangeStartRef, rangeStartRef, rangeEndRef,
-			signals.Set("rangeStart", "dayDateStr"),
-			signals.Set("rangeEnd", "''"),
-			rangeStartRef,
-			signals.Set("rangeEnd", "dayDateStr"),
-			signals.Set("rangeEnd", rangeStartRef),
-			signals.Set("rangeStart", "dayDateStr"),
-			rangeStartRef, rangeEndRef)
+			signals.SingleOrRange("mode",
+				[]string{
+					signals.Set("selectedDate", "dayDateStr"),
+					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
+				},
+				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }")))
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
 		<button

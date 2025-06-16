@@ -97,3 +97,139 @@ func (sm *SignalManager) ConditionalMultiAction(condition string, actions ...str
 	}
 	return fmt.Sprintf("%s ? (%s) : void 0", condition, actionsStr)
 }
+
+// MultiStateConditional creates a chain of conditional expressions for handling multiple states
+//
+//	Example: signals.MultiStateConditional([]StateAction{
+//	  {Condition: "!$comp.start", Actions: []string{"setStart", "clearEnd"}},
+//	  {Condition: "!$comp.end", Actions: []string{"setEnd", "dispatchEvent"}},
+//	  {Condition: "true", Actions: []string{"resetRange"}},
+//	})
+type StateAction struct {
+	Condition string
+	Actions   []string
+}
+
+func (sm *SignalManager) MultiStateConditional(states []StateAction) string {
+	if len(states) == 0 {
+		return ""
+	}
+
+	result := ""
+	for i, state := range states {
+		if i > 0 {
+			result += " : "
+		}
+
+		// Format actions
+		actionsStr := ""
+		for j, action := range state.Actions {
+			if j > 0 {
+				actionsStr += ", "
+			}
+			actionsStr += action
+		}
+
+		// Handle the final condition specially - if it's "true", just execute the actions
+		isLastCondition := i == len(states)-1
+		if isLastCondition && state.Condition == "true" {
+			// For the final "true" condition, just execute the actions without ternary
+			if len(state.Actions) == 1 {
+				result += actionsStr
+			} else {
+				result += fmt.Sprintf("(%s)", actionsStr)
+			}
+		} else {
+			// Build conditional normally
+			if len(state.Actions) == 1 {
+				result += fmt.Sprintf("%s ? %s", state.Condition, actionsStr)
+			} else {
+				result += fmt.Sprintf("%s ? (%s)", state.Condition, actionsStr)
+			}
+		}
+	}
+
+	return result
+}
+
+// RangeSelection creates the standard range selection logic pattern
+// This handles the common pattern of: no start -> set start, has start -> complete range, has both -> reset
+// startProp, endProp are the signal property names (e.g., "rangeStart", "rangeEnd")
+// clickedValue is the expression for the clicked value (e.g., "dayDateStr")
+// eventDetail is the detail object for the custom event (optional)
+func (sm *SignalManager) RangeSelection(startProp, endProp, clickedValue, eventDetail string) string {
+	startRef := sm.Signal(startProp)
+	endRef := sm.Signal(endProp)
+
+	// Default event detail if not provided
+	if eventDetail == "" {
+		eventDetail = fmt.Sprintf("{ %s: %s, %s: %s }", startProp, startRef, endProp, endRef)
+	}
+
+	states := []StateAction{
+		{
+			Condition: fmt.Sprintf("!%s", startRef),
+			Actions: []string{
+				sm.Set(startProp, clickedValue),
+				sm.Set(endProp, "''"),
+			},
+		},
+		{
+			Condition: fmt.Sprintf("!%s", endRef),
+			Actions: []string{
+				fmt.Sprintf("%s < %s ? (oldStart = %s, %s, %s) : (%s)",
+					clickedValue, startRef,
+					startRef, sm.Set(startProp, clickedValue), sm.Set(endProp, "oldStart"),
+					sm.Set(endProp, clickedValue)),
+				fmt.Sprintf("this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: %s }))", eventDetail),
+			},
+		},
+		{
+			Condition: "true",
+			Actions: []string{
+				sm.Set(startProp, clickedValue),
+				sm.Set(endProp, "''"),
+			},
+		},
+	}
+
+	return sm.MultiStateConditional(states)
+}
+
+// SingleOrRange creates a conditional that handles both single and range selection modes
+// modeProp is the signal property for the mode (e.g., "mode")
+// singleActions are the actions for single mode
+// rangeExpression is the complete range selection expression
+func (sm *SignalManager) SingleOrRange(modeProp string, singleActions []string, rangeExpression string) string {
+	modeRef := sm.Signal(modeProp)
+
+	// Format single actions
+	singleActionsStr := ""
+	for i, action := range singleActions {
+		if i > 0 {
+			singleActionsStr += ", "
+		}
+		singleActionsStr += action
+	}
+
+	if len(singleActions) == 1 {
+		return fmt.Sprintf("%s === 'single' ? %s : (%s)", modeRef, singleActionsStr, rangeExpression)
+	} else {
+		return fmt.Sprintf("%s === 'single' ? (%s) : (%s)", modeRef, singleActionsStr, rangeExpression)
+	}
+}
+
+// DateComparison creates date comparison expressions with proper handling
+// Useful for calendar date logic where you need to compare date strings
+func (sm *SignalManager) DateComparison(date1, operator, date2 string) string {
+	switch operator {
+	case "<", "<=", ">", ">=":
+		return fmt.Sprintf("%s %s %s", date1, operator, date2)
+	case "==", "===":
+		return fmt.Sprintf("%s === %s", date1, date2)
+	case "!=", "!==":
+		return fmt.Sprintf("%s !== %s", date1, date2)
+	default:
+		return fmt.Sprintf("%s %s %s", date1, operator, date2)
+	}
+}
