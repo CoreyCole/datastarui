@@ -11,8 +11,9 @@ templ Page() {
 			<h1 class="text-2xl font-bold mb-4">Calendar Component</h1>
 			<div class="space-y-8">
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date)</h2>
-					<div class="max-w-sm">
+					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Auto Current Month</h2>
+					<p class="text-sm text-muted-foreground mb-2">Should show current month automatically</p>
+					<div class="w-fit">
 						@calendar.Calendar(calendar.CalendarProps{
 							ID:   "calendar_demo",
 							Mode: "single",
@@ -20,23 +21,53 @@ templ Page() {
 					</div>
 				</div>
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Range Date)</h2>
-					<div class="max-w-sm">
+					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Explicit January 2023</h2>
+					<p class="text-sm text-muted-foreground mb-2">Should show January 2023 (not current month)</p>
+					<div class="w-fit">
 						@calendar.Calendar(calendar.CalendarProps{
-							ID:   "calendar-demo-range",
-							Mode: "range",
+							ID:          "calendar_demo_explicit",
+							Mode:        "single",
+							DefaultDate: "2023-01-01",
 						})
 					</div>
 				</div>
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Simplified Calendar</h2>
+					<h2 class="text-xl font-semibold mb-2">Double-Width Calendar (Range Selection)</h2>
 					<p class="text-sm text-muted-foreground mb-4">
-						Our new calendar design is much simpler - one month view with clean interactions.
+						Two months displayed side by side for better range selection. Perfect for date range pickers.
 					</p>
-					<div class="max-w-sm">
+					<div class="w-fit">
 						@calendar.Calendar(calendar.CalendarProps{
-							ID:   "simple-calendar",
-							Mode: "single",
+							ID:             "double-calendar-range",
+							Mode:           "range",
+							NumberOfMonths: 2,
+						})
+					</div>
+				</div>
+				<div>
+					<h2 class="text-xl font-semibold mb-2">Double-Width Calendar (Single Selection)</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Two months displayed side by side with single date selection and outside days visible.
+					</p>
+					<div class="w-fit">
+						@calendar.Calendar(calendar.CalendarProps{
+							ID:             "double-calendar-single",
+							Mode:           "single",
+							NumberOfMonths: 2,
+						})
+					</div>
+				</div>
+				<div>
+					<h2 class="text-xl font-semibold mb-2">Standard Calendar (Outside Days Hidden)</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Standard single month view with outside days hidden for a cleaner look.
+					</p>
+					<div class="w-fit">
+						@calendar.Calendar(calendar.CalendarProps{
+							ID:              "standard-calendar",
+							Mode:            "single",
+							NumberOfMonths:  1,
+							HideOutsideDays: true,
 						})
 					</div>
 				</div>

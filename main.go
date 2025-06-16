@@ -10,6 +10,7 @@ import (
 	p "github.com/coreycole/datastarui/pages"
 	"github.com/coreycole/datastarui/pages/components/breadcrumbpage"
 	"github.com/coreycole/datastarui/pages/components/buttonpage"
+	"github.com/coreycole/datastarui/pages/components/calendarpage"
 	"github.com/coreycole/datastarui/pages/components/cardpage"
 	"github.com/coreycole/datastarui/pages/components/checkboxpage"
 	"github.com/coreycole/datastarui/pages/components/datepickerpage"
@@ -50,6 +51,9 @@ func main() {
 	})
 	e.GET("/components/dropdown", func(c echo.Context) error {
 		return dropdownpage.DropdownPage().Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/calendar", func(c echo.Context) error {
+		return calendarpage.Page().Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/form", func(c echo.Context) error {
 		return formpage.FormPage().Render(c.Request().Context(), c.Response().Writer)

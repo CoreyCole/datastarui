@@ -34,10 +34,28 @@ templ Calendar(props CalendarProps) {
 			mode = "single"
 		}
 
-		// Get current date for initial state
+		numberOfMonths := props.NumberOfMonths
+		if numberOfMonths <= 0 {
+			numberOfMonths = 1
+		}
+
+		// Determine the initial month to display
+		var currentDateStr string
 		now := time.Now()
-		currentDate := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
-		currentDateStr := currentDate.Format("2006-01-02")
+		if props.DefaultDate != "" {
+			// Use the provided DefaultDate, normalized to first day of month
+			if t, err := time.Parse("2006-01-02", props.DefaultDate); err == nil {
+				currentDateStr = fmt.Sprintf("%04d-%02d-01", t.Year(), int(t.Month()))
+			} else {
+				// Fallback to current month if DefaultDate is invalid
+				currentDateStr = fmt.Sprintf("%04d-%02d-01", now.Year(), int(now.Month()))
+			}
+		} else {
+			// Default to current month
+			currentDateStr = fmt.Sprintf("%04d-%02d-01", now.Year(), int(now.Month()))
+		}
+
+		// Today string for highlighting
 		todayStr := now.Format("2006-01-02")
 
 		// Create signals using the structured system
@@ -45,9 +63,9 @@ templ Calendar(props CalendarProps) {
 			CurrentDate:  currentDateStr,
 			Mode:         mode,
 			Today:        todayStr,
-			SelectedDate: "",
-			RangeStart:   "",
-			RangeEnd:     "",
+			SelectedDate: props.SelectedDate,
+			RangeStart:   props.RangeStart,
+			RangeEnd:     props.RangeEnd,
 		})
 
 		classes := calendarVariants(props.Class)
@@ -57,8 +75,20 @@ templ Calendar(props CalendarProps) {
 		class={ "p-3 " + classes }
 		{ props.Attributes... }
 	>
-		@CalendarHeader(CalendarHeaderProps{ID: calendarID})
-		@CalendarGrid(CalendarGridProps{ID: calendarID})
+		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
+		<!-- Months container with responsive flex layout -->
+		<div class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0">
+			for monthIndex := 0; monthIndex < numberOfMonths; monthIndex++ {
+				<div class="space-y-4">
+					@CalendarGrid(CalendarGridProps{
+						ID:              calendarID,
+						MonthOffset:     monthIndex,
+						HideOutsideDays: props.HideOutsideDays,
+						NumberOfMonths:  numberOfMonths,
+					})
+				</div>
+			}
+		</div>
 	</div>
 }
 
@@ -75,35 +105,71 @@ templ CalendarHeader(props CalendarHeaderProps) {
 		prevMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() - 1, 1)).toISOString().slice(0, 10)")
 		nextMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() + 1, 1)).toISOString().slice(0, 10)")
 
-		// Month display expression
-		monthDisplayExpr := "new Date(" + currentDateRef + ").toLocaleString('default', { month: 'long', year: 'numeric' })"
+		// Month display expressions for multiple months
+		numberOfMonths := props.NumberOfMonths
+		if numberOfMonths <= 0 {
+			numberOfMonths = 1
+		}
 	}}
-	<div class="flex justify-center pt-1 relative items-center w-full">
-		<!-- Previous month button -->
-		<button
-			type="button"
-			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute left-1"
-			data-on-click={ prevMonthExpr }
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-				<path d="m15 18-6-6 6-6"></path>
-			</svg>
-		</button>
-		<!-- Month/Year display -->
-		<div class="text-sm font-medium">
-			<span data-text={ monthDisplayExpr }></span>
+	if numberOfMonths == 1 {
+		<!-- Single month header -->
+		<div class="flex justify-center pt-1 relative items-center w-full mb-4">
+			<!-- Previous month button -->
+			<button
+				type="button"
+				class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute left-1"
+				data-on-click={ prevMonthExpr }
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+					<path d="m15 18-6-6 6-6"></path>
+				</svg>
+			</button>
+			<!-- Month/Year display -->
+			<div class="text-sm font-medium">
+				<span data-text={ "new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
+			</div>
+			<!-- Next month button -->
+			<button
+				type="button"
+				class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute right-1"
+				data-on-click={ nextMonthExpr }
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+					<path d="m9 18 6-6-6-6"></path>
+				</svg>
+			</button>
 		</div>
-		<!-- Next month button -->
-		<button
-			type="button"
-			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute right-1"
-			data-on-click={ nextMonthExpr }
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-				<path d="m9 18 6-6-6-6"></path>
-			</svg>
-		</button>
-	</div>
+	} else {
+		<!-- Multi-month header with navigation -->
+		<div class="flex justify-between items-center w-full mb-4">
+			<!-- Previous month button -->
+			<button
+				type="button"
+				class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100"
+				data-on-click={ prevMonthExpr }
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+					<path d="m15 18-6-6 6-6"></path>
+				</svg>
+			</button>
+			<!-- Month range display -->
+			<div class="flex items-center space-x-1 text-sm font-medium">
+				<span data-text={ "new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
+				<span>-</span>
+				<span data-text={ "new Date(Date.UTC(new Date(" + currentDateRef + ").getUTCFullYear(), new Date(" + currentDateRef + ").getUTCMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
+			</div>
+			<!-- Next month button -->
+			<button
+				type="button"
+				class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100"
+				data-on-click={ nextMonthExpr }
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+					<path d="m9 18 6-6-6-6"></path>
+				</svg>
+			</button>
+		</div>
+	}
 }
 
 // CalendarGrid renders the calendar days
@@ -124,8 +190,10 @@ templ CalendarGrid(props CalendarGridProps) {
 			<!-- Generate 42 days (6 weeks × 7 days) -->
 			for dayIndex := 0; dayIndex < 42; dayIndex++ {
 				@CalendarDay(CalendarDayProps{
-					ID:       props.ID,
-					DayIndex: dayIndex,
+					ID:              props.ID,
+					DayIndex:        dayIndex,
+					MonthOffset:     props.MonthOffset,
+					HideOutsideDays: props.HideOutsideDays,
 				})
 			}
 		</div>
@@ -147,43 +215,57 @@ templ CalendarDay(props CalendarDayProps) {
 		rangeEndRef := signals.Signal("rangeEnd")
 
 		dayIndex := props.DayIndex
+		monthOffset := props.MonthOffset
 
-		// Create simple variable assignments for day calculations
-		// Using multiple statements separated by semicolons as per the guide
+		// Create day calculations with month offset support
 		daySetupExpr := fmt.Sprintf(`
-			current = new Date(%s);
-			firstDay = new Date(current.getFullYear(), current.getMonth(), 1);
-			startDate = new Date(firstDay.getTime() - firstDay.getDay() * 86400000);
+			current = new Date(%s + 'T12:00:00Z');
+			targetMonth = new Date(Date.UTC(current.getUTCFullYear(), current.getUTCMonth() + %d, 1));
+			firstDay = new Date(Date.UTC(targetMonth.getUTCFullYear(), targetMonth.getUTCMonth(), 1));
+			startDate = new Date(firstDay.getTime() - firstDay.getUTCDay() * 86400000);
 			dayDate = new Date(startDate.getTime() + %d * 86400000);
 			dayDateStr = dayDate.toISOString().slice(0, 10);
-			dayNumber = dayDate.getDate();
-			isCurrentMonth = dayDate.getMonth() === current.getMonth()
-		`, currentDateRef, dayIndex)
+			dayNumber = dayDate.getUTCDate();
+			isCurrentMonth = dayDate.getUTCMonth() === targetMonth.getUTCMonth();
+			isOutsideDay = !isCurrentMonth;
+			isToday = dayDateStr === %s
+		`, currentDateRef, monthOffset, dayIndex, todayRef)
 
 		// Simple property expressions
 		dayNumberExpr := daySetupExpr + "; dayNumber"
 
-		// Conditional classes using simple patterns - matching shadcn styling
+		// Conditional classes with outside day support - separate today styling
 		dayClasses := fmt.Sprintf(`{
 			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground': 
 				(%s === 'single' && dayDateStr === %s) || 
 				(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)),
 			'bg-accent text-accent-foreground': 
-				dayDateStr === %s || (%s === 'range' && %s && %s && 
-				dayDateStr > %s && dayDateStr < %s),
+				(%s === 'range' && %s && %s && 
+				dayDateStr > %s && dayDateStr < %s && dayDateStr !== %s),
+			'ring-2 ring-primary bg-accent text-accent-foreground font-semibold': 
+				isToday && !(%s === 'single' && dayDateStr === %s) && !(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)),
 			'text-muted-foreground opacity-50': 
-				!isCurrentMonth
+				isOutsideDay,
+			'hover:bg-accent hover:text-accent-foreground': 
+				isCurrentMonth || !%t,
+			'cursor-pointer': 
+				isCurrentMonth || !%t,
+			'invisible': 
+				isOutsideDay && %t
 		}`, modeRef, selectedDateRef,
 			modeRef, rangeStartRef, rangeEndRef,
-			todayRef, modeRef, rangeStartRef, rangeEndRef,
-			rangeStartRef, rangeEndRef)
+			modeRef, rangeStartRef, rangeEndRef,
+			rangeStartRef, rangeEndRef, todayRef,
+			modeRef, selectedDateRef, modeRef, rangeStartRef, rangeEndRef,
+			props.HideOutsideDays, props.HideOutsideDays, props.HideOutsideDays)
 
-		// Elegant range selection using utility functions
+		// Click handler - only allow clicks on current month days or when outside days are enabled
 		clickHandler := fmt.Sprintf(`
 			%s;
-			%s
+			(isCurrentMonth || !%t) ? %s : void 0
 		`,
 			daySetupExpr,
+			props.HideOutsideDays,
 			signals.SingleOrRange("mode",
 				[]string{
 					signals.Set("selectedDate", "dayDateStr"),
@@ -196,7 +278,7 @@ templ CalendarDay(props CalendarDayProps) {
 			type="button"
 			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground size-8 p-0 font-normal aria-selected:opacity-100"
 			data-text={ dayNumberExpr }
-			data-attr-disabled={ daySetupExpr + "; !isCurrentMonth" }
+			data-attr-disabled={ daySetupExpr + fmt.Sprintf("; isOutsideDay && %t", props.HideOutsideDays) }
 			data-class={ daySetupExpr + "; " + dayClasses }
 			data-on-click={ clickHandler }
 		></button>

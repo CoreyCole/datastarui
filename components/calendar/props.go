@@ -11,6 +11,14 @@ type CalendarProps struct {
 	// Options: "single", "range"
 	Mode string
 
+	// NumberOfMonths defines how many months to display side by side
+	// Default: 1, for double-width use 2
+	NumberOfMonths int
+
+	// HideOutsideDays determines whether to hide dates from adjacent months
+	// Default: false (outside days are shown by default)
+	HideOutsideDays bool
+
 	// DefaultDate sets the initial month to display (YYYY-MM-DD format)
 	// Will be normalized to the first day of the month
 	DefaultDate string
@@ -38,12 +46,24 @@ type CalendarProps struct {
 type CalendarGridProps struct {
 	// ID of the parent calendar
 	ID string
+
+	// MonthOffset is used for multi-month calendars (0 for current month, 1 for next month, etc.)
+	MonthOffset int
+
+	// HideOutsideDays determines whether to hide dates from adjacent months
+	HideOutsideDays bool
+
+	// NumberOfMonths defines how many months the parent calendar displays
+	NumberOfMonths int
 }
 
 // CalendarHeaderProps defines the properties for the calendar header
 type CalendarHeaderProps struct {
 	// ID of the parent calendar
 	ID string
+
+	// NumberOfMonths defines how many months to display
+	NumberOfMonths int
 }
 
 // CalendarDayProps defines the properties for individual calendar day buttons
@@ -53,4 +73,10 @@ type CalendarDayProps struct {
 
 	// DayIndex is the index of this day (0-41 for 6 weeks)
 	DayIndex int
+
+	// MonthOffset is used for multi-month calendars (0 for current month, 1 for next month, etc.)
+	MonthOffset int
+
+	// HideOutsideDays determines whether to hide dates from adjacent months
+	HideOutsideDays bool
 }
