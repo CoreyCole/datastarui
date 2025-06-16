@@ -341,11 +341,15 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 			templ_7745c5c3_Var13 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"w-full border-collapse\"><!-- Day headers --><div class=\"grid grid-cols-7 gap-1 mb-2\"><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Su</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Mo</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Tu</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">We</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Th</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Fr</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Sa</div></div><!-- Calendar days grid --><div class=\"grid grid-cols-7 gap-1\"><!-- Generate 42 days (6 weeks × 7 days) -->")
+
+		// Use 5 weeks (35 days) for all calendars for a cleaner, more consistent look
+		weeksNeeded := 5
+		totalDays := weeksNeeded * 7
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"w-full border-collapse\"><!-- Day headers --><div class=\"grid grid-cols-7 gap-1 mb-2\"><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Su</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Mo</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Tu</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">We</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Th</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Fr</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Sa</div></div><!-- Calendar days grid --><div class=\"grid grid-cols-7 gap-1\"><!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for dayIndex := 0; dayIndex < 42; dayIndex++ {
+		for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
 			templ_7745c5c3_Err = CalendarDay(CalendarDayProps{
 				ID:              props.ID,
 				DayIndex:        dayIndex,
@@ -418,52 +422,54 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// Simple property expressions
 		dayNumberExpr := daySetupExpr + "; dayNumber"
 
-		// Conditional classes with outside day support - separate today styling
-		dayClasses := fmt.Sprintf(`{
-			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground': 
-				(%s === 'single' && dayDateStr === %s) || 
-				(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)),
-			'bg-accent text-accent-foreground': 
-				(%s === 'range' && %s && %s && 
-				dayDateStr > %s && dayDateStr < %s && dayDateStr !== %s),
-			'ring-2 ring-primary bg-accent text-accent-foreground font-semibold': 
-				isToday && !(%s === 'single' && dayDateStr === %s) && !(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)),
-			'text-muted-foreground opacity-50': 
-				isOutsideDay,
-			'hover:bg-accent hover:text-accent-foreground': 
-				isCurrentMonth || !%t,
-			'cursor-pointer': 
-				isCurrentMonth || !%t,
-			'invisible': 
-				isOutsideDay && %t
-		}`, modeRef, selectedDateRef,
-			modeRef, rangeStartRef, rangeEndRef,
-			modeRef, rangeStartRef, rangeEndRef,
-			rangeStartRef, rangeEndRef, todayRef,
-			modeRef, selectedDateRef, modeRef, rangeStartRef, rangeEndRef,
-			props.HideOutsideDays, props.HideOutsideDays, props.HideOutsideDays)
+		// Conditional classes using the DataClass helper for cleaner code
+		dayClasses := signals.DataClass(map[string]string{
+			// Primary styling for selected dates (single mode) or range endpoints
+			"!bg-primary !text-primary-foreground hover:!bg-primary hover:!text-primary-foreground focus:!bg-primary focus:!text-primary-foreground": fmt.Sprintf(
+				"(%s === 'single' && dayDateStr === %s) || (%s === 'range' && (dayDateStr === %s || dayDateStr === %s))",
+				modeRef, selectedDateRef, modeRef, rangeStartRef, rangeEndRef),
 
-		// Click handler - only allow clicks on current month days or when outside days are enabled
+			// Range middle dates styling - always highlight dates between range
+			"!bg-accent !text-accent-foreground hover:!bg-accent hover:!text-accent-foreground focus:!bg-accent focus:!text-accent-foreground": fmt.Sprintf(
+				"%s === 'range' && %s && %s && dayDateStr > %s && dayDateStr < %s",
+				modeRef, rangeStartRef, rangeEndRef, rangeStartRef, rangeEndRef),
+
+			// Today styling - always show ring for current day
+			"!ring-2 !ring-primary !font-semibold": "isToday",
+
+			// Default hover state for normal dates (not selected, not in range, not today)
+			"hover:bg-accent hover:text-accent-foreground": fmt.Sprintf(
+				"isCurrentMonth && !(%s === 'single' && dayDateStr === %s) && !(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)) && !(%s === 'range' && %s && %s && dayDateStr > %s && dayDateStr < %s) && !isToday",
+				modeRef, selectedDateRef, modeRef, rangeStartRef, rangeEndRef, modeRef, rangeStartRef, rangeEndRef, rangeStartRef, rangeEndRef),
+
+			// Outside days styling
+			"!text-muted-foreground !opacity-50": "isOutsideDay",
+
+			// Hide outside days when requested
+			"!invisible": fmt.Sprintf("isOutsideDay && %t", props.HideOutsideDays),
+		})
+
+		// Click handler - prevent clicking outside days when hidden, and only allow clicks on current month days
 		clickHandler := fmt.Sprintf(`
 			%s;
-			(isCurrentMonth || !%t) ? %s : void 0
+			(isCurrentMonth || !%t) && !(isOutsideDay && %t) ? %s : void 0
 		`,
 			daySetupExpr,
-			props.HideOutsideDays,
+			props.HideOutsideDays, props.HideOutsideDays,
 			signals.SingleOrRange("mode",
 				[]string{
 					signals.Set("selectedDate", "dayDateStr"),
 					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
 				},
 				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }")))
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\"><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground size-8 p-0 font-normal aria-selected:opacity-100\" data-text=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\"><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer\" data-text=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(dayNumberExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 280, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 287, Col: 28}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -476,7 +482,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(daySetupExpr + fmt.Sprintf("; isOutsideDay && %t", props.HideOutsideDays))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 281, Col: 97}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 288, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -489,7 +495,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(daySetupExpr + "; " + dayClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 282, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 289, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -502,7 +508,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 283, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 290, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {

@@ -233,3 +233,28 @@ func (sm *SignalManager) DateComparison(date1, operator, date2 string) string {
 		return fmt.Sprintf("%s %s %s", date1, operator, date2)
 	}
 }
+
+// DataClass creates a clean JSON object for data-class attributes from a map of class names to conditions
+// This allows for more maintainable conditional class logic
+// Example:
+//
+//	classes := signals.DataClass(map[string]string{
+//	  "bg-primary text-white": "$component.active",
+//	  "opacity-50": "!$component.enabled",
+//	  "hidden": "$component.mode === 'hidden'",
+//	})
+//	// Use in templ: data-class={ classes }
+func (sm *SignalManager) DataClass(classConditions map[string]string) string {
+	if len(classConditions) == 0 {
+		return "{}"
+	}
+
+	var parts []string
+	for className, condition := range classConditions {
+		// Escape single quotes in class names
+		escapedClass := strings.ReplaceAll(className, "'", "\\'")
+		parts = append(parts, fmt.Sprintf("'%s': %s", escapedClass, condition))
+	}
+
+	return fmt.Sprintf("{%s}", strings.Join(parts, ", "))
+}

@@ -272,6 +272,9 @@
   .pointer-events-none {
     pointer-events: none;
   }
+  .\!invisible {
+    visibility: hidden !important;
+  }
   .collapse {
     visibility: collapse;
   }
@@ -1012,6 +1015,12 @@
   .border-transparent {
     border-color: transparent;
   }
+  .\!bg-accent {
+    background-color: var(--color-accent) !important;
+  }
+  .\!bg-primary {
+    background-color: var(--color-primary) !important;
+  }
   .bg-\[\#adfa1d\] {
     background-color: #adfa1d;
   }
@@ -1308,6 +1317,10 @@
     --tw-leading: var(--leading-tight);
     line-height: var(--leading-tight);
   }
+  .\!font-semibold {
+    --tw-font-weight: var(--font-weight-semibold) !important;
+    font-weight: var(--font-weight-semibold) !important;
+  }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
@@ -1341,6 +1354,15 @@
   }
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+  .\!text-accent-foreground {
+    color: var(--color-accent-foreground) !important;
+  }
+  .\!text-muted-foreground {
+    color: var(--color-muted-foreground) !important;
+  }
+  .\!text-primary-foreground {
+    color: var(--color-primary-foreground) !important;
   }
   .text-\[\#000000\] {
     color: #000000;
@@ -1457,6 +1479,9 @@
   .accent-foreground {
     accent-color: var(--color-foreground);
   }
+  .\!opacity-50 {
+    opacity: 50% !important;
+  }
   .opacity-50 {
     opacity: 50%;
   }
@@ -1487,6 +1512,10 @@
     --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .\!ring-2 {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor) !important;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
+  }
   .ring {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -1494,6 +1523,9 @@
   .ring-2 {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .\!ring-primary {
+    --tw-ring-color: var(--color-primary) !important;
   }
   .ring-primary {
     --tw-ring-color: var(--color-primary);
@@ -1721,6 +1753,20 @@
       }
     }
   }
+  .hover\:\!bg-accent {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-accent) !important;
+      }
+    }
+  }
+  .hover\:\!bg-primary {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-primary) !important;
+      }
+    }
+  }
   .hover\:bg-accent {
     &:hover {
       @media (hover: hover) {
@@ -1796,6 +1842,20 @@
       }
     }
   }
+  .hover\:\!text-accent-foreground {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-accent-foreground) !important;
+      }
+    }
+  }
+  .hover\:\!text-primary-foreground {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-primary-foreground) !important;
+      }
+    }
+  }
   .hover\:text-accent-foreground {
     &:hover {
       @media (hover: hover) {
@@ -1863,6 +1923,16 @@
       }
     }
   }
+  .focus\:\!bg-accent {
+    &:focus {
+      background-color: var(--color-accent) !important;
+    }
+  }
+  .focus\:\!bg-primary {
+    &:focus {
+      background-color: var(--color-primary) !important;
+    }
+  }
   .focus\:bg-accent {
     &:focus {
       background-color: var(--color-accent);
@@ -1871,6 +1941,16 @@
   .focus\:bg-primary {
     &:focus {
       background-color: var(--color-primary);
+    }
+  }
+  .focus\:\!text-accent-foreground {
+    &:focus {
+      color: var(--color-accent-foreground) !important;
+    }
+  }
+  .focus\:\!text-primary-foreground {
+    &:focus {
+      color: var(--color-primary-foreground) !important;
     }
   }
   .focus\:text-accent-foreground {
