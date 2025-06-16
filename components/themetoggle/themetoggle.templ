@@ -1,24 +1,18 @@
 package themetoggle
 
-import "github.com/coreycole/datastarui/utils"
-
 // ThemeToggleSignals defines the signal structure for theme toggle components
+// Note: This is kept for reference but not used since we use the global theme signal
 type ThemeToggleSignals struct {
 	Theme string `json:"theme"`
 }
 
 templ ThemeToggle(props ThemeToggleProps) {
 	{{
-		// Create signals using the new structured system
-		// Initialize with system preference or light as default
-		signals := utils.Signals("theme", ThemeToggleSignals{
-			Theme: "light", // This will be overridden by the initialization script
-		})
-
-		// Create toggle expression using the new signals system
-		toggleExpr := signals.Set("theme", "$theme === 'dark' ? 'light' : 'dark'") + "; document.documentElement.classList.toggle('dark', $theme === 'dark'); localStorage.setItem('theme', $theme);"
+		// Use the global theme signal instead of creating a local one
+		// The global theme is initialized at the body level as $theme
+		toggleExpr := "$theme = $theme === 'dark' ? 'light' : 'dark'; document.documentElement.classList.toggle('dark', $theme === 'dark'); localStorage.setItem('theme', $theme);"
 	}}
-	<div data-signals={ signals.DataSignals }>
+	<div>
 		<button
 			class={ "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0", props.Class }
 			data-on-click={ toggleExpr }

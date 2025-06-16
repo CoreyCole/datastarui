@@ -12,6 +12,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/buttonpage"
 	"github.com/coreycole/datastarui/pages/components/cardpage"
 	"github.com/coreycole/datastarui/pages/components/checkboxpage"
+	"github.com/coreycole/datastarui/pages/components/datepickerpage"
 	"github.com/coreycole/datastarui/pages/components/dialogpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
@@ -70,6 +71,9 @@ func main() {
 	})
 	e.GET("/components/select", func(c echo.Context) error {
 		return selectpage.SelectPage().Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/datepicker", func(c echo.Context) error {
+		return datepickerpage.Page().Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the docs page

@@ -1,0 +1,219 @@
+package calendar
+
+import (
+	"crypto/rand"
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+	"time"
+)
+
+// CalendarSignals defines the signal structure for calendar components
+type CalendarSignals struct {
+	CurrentDate  string `json:"currentDate"`
+	Mode         string `json:"mode"`
+	Today        string `json:"today"`
+	SelectedDate string `json:"selectedDate"`
+	RangeStart   string `json:"rangeStart"`
+	RangeEnd     string `json:"rangeEnd"`
+}
+
+// Calendar renders a simple, elegant calendar
+templ Calendar(props CalendarProps) {
+	{{
+		// Generate unique ID
+		calendarID := props.ID
+		if calendarID == "" {
+			b := make([]byte, 4)
+			rand.Read(b)
+			calendarID = fmt.Sprintf("calendar_%x", b)
+		}
+
+		// Set defaults
+		mode := props.Mode
+		if mode == "" {
+			mode = "single"
+		}
+
+		// Get current date for initial state
+		now := time.Now()
+		currentDate := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
+		currentDateStr := currentDate.Format("2006-01-02")
+		todayStr := now.Format("2006-01-02")
+
+		// Create signals using the structured system
+		signals := utils.Signals(calendarID, CalendarSignals{
+			CurrentDate:  currentDateStr,
+			Mode:         mode,
+			Today:        todayStr,
+			SelectedDate: "",
+			RangeStart:   "",
+			RangeEnd:     "",
+		})
+
+		classes := calendarVariants(props.Class)
+	}}
+	<div
+		data-signals={ signals.DataSignals }
+		class={ "p-3 " + classes }
+		{ props.Attributes... }
+	>
+		@CalendarHeader(CalendarHeaderProps{ID: calendarID})
+		@CalendarGrid(CalendarGridProps{ID: calendarID})
+	</div>
+}
+
+// CalendarHeader renders the month navigation
+templ CalendarHeader(props CalendarHeaderProps) {
+	{{
+		// Create signals manager for this calendar
+		signals := utils.Signals(props.ID, CalendarSignals{})
+
+		// Signal references
+		currentDateRef := signals.Signal("currentDate")
+
+		// Navigation expressions
+		prevMonthExpr := signals.Set("currentDate", "new Date(new Date("+currentDateRef+").setMonth(new Date("+currentDateRef+").getMonth() - 1)).toISOString().slice(0, 8) + '01'")
+		nextMonthExpr := signals.Set("currentDate", "new Date(new Date("+currentDateRef+").setMonth(new Date("+currentDateRef+").getMonth() + 1)).toISOString().slice(0, 8) + '01'")
+
+		// Month display expression
+		monthDisplayExpr := "new Date(" + currentDateRef + ").toLocaleString('default', { month: 'long', year: 'numeric' })"
+	}}
+	<div class="flex justify-center pt-1 relative items-center w-full">
+		<!-- Previous month button -->
+		<button
+			type="button"
+			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute left-1"
+			data-on-click={ prevMonthExpr }
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+				<path d="m15 18-6-6 6-6"></path>
+			</svg>
+		</button>
+		<!-- Month/Year display -->
+		<div class="text-sm font-medium">
+			<span data-text={ monthDisplayExpr }></span>
+		</div>
+		<!-- Next month button -->
+		<button
+			type="button"
+			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute right-1"
+			data-on-click={ nextMonthExpr }
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+				<path d="m9 18 6-6-6-6"></path>
+			</svg>
+		</button>
+	</div>
+}
+
+// CalendarGrid renders the calendar days
+templ CalendarGrid(props CalendarGridProps) {
+	<div class="w-full border-collapse">
+		<!-- Day headers -->
+		<div class="grid grid-cols-7 gap-1 mb-2">
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Su</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Mo</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Tu</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">We</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Th</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Fr</div>
+			<div class="text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0">Sa</div>
+		</div>
+		<!-- Calendar days grid -->
+		<div class="grid grid-cols-7 gap-1">
+			<!-- Generate 42 days (6 weeks × 7 days) -->
+			for dayIndex := 0; dayIndex < 42; dayIndex++ {
+				@CalendarDay(CalendarDayProps{
+					ID:       props.ID,
+					DayIndex: dayIndex,
+				})
+			}
+		</div>
+	</div>
+}
+
+// CalendarDay renders individual day button
+templ CalendarDay(props CalendarDayProps) {
+	{{
+		// Create signals manager for this calendar
+		signals := utils.Signals(props.ID, CalendarSignals{})
+
+		// Signal references
+		currentDateRef := signals.Signal("currentDate")
+		modeRef := signals.Signal("mode")
+		todayRef := signals.Signal("today")
+		selectedDateRef := signals.Signal("selectedDate")
+		rangeStartRef := signals.Signal("rangeStart")
+		rangeEndRef := signals.Signal("rangeEnd")
+
+		dayIndex := props.DayIndex
+
+		// Create simple variable assignments for day calculations
+		// Using multiple statements separated by semicolons as per the guide
+		daySetupExpr := fmt.Sprintf(`
+			current = new Date(%s);
+			firstDay = new Date(current.getFullYear(), current.getMonth(), 1);
+			startDate = new Date(firstDay.getTime() - firstDay.getDay() * 86400000);
+			dayDate = new Date(startDate.getTime() + %d * 86400000);
+			dayDateStr = dayDate.toISOString().slice(0, 10);
+			dayNumber = dayDate.getDate();
+			isCurrentMonth = dayDate.getMonth() === current.getMonth()
+		`, currentDateRef, dayIndex)
+
+		// Simple property expressions
+		dayNumberExpr := daySetupExpr + "; dayNumber"
+
+		// Conditional classes using simple patterns - matching shadcn styling
+		dayClasses := fmt.Sprintf(`{
+			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground': 
+				(%s === 'single' && dayDateStr === %s) || 
+				(%s === 'range' && (dayDateStr === %s || dayDateStr === %s)),
+			'bg-accent text-accent-foreground': 
+				dayDateStr === %s || (%s === 'range' && %s && %s && 
+				dayDateStr > %s && dayDateStr < %s),
+			'text-muted-foreground opacity-50': 
+				!isCurrentMonth
+		}`, modeRef, selectedDateRef,
+			modeRef, rangeStartRef, rangeEndRef,
+			todayRef, modeRef, rangeStartRef, rangeEndRef,
+			rangeStartRef, rangeEndRef)
+
+		// Simple click handler using ternary operators as shown in the guide
+		clickHandler := fmt.Sprintf(`
+			%s;
+			%s === 'single' ? (
+				%s,
+				this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))
+			) : (
+				!%s || (%s && %s) ? (
+					%s,
+					%s
+				) : (
+					dayDateStr >= %s ? %s : (%s, %s),
+					this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { rangeStart: %s, rangeEnd: %s } }))
+				)
+			)
+		`,
+			daySetupExpr,
+			modeRef,
+			signals.Set("selectedDate", "dayDateStr"),
+			rangeStartRef, rangeStartRef, rangeEndRef,
+			signals.Set("rangeStart", "dayDateStr"),
+			signals.Set("rangeEnd", "''"),
+			rangeStartRef,
+			signals.Set("rangeEnd", "dayDateStr"),
+			signals.Set("rangeEnd", rangeStartRef),
+			signals.Set("rangeStart", "dayDateStr"),
+			rangeStartRef, rangeEndRef)
+	}}
+	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
+		<button
+			type="button"
+			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground size-8 p-0 font-normal aria-selected:opacity-100"
+			data-text={ dayNumberExpr }
+			data-attr-disabled={ daySetupExpr + "; !isCurrentMonth" }
+			data-class={ daySetupExpr + "; " + dayClasses }
+			data-on-click={ clickHandler }
+		></button>
+	</div>
+}
