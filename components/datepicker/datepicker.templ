@@ -4,101 +4,96 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/coreycole/datastarui/components/calendar"
-	"github.com/coreycole/datastarui/components/popover"
 	"github.com/coreycole/datastarui/utils"
+	"strings"
+	"time"
 )
-
-// DatePickerSignals defines the signal structure for datepicker components
-type DatePickerSignals struct {
-	// Popover state
-	Open bool `json:"open"`
-	
-	// Input display value
-	InputValue string `json:"inputValue"`
-	
-	// Selected values (synced with calendar)
-	SelectedDate string `json:"selectedDate"`
-	RangeStart   string `json:"rangeStart"`
-	RangeEnd     string `json:"rangeEnd"`
-}
 
 // DatePicker renders a date picker with input field and calendar popover
 templ DatePicker(props DatePickerProps) {
 	{{
 		// Generate unique ID if not provided
-		pickerID := props.ID
-		if pickerID == "" {
+		datePickerID := props.ID
+		if datePickerID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
-			pickerID = fmt.Sprintf("datepicker_%x", b)
+			datePickerID = fmt.Sprintf("datepicker_%x", b)
 		}
 
-		calendarID := pickerID + "_calendar"
-		popoverID := pickerID + "_popover"
-		anchorName := pickerID + "_anchor"
-
-		// Set up initial state
-		mode := props.Mode
-		if mode == "" {
-			mode = "single"
+		// CloseOnSelect defaults based on mode
+		closeOnSelect := true
+		if props.Mode == "range" {
+			closeOnSelect = false // Don't close on first selection in range mode
 		}
 
-		// Create signals using the structured system
-		signals := utils.Signals(pickerID, DatePickerSignals{
-			Open: false,
+		// Determine initial values
+		initialInputValue := ""
+		initialSelectedDate := props.SelectedDate
+		initialRangeStart := props.RangeStart
+		initialRangeEnd := props.RangeEnd
+
+		// Set initial display month
+		initialDisplayMonth := props.DefaultDate
+		if initialDisplayMonth == "" {
+			if props.SelectedDate != "" {
+				initialDisplayMonth = props.SelectedDate[:7] + "-01" // First day of selected month
+			} else if props.RangeStart != "" {
+				initialDisplayMonth = props.RangeStart[:7] + "-01"
+			} else {
+				// Current month
+				now := time.Now()
+				initialDisplayMonth = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
+			}
+		}
+
+		// Convert internal date to display format for input
+		if props.Mode == "range" {
+			if initialRangeStart != "" && initialRangeEnd != "" {
+				startDisplay := strings.ReplaceAll(initialRangeStart, "-", "/")
+				endDisplay := strings.ReplaceAll(initialRangeEnd, "-", "/")
+				initialInputValue = startDisplay + " - " + endDisplay
+			} else if initialRangeStart != "" {
+				initialInputValue = strings.ReplaceAll(initialRangeStart, "-", "/")
+			}
+		} else {
+			if initialSelectedDate != "" {
+				initialInputValue = strings.ReplaceAll(initialSelectedDate, "-", "/")
+			}
+		}
+
+		// Create signals for reactive state
+		signals := utils.Signals(datePickerID, DatePickerSignals{
+			Open:            false,
+			InputValue:      initialInputValue,
+			SelectedDate:    initialSelectedDate,
+			RangeStart:      initialRangeStart,
+			RangeEnd:        initialRangeEnd,
+			DisplayMonth:    initialDisplayMonth,
+			IsValid:         true,
+			ErrorMessage:    "",
+			IsTyping:        false,
+			FocusedDate:     "",
+			HighlightedDate: "",
 		})
 
-		// Handle calendar selection changes
-		calendarChangeExpr := `
-			if (evt.detail && evt.detail.selectedDate !== undefined) {
-				` + signals.Set("selectedDate", "evt.detail.selectedDate") + `;
-			}
-			if (evt.detail && evt.detail.rangeStart !== undefined) {
-				` + signals.Set("rangeStart", "evt.detail.rangeStart") + `;
-			}
-			if (evt.detail && evt.detail.rangeEnd !== undefined) {
-				` + signals.Set("rangeEnd", "evt.detail.rangeEnd") + `;
-			}
-			
-			let inputValue = '';
-			if (` + signals.Signal("selectedDate") + ` && '` + mode + `' === 'single') {
-				inputValue = new Date(` + signals.Signal("selectedDate") + `).toLocaleDateString();
-			} else if (` + signals.Signal("rangeStart") + ` && ` + signals.Signal("rangeEnd") + ` && '` + mode + `' === 'range') {
-				inputValue = new Date(` + signals.Signal("rangeStart") + `).toLocaleDateString() + ' - ' + new Date(` + signals.Signal("rangeEnd") + `).toLocaleDateString();
-			} else if (` + signals.Signal("rangeStart") + ` && '` + mode + `' === 'range') {
-				inputValue = new Date(` + signals.Signal("rangeStart") + `).toLocaleDateString() + ' - ...';
-			}
-			` + signals.Set("inputValue", "inputValue") + `;
-			
-			if ('` + mode + `' === 'single' && ` + signals.Signal("selectedDate") + `) {
-				` + signals.Set("open", "false") + `;
-			} else if ('` + mode + `' === 'range' && ` + signals.Signal("rangeStart") + ` && ` + signals.Signal("rangeEnd") + `) {
-				` + signals.Set("open", "false") + `;
-			}
-		`
+		// Container classes
+		containerClasses := "relative " + props.Class
 
-		// Generate CSS classes
-		classes := datePickerVariants(props.Class)
+		// Click outside handler
+		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 	}}
 	<div
 		data-slot="datepicker"
+		data-datepicker-id={ datePickerID }
 		data-signals={ signals.DataSignals }
-		data-on-calendar-change={ calendarChangeExpr }
-		class={ classes }
+		data-on-click__outside={ clickOutsideHandler }
+		class={ containerClasses }
 		{ props.Attributes... }
 	>
+		<!-- Hidden input for form submission -->
 		if props.Name != "" {
-			<!-- Hidden form inputs -->
-			if mode == "single" {
-				<input
-					type="hidden"
-					name={ props.Name }
-					data-bind={ signals.Signal("selectedDate") }
-					if props.Required {
-						required
-					}
-				/>
-			} else {
+			if props.Mode == "range" {
+				<!-- Range mode: separate inputs for start and end -->
 				<input
 					type="hidden"
 					name={ props.Name + "_start" }
@@ -112,61 +107,220 @@ templ DatePicker(props DatePickerProps) {
 					name={ props.Name + "_end" }
 					data-bind={ signals.Signal("rangeEnd") }
 				/>
+			} else {
+				<!-- Single mode: single hidden input -->
+				<input
+					type="hidden"
+					name={ props.Name }
+					data-bind={ signals.Signal("selectedDate") }
+					if props.Required {
+						required
+					}
+				/>
+			}
+		}
+		<!-- Visible input field with icon -->
+		@DatePickerInput(DatePickerInputProps{
+			ID:          datePickerID + "_input",
+			Name:        props.Name + "_display", // Display input has different name
+			Placeholder: props.Placeholder,
+			Value:       initialInputValue,
+			Disabled:    props.Disabled,
+			Required:    props.Required,
+			Class:       props.InputClass,
+		})
+		<!-- Calendar popover -->
+		@DatePickerPopover(DatePickerPopoverProps{
+			ID:              datePickerID,
+			Mode:            props.Mode,
+			NumberOfMonths:  props.NumberOfMonths,
+			MinDate:         props.MinDate,
+			MaxDate:         props.MaxDate,
+			DisabledDates:   props.DisabledDates,
+			HideOutsideDays: props.HideOutsideDays,
+			CloseOnSelect:   closeOnSelect,
+			Class:           props.CalendarClass,
+		})
+	</div>
+}
+
+// DatePickerInput renders the input field with keyboard support
+templ DatePickerInput(props DatePickerInputProps) {
+	{{
+		// Get the parent datepicker ID from the input ID
+		datePickerID := strings.TrimSuffix(props.ID, "_input")
+		signals := utils.Signals(datePickerID, DatePickerSignals{})
+
+		// Input classes with error state support
+		inputClasses := "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background " +
+			"file:border-0 file:bg-transparent file:text-sm file:font-medium " +
+			"placeholder:text-muted-foreground " +
+			"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
+			"disabled:cursor-not-allowed disabled:opacity-50 " +
+			"aria-invalid:border-destructive aria-invalid:ring-destructive/20"
+		if props.Class != "" {
+			inputClasses += " " + props.Class
+		}
+
+		// Simple input handler - just update the signal
+		inputHandler := signals.Set("inputValue", "evt.target.value") + "; " +
+			signals.Set("isTyping", "true")
+
+		// Focus handler
+		focusHandler := signals.Set("open", "true")
+
+		// Simple keyboard handler
+		keyHandler := "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null"
+	}}
+	<div class="relative">
+		<input
+			type="text"
+			id={ props.ID }
+			name={ props.Name }
+			placeholder={ props.Placeholder }
+			class={ inputClasses }
+			disabled?={ props.Disabled }
+			required?={ props.Required }
+			data-bind={ signals.Signal("inputValue") }
+			data-on-input={ inputHandler }
+			data-on-focus={ focusHandler }
+			data-on-keydown={ keyHandler }
+			{ props.Attributes... }
+		/>
+		<!-- Calendar icon button (always shown) -->
+		<button
+			type="button"
+			class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+			tabindex="-1"
+			data-on-click={ signals.Toggle("open") }
+		>
+			<svg
+				class="h-4 w-4"
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M8 2v4"></path>
+				<path d="M16 2v4"></path>
+				<rect width="18" height="18" x="3" y="4" rx="2"></rect>
+				<path d="M3 10h18"></path>
+			</svg>
+		</button>
+	</div>
+}
+
+// DatePickerPopoverProps defines properties for the popover calendar
+type DatePickerPopoverProps struct {
+	ID              string
+	Mode            string
+	NumberOfMonths  int
+	MinDate         string
+	MaxDate         string
+	DisabledDates   string
+	HideOutsideDays bool
+	CloseOnSelect   bool
+	Class           string
+}
+
+// DatePickerPopover renders the calendar popover with keyboard navigation
+templ DatePickerPopover(props DatePickerPopoverProps) {
+	{{
+		signals := utils.Signals(props.ID, DatePickerSignals{})
+
+		// Popover show/hide
+		showExpr := signals.Signal("open")
+
+		// DatePicker open check (following select.templ pattern)
+		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
+
+		// Escape: close and return focus to input
+		escapeHandler := "evt.key === 'Escape' && " + datePickerOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
+			signals.Set("open", "false") + ", document.getElementById('" + props.ID + "_input').focus()) : null"
+
+		// Tab: close but allow tab to continue
+		tabHandler := "evt.key === 'Tab' && " + datePickerOpenCheck + " ? " + signals.Set("open", "false") + " : null"
+
+		// Combine keyboard handlers
+		keyHandler := escapeHandler + "; " + tabHandler
+
+		// Convert number of months
+		numMonths := props.NumberOfMonths
+		if numMonths <= 0 {
+			numMonths = 1
+		}
+
+		// Calendar date selection handler - also sync the DatePicker signals
+		dateSelectHandler := ""
+
+		// Build the handler conditionally
+		if props.Mode == "range" {
+			// Range mode handler - use ternary operators to avoid if/else statement issues
+			dateSelectHandler = "(evt.detail.rangeStart && evt.detail.rangeEnd) ? (" +
+				"(startDisplay => endDisplay => rangeDisplay => (" +
+				signals.Set("inputValue", "rangeDisplay") + ", " +
+				signals.Set("rangeStart", "evt.detail.rangeStart") + ", " +
+				signals.Set("rangeEnd", "evt.detail.rangeEnd") +
+				"))(evt.detail.rangeStart.replace(/-/g, '/'))(evt.detail.rangeEnd.replace(/-/g, '/'))(startDisplay + ' - ' + endDisplay)" +
+				") : evt.detail.rangeStart ? (" +
+				"(startDisplay => (" +
+				signals.Set("inputValue", "startDisplay") + ", " +
+				signals.Set("rangeStart", "evt.detail.rangeStart") +
+				"))(evt.detail.rangeStart.replace(/-/g, '/'))" +
+				") : null"
+
+			// Add close logic if needed for range mode
+			if props.CloseOnSelect {
+				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
+			}
+		} else {
+			// Single date mode handler - use ternary operator
+			dateSelectHandler = "evt.detail.selectedDate ? (" +
+				"(displayDate => (" +
+				signals.Set("inputValue", "displayDate") + ", " +
+				signals.Set("selectedDate", "evt.detail.selectedDate") +
+				"))(evt.detail.selectedDate.replace(/-/g, '/'))" +
+				") : null"
+
+			// Add close logic if needed for single mode
+			if props.CloseOnSelect {
+				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
 			}
 		}
 
-		@popover.Popover(popover.PopoverProps{
-			ID:    popoverID,
-			Class: "w-auto p-0",
-		}) {
-			@popover.PopoverTrigger(popover.PopoverTriggerProps{
-				ID:         pickerID + "_trigger",
-				PopoverID:  popoverID,
-				AnchorName: anchorName,
-				AsChild:    true,
-			}) {
-				<!-- Input field -->
-				<div class="relative">
-					<input
-						type="text"
-						id={ pickerID + "_input" }
-						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10"
-						placeholder={ props.Placeholder }
-						data-bind={ signals.Signal("inputValue") }
-						readonly
-						disabled?={ props.Disabled }
-					/>
-					<!-- Calendar icon -->
-					<div class="absolute right-0 top-0 h-full w-10 flex items-center justify-center pointer-events-none">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-							<path d="M8 2v4"></path>
-							<path d="M16 2v4"></path>
-							<rect width="18" height="18" x="3" y="4" rx="2"></rect>
-							<path d="M3 10h18"></path>
-						</svg>
-					</div>
-				</div>
-			}
-
-			@popover.PopoverContent(popover.PopoverContentProps{
-				ID:         popoverID,
-				UseAnchor:  true,
-				AnchorName: anchorName,
-				Side:       "bottom",
-				Align:      "start",
-				SideOffset: 4,
-				Class:      "w-auto p-0",
-			}) {
-				@calendar.Calendar(calendar.CalendarProps{
-					ID:           calendarID,
-					Mode:         mode,
-					DefaultDate:  props.DefaultDate,
-					SelectedDate: props.SelectedDate,
-					RangeStart:   props.RangeStart,
-					RangeEnd:     props.RangeEnd,
-					Class:        "rounded-md border shadow-sm",
-				})
-			}
-		}
+		// Month navigation handler - sync display month
+		monthChangeHandler := "evt.detail.displayMonth ? " + signals.Set("displayMonth", "evt.detail.displayMonth") + " : null"
+	}}
+	<div
+		data-slot="datepicker-popover"
+		class="absolute top-full left-0 z-50 mt-1 p-0 w-auto min-w-[280px]"
+		data-show={ showExpr }
+		data-on-keydown__window={ keyHandler }
+		style="display: none;"
+	>
+		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class }>
+			@calendar.Calendar(calendar.CalendarProps{
+				ID:              props.ID + "_calendar",
+				Mode:            props.Mode,
+				SelectedDate:    "", // Calendar handles its own initial state
+				DefaultDate:     "", // Calendar handles its own initial state
+				RangeStart:      "", // Calendar handles its own initial state
+				RangeEnd:        "", // Calendar handles its own initial state
+				NumberOfMonths:  numMonths,
+				Disabled:        props.DisabledDates,
+				HideOutsideDays: props.HideOutsideDays,
+				MinDate:         props.MinDate,
+				MaxDate:         props.MaxDate,
+				Attributes: map[string]any{
+					"data-on-date-select":  dateSelectHandler,
+					"data-on-month-change": monthChangeHandler,
+				},
+			})
+		</div>
 	</div>
 }

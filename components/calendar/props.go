@@ -40,6 +40,12 @@ type CalendarProps struct {
 
 	// Attributes allows additional HTML attributes to be added
 	Attributes templ.Attributes
+
+	// MinDate for date range mode (YYYY-MM-DD format)
+	MinDate string
+
+	// MaxDate for date range mode (YYYY-MM-DD format)
+	MaxDate string
 }
 
 // CalendarGridProps defines the properties for the calendar day grid

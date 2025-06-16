@@ -6,7 +6,6 @@ require (
 	github.com/Oudwins/tailwind-merge-go v0.2.0
 	github.com/a-h/templ v0.3.898
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/rickar/cal/v2 v2.1.23
 	github.com/starfederation/datastar v1.0.0-beta.11
 )
 

@@ -1,75 +1,372 @@
 package datepickerpage
 
 import (
-	"github.com/coreycole/datastarui/components/calendar"
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/datepicker"
+	"github.com/coreycole/datastarui/components/form"
+	"github.com/coreycole/datastarui/components/label"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
 templ Page() {
 	@l.Root("components") {
 		<div class="container mx-auto p-4">
-			<h1 class="text-2xl font-bold mb-4">Calendar Component</h1>
-			<div class="space-y-8">
+			<h1 class="text-3xl font-bold mb-6">DatePicker Component</h1>
+			<p class="text-muted-foreground mb-8">A date picker combines an input field with a calendar popover for intuitive date selection. Features smart input with auto-slash insertion.</p>
+			<div class="space-y-12">
+				<!-- Basic Single Date Picker -->
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Auto Current Month</h2>
-					<p class="text-sm text-muted-foreground mb-2">Should show current month automatically</p>
-					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
-							ID:   "calendar_demo",
-							Mode: "single",
-						})
-					</div>
-				</div>
-				<div>
-					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Explicit January 2023</h2>
-					<p class="text-sm text-muted-foreground mb-2">Should show January 2023 (not current month)</p>
-					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
-							ID:          "calendar_demo_explicit",
-							Mode:        "single",
-							DefaultDate: "2023-01-01",
-						})
-					</div>
-				</div>
-				<div>
-					<h2 class="text-xl font-semibold mb-2">Double-Width Calendar (Range Selection)</h2>
+					<h2 class="text-2xl font-semibold mb-4">Basic Single Date Picker</h2>
 					<p class="text-sm text-muted-foreground mb-4">
-						Two months displayed side by side for better range selection. Perfect for date range pickers.
+						Simple date picker with automatic slash insertion. Try typing "20241225" to see it become "2024/12/25".
 					</p>
-					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
-							ID:             "double-calendar-range",
-							Mode:           "range",
-							NumberOfMonths: 2,
-						})
-					</div>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "basic-date"}) {
+									Select Date
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:          "basic-date",
+									Name:        "basicDate",
+									Mode:        "single",
+									Placeholder: "YYYY/MM/DD",
+								})
+								<p class="text-xs text-muted-foreground">
+									💡 Try typing: 20241225, 2024/12/25, or 24/12/25
+								</p>
+							</div>
+						}
+					}
 				</div>
+				<!-- Auto-Slash Input Demo -->
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Double-Width Calendar (Single Selection)</h2>
+					<h2 class="text-2xl font-semibold mb-4">Fixed: Smart Input with Slash Deletion</h2>
 					<p class="text-sm text-muted-foreground mb-4">
-						Two months displayed side by side with single date selection and outside days visible.
+						✅ <strong>Fixed Issues:</strong> You can now delete slashes and edit dates freely. Calendar updates as you type.
 					</p>
-					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
-							ID:             "double-calendar-single",
-							Mode:           "single",
-							NumberOfMonths: 2,
-						})
-					</div>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "fixed-input-demo"}) {
+									Test Input Handling
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:           "fixed-input-demo",
+									Name:         "fixedInputDemo",
+									Mode:         "single",
+									Placeholder:  "Try editing: 2024/12/25",
+									SelectedDate: "2024-12-25",
+								})
+								<div class="text-xs text-muted-foreground space-y-1">
+									<p><strong>✅ Tests to try:</strong></p>
+									<p>• Type <code>20241225</code> → auto-formats to <code>2024/12/25</code></p>
+									<p>• <strong>Backspace to delete slashes</strong> → works now!</p>
+									<p>• Type partial date <code>202412</code> → calendar jumps to Dec 2024</p>
+									<p>• Click calendar dates → input updates automatically</p>
+									<p>• Calendar shows correct month as you type</p>
+								</div>
+							</div>
+						}
+					}
 				</div>
+				<!-- Input Deletion Test -->
 				<div>
-					<h2 class="text-xl font-semibold mb-2">Standard Calendar (Outside Days Hidden)</h2>
+					<h2 class="text-2xl font-semibold mb-4">Slash Deletion Test</h2>
 					<p class="text-sm text-muted-foreground mb-4">
-						Standard single month view with outside days hidden for a cleaner look.
+						Test the ability to delete slashes and edit dates in the middle of the input.
 					</p>
-					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
-							ID:              "standard-calendar",
-							Mode:            "single",
-							NumberOfMonths:  1,
-							HideOutsideDays: true,
-						})
-					</div>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "deletion-test"}) {
+									Edit This Date
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:           "deletion-test",
+									Name:         "deletionTest",
+									Mode:         "single",
+									Placeholder:  "2024/12/25",
+									SelectedDate: "2024-12-25",
+								})
+								<div class="text-xs text-muted-foreground space-y-1">
+									<p><strong>🧪 Test Steps:</strong></p>
+									<p>1. Click in the input field</p>
+									<p>2. Position cursor between year and month</p>
+									<p>3. Delete the slash - it should work!</p>
+									<p>4. Type new numbers - formatting should adjust</p>
+									<p>5. Calendar should update as you type</p>
+								</div>
+							</div>
+						}
+					}
+				</div>
+				<!-- Range Date Picker -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Date Range Picker</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Select a date range with a two-month calendar view for better range selection.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "range-date"}) {
+									Select Date Range
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:             "range-date",
+									Name:           "dateRange",
+									Mode:           "range",
+									Placeholder:    "Select date range...",
+									NumberOfMonths: 2,
+								})
+							</div>
+						}
+					}
+				</div>
+				<!-- Calendar-Only Mode -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Calendar-Only Mode</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Date picker with input disabled, forcing users to select from calendar only. Perfect for mobile or when you want to prevent free-form input.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "calendar-only-1"}) {
+										Calendar Selection Only
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:          "calendar-only-1",
+										Name:        "calendarOnly1",
+										Mode:        "single",
+										Placeholder: "Click to select date",
+									})
+								</div>
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "calendar-only-range"}) {
+										Calendar-Only Range
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:             "calendar-only-range",
+										Name:           "calendarOnlyRange",
+										Mode:           "range",
+										Placeholder:    "Click to select range",
+										NumberOfMonths: 2,
+									})
+								</div>
+							</div>
+						}
+					}
+				</div>
+				<!-- Pre-selected Date -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Pre-selected Date</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Date picker with a pre-selected date and specific month display.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "preselected-date"}) {
+									Event Date
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:           "preselected-date",
+									Name:         "eventDate",
+									Mode:         "single",
+									Placeholder:  "YYYY/MM/DD",
+									SelectedDate: "2024-02-14",
+									DefaultDate:  "2024-02-01",
+								})
+							</div>
+						}
+					}
+				</div>
+				<!-- Disabled and ReadOnly -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Disabled & Read-Only States</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Examples of disabled and read-only date pickers.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "disabled-date"}) {
+										Disabled Date Picker
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:           "disabled-date",
+										Name:         "disabledDate",
+										Mode:         "single",
+										Placeholder:  "Cannot select",
+										Disabled:     true,
+										SelectedDate: "2024-01-15",
+									})
+								</div>
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "readonly-date"}) {
+										Read-Only Date Picker
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:           "readonly-date",
+										Name:         "readonlyDate",
+										Mode:         "single",
+										Placeholder:  "Calendar only",
+										SelectedDate: "2024-03-10",
+									})
+								</div>
+							</div>
+						}
+					}
+				</div>
+				<!-- Date Validation -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Date Validation</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Date picker with minimum and maximum date constraints and required validation.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "validated-date"}) {
+									Appointment Date (2024 only) *
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:          "validated-date",
+									Name:        "appointmentDate",
+									Mode:        "single",
+									Placeholder: "Select appointment date",
+									Required:    true,
+									MinDate:     "2024-01-01",
+									MaxDate:     "2024-12-31",
+								})
+								<p class="text-xs text-muted-foreground">
+									* Required field - only dates in 2024 are selectable
+								</p>
+							</div>
+						}
+					}
+				</div>
+				<!-- Form Integration -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Form Integration</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Date pickers integrated with form state management and validation.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							@form.Form(form.FormProps{
+								ID:    "booking-form",
+								Class: "space-y-6",
+							}) {
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div class="space-y-2">
+										@label.Label(label.LabelProps{For: "checkin-date"}) {
+											Check-in Date *
+										}
+										@datepicker.DatePicker(datepicker.DatePickerProps{
+											ID:          "checkin-date",
+											Name:        "checkinDate",
+											Mode:        "single",
+											Placeholder: "YYYY/MM/DD",
+											Required:    true,
+										})
+									</div>
+									<div class="space-y-2">
+										@label.Label(label.LabelProps{For: "checkout-date"}) {
+											Check-out Date *
+										}
+										@datepicker.DatePicker(datepicker.DatePickerProps{
+											ID:          "checkout-date",
+											Name:        "checkoutDate",
+											Mode:        "single",
+											Placeholder: "YYYY/MM/DD",
+											Required:    true,
+										})
+									</div>
+								</div>
+								<div class="flex gap-4">
+									@button.Button(button.ButtonProps{Type: "submit"}) {
+										Book Reservation
+									}
+									@button.Button(button.ButtonProps{
+										Type:    "button",
+										Variant: "outline",
+									}) {
+										Clear Form
+									}
+								</div>
+							}
+						}
+					}
+				</div>
+				<!-- Custom Styling -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Custom Styling</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Date pickers with custom styling for different use cases.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "compact-date"}) {
+										Compact Style
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:            "compact-date",
+										Name:          "compactDate",
+										Mode:          "single",
+										Placeholder:   "Compact",
+										InputClass:    "h-8 text-sm",
+										CalendarClass: "scale-90",
+									})
+								</div>
+								<div class="space-y-2">
+									@label.Label(label.LabelProps{For: "large-date"}) {
+										Large Style
+									}
+									@datepicker.DatePicker(datepicker.DatePickerProps{
+										ID:          "large-date",
+										Name:        "largeDate",
+										Mode:        "single",
+										Placeholder: "Large size",
+										InputClass:  "h-12 text-lg",
+									})
+								</div>
+							</div>
+						}
+					}
+				</div>
+				<!-- Advanced Range with Presets -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">Advanced Range Selection</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Advanced range picker with pre-selected range and clean month view.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-4">
+								@label.Label(label.LabelProps{For: "advanced-range"}) {
+									Project Timeline
+								}
+								@datepicker.DatePicker(datepicker.DatePickerProps{
+									ID:              "advanced-range",
+									Name:            "projectTimeline",
+									Mode:            "range",
+									Placeholder:     "Select project timeline",
+									RangeStart:      "2024-02-01",
+									RangeEnd:        "2024-02-28",
+									NumberOfMonths:  2,
+									HideOutsideDays: true,
+								})
+							</div>
+						}
+					}
 				</div>
 			</div>
 		</div>
