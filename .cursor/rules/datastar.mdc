@@ -22,7 +22,7 @@ datastarui/
 ├── components/                    # Reusable UI components
 │   ├── button/
 │   │   ├── button.templ          # Component template
-│   │   ├── types.go              # Props and types
+│   │   ├── props.go              # Props and types
 │   │   └── variants.go           # CSS variants
 │   ├── form/                     # Form components
 │   ├── input/                    # Input component
@@ -43,7 +43,7 @@ datastarui/
 
 The developer is running a live reload server wathcing for file changes. Do not try to run the compiled binary as it is already running. Templ files will be automatically generated, but feel free to run `templ generate` to check for errors.
 
-The root directory for datastarui is `/d/cdev/datastarui`. Do not run `go run main.go` that is automatically live reloading on file changes.
+Other than checking for Templ compilation errors, do not try to check the results yourself. The developer will check the results and give you screen shots if needed. Do not run `go run main.go` do not run `go build`.
 
 ### Tailwind CSS Watch Process
 

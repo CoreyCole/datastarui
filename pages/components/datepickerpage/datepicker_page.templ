@@ -1,11 +1,9 @@
 package datepickerpage
 
 import (
-	"github.com/coreycole/datastarui/components/button"
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/dateinput"
 	"github.com/coreycole/datastarui/components/datepicker"
-	"github.com/coreycole/datastarui/components/form"
 	"github.com/coreycole/datastarui/components/label"
 	l "github.com/coreycole/datastarui/layouts"
 )
@@ -60,6 +58,76 @@ templ Page() {
 						}
 					}
 				</div>
+				<!-- NEW: DateInput Range Mode Demo -->
+				<div>
+					<h2 class="text-2xl font-semibold mb-4">DateInput Range Mode</h2>
+					<p class="text-sm text-muted-foreground mb-4">
+						Range date inputs with optional end dates and smart tab-triggered formatting.
+					</p>
+					@card.Card(card.CardProps{Class: "w-fit"}) {
+						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
+							<div class="space-y-8">
+								<!-- Basic Date Range -->
+								<div class="space-y-2">
+									<h4 class="font-medium">Basic Date Range</h4>
+									@label.Label(label.LabelProps{}) {
+										Project Timeline
+									}
+									@dateinput.DateInput(dateinput.DateInputProps{
+										ID:   "basic-range",
+										Name: "projectTimeline",
+										Mode: "range",
+									})
+								</div>
+								<!-- Optional End Date Range -->
+								<div class="space-y-2">
+									<h4 class="font-medium">Optional End Date Range</h4>
+									<p class="text-xs text-muted-foreground mb-2">
+										Features the "Set an end date" checkbox from your mockup
+									</p>
+									@dateinput.DateInput(dateinput.DateInputProps{
+										ID:              "optional-range",
+										Name:            "optionalTimeline",
+										Mode:            "range",
+										EndDateOptional: true,
+									})
+								</div>
+								<!-- Pre-filled Range -->
+								<div class="space-y-2">
+									<h4 class="font-medium">Pre-filled Date Range</h4>
+									@dateinput.DateInput(dateinput.DateInputProps{
+										ID:         "prefilled-range",
+										Name:       "prefilledTimeline",
+										Mode:       "range",
+										StartValue: "02/01/24",
+										EndValue:   "02/28/24",
+									})
+								</div>
+								<!-- Vertical Layout -->
+								<div class="space-y-2">
+									<h4 class="font-medium">Vertical Layout</h4>
+									@dateinput.DateInput(dateinput.DateInputProps{
+										ID:          "vertical-range",
+										Name:        "verticalTimeline",
+										Mode:        "range",
+										Orientation: "vertical",
+									})
+								</div>
+								<!-- Features to test -->
+								<div class="bg-muted/50 p-4 rounded-lg">
+									<h4 class="font-medium mb-2">🚀 Range Features to Test:</h4>
+									<div class="text-sm text-muted-foreground space-y-1">
+										<p>• <strong>Tab completion:</strong> Type <code>12/25/25</code> in start date, then press Tab → becomes <code>12/25/2025</code></p>
+										<p>• <strong>Optional checkbox:</strong> Check/uncheck "Set an end date" to see dynamic behavior</p>
+										<p>• <strong>Auto-focus:</strong> When checkbox is checked, focus moves to end date</p>
+										<p>• <strong>Form submission:</strong> Two separate hidden inputs are created for each range</p>
+										<p>• <strong>Individual formatting:</strong> Both inputs format independently as you type</p>
+									</div>
+								</div>
+							</div>
+						}
+					}
+				</div>
 				<!-- Basic Single Date Picker -->
 				<div>
 					<h2 class="text-2xl font-semibold mb-4">DatePicker: Basic Single Date</h2>
@@ -77,9 +145,6 @@ templ Page() {
 									Name: "basicDate",
 									Mode: "single",
 								})
-								<p class="text-xs text-muted-foreground">
-									💡 Try typing: 20241225, 2024/12/25, or 24/12/25
-								</p>
 							</div>
 						}
 					}
@@ -97,128 +162,13 @@ templ Page() {
 									Select Date Range
 								}
 								@datepicker.DatePicker(datepicker.DatePickerProps{
-									ID:             "range-date",
-									Name:           "dateRange",
-									Mode:           "range",
-									Placeholder:    "Select date range...",
-									NumberOfMonths: 2,
-								})
-							</div>
-						}
-					}
-				</div>
-				<!-- Form Integration -->
-				<div>
-					<h2 class="text-2xl font-semibold mb-4">Form Integration</h2>
-					<p class="text-sm text-muted-foreground mb-4">
-						Date pickers integrated with form state management and validation.
-					</p>
-					@card.Card(card.CardProps{Class: "w-fit"}) {
-						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
-							@form.Form(form.FormProps{
-								ID:    "booking-form",
-								Class: "space-y-6",
-							}) {
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-									<div class="space-y-2">
-										@label.Label(label.LabelProps{For: "checkin-date"}) {
-											Check-in Date *
-										}
-										@datepicker.DatePicker(datepicker.DatePickerProps{
-											ID:          "checkin-date",
-											Name:        "checkinDate",
-											Mode:        "single",
-											Placeholder: "YYYY/MM/DD",
-											Required:    true,
-										})
-									</div>
-									<div class="space-y-2">
-										@label.Label(label.LabelProps{For: "checkout-date"}) {
-											Check-out Date *
-										}
-										@datepicker.DatePicker(datepicker.DatePickerProps{
-											ID:          "checkout-date",
-											Name:        "checkoutDate",
-											Mode:        "single",
-											Placeholder: "YYYY/MM/DD",
-											Required:    true,
-										})
-									</div>
-								</div>
-								<div class="flex gap-4">
-									@button.Button(button.ButtonProps{Type: "submit"}) {
-										Book Reservation
-									}
-									@button.Button(button.ButtonProps{
-										Type:    "button",
-										Variant: "outline",
-									}) {
-										Clear Form
-									}
-								</div>
-							}
-						}
-					}
-				</div>
-				<!-- Custom Styling -->
-				<div>
-					<h2 class="text-2xl font-semibold mb-4">Custom Styling</h2>
-					<p class="text-sm text-muted-foreground mb-4">
-						Date pickers with custom styling for different use cases.
-					</p>
-					@card.Card(card.CardProps{Class: "w-fit"}) {
-						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
-							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div class="space-y-2">
-									@label.Label(label.LabelProps{For: "compact-date"}) {
-										Compact Style
-									}
-									@datepicker.DatePicker(datepicker.DatePickerProps{
-										ID:            "compact-date",
-										Name:          "compactDate",
-										Mode:          "single",
-										Placeholder:   "Compact",
-										InputClass:    "h-8 text-sm",
-										CalendarClass: "scale-90",
-									})
-								</div>
-								<div class="space-y-2">
-									@label.Label(label.LabelProps{For: "large-date"}) {
-										Large Style
-									}
-									@datepicker.DatePicker(datepicker.DatePickerProps{
-										ID:          "large-date",
-										Name:        "largeDate",
-										Mode:        "single",
-										Placeholder: "Large size",
-										InputClass:  "h-12 text-lg",
-									})
-								</div>
-							</div>
-						}
-					}
-				</div>
-				<!-- Advanced Range with Presets -->
-				<div>
-					<h2 class="text-2xl font-semibold mb-4">Advanced Range Selection</h2>
-					<p class="text-sm text-muted-foreground mb-4">
-						Advanced range picker with pre-selected range and clean month view.
-					</p>
-					@card.Card(card.CardProps{Class: "w-fit"}) {
-						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
-							<div class="space-y-4">
-								@label.Label(label.LabelProps{For: "advanced-range"}) {
-									Project Timeline
-								}
-								@datepicker.DatePicker(datepicker.DatePickerProps{
-									ID:              "advanced-range",
-									Name:            "projectTimeline",
+									ID:              "range-date",
+									Name:            "dateRange",
 									Mode:            "range",
-									Placeholder:     "Select project timeline",
-									RangeStart:      "2024-02-01",
-									RangeEnd:        "2024-02-28",
+									OpenOnFocus:     true,
+									PopoverPosition: "top",
+									Placeholder:     "Select date range...",
 									NumberOfMonths:  2,
-									HideOutsideDays: true,
 								})
 							</div>
 						}

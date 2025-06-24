@@ -56,6 +56,13 @@ type DatePickerProps struct {
 	// Disabled makes the datepicker non-interactive
 	Disabled bool
 
+	// OpenOnFocus automatically opens the calendar when input is focused
+	OpenOnFocus bool
+
+	// PopoverPosition controls where the popover appears relative to the input
+	// Options: "bottom" (default), "top"
+	PopoverPosition string
+
 	// Class allows additional CSS classes to be added to the container
 	Class string
 

@@ -3,11 +3,13 @@ package dateinput
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/coreycole/datastarui/components/input"
 	"github.com/coreycole/datastarui/utils"
 	"strings"
 )
 
 // DateInput renders a smart date input with auto-formatting and validation
+// Supports both single mode and range mode with optional end dates
 templ DateInput(props DateInputProps) {
 	{{
 		// Generate unique ID if not provided
@@ -18,124 +20,358 @@ templ DateInput(props DateInputProps) {
 			dateInputID = fmt.Sprintf("dateinput_%x", b)
 		}
 
-		// Set default placeholder
+		// Determine mode (default to single)
+		mode := props.Mode
+		if mode == "" {
+			mode = "single"
+		}
+
+		// Declare signals variable at top level
+		var signals *utils.SignalManager
+
+		// Initialize based on mode
+		if mode == "single" {
+			// Single mode initialization (existing logic)
+			placeholder := props.Placeholder
+			if placeholder == "" {
+				placeholder = "MM/DD/YYYY"
+			}
+
+			initialInputValue := props.Value
+			initialDateValue := ""
+
+			// Convert input value to ISO format if provided
+			if initialInputValue != "" {
+				parts := strings.Split(initialInputValue, "/")
+				if len(parts) == 3 {
+					month, day, year := parts[0], parts[1], parts[2]
+					if len(year) == 2 {
+						if year >= "00" && year <= "30" {
+							year = "20" + year
+						} else {
+							year = "19" + year
+						}
+					}
+					initialDateValue = fmt.Sprintf("%s-%02s-%02s", year, month, day)
+				}
+			}
+
+			// Create signals for single mode
+			signals = utils.Signals(dateInputID, DateInputSignals{
+				InputValue:   initialInputValue,
+				DateValue:    initialDateValue,
+				IsValid:      true,
+				ErrorMessage: "",
+			})
+		} else {
+			// Range mode initialization
+			initialStartInput := props.StartValue
+			initialEndInput := props.EndValue
+			initialStartDate := ""
+			initialEndDate := ""
+			initialEndEnabled := !props.EndDateOptional // If not optional, end date is enabled by default
+
+			// If end date has a value, it should be enabled regardless of optional setting
+			if initialEndInput != "" {
+				initialEndEnabled = true
+			}
+
+			// Convert start value to ISO format
+			if initialStartInput != "" {
+				parts := strings.Split(initialStartInput, "/")
+				if len(parts) == 3 {
+					month, day, year := parts[0], parts[1], parts[2]
+					if len(year) == 2 {
+						if year >= "00" && year <= "30" {
+							year = "20" + year
+						} else {
+							year = "19" + year
+						}
+					}
+					initialStartDate = fmt.Sprintf("%s-%02s-%02s", year, month, day)
+				}
+			}
+
+			// Convert end value to ISO format
+			if initialEndInput != "" {
+				parts := strings.Split(initialEndInput, "/")
+				if len(parts) == 3 {
+					month, day, year := parts[0], parts[1], parts[2]
+					if len(year) == 2 {
+						if year >= "00" && year <= "30" {
+							year = "20" + year
+						} else {
+							year = "19" + year
+						}
+					}
+					initialEndDate = fmt.Sprintf("%s-%02s-%02s", year, month, day)
+				}
+			}
+
+			// Create signals for range mode
+			signals = utils.Signals(dateInputID, DateInputSignals{
+				StartInputValue: initialStartInput,
+				StartDateValue:  initialStartDate,
+				EndInputValue:   initialEndInput,
+				EndDateValue:    initialEndDate,
+				EndDateEnabled:  initialEndEnabled,
+				IsValid:         true,
+				ErrorMessage:    "",
+			})
+		}
+
+		// Input classes will be handled by the Input component
+
+		// Create date formatting handlers
+		createInputHandler := func(inputSignal, dateSignal string) string {
+			return "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+				signals.Set(inputSignal, "evt.target.value") + "; " +
+				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
+				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
+				" : " + signals.Set(dateSignal, "''")
+		}
+
+		createBlurHandler := func(inputSignal, dateSignal string) string {
+			return "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
+				"(parts => newValue => fullYear => " +
+				"(parts = evt.target.value.split('/'), " +
+				"fullYear = (parseInt(parts[2]) <= 30 ? '20' + parts[2] : '19' + parts[2]), " +
+				"newValue = parts[0] + '/' + parts[1] + '/' + fullYear, " +
+				"evt.target.value = newValue, " +
+				signals.Set(inputSignal, "newValue") + ", " +
+				signals.Set(dateSignal, "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
+				"))() : null"
+		}
+
+		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
+
+		// Set placeholder for single mode
 		placeholder := props.Placeholder
-		if placeholder == "" {
+		if mode == "single" && placeholder == "" {
 			placeholder = "MM/DD/YYYY"
 		}
-
-		// Initialize values
-		initialInputValue := props.Value
-		initialDateValue := ""
-		initialIsValid := true
-		initialErrorMessage := ""
-
-		// Convert input value to ISO format if provided
-		if initialInputValue != "" {
-			// Try to parse MM/DD/YYYY format to YYYY-MM-DD
-			parts := strings.Split(initialInputValue, "/")
-			if len(parts) == 3 {
-				month, day, year := parts[0], parts[1], parts[2]
-				if len(year) == 2 {
-					// Convert 2-digit year to 4-digit
-					if year >= "00" && year <= "30" {
-						year = "20" + year
-					} else {
-						year = "19" + year
-					}
-				}
-				initialDateValue = fmt.Sprintf("%s-%02s-%02s", year, month, day)
-			}
-		}
-
-		// Create signals for reactive state
-		signals := utils.Signals(dateInputID, DateInputSignals{
-			InputValue:   initialInputValue,
-			DateValue:    initialDateValue,
-			IsValid:      initialIsValid,
-			ErrorMessage: initialErrorMessage,
-		})
-
-		// Input classes
-		inputClasses := "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background " +
-			"file:border-0 file:bg-transparent file:text-sm file:font-medium " +
-			"placeholder:text-muted-foreground " +
-			"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
-			"disabled:cursor-not-allowed disabled:opacity-50 " +
-			"aria-invalid:border-destructive aria-invalid:ring-destructive/20"
-		if props.Class != "" {
-			inputClasses += " " + props.Class
-		}
-
-		// Adjust padding if postfix is provided
-		if props.Postfix != nil {
-			inputClasses += " pr-10"
-		}
-
-		// Simplified input handler - format and validate
-		inputHandler := "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
-			signals.Set("inputValue", "evt.target.value") + "; " +
-			"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
-			signals.Set("dateValue", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
-			" : " + signals.Set("dateValue", "''")
-
-		// Year completion on blur
-		blurHandler := "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
-			"(parts => newValue => fullYear => " +
-			"(parts = evt.target.value.split('/'), " +
-			"fullYear = (parseInt(parts[2]) <= 30 ? '20' + parts[2] : '19' + parts[2]), " +
-			"newValue = parts[0] + '/' + parts[1] + '/' + fullYear, " +
-			"evt.target.value = newValue, " +
-			signals.Set("inputValue", "newValue") + ", " +
-			signals.Set("dateValue", "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
-			"))() : null"
-
-		// Simple keydown handler
-		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
 	}}
-	<div
-		data-slot="dateinput"
-		data-dateinput-id={ dateInputID }
-		data-signals={ signals.DataSignals }
-		class="relative w-full"
-		{ props.Attributes... }
-	>
-		<!-- Hidden input for form submission (ISO format) -->
-		if props.Name != "" {
-			<input
-				type="hidden"
-				name={ props.Name }
-				data-bind={ signals.Signal("dateValue") }
-				if props.Required {
-					required
+	if mode == "single" {
+		<!-- Single Mode DateInput -->
+		<div
+			data-slot="dateinput"
+			data-dateinput-id={ dateInputID }
+			data-signals={ signals.DataSignals }
+			class="relative w-full"
+			{ props.Attributes... }
+		>
+			<!-- Hidden input for form submission (ISO format) -->
+			if props.Name != "" {
+				<input
+					type="hidden"
+					name={ props.Name }
+					data-bind={ signals.Signal("dateValue") }
+					if props.Required {
+						required
+					}
+				/>
+			}
+			<!-- Input field with optional postfix -->
+			<div class="relative">
+				@input.Input(input.InputProps{
+					Type:        "text",
+					ID:          dateInputID,
+					Name:        props.Name + "_display",
+					Placeholder: placeholder,
+					Class:       props.Class,
+					Disabled:    props.Disabled,
+					Attributes: templ.Attributes{
+						"maxlength":       "10",
+						"data-bind":       signals.Signal("inputValue"),
+						"data-on-input":   createInputHandler("inputValue", "dateValue"),
+						"data-on-blur":    createBlurHandler("inputValue", "dateValue"),
+						"data-on-keydown": keyHandler,
+					},
+				})
+				if props.Postfix != nil {
+					<div class="absolute right-3 top-1/2 -translate-y-1/2">
+						@props.Postfix
+					</div>
 				}
-			/>
-		}
-		<!-- Input field with optional postfix -->
-		<div class="relative">
-			<input
-				type="text"
-				id={ dateInputID }
-				name={ props.Name + "_display" }
-				placeholder={ placeholder }
-				class={ inputClasses }
-				disabled?={ props.Disabled }
-				maxlength="10"
-				data-bind={ signals.Signal("inputValue") }
-				data-on-input={ inputHandler }
-				data-on-blur={ blurHandler }
-				data-on-keydown={ keyHandler }
-			/>
-			if props.Postfix != nil {
-				<div class="absolute right-3 top-1/2 -translate-y-1/2">
-					@props.Postfix
+			</div>
+		</div>
+	} else {
+		<!-- Range Mode DateInput -->
+		{{
+			// Determine layout
+			orientation := props.Orientation
+			if orientation == "" {
+				orientation = "horizontal"
+			}
+
+			// Determine separator
+			separator := props.Separator
+			if separator == "" {
+				separator = "to"
+			}
+
+			// Determine placeholders
+			startPlaceholder := props.StartPlaceholder
+			if startPlaceholder == "" {
+				startPlaceholder = "MM/DD/YYYY"
+			}
+
+			endPlaceholder := props.EndPlaceholder
+			if endPlaceholder == "" {
+				endPlaceholder = "MM/DD/YYYY"
+			}
+
+			// Form field names
+			startFieldName := props.StartName
+			if startFieldName == "" {
+				startFieldName = props.Name + "_start"
+			}
+
+			endFieldName := props.EndName
+			if endFieldName == "" {
+				endFieldName = props.Name + "_end"
+			}
+
+			// Special handler for tab from start to end date (triggers start date completion)
+			startTabHandler := "evt.key === 'Tab' && !evt.shiftKey ? (" +
+				createBlurHandler("startInputValue", "startDateValue") +
+				") : null"
+
+			// Checkbox change handler - when checkbox changes, update endDateEnabled signal
+			checkboxChangeHandler := signals.Signal("endDateEnabled") + " ? " +
+				"document.getElementById('" + dateInputID + "_end').focus() : " +
+				"(" + signals.Set("endInputValue", "''") + ", " + signals.Set("endDateValue", "''") + ", " +
+				"document.getElementById('" + dateInputID + "_end').value = '')"
+
+			// Layout classes
+			containerClass := "space-y-4"
+			inputContainerClass := "space-y-2"
+			if orientation == "horizontal" {
+				containerClass = "space-y-2"
+				inputContainerClass = "flex items-center gap-3"
+			}
+		}}
+		<div
+			data-slot="dateinput-range"
+			data-dateinput-id={ dateInputID }
+			data-signals={ signals.DataSignals }
+			class={ "w-full " + containerClass }
+			{ props.Attributes... }
+		>
+			<!-- Hidden inputs for form submission -->
+			if props.Name != "" || props.StartName != "" {
+				<input
+					type="hidden"
+					name={ startFieldName }
+					data-bind={ signals.Signal("startDateValue") }
+					if props.Required {
+						required
+					}
+				/>
+				<!-- End date hidden input - only required if enabled and Required prop is true -->
+				<input
+					type="hidden"
+					name={ endFieldName }
+					data-bind={ signals.Signal("endDateEnabled") + " ? " + signals.Signal("endDateValue") + " : ''" }
+					data-required={ signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", props.Required) }
+				/>
+			}
+			<!-- Optional end date checkbox -->
+			if props.EndDateOptional {
+				<div class="flex items-center space-x-2">
+					<!-- Using button with checkbox role to avoid signal conflicts -->
+					<button
+						type="button"
+						id={ dateInputID + "_checkbox" }
+						role="checkbox"
+						class="peer border-input data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+						data-on-click={ signals.Toggle("endDateEnabled") + "; " + checkboxChangeHandler }
+						data-attr-aria-checked={ signals.Signal("endDateEnabled") + " ? 'true' : 'false'" }
+						data-attr-data-state={ signals.Signal("endDateEnabled") + " ? 'checked' : 'unchecked'" }
+					>
+						<!-- Checkmark icon -->
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="h-3.5 w-3.5"
+							data-attr-style={ signals.Signal("endDateEnabled") + " ? 'opacity: 1' : 'opacity: 0'" }
+						>
+							<path d="M20 6 9 17l-5-5"></path>
+						</svg>
+					</button>
+					<label
+						for={ dateInputID + "_checkbox" }
+						class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					>
+						Set an end date
+					</label>
 				</div>
 			}
+			<!-- Date inputs container -->
+			<div class={ inputContainerClass }>
+				<!-- Start date input -->
+				<div class="flex-1 space-y-1">
+					if orientation == "vertical" || props.EndDateOptional {
+						<label class="text-sm font-medium text-foreground">
+							Start Date
+							if props.Required {
+								<span class="text-destructive">*</span>
+							}
+						</label>
+					}
+					@input.Input(input.InputProps{
+						Type:        "text",
+						ID:          dateInputID + "_start",
+						Placeholder: startPlaceholder,
+						Class:       props.Class,
+						Disabled:    props.Disabled,
+						Attributes: templ.Attributes{
+							"maxlength":       "10",
+							"data-bind":       signals.Signal("startInputValue"),
+							"data-on-input":   createInputHandler("startInputValue", "startDateValue"),
+							"data-on-blur":    createBlurHandler("startInputValue", "startDateValue"),
+							"data-on-keydown": keyHandler + "; " + startTabHandler,
+						},
+					})
+				</div>
+				<!-- End date input with dynamic disable state -->
+				<div class="flex-1 space-y-1">
+					if orientation == "vertical" || props.EndDateOptional {
+						<label
+							for={ dateInputID + "_end" }
+							class="text-sm font-medium"
+							data-class={ signals.Signal("endDateEnabled") + " ? 'text-sm font-medium text-foreground' : 'text-sm font-medium text-muted-foreground'" }
+						>
+							End Date
+							if props.Required && !props.EndDateOptional {
+								<span class="text-destructive">*</span>
+							}
+						</label>
+					}
+					<!-- Single input with dynamic disabled state -->
+					@input.Input(input.InputProps{
+						Type:        "text",
+						ID:          dateInputID + "_end",
+						Placeholder: endPlaceholder,
+						Class:       props.Class,
+						Disabled:    props.Disabled,
+						Attributes: templ.Attributes{
+							"maxlength":          "10",
+							"data-bind":          signals.Signal("endInputValue"),
+							"data-on-input":      createInputHandler("endInputValue", "endDateValue"),
+							"data-on-blur":       createBlurHandler("endInputValue", "endDateValue"),
+							"data-on-keydown":    keyHandler,
+							"data-attr-disabled": "!" + signals.Signal("endDateEnabled"),
+							"data-attr-tabindex": signals.Signal("endDateEnabled") + " ? '0' : '-1'",
+						},
+					})
+				</div>
+			</div>
 		</div>
-		<!-- Debug info (temporary) -->
-		<div class="text-xs text-muted-foreground mt-2 space-y-1">
-			<div>Input: <span data-text={ signals.Signal("inputValue") }></span></div>
-			<div>Date: <span data-text={ signals.Signal("dateValue") }></span></div>
-		</div>
-	</div>
+	}
 }

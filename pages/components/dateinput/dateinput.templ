@@ -1,0 +1,78 @@
+package dateinput
+
+import "github.com/coreycole/datastarui/components/dateinput"
+
+templ DateInputPage() {
+	<div class="p-6 space-y-8">
+		<div>
+			<h1 class="text-3xl font-bold mb-4">DateInput</h1>
+			<p class="text-muted-foreground mb-6">
+				A smart date input component with auto-formatting and validation. Supports both single and range modes.
+			</p>
+		</div>
+		<div class="space-y-6">
+			<div>
+				<h2 class="text-xl font-semibold mb-3">Single Date</h2>
+				<div class="space-y-4">
+					<div>
+						<label class="text-sm font-medium">Basic date input</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:          "single-basic",
+							Name:        "single_date",
+							Placeholder: "Select a date",
+						})
+					</div>
+					<div>
+						<label class="text-sm font-medium">With initial value</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:    "single-value",
+							Name:  "single_with_value",
+							Value: "12/25/2023",
+						})
+					</div>
+				</div>
+			</div>
+			<div>
+				<h2 class="text-xl font-semibold mb-3">Date Range</h2>
+				<div class="space-y-4">
+					<div>
+						<label class="text-sm font-medium">Basic date range</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:   "range-basic",
+							Name: "date_range",
+							Mode: "range",
+						})
+					</div>
+					<div>
+						<label class="text-sm font-medium">Date range with optional end date</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:              "range-optional",
+							Name:            "optional_range",
+							Mode:            "range",
+							EndDateOptional: true,
+						})
+					</div>
+					<div>
+						<label class="text-sm font-medium">Vertical layout</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:          "range-vertical",
+							Name:        "vertical_range",
+							Mode:        "range",
+							Orientation: "vertical",
+						})
+					</div>
+					<div>
+						<label class="text-sm font-medium">With initial values</label>
+						@dateinput.DateInput(dateinput.DateInputProps{
+							ID:         "range-values",
+							Name:       "range_with_values",
+							Mode:       "range",
+							StartValue: "01/01/2024",
+							EndValue:   "01/31/2024",
+						})
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
