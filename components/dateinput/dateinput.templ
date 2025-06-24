@@ -1,0 +1,141 @@
+package dateinput
+
+import (
+	"crypto/rand"
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+	"strings"
+)
+
+// DateInput renders a smart date input with auto-formatting and validation
+templ DateInput(props DateInputProps) {
+	{{
+		// Generate unique ID if not provided
+		dateInputID := props.ID
+		if dateInputID == "" {
+			b := make([]byte, 4)
+			rand.Read(b)
+			dateInputID = fmt.Sprintf("dateinput_%x", b)
+		}
+
+		// Set default placeholder
+		placeholder := props.Placeholder
+		if placeholder == "" {
+			placeholder = "MM/DD/YYYY"
+		}
+
+		// Initialize values
+		initialInputValue := props.Value
+		initialDateValue := ""
+		initialIsValid := true
+		initialErrorMessage := ""
+
+		// Convert input value to ISO format if provided
+		if initialInputValue != "" {
+			// Try to parse MM/DD/YYYY format to YYYY-MM-DD
+			parts := strings.Split(initialInputValue, "/")
+			if len(parts) == 3 {
+				month, day, year := parts[0], parts[1], parts[2]
+				if len(year) == 2 {
+					// Convert 2-digit year to 4-digit
+					if year >= "00" && year <= "30" {
+						year = "20" + year
+					} else {
+						year = "19" + year
+					}
+				}
+				initialDateValue = fmt.Sprintf("%s-%02s-%02s", year, month, day)
+			}
+		}
+
+		// Create signals for reactive state
+		signals := utils.Signals(dateInputID, DateInputSignals{
+			InputValue:   initialInputValue,
+			DateValue:    initialDateValue,
+			IsValid:      initialIsValid,
+			ErrorMessage: initialErrorMessage,
+		})
+
+		// Input classes
+		inputClasses := "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background " +
+			"file:border-0 file:bg-transparent file:text-sm file:font-medium " +
+			"placeholder:text-muted-foreground " +
+			"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
+			"disabled:cursor-not-allowed disabled:opacity-50 " +
+			"aria-invalid:border-destructive aria-invalid:ring-destructive/20"
+		if props.Class != "" {
+			inputClasses += " " + props.Class
+		}
+
+		// Adjust padding if postfix is provided
+		if props.Postfix != nil {
+			inputClasses += " pr-10"
+		}
+
+		// Simplified input handler - format and validate
+		inputHandler := "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+			signals.Set("inputValue", "evt.target.value") + "; " +
+			"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
+			signals.Set("dateValue", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
+			" : " + signals.Set("dateValue", "''")
+
+		// Year completion on blur
+		blurHandler := "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
+			"(parts => newValue => fullYear => " +
+			"(parts = evt.target.value.split('/'), " +
+			"fullYear = (parseInt(parts[2]) <= 30 ? '20' + parts[2] : '19' + parts[2]), " +
+			"newValue = parts[0] + '/' + parts[1] + '/' + fullYear, " +
+			"evt.target.value = newValue, " +
+			signals.Set("inputValue", "newValue") + ", " +
+			signals.Set("dateValue", "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
+			"))() : null"
+
+		// Simple keydown handler
+		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
+	}}
+	<div
+		data-slot="dateinput"
+		data-dateinput-id={ dateInputID }
+		data-signals={ signals.DataSignals }
+		class="relative w-full"
+		{ props.Attributes... }
+	>
+		<!-- Hidden input for form submission (ISO format) -->
+		if props.Name != "" {
+			<input
+				type="hidden"
+				name={ props.Name }
+				data-bind={ signals.Signal("dateValue") }
+				if props.Required {
+					required
+				}
+			/>
+		}
+		<!-- Input field with optional postfix -->
+		<div class="relative">
+			<input
+				type="text"
+				id={ dateInputID }
+				name={ props.Name + "_display" }
+				placeholder={ placeholder }
+				class={ inputClasses }
+				disabled?={ props.Disabled }
+				maxlength="10"
+				data-bind={ signals.Signal("inputValue") }
+				data-on-input={ inputHandler }
+				data-on-blur={ blurHandler }
+				data-on-keydown={ keyHandler }
+			/>
+			if props.Postfix != nil {
+				<div class="absolute right-3 top-1/2 -translate-y-1/2">
+					@props.Postfix
+				</div>
+			}
+		</div>
+		<!-- Debug info (temporary) -->
+		<div class="text-xs text-muted-foreground mt-2 space-y-1">
+			<div>Input: <span data-text={ signals.Signal("inputValue") }></span></div>
+			<div>Date: <span data-text={ signals.Signal("dateValue") }></span></div>
+		</div>
+	</div>
+}

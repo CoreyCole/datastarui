@@ -77,18 +77,35 @@ templ Calendar(props CalendarProps) {
 	>
 		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
 		<!-- Months container with responsive flex layout -->
-		<div class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0">
-			for monthIndex := 0; monthIndex < numberOfMonths; monthIndex++ {
-				<div class="space-y-4">
-					@CalendarGrid(CalendarGridProps{
-						ID:              calendarID,
-						MonthOffset:     monthIndex,
-						HideOutsideDays: props.HideOutsideDays,
-						NumberOfMonths:  numberOfMonths,
-					})
-				</div>
-			}
-		</div>
+		if numberOfMonths == 1 {
+			<!-- Single month layout -->
+			@CalendarGrid(CalendarGridProps{
+				ID:              calendarID,
+				MonthOffset:     0,
+				HideOutsideDays: props.HideOutsideDays,
+				NumberOfMonths:  numberOfMonths,
+			})
+		} else {
+			<!-- Multi-month layout - each month looks like a single calendar -->
+			<div class="flex flex-col sm:flex-row gap-8">
+				for monthIndex := 0; monthIndex < numberOfMonths; monthIndex++ {
+					<div class="flex-1">
+						<!-- Individual month header -->
+						<div class="flex justify-center pt-1 relative items-center w-full mb-4">
+							<div class="text-sm font-medium">
+								<span data-text={ "new Date(Date.UTC(new Date(" + signals.Signal("currentDate") + ").getUTCFullYear(), new Date(" + signals.Signal("currentDate") + ").getUTCMonth() + " + fmt.Sprintf("%d", monthIndex) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
+							</div>
+						</div>
+						@CalendarGrid(CalendarGridProps{
+							ID:              calendarID,
+							MonthOffset:     monthIndex,
+							HideOutsideDays: props.HideOutsideDays,
+							NumberOfMonths:  numberOfMonths,
+						})
+					</div>
+				}
+			</div>
+		}
 	</div>
 }
 

@@ -81,7 +81,7 @@ templ Button(props ButtonProps) {
 }
 ```
 
-### 2. Types Definition (`types.go`)
+### 2. Props Definition (`props.go`)
 
 ```go
 package button

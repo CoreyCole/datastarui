@@ -105,33 +105,6 @@ type DatePickerSignals struct {
 	HighlightedDate string `json:"highlightedDate"`
 }
 
-// DatePickerInputProps defines properties for the input part of the date picker
-type DatePickerInputProps struct {
-	// ID for the input field
-	ID string
-
-	// Name for form submission
-	Name string
-
-	// Placeholder text
-	Placeholder string
-
-	// Value for the input (YYYY/MM/DD display format)
-	Value string
-
-	// Disabled state
-	Disabled bool
-
-	// Required field
-	Required bool
-
-	// Class for styling
-	Class string
-
-	// Attributes for additional HTML attributes
-	Attributes templ.Attributes
-}
-
 // DatePickerCalendarProps defines properties for the calendar part of the date picker
 type DatePickerCalendarProps struct {
 	// Embed calendar props for full calendar functionality

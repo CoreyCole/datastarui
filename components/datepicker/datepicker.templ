@@ -4,10 +4,39 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/coreycole/datastarui/components/calendar"
+	"github.com/coreycole/datastarui/components/dateinput"
 	"github.com/coreycole/datastarui/utils"
 	"strings"
 	"time"
 )
+
+// calendarIconButton creates a calendar icon button component for use as postfix
+templ calendarIconButton(onClickHandler string) {
+	<button
+		type="button"
+		class="text-muted-foreground hover:text-foreground"
+		tabindex="-1"
+		data-on-click={ onClickHandler }
+	>
+		<svg
+			class="h-4 w-4"
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="M8 2v4"></path>
+			<path d="M16 2v4"></path>
+			<rect width="18" height="18" x="3" y="4" rx="2"></rect>
+			<path d="M3 10h18"></path>
+		</svg>
+	</button>
+}
 
 // DatePicker renders a date picker with input field and calendar popover
 templ DatePicker(props DatePickerProps) {
@@ -57,7 +86,21 @@ templ DatePicker(props DatePickerProps) {
 			}
 		} else {
 			if initialSelectedDate != "" {
-				initialInputValue = strings.ReplaceAll(initialSelectedDate, "-", "/")
+				// Convert YYYY-MM-DD to MM/DD/YYYY
+				parts := strings.Split(initialSelectedDate, "-")
+				if len(parts) == 3 {
+					initialInputValue = parts[1] + "/" + parts[2] + "/" + parts[0]
+				}
+			}
+		}
+
+		// Set appropriate placeholder based on mode
+		placeholder := props.Placeholder
+		if placeholder == "" {
+			if props.Mode == "range" {
+				placeholder = "MM/DD/YYYY - MM/DD/YYYY"
+			} else {
+				placeholder = "MM/DD/YYYY"
 			}
 		}
 
@@ -81,6 +124,9 @@ templ DatePicker(props DatePickerProps) {
 
 		// Click outside handler
 		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+
+		// DateInput ID for signal namespacing
+		dateInputID := datePickerID + "_dateinput"
 	}}
 	<div
 		data-slot="datepicker"
@@ -119,19 +165,90 @@ templ DatePicker(props DatePickerProps) {
 				/>
 			}
 		}
-		<!-- Visible input field with icon -->
-		@DatePickerInput(DatePickerInputProps{
-			ID:          datePickerID + "_input",
-			Name:        props.Name + "_display", // Display input has different name
-			Placeholder: props.Placeholder,
-			Value:       initialInputValue,
-			Disabled:    props.Disabled,
-			Required:    props.Required,
-			Class:       props.InputClass,
-		})
+		<!-- Input field with calendar icon -->
+		if props.Mode == "range" {
+			<!-- Range mode: custom input since DateInput is for single dates only -->
+			<div class="relative">
+				<input
+					type="text"
+					id={ datePickerID + "_input" }
+					placeholder={ placeholder }
+					class={ "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background " +
+						"file:border-0 file:bg-transparent file:text-sm file:font-medium " +
+						"placeholder:text-muted-foreground " +
+						"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
+						"disabled:cursor-not-allowed disabled:opacity-50 " +
+						"aria-invalid:border-destructive aria-invalid:ring-destructive/20 " + props.InputClass }
+					disabled?={ props.Disabled }
+					required?={ props.Required }
+					data-bind={ signals.Signal("inputValue") }
+					data-on-input={ signals.Set("inputValue", "evt.target.value") }
+					data-on-focus={ signals.Set("open", "true") }
+					data-on-keydown={ "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null" }
+				/>
+				<!-- Calendar icon button -->
+				<button
+					type="button"
+					class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+					tabindex="-1"
+					data-on-click={ signals.Toggle("open") }
+				>
+					<svg
+						class="h-4 w-4"
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M8 2v4"></path>
+						<path d="M16 2v4"></path>
+						<rect width="18" height="18" x="3" y="4" rx="2"></rect>
+						<path d="M3 10h18"></path>
+					</svg>
+				</button>
+			</div>
+		} else {
+			<!-- Single mode: use DateInput with proper signal synchronization -->
+			{{
+				// Create signals for DateInput component
+				dateInputSignals := utils.Signals(dateInputID, dateinput.DateInputSignals{
+					InputValue:   initialInputValue,
+					DateValue:    initialSelectedDate,
+					IsValid:      true,
+					ErrorMessage: "",
+				})
+
+				// Sync DateInput dateValue changes to DatePicker selectedDate
+				dateInputChangeHandler := dateInputSignals.Signal("dateValue") + " ? " +
+					signals.Set("selectedDate", dateInputSignals.Signal("dateValue")) + " : null"
+			}}
+			<div data-signals={ dateInputSignals.DataSignals }>
+				@dateinput.DateInput(dateinput.DateInputProps{
+					ID:          dateInputID,
+					Name:        "", // No form submission for DateInput itself
+					Placeholder: placeholder,
+					Value:       initialInputValue,
+					Disabled:    props.Disabled,
+					Required:    props.Required,
+					Class:       props.InputClass,
+					Postfix:     calendarIconButton(signals.Toggle("open")),
+					Attributes: map[string]any{
+						"data-on-input":   dateInputChangeHandler,
+						"data-on-focus":   signals.Set("open", "true"),
+						"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
+					},
+				})
+			</div>
+		}
 		<!-- Calendar popover -->
 		@DatePickerPopover(DatePickerPopoverProps{
 			ID:              datePickerID,
+			DateInputID:     dateInputID,
 			Mode:            props.Mode,
 			NumberOfMonths:  props.NumberOfMonths,
 			MinDate:         props.MinDate,
@@ -144,80 +261,10 @@ templ DatePicker(props DatePickerProps) {
 	</div>
 }
 
-// DatePickerInput renders the input field with keyboard support
-templ DatePickerInput(props DatePickerInputProps) {
-	{{
-		// Get the parent datepicker ID from the input ID
-		datePickerID := strings.TrimSuffix(props.ID, "_input")
-		signals := utils.Signals(datePickerID, DatePickerSignals{})
-
-		// Input classes with error state support
-		inputClasses := "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background " +
-			"file:border-0 file:bg-transparent file:text-sm file:font-medium " +
-			"placeholder:text-muted-foreground " +
-			"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
-			"disabled:cursor-not-allowed disabled:opacity-50 " +
-			"aria-invalid:border-destructive aria-invalid:ring-destructive/20"
-		if props.Class != "" {
-			inputClasses += " " + props.Class
-		}
-
-		// Simple input handler - just update the signal
-		inputHandler := signals.Set("inputValue", "evt.target.value") + "; " +
-			signals.Set("isTyping", "true")
-
-		// Focus handler
-		focusHandler := signals.Set("open", "true")
-
-		// Simple keyboard handler
-		keyHandler := "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null"
-	}}
-	<div class="relative">
-		<input
-			type="text"
-			id={ props.ID }
-			name={ props.Name }
-			placeholder={ props.Placeholder }
-			class={ inputClasses }
-			disabled?={ props.Disabled }
-			required?={ props.Required }
-			data-bind={ signals.Signal("inputValue") }
-			data-on-input={ inputHandler }
-			data-on-focus={ focusHandler }
-			data-on-keydown={ keyHandler }
-			{ props.Attributes... }
-		/>
-		<!-- Calendar icon button (always shown) -->
-		<button
-			type="button"
-			class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-			tabindex="-1"
-			data-on-click={ signals.Toggle("open") }
-		>
-			<svg
-				class="h-4 w-4"
-				xmlns="http://www.w3.org/2000/svg"
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M8 2v4"></path>
-				<path d="M16 2v4"></path>
-				<rect width="18" height="18" x="3" y="4" rx="2"></rect>
-				<path d="M3 10h18"></path>
-			</svg>
-		</button>
-	</div>
-}
-
 // DatePickerPopoverProps defines properties for the popover calendar
 type DatePickerPopoverProps struct {
 	ID              string
+	DateInputID     string
 	Mode            string
 	NumberOfMonths  int
 	MinDate         string
@@ -239,9 +286,15 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 		// DatePicker open check (following select.templ pattern)
 		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
 
+		// Determine the correct input ID for focus
+		inputID := props.ID + "_input"
+		if props.Mode != "range" {
+			inputID = props.DateInputID
+		}
+
 		// Escape: close and return focus to input
 		escapeHandler := "evt.key === 'Escape' && " + datePickerOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "false") + ", document.getElementById('" + props.ID + "_input').focus()) : null"
+			signals.Set("open", "false") + ", document.getElementById('" + inputID + "').focus()) : null"
 
 		// Tab: close but allow tab to continue
 		tabHandler := "evt.key === 'Tab' && " + datePickerOpenCheck + " ? " + signals.Set("open", "false") + " : null"
@@ -255,7 +308,7 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 			numMonths = 1
 		}
 
-		// Calendar date selection handler - also sync the DatePicker signals
+		// Calendar date selection handler - update both DatePicker and DateInput signals
 		dateSelectHandler := ""
 
 		// Build the handler conditionally
@@ -279,10 +332,12 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
 			}
 		} else {
-			// Single date mode handler - use ternary operator
+			// Single date mode handler - update both DateInput and DatePicker signals
+			dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
 			dateSelectHandler = "evt.detail.selectedDate ? (" +
 				"(displayDate => (" +
-				signals.Set("inputValue", "displayDate") + ", " +
+				dateInputSignals.Set("inputValue", "displayDate") + ", " +
+				dateInputSignals.Set("dateValue", "evt.detail.selectedDate") + ", " +
 				signals.Set("selectedDate", "evt.detail.selectedDate") +
 				"))(evt.detail.selectedDate.replace(/-/g, '/'))" +
 				") : null"
@@ -298,10 +353,10 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 	}}
 	<div
 		data-slot="datepicker-popover"
-		class="absolute top-full left-0 z-50 mt-1 p-0 w-auto min-w-[280px]"
+		class="absolute top-full left-0 z-50 mt-1 p-0"
 		data-show={ showExpr }
 		data-on-keydown__window={ keyHandler }
-		style="display: none;"
+		style="display: none; width: max-content;"
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class }>
 			@calendar.Calendar(calendar.CalendarProps{
