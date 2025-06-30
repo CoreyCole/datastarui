@@ -129,7 +129,7 @@ templ DateInput(props DateInputProps) {
 				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
 				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
 				" : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? " +
-				signals.Set(dateSignal, "(parseInt(evt.target.value.split('/')[2]) <= 30 ? '20' + evt.target.value.split('/')[2] : '19' + evt.target.value.split('/')[2]) + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
+				signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
 				" : " + signals.Set(dateSignal, "''")
 
 			// Add calendar coordination if CalendarID is provided
@@ -137,18 +137,18 @@ templ DateInput(props DateInputProps) {
 				if strings.Contains(dateSignal, "startDateValue") {
 					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
 						"(fullYear => ($" + props.CalendarID + ".rangeStart = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : (parseInt(evt.target.value.split('/')[2]) <= 30 ? '20' + evt.target.value.split('/')[2] : '19' + evt.target.value.split('/')[2])) : " +
+						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
 						"($" + props.CalendarID + ".rangeStart = '')"
 				} else if strings.Contains(dateSignal, "endDateValue") {
 					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
 						"(fullYear => ($" + props.CalendarID + ".rangeEnd = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : (parseInt(evt.target.value.split('/')[2]) <= 30 ? '20' + evt.target.value.split('/')[2] : '19' + evt.target.value.split('/')[2])) : " +
+						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
 						"($" + props.CalendarID + ".rangeEnd = '')"
 				} else if strings.Contains(dateSignal, "dateValue") {
 					// Single date mode - update selectedDate and currentDate (same namespace) - handle both 2-digit and 4-digit years
 					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
 						"(fullYear => (" + signals.Set("selectedDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'") + "))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : (parseInt(evt.target.value.split('/')[2]) <= 30 ? '20' + evt.target.value.split('/')[2] : '19' + evt.target.value.split('/')[2])) : " +
+						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
 						signals.Set("selectedDate", "''")
 				}
 			}
@@ -158,13 +158,9 @@ templ DateInput(props DateInputProps) {
 
 		createBlurHandler := func(inputSignal, dateSignal string) string {
 			baseHandler := "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
-				"(parts => newValue => fullYear => " +
-				"(parts = evt.target.value.split('/'), " +
-				"fullYear = (parseInt(parts[2]) <= 30 ? '20' + parts[2] : '19' + parts[2]), " +
-				"newValue = parts[0] + '/' + parts[1] + '/' + fullYear, " +
-				"evt.target.value = newValue, " +
-				signals.Set(inputSignal, "newValue") + ", " +
-				signals.Set(dateSignal, "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
+				"(parts => (parts = evt.target.value.split('/'), evt.target.value = parts[0] + '/' + parts[1] + '/20' + parts[2], " +
+				signals.Set(inputSignal, "evt.target.value") + ", " +
+				signals.Set(dateSignal, "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
 				"))() : null"
 
 			// Add calendar coordination if CalendarID is provided
