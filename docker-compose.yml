@@ -1,6 +1,6 @@
 services:
   # Echo server with Air live reload
-  datastarui-app:
+  app:
     build:
       context: .
       target: development
@@ -15,11 +15,11 @@ services:
     working_dir: /app
     command: sh -c "go mod download && air" # Download modules first, then start air
     depends_on:
-      - datastarui-tailwind
+      - tailwind
     networks:
       - datastarui-network
   # Tailwind CSS watcher
-  datastarui-tailwind:
+  tailwind:
     build:
       context: .
       target: development

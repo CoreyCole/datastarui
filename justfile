@@ -16,22 +16,30 @@ install:
 	@go mod download
 
 # Docker development commands
-up:
-	@echo "🚀 Starting DatastarUI development environment..."
-	@docker compose up --build
+# Builds, (re)creates, and starts containers
+@up *args:
+	just _compose local up '-d --build --remove-orphans' {{args}}
+alias u := up
 
-down:
-	@echo "🛑 Stopping DatastarUI development environment..."
-	@docker compose down
+@down *args:
+	just _compose local down {{args}}
+alias d := down
 
+# Generic Command
+_compose environment cmd opts='' *args='':
+	GOCACHE=$(go env GOCACHE) BUILDKIT_PROGRESS=plain \
+	docker compose \
+		--profile {{env_var_or_default("UP_PROFILES", "all")}} \
+		-p datastarui-{{environment}} \
+		-f $(if [ '{{environment}}' = 'local' ]; then echo 'docker-compose.yml'; else echo "docker-compose.{{environment}}.yml"; fi) \
+		{{cmd}} {{opts}} {{args}}
+
+# Docker shell access
 docker-shell service="app":
 	@echo "🐚 Opening shell in {{service}} container..."
-	@docker compose exec {{service}} sh
+	just _compose local exec '' {{service}} sh
 
+# Docker logs viewing
 docker-tail service lines="20":
 	@echo "📋 Last {{lines}} lines for {{service}} service..."
-	@docker logs --tail {{lines}} datastarui-{{service}}-1
-
-docker-follow service:
-  @docker logs --follow datastarui-{{service}}
-  @echo "📋 Following logs for {{service}} service (Ctrl+C to stop)..."
+	@docker logs --tail {{lines}} datastarui-local-{{service}}-1
