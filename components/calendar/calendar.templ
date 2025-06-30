@@ -160,6 +160,7 @@ templ Calendar(props CalendarProps) {
 				HideOutsideDays:    props.HideOutsideDays,
 				NumberOfMonths:     numberOfMonths,
 				CurrentDateStr:     currentDateStr,
+				Mode:               mode,
 				DatePickerInputsID: props.DatePickerInputsID,
 			})
 		} else {
@@ -179,6 +180,7 @@ templ Calendar(props CalendarProps) {
 							HideOutsideDays:    props.HideOutsideDays,
 							NumberOfMonths:     numberOfMonths,
 							CurrentDateStr:     currentDateStr,
+							Mode:               mode,
 							DatePickerInputsID: props.DatePickerInputsID,
 						})
 					</div>
@@ -296,6 +298,7 @@ templ CalendarGrid(props CalendarGridProps) {
 					MonthOffset:        props.MonthOffset,
 					HideOutsideDays:    props.HideOutsideDays,
 					CurrentDateStr:     props.CurrentDateStr,
+					Mode:               props.Mode,
 					DatePickerInputsID: props.DatePickerInputsID,
 				})
 			}
@@ -314,7 +317,7 @@ templ CalendarDay(props CalendarDayProps) {
 
 		// Mode-aware click handler for day selection
 		var clickHandler string
-		if signals.Signal("mode") == "'range'" {
+		if props.Mode == "range" {
 			// Range mode: implement start/end date selection logic
 			clickHandler = fmt.Sprintf(`
 				// Range selection logic
@@ -337,9 +340,32 @@ templ CalendarDay(props CalendarDayProps) {
 						%s;
 					}
 				} else {
-					// Have both start and end - reset with new start
-					%s;
-					%s;
+					// Have both start and end - check if clicking on boundaries
+					if (clickedDate === selectedStart) {
+						// Clicking on start date - move start boundary
+						if (clickedDate < selectedEnd) {
+							// New start is before end - just update start
+							%s;
+						} else {
+							// New start would be after end - swap them
+							%s;
+							%s;
+						}
+					} else if (clickedDate === selectedEnd) {
+						// Clicking on end date - move end boundary
+						if (clickedDate > selectedStart) {
+							// New end is after start - just update end
+							%s;
+						} else {
+							// New end would be before start - swap them
+							%s;
+							%s;
+						}
+					} else {
+						// Clicking outside range - start new range
+						%s;
+						%s;
+					}
 				}`,
 				signals.Signal("rangeStart"),
 				signals.Signal("rangeEnd"),
@@ -350,7 +376,13 @@ templ CalendarDay(props CalendarDayProps) {
 				signals.Set("rangeEnd", "selectedStart"),
 				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
 				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", "selectedEnd"),
+				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeEnd", "selectedStart"),
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
 				signals.Set("rangeEnd", "''"),
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
 			)
 		} else {
 			// Single mode: set selected date
@@ -375,8 +407,7 @@ templ CalendarDay(props CalendarDayProps) {
 			}
 		}
 
-		// Debug: check what signals namespace we're using and if it's working
-		// Fixed: Now using correct signal references without separate namespace
+		// Debug: check what signals namespace we're using and if it's working properly
 		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
 			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
@@ -390,10 +421,16 @@ templ CalendarDay(props CalendarDayProps) {
 		}
 
 		// Signal-based conditional styling for selected date and range - object syntax for data-class
-		selectionClasses := fmt.Sprintf("{'bg-primary text-primary-foreground': %s === '%s' || %s === '%s' || %s === '%s'}",
+		selectionClasses := fmt.Sprintf(`{
+			'bg-primary text-primary-foreground': %s === '%s' || %s === '%s' || %s === '%s',
+			'bg-accent text-accent-foreground': %s && %s && '%s' > %s && '%s' < %s
+		}`,
 			signals.Signal("selectedDate"), dayData.DateString,  // Single mode selection
 			signals.Signal("rangeStart"), dayData.DateString,    // Range start
-			signals.Signal("rangeEnd"), dayData.DateString)      // Range end
+			signals.Signal("rangeEnd"), dayData.DateString,      // Range end
+			signals.Signal("rangeStart"), signals.Signal("rangeEnd"), // Both dates exist
+			dayData.DateString, signals.Signal("rangeStart"),    // Current date > range start
+			dayData.DateString, signals.Signal("rangeEnd"))      // Current date < range end
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
 		<button

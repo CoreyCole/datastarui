@@ -107,7 +107,7 @@ templ DatePicker(props DatePickerProps) {
 		// Create signals for reactive state (unified for all components)
 		now := time.Now()
 		todayStr := now.Format("2006-01-02")
-		
+
 		signals := utils.Signals(datePickerID, DatePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
@@ -120,13 +120,13 @@ templ DatePicker(props DatePickerProps) {
 			IsTyping:        false,
 			FocusedDate:     "",
 			HighlightedDate: "",
-			
+
 			// Calendar-specific signals
-			CurrentDate:     initialDisplayMonth,
-			Mode:            props.Mode,
-			Today:           todayStr,
-			
-			// DateInput-specific signals  
+			CurrentDate: initialDisplayMonth,
+			Mode:        props.Mode,
+			Today:       todayStr,
+
+			// DateInput-specific signals
 			DateValue:       initialSelectedDate,
 			StartInputValue: "",
 			StartDateValue:  initialRangeStart,
@@ -258,7 +258,7 @@ templ DatePicker(props DatePickerProps) {
 						type="button"
 						class="text-muted-foreground hover:text-foreground"
 						tabindex="-1"
-						data-on-click={ signals.Toggle("open") }
+						data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
 					>
 						<svg
 							class="h-4 w-4"
@@ -321,7 +321,7 @@ templ DatePicker(props DatePickerProps) {
 					type="button"
 					class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
 					tabindex="-1"
-					data-on-click={ signals.Toggle("open") }
+					data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
 				>
 					<svg
 						class="h-4 w-4"

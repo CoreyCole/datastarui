@@ -135,33 +135,72 @@ Each component follows a consistent 3-file pattern:
 The Playwright MCP server provides browser automation for debugging Datastar components. Key commands:
 
 #### Navigation and Setup
-- `mcp__playwright__browser_goto` - Navigate to a URL (e.g., http://localhost:3000/components/datepicker)
-- `mcp__playwright__browser_take_screenshot` - Capture visual state
-- `mcp__playwright__browser_snapshot` - Get DOM structure
+- `mcp__playwright__playwright_navigate` - Navigate to a URL (e.g., http://localhost:4242/components/datepicker)
+- `mcp__playwright__playwright_screenshot` - Capture visual state
+- `mcp__playwright__playwright_get_visible_html` - Get DOM structure
 
 #### Console Monitoring
-- `mcp__playwright__browser_console_messages` - Check for JavaScript errors and Datastar runtime errors
-- Monitor for "Uncaught datastar runtime error: GenerateExpression" and similar issues
+- `mcp__playwright__playwright_console_logs` - Enhanced console logging with error detection (requires executeautomation/mcp-playwright)
+- **Supports log levels**: `error`, `warn`, `info`, `log`, `debug`, `all`
+- **Captures Datastar errors**: Successfully detects "GenerateExpression" runtime errors with full context
+- **Usage**: `mcp__playwright__playwright_console_logs type="error"` for JavaScript errors
+- **Error Types**: Detects JavaScript syntax errors in Datastar expressions (missing quotes, parentheses, etc.)
+- **Clear logs**: Use `clear=true` parameter to clear previous console logs and get fresh error detection
+- **Best practice**: Start debugging sessions with `mcp__playwright__playwright_console_logs type="all" clear=true`
 
-#### Interaction Testing
-- `mcp__playwright__browser_click` - Click elements to test signal updates
-- `mcp__playwright__browser_type` - Type in input fields
-- `mcp__playwright__browser_wait_for_selector` - Wait for dynamic content
+#### Interaction Testing - Specific Selectors
+**CRITICAL**: Always use highly specific selectors to avoid 30-second timeouts from multiple element matches.
+
+**DatePicker Component Selectors:**
+- **Calendar icon button**: `[data-datepicker-id="PICKER_ID"] button[data-on-click*="open"]`
+  - Example: `[data-datepicker-id="range_date"] button[data-on-click*="open"]`
+  - This targets the calendar icon that toggles the popover
+- **Popover container**: `[data-datepicker-id="PICKER_ID"] [data-slot="datepicker-popover"]`
+  - Example: `[data-datepicker-id="single_date"] [data-slot="datepicker-popover"]`
+- **Calendar day buttons**: `[data-datepicker-id="PICKER_ID"] [data-slot="datepicker-popover"] button:has-text("DAY")`
+  - Example: `[data-datepicker-id="range_date"] [data-slot="datepicker-popover"] button:has-text("15")`
+  - Only click when popover is visible (check `style.display !== "none"`)
+
+**Navigation and Calendar Testing:**
+- **Month navigation**: `[data-datepicker-id="PICKER_ID"] [data-slot="datepicker-popover"] button[data-on-click*="currentDate"]`
+- **Input fields**: `[data-datepicker-id="PICKER_ID"] input[type="text"]`
+
+**Common Issues:**
+- **Element Overlap**: Calendar day buttons can overlap calendar icon buttons, causing click timeouts
+- **Multiple Matches**: Generic selectors like `button[type="button"]` match 38-73 elements per datepicker
+- **Popover State**: Always check popover visibility before clicking calendar days
+- **Solution**: Use the specific `data-datepicker-id` + element role pattern above
+
+#### Basic Commands
+- `mcp__playwright__playwright_click` - Click elements using specific selectors above
+- `mcp__playwright__playwright_fill` - Type in input fields
+- `mcp__playwright__playwright_evaluate` - Execute JavaScript for state checking
+
+### Streamlined Error Detection Workflow
+This workflow tests the complete cycle of detecting, fixing, and verifying Datastar expression errors:
+
+1. **Create test error** (optional): Edit templ file to introduce JavaScript syntax error
+2. **Verify compilation**: `just docker-tail app 10` - Look for "templ has changed", "building...", "Complete"
+3. **Check for errors**: Navigate to page and run `mcp__playwright__browser_console_logs type="all" clear=true`
+4. **Fix the error**: Edit templ file to correct the syntax issue  
+5. **Verify fix compiled**: `just docker-tail app 10` - Confirm successful rebuild
+6. **Confirm error gone**: Navigate and run `mcp__playwright__browser_console_logs type="all" clear=true`
 
 ### Common Debugging Workflow
-1. Navigate to component page: `mcp__playwright__browser_goto`
-2. Check initial console state: `mcp__playwright__browser_console_messages`
-3. Interact with component (click, type): `mcp__playwright__browser_click`, `mcp__playwright__browser_type`
-4. Check console after interaction for runtime errors
+1. Navigate to component page: `mcp__playwright__browser_navigate`
+2. Clear console and check for initial errors: `mcp__playwright__browser_console_logs type="all" clear=true`
+3. Interact with component: `mcp__playwright__browser_click`, `mcp__playwright__browser_type`
+4. Check console for all messages: `mcp__playwright__browser_console_logs type="all"` (includes errors, logs, and debug messages)
 5. Take screenshot to verify visual state: `mcp__playwright__browser_take_screenshot`
 6. Inspect DOM for signal attributes: `mcp__playwright__browser_snapshot`
 
 ### Debugging Datastar Expression Errors
 For "GenerateExpression" runtime errors:
-1. Check console messages immediately after page load
-2. Look for complex expressions in calendar components (calendar.templ:97, 124, 246)
-3. Test interactions that trigger signal updates
-4. Verify expressions don't contain syntax errors or undefined references
+1. Check browser DevTools console immediately after page interactions (clicks, typing)
+2. Look for complex expressions in calendar components (calendar.templ:380-381)
+3. Common causes: unescaped quotes in console.log statements, missing parentheses, undefined signal references
+4. **Note**: Playwright MCP console monitoring may not capture all Datastar runtime errors
+5. Use manual browser testing to catch JavaScript syntax errors in generated expressions
 
 ### TODO: Automated Testing
 Need to implement automated testing for Datastar component demo pages to verify:

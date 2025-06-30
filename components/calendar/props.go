@@ -68,6 +68,9 @@ type CalendarGridProps struct {
 	// CurrentDateStr is the current month being displayed (YYYY-MM-DD format)
 	CurrentDateStr string
 
+	// Mode defines the selection mode ("single" or "range")
+	Mode string
+
 	// Signal coordination
 	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
 }
@@ -97,6 +100,9 @@ type CalendarDayProps struct {
 
 	// CurrentDateStr is the current month being displayed (YYYY-MM-DD format)
 	CurrentDateStr string
+
+	// Mode defines the selection mode ("single" or "range")
+	Mode string
 
 	// Signal coordination
 	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
