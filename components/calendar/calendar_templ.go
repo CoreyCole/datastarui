@@ -190,28 +190,34 @@ func Calendar(props CalendarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" data-signals=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 150, Col: 36}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if props.DatePickerInputsID == "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " data-signals=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 151, Col: 37}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, ">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, ">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -219,12 +225,12 @@ func Calendar(props CalendarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Months container with responsive flex layout -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Months container with responsive flex layout -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if numberOfMonths == 1 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Single month layout --> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<!-- Single month layout --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -241,25 +247,25 @@ func Calendar(props CalendarProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<!-- Multi-month layout - each month looks like a single calendar --> <div class=\"flex flex-col sm:flex-row gap-8\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Multi-month layout - each month looks like a single calendar --> <div class=\"flex flex-col sm:flex-row gap-8\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for monthIndex := 0; monthIndex < numberOfMonths; monthIndex++ {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"flex-1\"><!-- Individual month header --><div class=\"flex justify-center pt-1 relative items-center w-full mb-4\"><div class=\"text-sm font-medium\"><span data-text=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"flex-1\"><!-- Individual month header --><div class=\"flex justify-center pt-1 relative items-center w-full mb-4\"><div class=\"text-sm font-medium\"><span data-text=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(Date.UTC(new Date(" + signals.Signal("currentDate") + " + 'T12:00:00Z').getUTCFullYear(), new Date(" + signals.Signal("currentDate") + " + 'T12:00:00Z').getUTCMonth() + " + fmt.Sprintf("%d", monthIndex) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 174, Col: 337}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 176, Col: 337}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\"></span></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"></span></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -275,17 +281,17 @@ func Calendar(props CalendarProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -332,103 +338,103 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			numberOfMonths = 1
 		}
 		if numberOfMonths == 1 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<!-- Single month header --> <div class=\"flex justify-center pt-1 relative items-center w-full mb-4\"><!-- Previous month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute left-1\" data-on-click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<!-- Single month header --> <div class=\"flex justify-center pt-1 relative items-center w-full mb-4\"><!-- Previous month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute left-1\" data-on-click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(prevMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 219, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 221, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m15 18-6-6 6-6\"></path></svg></button><!-- Month/Year display --><div class=\"text-sm font-medium\"><span data-text=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m15 18-6-6 6-6\"></path></svg></button><!-- Month/Year display --><div class=\"text-sm font-medium\"><span data-text=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 227, Col: 150}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 229, Col: 150}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"></span></div><!-- Next month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute right-1\" data-on-click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\"></span></div><!-- Next month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100 absolute right-1\" data-on-click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(nextMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 233, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 235, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m9 18 6-6-6-6\"></path></svg></button></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m9 18 6-6-6-6\"></path></svg></button></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<!-- Multi-month header with navigation --> <div class=\"flex justify-between items-center w-full mb-4\"><!-- Previous month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100\" data-on-click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!-- Multi-month header with navigation --> <div class=\"flex justify-between items-center w-full mb-4\"><!-- Previous month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100\" data-on-click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(prevMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 247, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 249, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m15 18-6-6 6-6\"></path></svg></button><!-- Month range display --><div class=\"flex items-center space-x-1 text-sm font-medium\"><span data-text=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m15 18-6-6 6-6\"></path></svg></button><!-- Month range display --><div class=\"flex items-center space-x-1 text-sm font-medium\"><span data-text=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 255, Col: 150}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 257, Col: 150}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\"></span> <span>-</span> <span data-text=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"></span> <span>-</span> <span data-text=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var12 string
-			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(Date.UTC(new Date(" + currentDateRef + " + 'T12:00:00Z').getUTCFullYear(), new Date(" + currentDateRef + " + 'T12:00:00Z').getUTCMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(new Date(" + currentDateRef + " + 'T12:00:00Z').getFullYear(), new Date(" + currentDateRef + " + 'T12:00:00Z').getMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 257, Col: 309}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 259, Col: 283}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"></span></div><!-- Next month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100\" data-on-click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\"></span></div><!-- Next month button --><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground size-7 p-0 opacity-50 hover:opacity-100\" data-on-click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(nextMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 263, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 265, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m9 18 6-6-6-6\"></path></svg></button></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4\"><path d=\"m9 18 6-6-6-6\"></path></svg></button></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -463,7 +469,7 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 		// Use 5 weeks (35 days) for all calendars for a cleaner, more consistent look
 		weeksNeeded := 5
 		totalDays := weeksNeeded * 7
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"w-full border-collapse\"><!-- Day headers --><div class=\"grid grid-cols-7 gap-1 mb-2\"><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Su</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Mo</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Tu</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">We</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Th</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Fr</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Sa</div></div><!-- Calendar days grid --><div class=\"grid grid-cols-7 gap-1\"><!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"w-full border-collapse\"><!-- Day headers --><div class=\"grid grid-cols-7 gap-1 mb-2\"><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Su</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Mo</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Tu</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">We</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Th</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Fr</div><div class=\"text-muted-foreground rounded-md size-8 font-normal text-[0.8rem] flex items-center justify-center p-0\">Sa</div></div><!-- Calendar days grid --><div class=\"grid grid-cols-7 gap-1\"><!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -481,7 +487,7 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -515,18 +521,70 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// Share the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(props.ID, CalendarSignals{})
 
-		// Pre-calculate day data using Go time package (much cleaner)
-		dayData := calculateDayData(props.DayIndex, props.MonthOffset, props.CurrentDateStr, signals.Signal("today"))
+		// Pre-calculate day data using the static current date for now
+		// The real fix is that we need to make the grid responsive to currentDate signal changes
+		// For now, let's calculate the day correctly based on the fallback
+		currentDateForCalc := props.CurrentDateStr
+		if currentDateForCalc == "" {
+			// Fallback
+			now := time.Now()
+			currentDateForCalc = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
+		}
 
-		// Mode-aware click handler for day selection
+		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
+
+		// Note: We now calculate dates dynamically in JavaScript, no need for static dateString
+
+		// Dynamic click handler that calculates the date using current signal value
+		dayIndexJS := fmt.Sprintf("%d", props.DayIndex)
+		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
+
 		var clickHandler string
 		if props.Mode == "range" {
-			// Range mode: implement start/end date selection logic
+			// Range mode: calculate date dynamically then handle range logic
 			clickHandler = fmt.Sprintf(`
+				// Calculate clicked date dynamically using current signal value
+				const currentDate = new Date(%s + 'T12:00:00Z');
+				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
+				const year = targetDate.getFullYear();
+				const month = targetDate.getMonth();
+				
+				// Calculate first day of month and weekday (0 = Sunday)
+				const firstDay = new Date(year, month, 1);
+				const startWeekday = firstDay.getDay();
+				
+				// Calculate day number for this grid position
+				const dayNumber = %s - startWeekday + 1;
+				
+				// Days in current month
+				const daysInMonth = new Date(year, month + 1, 0).getDate();
+				
+				// Calculate actual date for this cell
+				let actualDate, displayDayNumber;
+				
+				if (dayNumber <= 0) {
+					// Previous month
+					const prevMonthDays = new Date(year, month, 0).getDate();
+					displayDayNumber = prevMonthDays + dayNumber;
+					actualDate = new Date(year, month - 1, displayDayNumber);
+				} else if (dayNumber > daysInMonth) {
+					// Next month
+					displayDayNumber = dayNumber - daysInMonth;
+					actualDate = new Date(year, month + 1, displayDayNumber);
+				} else {
+					// Current month
+					displayDayNumber = dayNumber;
+					actualDate = new Date(year, month, dayNumber);
+				}
+				
+				// Format date as YYYY-MM-DD
+				const clickedDate = actualDate.getFullYear() + '-' + 
+					(actualDate.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+					actualDate.getDate().toString().padStart(2, '0');
+				
 				// Range selection logic
 				let selectedStart = %s;
 				let selectedEnd = %s;
-				let clickedDate = '%s';
 				
 				if (!selectedStart) {
 					// No start date - set as start
@@ -535,65 +593,42 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 				} else if (!selectedEnd) {
 					// Have start, no end - set as end or swap if before start
 					if (clickedDate < selectedStart) {
-						// Clicked date is before start - swap them
 						%s;
 						%s;
 					} else {
-						// Clicked date is after start - set as end
 						%s;
 					}
 				} else {
-					// Have both start and end - check if clicking on boundaries
-					if (clickedDate === selectedStart) {
-						// Clicking on start date - move start boundary
-						if (clickedDate < selectedEnd) {
-							// New start is before end - just update start
-							%s;
-						} else {
-							// New start would be after end - swap them
-							%s;
-							%s;
-						}
-					} else if (clickedDate === selectedEnd) {
-						// Clicking on end date - move end boundary
-						if (clickedDate > selectedStart) {
-							// New end is after start - just update end
-							%s;
-						} else {
-							// New end would be before start - swap them
-							%s;
-							%s;
-						}
-					} else {
-						// Clicking outside range - start new range
-						%s;
-						%s;
-					}
+					// Have both - start new range
+					%s;
+					%s;
 				}`,
+				signals.Signal("currentDate"), monthOffsetJS, dayIndexJS,
 				signals.Signal("rangeStart"),
 				signals.Signal("rangeEnd"),
-				dayData.DateString,
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", "clickedDate"),
 				signals.Set("rangeEnd", "''"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", "clickedDate"),
 				signals.Set("rangeEnd", "selectedStart"),
-				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", "selectedEnd"),
-				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeEnd", "selectedStart"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeEnd", "''"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-			)
+				signals.Set("rangeEnd", "clickedDate"),
+				signals.Set("rangeStart", "clickedDate"),
+				signals.Set("rangeEnd", "''"))
 		} else {
-			// Single mode: set selected date
-			clickHandler = signals.Set("selectedDate", fmt.Sprintf("'%s'", dayData.DateString))
+			// Single mode: use the pre-calculated date from Go and adjust based on current signal
+			clickHandler = fmt.Sprintf(`
+				const currentDate = new Date(%s + 'T12:00:00Z');
+				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
+				const year = targetDate.getFullYear();
+				const month = targetDate.getMonth();
+				const buttonDay = parseInt(evt.target.textContent);
+				const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0');
+				console.log('Debug: buttonDay=' + buttonDay + ', clickedDate=' + clickedDate);
+				%s`,
+				signals.Signal("currentDate"), monthOffsetJS,
+				signals.Set("selectedDate", "clickedDate"))
 		}
 
 		// Add DateInput signal coordination if DatePickerInputsID is provided
-		// Note: DateInput uses the same signal namespace as calendar, not a separate one
 		if props.DatePickerInputsID != "" {
 			if props.Mode == "range" {
 				// Update DateInput range signals to sync with calendar - use same namespace
@@ -610,11 +645,11 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			}
 		}
 
-		// Debug: check what signals namespace we're using and if it's working properly
+		// Debug logging - show dynamic date calculation
 		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
 			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
-		// CSS classes with conditional styling for today
+		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
 
 		// Add today styling
@@ -623,18 +658,28 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			todayClasses = " bg-accent text-accent-foreground font-semibold"
 		}
 
-		// Signal-based conditional styling for selected date and range - object syntax for data-class
+		// Dynamic selection styling that matches the click handler
+		// Calculate the expected date using the same logic as the click handler
+		dayStr := fmt.Sprintf("%d", dayData.DayNumber)
 		selectionClasses := fmt.Sprintf(`{
-			'bg-primary text-primary-foreground': %s === '%s' || %s === '%s' || %s === '%s',
-			'bg-accent text-accent-foreground': %s && %s && '%s' > %s && '%s' < %s
+			'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0'))
 		}`,
-			signals.Signal("selectedDate"), dayData.DateString, // Single mode selection
-			signals.Signal("rangeStart"), dayData.DateString, // Range start
-			signals.Signal("rangeEnd"), dayData.DateString, // Range end
-			signals.Signal("rangeStart"), signals.Signal("rangeEnd"), // Both dates exist
-			dayData.DateString, signals.Signal("rangeStart"), // Current date > range start
-			dayData.DateString, signals.Signal("rangeEnd")) // Current date < range end
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\">")
+			signals.Signal("selectedDate"),
+			signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr)
+
+		// For range mode, add range styling
+		if props.Mode == "range" {
+			selectionClasses = fmt.Sprintf(`{
+				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) || %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')),
+				'bg-accent text-accent-foreground': %s && %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) > %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) < %s
+			}`,
+				signals.Signal("rangeStart"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
+				signals.Signal("rangeEnd"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
+				signals.Signal("rangeStart"), signals.Signal("rangeEnd"),
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeStart"),
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeEnd"))
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -643,7 +688,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<button type=\"button\" class=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<button type=\"button\" class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -656,46 +701,46 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" data-class=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" data-class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 439, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 480, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" data-on-click=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" data-on-click=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(debugClickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 440, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 481, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 442, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 483, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</button></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

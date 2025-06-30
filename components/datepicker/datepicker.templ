@@ -200,35 +200,10 @@ templ DatePicker(props DatePickerProps) {
 					}
 				}
 
-				// Create signals for DateInput component - merge with DatePicker signals to avoid overwriting
-				dateInputSignals := utils.Signals(dateInputID, DatePickerSignals{
-					Open:            false, // Include open signal to prevent overwriting
-					InputValue:      initialInputValue,
-					SelectedDate:    initialSelectedDate,
-					RangeStart:      initialRangeStart,
-					RangeEnd:        initialRangeEnd,
-					DisplayMonth:    initialDisplayMonth,
-					IsValid:         true,
-					ErrorMessage:    "",
-					IsTyping:        false,
-					FocusedDate:     "",
-					HighlightedDate: "",
-					CurrentDate:     initialDisplayMonth,
-					Mode:            props.Mode,
-					Today:           todayStr,
-					DateValue:       initialSelectedDate,
-					StartInputValue: initialStartValue,
-					StartDateValue:  initialRangeStart,
-					EndInputValue:   initialEndValue,
-					EndDateValue:    initialRangeEnd,
-					EndDateEnabled:  true,
-				})
-
 				// DateInput will handle calendar coordination directly via CalendarID
 			}}
 			<div
 				class="relative flex items-center gap-2"
-				data-signals={ dateInputSignals.DataSignals }
 			>
 				<!-- DateInput without postfix -->
 				<div class="flex-1">
@@ -280,34 +255,9 @@ templ DatePicker(props DatePickerProps) {
 		} else {
 			<!-- Single mode: use DateInput with proper signal synchronization -->
 			{{
-				// Create signals for DateInput component - merge with DatePicker signals to avoid overwriting
-				dateInputSignals := utils.Signals(dateInputID, DatePickerSignals{
-					Open:            false, // Include open signal to prevent overwriting
-					InputValue:      initialInputValue,
-					SelectedDate:    initialSelectedDate,
-					RangeStart:      initialRangeStart,
-					RangeEnd:        initialRangeEnd,
-					DisplayMonth:    initialDisplayMonth,
-					IsValid:         true,
-					ErrorMessage:    "",
-					IsTyping:        false,
-					FocusedDate:     "",
-					HighlightedDate: "",
-					CurrentDate:     initialDisplayMonth,
-					Mode:            props.Mode,
-					Today:           todayStr,
-					DateValue:       initialSelectedDate,
-					StartInputValue: "",
-					StartDateValue:  "",
-					EndInputValue:   "",
-					EndDateValue:    "",
-					EndDateEnabled:  false,
-				})
-
 				// DateInput will handle calendar coordination directly via CalendarID
 			}}
 			<div
-				data-signals={ dateInputSignals.DataSignals }
 				if props.OpenOnFocus {
 					data-on-focus__capture={ signals.Set("open", "true") }
 				}

@@ -147,7 +147,9 @@ templ Calendar(props CalendarProps) {
 	}}
 	<div
 		class={ "p-3 " + classes }
-		data-signals={ signals.DataSignals }
+		if props.DatePickerInputsID == "" {
+			data-signals={ signals.DataSignals }
+		}
 		{ props.Attributes... }
 	>
 		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
@@ -254,7 +256,7 @@ templ CalendarHeader(props CalendarHeaderProps) {
 			<div class="flex items-center space-x-1 text-sm font-medium">
 				<span data-text={ "new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
 				<span>-</span>
-				<span data-text={ "new Date(Date.UTC(new Date(" + currentDateRef + " + 'T12:00:00Z').getUTCFullYear(), new Date(" + currentDateRef + " + 'T12:00:00Z').getUTCMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
+				<span data-text={ "new Date(new Date(" + currentDateRef + " + 'T12:00:00Z').getFullYear(), new Date(" + currentDateRef + " + 'T12:00:00Z').getMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
 			</div>
 			<!-- Next month button -->
 			<button
@@ -312,18 +314,70 @@ templ CalendarDay(props CalendarDayProps) {
 		// Share the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(props.ID, CalendarSignals{})
 
-		// Pre-calculate day data using Go time package (much cleaner)
-		dayData := calculateDayData(props.DayIndex, props.MonthOffset, props.CurrentDateStr, signals.Signal("today"))
+		// Pre-calculate day data using the static current date for now
+		// The real fix is that we need to make the grid responsive to currentDate signal changes
+		// For now, let's calculate the day correctly based on the fallback
+		currentDateForCalc := props.CurrentDateStr
+		if currentDateForCalc == "" {
+			// Fallback
+			now := time.Now()
+			currentDateForCalc = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
+		}
+		
+		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
-		// Mode-aware click handler for day selection
+		// Note: We now calculate dates dynamically in JavaScript, no need for static dateString
+		
+		// Dynamic click handler that calculates the date using current signal value
+		dayIndexJS := fmt.Sprintf("%d", props.DayIndex)
+		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
+		
 		var clickHandler string
 		if props.Mode == "range" {
-			// Range mode: implement start/end date selection logic
+			// Range mode: calculate date dynamically then handle range logic
 			clickHandler = fmt.Sprintf(`
+				// Calculate clicked date dynamically using current signal value
+				const currentDate = new Date(%s + 'T12:00:00Z');
+				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
+				const year = targetDate.getFullYear();
+				const month = targetDate.getMonth();
+				
+				// Calculate first day of month and weekday (0 = Sunday)
+				const firstDay = new Date(year, month, 1);
+				const startWeekday = firstDay.getDay();
+				
+				// Calculate day number for this grid position
+				const dayNumber = %s - startWeekday + 1;
+				
+				// Days in current month
+				const daysInMonth = new Date(year, month + 1, 0).getDate();
+				
+				// Calculate actual date for this cell
+				let actualDate, displayDayNumber;
+				
+				if (dayNumber <= 0) {
+					// Previous month
+					const prevMonthDays = new Date(year, month, 0).getDate();
+					displayDayNumber = prevMonthDays + dayNumber;
+					actualDate = new Date(year, month - 1, displayDayNumber);
+				} else if (dayNumber > daysInMonth) {
+					// Next month
+					displayDayNumber = dayNumber - daysInMonth;
+					actualDate = new Date(year, month + 1, displayDayNumber);
+				} else {
+					// Current month
+					displayDayNumber = dayNumber;
+					actualDate = new Date(year, month, dayNumber);
+				}
+				
+				// Format date as YYYY-MM-DD
+				const clickedDate = actualDate.getFullYear() + '-' + 
+					(actualDate.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+					actualDate.getDate().toString().padStart(2, '0');
+				
 				// Range selection logic
 				let selectedStart = %s;
 				let selectedEnd = %s;
-				let clickedDate = '%s';
 				
 				if (!selectedStart) {
 					// No start date - set as start
@@ -332,65 +386,42 @@ templ CalendarDay(props CalendarDayProps) {
 				} else if (!selectedEnd) {
 					// Have start, no end - set as end or swap if before start
 					if (clickedDate < selectedStart) {
-						// Clicked date is before start - swap them
 						%s;
 						%s;
 					} else {
-						// Clicked date is after start - set as end
 						%s;
 					}
 				} else {
-					// Have both start and end - check if clicking on boundaries
-					if (clickedDate === selectedStart) {
-						// Clicking on start date - move start boundary
-						if (clickedDate < selectedEnd) {
-							// New start is before end - just update start
-							%s;
-						} else {
-							// New start would be after end - swap them
-							%s;
-							%s;
-						}
-					} else if (clickedDate === selectedEnd) {
-						// Clicking on end date - move end boundary
-						if (clickedDate > selectedStart) {
-							// New end is after start - just update end
-							%s;
-						} else {
-							// New end would be before start - swap them
-							%s;
-							%s;
-						}
-					} else {
-						// Clicking outside range - start new range
-						%s;
-						%s;
-					}
+					// Have both - start new range
+					%s;
+					%s;
 				}`,
+				signals.Signal("currentDate"), monthOffsetJS, dayIndexJS,
 				signals.Signal("rangeStart"),
 				signals.Signal("rangeEnd"),
-				dayData.DateString,
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", "clickedDate"),
 				signals.Set("rangeEnd", "''"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", "clickedDate"),
 				signals.Set("rangeEnd", "selectedStart"),
-				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", "selectedEnd"),
-				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeEnd", "selectedStart"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-				signals.Set("rangeEnd", "''"),
-				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
-			)
+				signals.Set("rangeEnd", "clickedDate"),
+				signals.Set("rangeStart", "clickedDate"),
+				signals.Set("rangeEnd", "''"))
 		} else {
-			// Single mode: set selected date
-			clickHandler = signals.Set("selectedDate", fmt.Sprintf("'%s'", dayData.DateString))
+			// Single mode: use the pre-calculated date from Go and adjust based on current signal
+			clickHandler = fmt.Sprintf(`
+				const currentDate = new Date(%s + 'T12:00:00Z');
+				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
+				const year = targetDate.getFullYear();
+				const month = targetDate.getMonth();
+				const buttonDay = parseInt(evt.target.textContent);
+				const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0');
+				console.log('Debug: buttonDay=' + buttonDay + ', clickedDate=' + clickedDate);
+				%s`,
+				signals.Signal("currentDate"), monthOffsetJS,
+				signals.Set("selectedDate", "clickedDate"))
 		}
 
 		// Add DateInput signal coordination if DatePickerInputsID is provided
-		// Note: DateInput uses the same signal namespace as calendar, not a separate one
 		if props.DatePickerInputsID != "" {
 			if props.Mode == "range" {
 				// Update DateInput range signals to sync with calendar - use same namespace
@@ -407,11 +438,11 @@ templ CalendarDay(props CalendarDayProps) {
 			}
 		}
 
-		// Debug: check what signals namespace we're using and if it's working properly
+		// Debug logging - show dynamic date calculation
 		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
 			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
-		// CSS classes with conditional styling for today
+		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
 
 		// Add today styling
@@ -420,17 +451,27 @@ templ CalendarDay(props CalendarDayProps) {
 			todayClasses = " bg-accent text-accent-foreground font-semibold"
 		}
 
-		// Signal-based conditional styling for selected date and range - object syntax for data-class
+		// Dynamic selection styling that matches the click handler
+		// Calculate the expected date using the same logic as the click handler
+		dayStr := fmt.Sprintf("%d", dayData.DayNumber)
 		selectionClasses := fmt.Sprintf(`{
-			'bg-primary text-primary-foreground': %s === '%s' || %s === '%s' || %s === '%s',
-			'bg-accent text-accent-foreground': %s && %s && '%s' > %s && '%s' < %s
-		}`,
-			signals.Signal("selectedDate"), dayData.DateString,  // Single mode selection
-			signals.Signal("rangeStart"), dayData.DateString,    // Range start
-			signals.Signal("rangeEnd"), dayData.DateString,      // Range end
-			signals.Signal("rangeStart"), signals.Signal("rangeEnd"), // Both dates exist
-			dayData.DateString, signals.Signal("rangeStart"),    // Current date > range start
-			dayData.DateString, signals.Signal("rangeEnd"))      // Current date < range end
+			'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0'))
+		}`, 
+			signals.Signal("selectedDate"), 
+			signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr)
+		
+		// For range mode, add range styling
+		if props.Mode == "range" {
+			selectionClasses = fmt.Sprintf(`{
+				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) || %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')),
+				'bg-accent text-accent-foreground': %s && %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) > %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) < %s
+			}`,
+				signals.Signal("rangeStart"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
+				signals.Signal("rangeEnd"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
+				signals.Signal("rangeStart"), signals.Signal("rangeEnd"), 
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeStart"),
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeEnd"))
+		}
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
 		<button
