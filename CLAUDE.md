@@ -22,6 +22,12 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 - `just docker-tail tailwind` - Show recent Tailwind logs
 - `just docker-shell app` - Open shell in app container
 
+### Playwright Browser Testing
+- `just playwright-up` - Start Playwright container for browser automation
+- `just playwright-test` - Run all browser tests
+- `just playwright-shell` - Open shell in Playwright container for interactive testing
+- `just playwright-ui` - Open Playwright UI for visual test debugging
+
 ### Important Notes
 - **DO NOT** run `go run main.go` or `go build` directly - use `just` commands
 - **DO NOT** try to run the compiled binary - the developer has live reload running
@@ -31,7 +37,8 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 - Tailwind CSS runs in watch mode automatically during development
 - **Check compilation errors**: Use `just docker-tail app` to see templ compilation and Go build errors
 - **Test changes**: Make a templ file change, then check `just docker-tail app` for rebuild logs
-- **Browser testing**: Use Playwright MCP to test the live-reloaded application
+- **Browser testing**: Use `just playwright-up` and `just playwright-test` for automated browser testing
+- **Interactive browser testing**: Use MCP Playwright tools or `just playwright-shell` for manual testing
 
 ## Architecture
 

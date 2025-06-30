@@ -686,9 +686,9 @@ func DateInput(props DateInputProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var24 string
-				templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " ? 'text-sm font-medium text-foreground' : 'text-sm font-medium text-muted-foreground'")
+				templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs("{'text-foreground': " + signals.Signal("endDateEnabled") + ", 'text-muted-foreground': !" + signals.Signal("endDateEnabled") + "}")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 370, Col: 143}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 370, Col: 151}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 				if templ_7745c5c3_Err != nil {

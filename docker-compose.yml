@@ -50,4 +50,3 @@ volumes:
 networks:
   datastarui-network:
     driver: bridge
-

@@ -104,7 +104,10 @@ templ DatePicker(props DatePickerProps) {
 			}
 		}
 
-		// Create signals for reactive state
+		// Create signals for reactive state (unified for all components)
+		now := time.Now()
+		todayStr := now.Format("2006-01-02")
+		
 		signals := utils.Signals(datePickerID, DatePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
@@ -117,6 +120,19 @@ templ DatePicker(props DatePickerProps) {
 			IsTyping:        false,
 			FocusedDate:     "",
 			HighlightedDate: "",
+			
+			// Calendar-specific signals
+			CurrentDate:     initialDisplayMonth,
+			Mode:            props.Mode,
+			Today:           todayStr,
+			
+			// DateInput-specific signals  
+			DateValue:       initialSelectedDate,
+			StartInputValue: "",
+			StartDateValue:  initialRangeStart,
+			EndInputValue:   "",
+			EndDateValue:    initialRangeEnd,
+			EndDateEnabled:  props.Mode == "range",
 		})
 
 		// Container classes
@@ -125,8 +141,8 @@ templ DatePicker(props DatePickerProps) {
 		// Click outside handler
 		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 
-		// DateInput ID for signal namespacing
-		dateInputID := datePickerID + "_dateinput"
+		// DateInput ID - use SAME ID for shared signal namespace
+		dateInputID := datePickerID
 	}}
 	<div
 		data-slot="datepicker"
@@ -473,7 +489,7 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class }>
 			@calendar.Calendar(calendar.CalendarProps{
-				ID:                 props.ID + "_calendar",
+				ID:                 props.ID,
 				Mode:               props.Mode,
 				SelectedDate:       props.InitialSelectedDate,
 				DefaultDate:        props.InitialDisplayMonth,

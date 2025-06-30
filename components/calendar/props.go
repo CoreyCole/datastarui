@@ -65,6 +65,9 @@ type CalendarGridProps struct {
 	// NumberOfMonths defines how many months the parent calendar displays
 	NumberOfMonths int
 
+	// CurrentDateStr is the current month being displayed (YYYY-MM-DD format)
+	CurrentDateStr string
+
 	// Signal coordination
 	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
 }
@@ -91,6 +94,9 @@ type CalendarDayProps struct {
 
 	// HideOutsideDays determines whether to hide dates from adjacent months
 	HideOutsideDays bool
+
+	// CurrentDateStr is the current month being displayed (YYYY-MM-DD format)
+	CurrentDateStr string
 
 	// Signal coordination
 	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization

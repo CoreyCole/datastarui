@@ -16,19 +16,70 @@ type CalendarDayData struct {
 	IsOutsideDay   bool   // Is this day outside the target month
 }
 
-// calculateDayData pre-calculates day information in Go instead of complex JS expressions
-func calculateDayData(dayIndex, monthOffset int, currentDateSignal, todaySignal string) CalendarDayData {
-	// For now, return simple sequential day numbers to make days visible
-	// dayIndex ranges from 0-34 (35 days), so we'll show 1-31 and wrap
-	dayNumber := (dayIndex % 31) + 1
-	
-	return CalendarDayData{
-		DateString:     fmt.Sprintf("2024-01-%02d", dayNumber),
-		DayNumber:      dayNumber,
-		IsCurrentMonth: true,
-		IsToday:        dayIndex == 15, // Make 16th day "today" for testing
-		IsOutsideDay:   false,
+// calculateDayData pre-calculates day information based on the current month
+func calculateDayData(dayIndex, monthOffset int, currentDateStr, todaySignal string) CalendarDayData {
+	// Parse the current date to determine the year and month being displayed
+	currentDate, err := time.Parse("2006-01-02", currentDateStr)
+	if err != nil {
+		// Fallback to current month if parsing fails
+		currentDate = time.Now()
 	}
+
+	// Add month offset for multi-month calendars
+	targetDate := currentDate.AddDate(0, monthOffset, 0)
+	year := targetDate.Year()
+	month := int(targetDate.Month())
+
+	// Calculate the first day of the month and its weekday
+	firstDay := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	startWeekday := int(firstDay.Weekday()) // Sunday = 0
+
+	// Calculate the actual day number for this grid position
+	dayNumber := dayIndex - startWeekday + 1
+
+	// Determine if this is in the current month or outside days
+	isCurrentMonth := dayNumber >= 1 && dayNumber <= daysInMonth(year, month)
+
+	// Calculate the actual date for this cell
+	var actualDate time.Time
+	var displayDayNumber int
+
+	if dayNumber <= 0 {
+		// Previous month
+		prevMonth := firstDay.AddDate(0, -1, 0)
+		prevMonthDays := daysInMonth(prevMonth.Year(), int(prevMonth.Month()))
+		displayDayNumber = prevMonthDays + dayNumber
+		actualDate = time.Date(prevMonth.Year(), prevMonth.Month(), displayDayNumber, 0, 0, 0, 0, time.UTC)
+	} else if dayNumber > daysInMonth(year, month) {
+		// Next month
+		nextMonth := firstDay.AddDate(0, 1, 0)
+		displayDayNumber = dayNumber - daysInMonth(year, month)
+		actualDate = time.Date(nextMonth.Year(), nextMonth.Month(), displayDayNumber, 0, 0, 0, 0, time.UTC)
+	} else {
+		// Current month
+		displayDayNumber = dayNumber
+		actualDate = time.Date(year, time.Month(month), dayNumber, 0, 0, 0, 0, time.UTC)
+	}
+
+	// Format date string
+	dateString := actualDate.Format("2006-01-02")
+
+	// Check if this is today
+	today := time.Now().Format("2006-01-02")
+	isToday := dateString == today
+
+	return CalendarDayData{
+		DateString:     dateString,
+		DayNumber:      displayDayNumber,
+		IsCurrentMonth: isCurrentMonth,
+		IsToday:        isToday,
+		IsOutsideDay:   !isCurrentMonth,
+	}
+}
+
+// Helper function to get days in a month
+func daysInMonth(year, month int) int {
+	return time.Date(year, time.Month(month+1), 0, 0, 0, 0, 0, time.UTC).Day()
 }
 
 // CalendarSignals defines the signal structure for calendar components
@@ -95,8 +146,8 @@ templ Calendar(props CalendarProps) {
 		classes := calendarVariants(props.Class)
 	}}
 	<div
-		data-signals={ signals.DataSignals }
 		class={ "p-3 " + classes }
+		data-signals={ signals.DataSignals }
 		{ props.Attributes... }
 	>
 		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
@@ -108,6 +159,7 @@ templ Calendar(props CalendarProps) {
 				MonthOffset:        0,
 				HideOutsideDays:    props.HideOutsideDays,
 				NumberOfMonths:     numberOfMonths,
+				CurrentDateStr:     currentDateStr,
 				DatePickerInputsID: props.DatePickerInputsID,
 			})
 		} else {
@@ -126,6 +178,7 @@ templ Calendar(props CalendarProps) {
 							MonthOffset:        monthIndex,
 							HideOutsideDays:    props.HideOutsideDays,
 							NumberOfMonths:     numberOfMonths,
+							CurrentDateStr:     currentDateStr,
 							DatePickerInputsID: props.DatePickerInputsID,
 						})
 					</div>
@@ -138,7 +191,7 @@ templ Calendar(props CalendarProps) {
 // CalendarHeader renders the month navigation
 templ CalendarHeader(props CalendarHeaderProps) {
 	{{
-		// Create signals manager for this calendar
+		// Use the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(props.ID, CalendarSignals{})
 
 		// Signal references
@@ -242,6 +295,7 @@ templ CalendarGrid(props CalendarGridProps) {
 					DayIndex:           dayIndex,
 					MonthOffset:        props.MonthOffset,
 					HideOutsideDays:    props.HideOutsideDays,
+					CurrentDateStr:     props.CurrentDateStr,
 					DatePickerInputsID: props.DatePickerInputsID,
 				})
 			}
@@ -252,33 +306,38 @@ templ CalendarGrid(props CalendarGridProps) {
 // CalendarDay renders individual day button with pre-calculated data
 templ CalendarDay(props CalendarDayProps) {
 	{{
-		// Calculate day information in Go instead of complex Datastar expressions
+		// Share the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(props.ID, CalendarSignals{})
-		
+
 		// Pre-calculate day data using Go time package (much cleaner)
-		dayData := calculateDayData(props.DayIndex, props.MonthOffset, signals.Signal("currentDate"), signals.Signal("today"))
-		
-		// Simple click handler for day selection
+		dayData := calculateDayData(props.DayIndex, props.MonthOffset, props.CurrentDateStr, signals.Signal("today"))
+
+		// Simple click handler for day selection - use direct signal assignment
 		clickHandler := signals.Set("selectedDate", fmt.Sprintf("'%s'", dayData.DateString))
-		
+
+		// Debug: check what signals namespace we're using and if it's working
+		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); console.log('Setting %s.selectedDate to: %s'); %s; console.log('After set, %s.selectedDate is:', %s)",
+			props.ID, props.ID, dayData.DateString, clickHandler, props.ID, signals.Signal("selectedDate"))
+
 		// CSS classes with conditional styling for today
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
-		
+
 		// Add today styling
 		todayClasses := ""
 		if dayData.IsToday {
 			todayClasses = " bg-accent text-accent-foreground font-semibold"
 		}
-		
-		// Add selection styling using simple Datastar data-class
-		selectionClasses := signals.Signal("selectedDate") + " === '" + dayData.DateString + "' ? 'bg-primary text-primary-foreground' : ''"
+
+		// Signal-based conditional styling for selected date - object syntax for data-class
+		selectionClasses := fmt.Sprintf("{'bg-primary text-primary-foreground': %s === '%s'}",
+			signals.Signal("selectedDate"), dayData.DateString)
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
 		<button
 			type="button"
 			class={ baseClasses + todayClasses }
 			data-class={ selectionClasses }
-			data-on-click={ clickHandler }
+			data-on-click={ debugClickHandler }
 		>
 			{ fmt.Sprintf("%d", dayData.DayNumber) }
 		</button>

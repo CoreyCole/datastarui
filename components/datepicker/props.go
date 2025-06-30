@@ -118,6 +118,19 @@ type DatePickerSignals struct {
 
 	// Highlighted date (for keyboard navigation within calendar)
 	HighlightedDate string `json:"highlightedDate"`
+
+	// Calendar-specific signals (needed for Calendar component compatibility)
+	CurrentDate string `json:"currentDate"`
+	Mode        string `json:"mode"`
+	Today       string `json:"today"`
+
+	// DateInput-specific signals (needed for DateInput component compatibility)
+	DateValue       string `json:"dateValue"`
+	StartInputValue string `json:"startInputValue"`
+	StartDateValue  string `json:"startDateValue"`
+	EndInputValue   string `json:"endInputValue"`
+	EndDateValue    string `json:"endDateValue"`
+	EndDateEnabled  bool   `json:"endDateEnabled"`
 }
 
 // DatePickerCalendarProps defines properties for the calendar part of the date picker

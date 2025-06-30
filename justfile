@@ -43,3 +43,28 @@ docker-shell service="app":
 docker-tail service lines="20":
 	@echo "📋 Last {{lines}} lines for {{service}} service..."
 	@docker logs --tail {{lines}} datastarui-local-{{service}}-1
+
+# Playwright testing commands
+playwright-up:
+	@echo "🎭 Starting Playwright container..."
+	UP_PROFILES=playwright just up
+
+playwright-down:
+	@echo "🎭 Stopping Playwright container..."
+	just _compose local down --volumes
+
+playwright-shell:
+	@echo "🐚 Opening shell in Playwright container..."
+	just _compose local exec '' playwright bash
+
+playwright-test:
+	@echo "🧪 Running Playwright tests..."
+	just _compose local exec '' playwright npx playwright test
+
+playwright-test-headed:
+	@echo "🧪 Running Playwright tests in headed mode..."
+	just _compose local exec '' playwright npx playwright test --headed
+
+playwright-ui:
+	@echo "🎭 Opening Playwright UI..."
+	just _compose local exec '' playwright npx playwright test --ui --ui-host=0.0.0.0

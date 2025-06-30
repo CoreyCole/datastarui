@@ -367,7 +367,7 @@ templ DateInput(props DateInputProps) {
 						<label
 							for={ dateInputID + "_end" }
 							class="text-sm font-medium"
-							data-class={ signals.Signal("endDateEnabled") + " ? 'text-sm font-medium text-foreground' : 'text-sm font-medium text-muted-foreground'" }
+							data-class={ "{'text-foreground': " + signals.Signal("endDateEnabled") + ", 'text-muted-foreground': !" + signals.Signal("endDateEnabled") + "}" }
 						>
 							End Date
 							if props.Required && !props.EndDateOptional {
