@@ -595,7 +595,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// Add DateInput signal coordination if DatePickerInputsID is provided
 		// Note: DateInput uses the same signal namespace as calendar, not a separate one
 		if props.DatePickerInputsID != "" {
-			if signals.Signal("mode") == "'range'" {
+			if props.Mode == "range" {
 				// Update DateInput range signals to sync with calendar - use same namespace
 				clickHandler += fmt.Sprintf(`; %s = %s; %s = %s; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''`,
 					signals.Signal("startDateValue"), signals.Signal("rangeStart"),

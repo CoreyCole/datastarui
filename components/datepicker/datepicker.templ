@@ -200,15 +200,28 @@ templ DatePicker(props DatePickerProps) {
 					}
 				}
 
-				// Create signals for DateInput component
-				dateInputSignals := utils.Signals(dateInputID, dateinput.DateInputSignals{
+				// Create signals for DateInput component - merge with DatePicker signals to avoid overwriting
+				dateInputSignals := utils.Signals(dateInputID, DatePickerSignals{
+					Open:            false, // Include open signal to prevent overwriting
+					InputValue:      initialInputValue,
+					SelectedDate:    initialSelectedDate,
+					RangeStart:      initialRangeStart,
+					RangeEnd:        initialRangeEnd,
+					DisplayMonth:    initialDisplayMonth,
+					IsValid:         true,
+					ErrorMessage:    "",
+					IsTyping:        false,
+					FocusedDate:     "",
+					HighlightedDate: "",
+					CurrentDate:     initialDisplayMonth,
+					Mode:            props.Mode,
+					Today:           todayStr,
+					DateValue:       initialSelectedDate,
 					StartInputValue: initialStartValue,
 					StartDateValue:  initialRangeStart,
 					EndInputValue:   initialEndValue,
 					EndDateValue:    initialRangeEnd,
 					EndDateEnabled:  true,
-					IsValid:         true,
-					ErrorMessage:    "",
 				})
 
 				// Sync DateInput range changes to DatePicker and trigger calendar update
@@ -228,9 +241,6 @@ templ DatePicker(props DatePickerProps) {
 			<div
 				class="relative flex items-center gap-2"
 				data-signals={ dateInputSignals.DataSignals }
-				if props.OpenOnFocus {
-					data-on-focus__capture={ signals.Set("open", "true") }
-				}
 			>
 				<!-- DateInput without postfix -->
 				<div class="flex-1">
@@ -242,7 +252,7 @@ templ DatePicker(props DatePickerProps) {
 						EndValue:   initialEndValue,
 						StartName:  "",               // Handled by DatePicker's hidden inputs
 						EndName:    "",               // Handled by DatePicker's hidden inputs
-						CalendarID: props.CalendarID, // Pass CalendarID for signal coordination
+						CalendarID: "", // Use same namespace as DatePicker, no separate calendar coordination
 						Disabled:   props.Disabled,
 						Required:   props.Required,
 						Class:      props.InputClass,
@@ -283,12 +293,28 @@ templ DatePicker(props DatePickerProps) {
 		} else {
 			<!-- Single mode: use DateInput with proper signal synchronization -->
 			{{
-				// Create signals for DateInput component
-				dateInputSignals := utils.Signals(dateInputID, dateinput.DateInputSignals{
-					InputValue:   initialInputValue,
-					DateValue:    initialSelectedDate,
-					IsValid:      true,
-					ErrorMessage: "",
+				// Create signals for DateInput component - merge with DatePicker signals to avoid overwriting
+				dateInputSignals := utils.Signals(dateInputID, DatePickerSignals{
+					Open:            false, // Include open signal to prevent overwriting
+					InputValue:      initialInputValue,
+					SelectedDate:    initialSelectedDate,
+					RangeStart:      initialRangeStart,
+					RangeEnd:        initialRangeEnd,
+					DisplayMonth:    initialDisplayMonth,
+					IsValid:         true,
+					ErrorMessage:    "",
+					IsTyping:        false,
+					FocusedDate:     "",
+					HighlightedDate: "",
+					CurrentDate:     initialDisplayMonth,
+					Mode:            props.Mode,
+					Today:           todayStr,
+					DateValue:       initialSelectedDate,
+					StartInputValue: "",
+					StartDateValue:  "",
+					EndInputValue:   "",
+					EndDateValue:    "",
+					EndDateEnabled:  false,
 				})
 
 				// Sync DateInput dateValue changes to DatePicker selectedDate
@@ -392,8 +418,8 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 		// Don't create new signals here - reference the existing ones
 		signals := utils.Signals(props.ID, DatePickerSignals{})
 
-		// Popover show/hide
-		showExpr := signals.Signal("open")
+		// Popover show/hide - explicitly handle undefined to prevent flash
+		showExpr := signals.Signal("open") + " === true"
 
 		// DatePicker open check (following select.templ pattern)
 		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
@@ -485,7 +511,7 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 		class={ positionClasses }
 		data-show={ showExpr }
 		data-on-keydown__window={ keyHandler }
-		style="width: max-content;"
+		style="width: max-content; display: none;"
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class }>
 			@calendar.Calendar(calendar.CalendarProps{

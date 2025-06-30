@@ -48,7 +48,7 @@ func Page() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-4\"><h1 class=\"text-3xl font-bold mb-6\">DatePicker Testing</h1><p class=\"text-muted-foreground mb-8\">Test bidirectional signal coordination between date inputs and calendar components.</p><div class=\"space-y-12\"><!-- Combined DatePicker Testing Section --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-4\"><h1 class=\"text-3xl font-bold mb-6\">Datepicker</h1><p class=\"text-muted-foreground mb-8\">Test bidirectional signal coordination between date inputs and calendar components.</p><div class=\"space-y-12\"><!-- Combined DatePicker Testing Section --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
