@@ -15,11 +15,20 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 - `just run` - Build and run the binary
 - `just install` - Install all dependencies (air, templ, go modules)
 
+### Docker Development
+- `just up` - Start Docker development environment
+- `just down` - Stop Docker development environment
+- `just docker-tail app` - Show recent app logs (use this to check for compilation errors)
+- `just docker-tail tailwind` - Show recent Tailwind logs
+- `just docker-shell app` - Open shell in app container
+
 ### Important Notes
 - **DO NOT** run `go run main.go` or `go build` directly - use `just` commands
 - **DO NOT** try to run the compiled binary - the developer has live reload running
+- **DO NOT** use `just docker-follow` - Claude cannot use interactive/following commands
 - Templ files are auto-generated, but you can run `templ generate` to check for errors
 - Tailwind CSS runs in watch mode automatically during development
+- To test live reload: make a templ file change, then use `just docker-tail app` to see rebuild logs
 
 ## Architecture
 

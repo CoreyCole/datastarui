@@ -4,3 +4,4 @@ datastarui.exe
 datastarui.exe~
 .tmp/
 log/
+node_modules/

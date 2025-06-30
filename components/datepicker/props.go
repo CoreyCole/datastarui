@@ -72,6 +72,14 @@ type DatePickerProps struct {
 	// CalendarClass allows additional CSS classes to be added to the calendar
 	CalendarClass string
 
+	// CalendarID allows DateInput to send signals TO calendar
+	// When provided, DateInput will update calendar signals for synchronization
+	CalendarID string
+
+	// DatePickerInputsID allows Calendar to send signals TO inputs
+	// When provided, Calendar will update input signals for synchronization
+	DatePickerInputsID string
+
 	// Attributes allows additional HTML attributes to be added
 	Attributes templ.Attributes
 }

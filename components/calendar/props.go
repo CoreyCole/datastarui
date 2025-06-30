@@ -41,6 +41,9 @@ type CalendarProps struct {
 	// Attributes allows additional HTML attributes to be added
 	Attributes templ.Attributes
 
+	// Signal coordination
+	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
+
 	// MinDate for date range mode (YYYY-MM-DD format)
 	MinDate string
 
@@ -61,6 +64,9 @@ type CalendarGridProps struct {
 
 	// NumberOfMonths defines how many months the parent calendar displays
 	NumberOfMonths int
+
+	// Signal coordination
+	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
 }
 
 // CalendarHeaderProps defines the properties for the calendar header
@@ -85,4 +91,7 @@ type CalendarDayProps struct {
 
 	// HideOutsideDays determines whether to hide dates from adjacent months
 	HideOutsideDays bool
+
+	// Signal coordination
+	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
 }

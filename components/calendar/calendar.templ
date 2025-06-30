@@ -80,10 +80,11 @@ templ Calendar(props CalendarProps) {
 		if numberOfMonths == 1 {
 			<!-- Single month layout -->
 			@CalendarGrid(CalendarGridProps{
-				ID:              calendarID,
-				MonthOffset:     0,
-				HideOutsideDays: props.HideOutsideDays,
-				NumberOfMonths:  numberOfMonths,
+				ID:                 calendarID,
+				MonthOffset:        0,
+				HideOutsideDays:    props.HideOutsideDays,
+				NumberOfMonths:     numberOfMonths,
+				DatePickerInputsID: props.DatePickerInputsID,
 			})
 		} else {
 			<!-- Multi-month layout - each month looks like a single calendar -->
@@ -97,10 +98,11 @@ templ Calendar(props CalendarProps) {
 							</div>
 						</div>
 						@CalendarGrid(CalendarGridProps{
-							ID:              calendarID,
-							MonthOffset:     monthIndex,
-							HideOutsideDays: props.HideOutsideDays,
-							NumberOfMonths:  numberOfMonths,
+							ID:                 calendarID,
+							MonthOffset:        monthIndex,
+							HideOutsideDays:    props.HideOutsideDays,
+							NumberOfMonths:     numberOfMonths,
+							DatePickerInputsID: props.DatePickerInputsID,
 						})
 					</div>
 				}
@@ -212,10 +214,11 @@ templ CalendarGrid(props CalendarGridProps) {
 			<!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->
 			for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
 				@CalendarDay(CalendarDayProps{
-					ID:              props.ID,
-					DayIndex:        dayIndex,
-					MonthOffset:     props.MonthOffset,
-					HideOutsideDays: props.HideOutsideDays,
+					ID:                 props.ID,
+					DayIndex:           dayIndex,
+					MonthOffset:        props.MonthOffset,
+					HideOutsideDays:    props.HideOutsideDays,
+					DatePickerInputsID: props.DatePickerInputsID,
 				})
 			}
 		</div>
@@ -252,6 +255,52 @@ templ CalendarDay(props CalendarDayProps) {
 			isOutsideDay = !isCurrentMonth;
 			isToday = dayDateStr === %s
 		`, currentDateRef, monthOffset, dayIndex, todayRef)
+
+		// Helper function to build click action including DateInput coordination
+		buildClickAction := func(signals *utils.SignalManager, datePickerInputsID string) string {
+			baseAction := signals.SingleOrRange("mode",
+				[]string{
+					signals.Set("selectedDate", "dayDateStr"),
+					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
+				},
+				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }"))
+
+			// Add DateInput coordination if DatePickerInputsID is provided
+			if datePickerInputsID != "" {
+				// Convert YYYY-MM-DD to MM/DD/YYYY format for input display
+				coordinationAction := fmt.Sprintf(`
+					; %s === 'single' ? (
+						$%s.inputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+						$%s.dateValue = dayDateStr
+					) : %s === 'range' ? (
+						%s && !%s ? (
+							$%s.startInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.startDateValue = dayDateStr,
+							$%s.endInputValue = '',
+							$%s.endDateValue = ''
+						) : !%s ? (
+							$%s.startInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.startDateValue = dayDateStr,
+							$%s.endInputValue = '',
+							$%s.endDateValue = ''
+						) : (
+							$%s.endInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.endDateValue = dayDateStr
+						)
+					) : null`,
+					modeRef, datePickerInputsID, datePickerInputsID, // single mode
+					modeRef, // range mode check
+					rangeStartRef, rangeEndRef, // first click case
+					datePickerInputsID, datePickerInputsID, datePickerInputsID, datePickerInputsID, // first click updates
+					rangeStartRef, // reset case
+					datePickerInputsID, datePickerInputsID, datePickerInputsID, datePickerInputsID, // reset updates
+					datePickerInputsID, datePickerInputsID) // second click updates
+
+				return baseAction + coordinationAction
+			}
+
+			return baseAction
+		}
 
 		// Simple property expressions
 		dayNumberExpr := daySetupExpr + "; dayNumber"
@@ -290,12 +339,7 @@ templ CalendarDay(props CalendarDayProps) {
 		`,
 			daySetupExpr,
 			props.HideOutsideDays, props.HideOutsideDays,
-			signals.SingleOrRange("mode",
-				[]string{
-					signals.Set("selectedDate", "dayDateStr"),
-					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
-				},
-				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }")))
+			buildClickAction(signals, props.DatePickerInputsID))
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">
 		<button

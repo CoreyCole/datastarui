@@ -224,8 +224,9 @@ templ DatePicker(props DatePickerProps) {
 						Mode:       "range",
 						StartValue: initialStartValue,
 						EndValue:   initialEndValue,
-						StartName:  "", // Handled by DatePicker's hidden inputs
-						EndName:    "", // Handled by DatePicker's hidden inputs
+						StartName:  "",               // Handled by DatePicker's hidden inputs
+						EndName:    "",               // Handled by DatePicker's hidden inputs
+						CalendarID: props.CalendarID, // Pass CalendarID for signal coordination
 						Disabled:   props.Disabled,
 						Required:   props.Required,
 						Class:      props.InputClass,
@@ -343,6 +344,7 @@ templ DatePicker(props DatePickerProps) {
 			InitialDisplayMonth: initialDisplayMonth,
 			InitialRangeStart:   initialRangeStart,
 			InitialRangeEnd:     initialRangeEnd,
+			DatePickerInputsID:  props.DatePickerInputsID,
 		})
 	</div>
 }
@@ -364,6 +366,7 @@ type DatePickerPopoverProps struct {
 	InitialDisplayMonth string
 	InitialRangeStart   string
 	InitialRangeEnd     string
+	DatePickerInputsID  string // ID of date picker inputs to send signals to for synchronization
 }
 
 // DatePickerPopover renders the calendar popover with keyboard navigation
@@ -470,17 +473,18 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class }>
 			@calendar.Calendar(calendar.CalendarProps{
-				ID:              props.ID + "_calendar",
-				Mode:            props.Mode,
-				SelectedDate:    props.InitialSelectedDate,
-				DefaultDate:     props.InitialDisplayMonth,
-				RangeStart:      props.InitialRangeStart,
-				RangeEnd:        props.InitialRangeEnd,
-				NumberOfMonths:  numMonths,
-				Disabled:        props.DisabledDates,
-				HideOutsideDays: props.HideOutsideDays,
-				MinDate:         props.MinDate,
-				MaxDate:         props.MaxDate,
+				ID:                 props.ID + "_calendar",
+				Mode:               props.Mode,
+				SelectedDate:       props.InitialSelectedDate,
+				DefaultDate:        props.InitialDisplayMonth,
+				RangeStart:         props.InitialRangeStart,
+				RangeEnd:           props.InitialRangeEnd,
+				NumberOfMonths:     numMonths,
+				Disabled:           props.DisabledDates,
+				HideOutsideDays:    props.HideOutsideDays,
+				DatePickerInputsID: props.DatePickerInputsID, // Pass DatePickerInputsID for signal coordination
+				MinDate:            props.MinDate,
+				MaxDate:            props.MaxDate,
 				Attributes: map[string]any{
 					"data-on-date-select":  dateSelectHandler,
 					"data-on-month-change": monthChangeHandler,

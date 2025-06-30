@@ -154,10 +154,11 @@ func Calendar(props CalendarProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
-				ID:              calendarID,
-				MonthOffset:     0,
-				HideOutsideDays: props.HideOutsideDays,
-				NumberOfMonths:  numberOfMonths,
+				ID:                 calendarID,
+				MonthOffset:        0,
+				HideOutsideDays:    props.HideOutsideDays,
+				NumberOfMonths:     numberOfMonths,
+				DatePickerInputsID: props.DatePickerInputsID,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -175,7 +176,7 @@ func Calendar(props CalendarProps) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(Date.UTC(new Date(" + signals.Signal("currentDate") + ").getUTCFullYear(), new Date(" + signals.Signal("currentDate") + ").getUTCMonth() + " + fmt.Sprintf("%d", monthIndex) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 96, Col: 307}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 97, Col: 307}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -186,10 +187,11 @@ func Calendar(props CalendarProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
-					ID:              calendarID,
-					MonthOffset:     monthIndex,
-					HideOutsideDays: props.HideOutsideDays,
-					NumberOfMonths:  numberOfMonths,
+					ID:                 calendarID,
+					MonthOffset:        monthIndex,
+					HideOutsideDays:    props.HideOutsideDays,
+					NumberOfMonths:     numberOfMonths,
+					DatePickerInputsID: props.DatePickerInputsID,
 				}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -258,7 +260,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(prevMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 138, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 140, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -271,7 +273,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 146, Col: 150}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 148, Col: 150}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -284,7 +286,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(nextMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 152, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 154, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -302,7 +304,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(prevMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 166, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 168, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -315,7 +317,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(" + currentDateRef + " + 'T12:00:00Z').toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 174, Col: 150}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 176, Col: 150}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -328,7 +330,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("new Date(Date.UTC(new Date(" + currentDateRef + ").getUTCFullYear(), new Date(" + currentDateRef + ").getUTCMonth() + " + fmt.Sprintf("%d", numberOfMonths-1) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 176, Col: 279}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 178, Col: 279}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -341,7 +343,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(nextMonthExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 182, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 184, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -388,10 +390,11 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 		}
 		for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
 			templ_7745c5c3_Err = CalendarDay(CalendarDayProps{
-				ID:              props.ID,
-				DayIndex:        dayIndex,
-				MonthOffset:     props.MonthOffset,
-				HideOutsideDays: props.HideOutsideDays,
+				ID:                 props.ID,
+				DayIndex:           dayIndex,
+				MonthOffset:        props.MonthOffset,
+				HideOutsideDays:    props.HideOutsideDays,
+				DatePickerInputsID: props.DatePickerInputsID,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -456,6 +459,52 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			isToday = dayDateStr === %s
 		`, currentDateRef, monthOffset, dayIndex, todayRef)
 
+		// Helper function to build click action including DateInput coordination
+		buildClickAction := func(signals *utils.SignalManager, datePickerInputsID string) string {
+			baseAction := signals.SingleOrRange("mode",
+				[]string{
+					signals.Set("selectedDate", "dayDateStr"),
+					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
+				},
+				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }"))
+
+			// Add DateInput coordination if DatePickerInputsID is provided
+			if datePickerInputsID != "" {
+				// Convert YYYY-MM-DD to MM/DD/YYYY format for input display
+				coordinationAction := fmt.Sprintf(`
+					; %s === 'single' ? (
+						$%s.inputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+						$%s.dateValue = dayDateStr
+					) : %s === 'range' ? (
+						%s && !%s ? (
+							$%s.startInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.startDateValue = dayDateStr,
+							$%s.endInputValue = '',
+							$%s.endDateValue = ''
+						) : !%s ? (
+							$%s.startInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.startDateValue = dayDateStr,
+							$%s.endInputValue = '',
+							$%s.endDateValue = ''
+						) : (
+							$%s.endInputValue = dayDateStr.split('-')[1] + '/' + dayDateStr.split('-')[2] + '/' + dayDateStr.split('-')[0],
+							$%s.endDateValue = dayDateStr
+						)
+					) : null`,
+					modeRef, datePickerInputsID, datePickerInputsID, // single mode
+					modeRef,                    // range mode check
+					rangeStartRef, rangeEndRef, // first click case
+					datePickerInputsID, datePickerInputsID, datePickerInputsID, datePickerInputsID, // first click updates
+					rangeStartRef,                                                                  // reset case
+					datePickerInputsID, datePickerInputsID, datePickerInputsID, datePickerInputsID, // reset updates
+					datePickerInputsID, datePickerInputsID) // second click updates
+
+				return baseAction + coordinationAction
+			}
+
+			return baseAction
+		}
+
 		// Simple property expressions
 		dayNumberExpr := daySetupExpr + "; dayNumber"
 
@@ -493,12 +542,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		`,
 			daySetupExpr,
 			props.HideOutsideDays, props.HideOutsideDays,
-			signals.SingleOrRange("mode",
-				[]string{
-					signals.Set("selectedDate", "dayDateStr"),
-					"this.dispatchEvent(new CustomEvent('calendar-change', { bubbles: true, detail: { selectedDate: dayDateStr } }))",
-				},
-				signals.RangeSelection("rangeStart", "rangeEnd", "dayDateStr", "{ rangeStart: "+signals.Signal("rangeStart")+", rangeEnd: "+signals.Signal("rangeEnd")+" }")))
+			buildClickAction(signals, props.DatePickerInputsID))
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\"><button type=\"button\" class=\"inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer\" data-text=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -506,7 +550,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(dayNumberExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 304, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 348, Col: 28}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -519,7 +563,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(daySetupExpr + fmt.Sprintf("; isOutsideDay && %t", props.HideOutsideDays))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 305, Col: 97}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 349, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -532,7 +576,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(daySetupExpr + "; " + dayClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 306, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 350, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -545,7 +589,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 307, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 351, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {

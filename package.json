@@ -1,0 +1,22 @@
+{
+  "name": "datastarui-tests",
+  "version": "1.0.0",
+  "description": "E2E tests for DatastarUI components",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:parallel": "playwright test --workers=4",
+    "test:fast": "playwright test --config=playwright-parallel.config.js",
+    "test:max": "playwright test --workers=8 --project=chromium",
+    "test:single": "playwright test --workers=1",
+    "test:health": "playwright test tests/server-health.spec.js",
+    "test:debug-pages": "playwright test tests/debug-pages.spec.js",
+    "test:components": "playwright test tests/component-rendering.spec.js",
+    "test:signals": "playwright test tests/datastar-interactions.spec.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.0"
+  }
+}

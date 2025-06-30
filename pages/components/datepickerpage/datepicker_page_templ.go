@@ -49,7 +49,7 @@ func Page() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-4\"><h1 class=\"text-3xl font-bold mb-6\">DatePicker & DateInput Components</h1><p class=\"text-muted-foreground mb-8\">Smart date input components with auto-formatting and calendar integration.</p><div class=\"space-y-12\"><!-- NEW: DateInput Component Demo --><div><h2 class=\"text-2xl font-semibold mb-4\">DateInput Component</h2><p class=\"text-sm text-muted-foreground mb-4\">A smart date input with automatic slash insertion and year completion. Type numbers and see the magic!</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-4\"><h1 class=\"text-3xl font-bold mb-6\">DatePicker & DateInput Components</h1><p class=\"text-muted-foreground mb-8\">Smart date input components with auto-formatting and calendar integration.</p><div class=\"space-y-12\"><!-- NEW: DateInput Component Demo --><!-- Test: Live reload working! --><div><h2 class=\"text-2xl font-semibold mb-4\">DateInput Component</h2><p class=\"text-sm text-muted-foreground mb-4\">A smart date input with automatic slash insertion and year completion. Type numbers and see the magic!</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -329,12 +329,12 @@ func Page() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "basic-date"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "basic_date"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					templ_7745c5c3_Err = datepicker.DatePicker(datepicker.DatePickerProps{
-						ID:   "basic-date",
+						ID:   "basic_date",
 						Name: "basicDate",
 						Mode: "single",
 					}).Render(ctx, templ_7745c5c3_Buffer)
@@ -407,18 +407,20 @@ func Page() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "range-date"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = label.Label(label.LabelProps{For: "range_date"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					templ_7745c5c3_Err = datepicker.DatePicker(datepicker.DatePickerProps{
-						ID:              "range-date",
-						Name:            "dateRange",
-						Mode:            "range",
-						OpenOnFocus:     true,
-						PopoverPosition: "top",
-						Placeholder:     "Select date range...",
-						NumberOfMonths:  2,
+						ID:                 "range_date",
+						Name:               "dateRange",
+						Mode:               "range",
+						OpenOnFocus:        true,
+						PopoverPosition:    "top",
+						Placeholder:        "Select date range...",
+						NumberOfMonths:     2,
+						CalendarID:         "range_date_calendar",
+						DatePickerInputsID: "range_date_dateinput",
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err

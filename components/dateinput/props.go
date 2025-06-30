@@ -15,6 +15,9 @@ type DateInputProps struct {
 	Postfix     templ.Component  // Optional postfix component (e.g., calendar icon)
 	Attributes  templ.Attributes // Additional HTML attributes
 
+	// Signal coordination
+	CalendarID string // ID of calendar to send signals to for synchronization
+
 	// Single mode props
 	Value string // Initial value (MM/DD/YYYY format)
 

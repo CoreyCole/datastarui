@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Development files
+.air.toml
+*.log
+.tmp/
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+datastarui.exe
+datastarui
+*.exe
+
+# Test files
+*_test.go
+testdata/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

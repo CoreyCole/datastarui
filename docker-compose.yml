@@ -1,0 +1,53 @@
+services:
+  # Echo server with Air live reload
+  datastarui-app:
+    build:
+      context: .
+      target: development
+    ports:
+      - "4242:4242"
+    volumes:
+      - .:/app # Mount local files
+    environment:
+      - CGO_ENABLED=0
+      - GOOS=linux
+      - GO111MODULE=on
+    working_dir: /app
+    command: sh -c "go mod download && air" # Download modules first, then start air
+    depends_on:
+      - datastarui-tailwind
+    networks:
+      - datastarui-network
+  # Tailwind CSS watcher
+  datastarui-tailwind:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app # Mount local files
+    working_dir: /app
+    command: sh -c "echo 'Starting Tailwind CSS watcher...' && /usr/local/bin/tailwindcss -i static/css/index.css -o static/css/build.css --watch --content './components/**/*.templ' --content './pages/**/*.templ' --content './layouts/**/*.templ'"
+    networks:
+      - datastarui-network
+  # Optional: Development tools container for running tests, etc.
+  tools:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - go-mod-cache:/go/pkg/mod
+    working_dir: /app
+    command: tail -f /dev/null # Keep container running
+    networks:
+      - datastarui-network
+    profiles:
+      - tools # Only start when explicitly requested
+volumes:
+  go-mod-cache:
+  air-tmp:
+networks:
+  datastarui-network:
+    driver: bridge
+

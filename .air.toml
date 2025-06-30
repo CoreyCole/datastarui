@@ -4,7 +4,7 @@ tmp_dir = ".tmp"
 
 [build]
   args_bin = []
-  bin = "datastarui.exe"
+  bin = "datastarui"
   cmd = "just"
   delay = 1000
   exclude_dir = ["log", "public", "testdata", "node_modules"]
@@ -18,8 +18,8 @@ tmp_dir = ".tmp"
   include_file = ["main.go"]
   kill_delay = "0s"
   log = "build-errors.log"
-  poll = false
-  poll_interval = 0
+  poll = true
+  poll_interval = 1000
   post_cmd = []
   pre_cmd = []
   rerun = false

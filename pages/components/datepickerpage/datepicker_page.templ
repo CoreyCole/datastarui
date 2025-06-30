@@ -15,6 +15,7 @@ templ Page() {
 			<p class="text-muted-foreground mb-8">Smart date input components with auto-formatting and calendar integration.</p>
 			<div class="space-y-12">
 				<!-- NEW: DateInput Component Demo -->
+				<!-- Test: Live reload working! -->
 				<div>
 					<h2 class="text-2xl font-semibold mb-4">DateInput Component</h2>
 					<p class="text-sm text-muted-foreground mb-4">
@@ -137,11 +138,11 @@ templ Page() {
 					@card.Card(card.CardProps{Class: "w-fit"}) {
 						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
 							<div class="space-y-4">
-								@label.Label(label.LabelProps{For: "basic-date"}) {
+								@label.Label(label.LabelProps{For: "basic_date"}) {
 									Select Date
 								}
 								@datepicker.DatePicker(datepicker.DatePickerProps{
-									ID:   "basic-date",
+									ID:   "basic_date",
 									Name: "basicDate",
 									Mode: "single",
 								})
@@ -158,17 +159,19 @@ templ Page() {
 					@card.Card(card.CardProps{Class: "w-fit"}) {
 						@card.CardContent(card.CardContentProps{Class: "p-6"}) {
 							<div class="space-y-4">
-								@label.Label(label.LabelProps{For: "range-date"}) {
+								@label.Label(label.LabelProps{For: "range_date"}) {
 									Select Date Range
 								}
 								@datepicker.DatePicker(datepicker.DatePickerProps{
-									ID:              "range-date",
-									Name:            "dateRange",
-									Mode:            "range",
-									OpenOnFocus:     true,
-									PopoverPosition: "top",
-									Placeholder:     "Select date range...",
-									NumberOfMonths:  2,
+									ID:                 "range_date",
+									Name:               "dateRange",
+									Mode:               "range",
+									OpenOnFocus:        true,
+									PopoverPosition:    "top",
+									Placeholder:        "Select date range...",
+									NumberOfMonths:     2,
+									CalendarID:         "range_date_calendar",
+									DatePickerInputsID: "range_date_dateinput",
 								})
 							</div>
 						}

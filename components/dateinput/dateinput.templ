@@ -124,15 +124,26 @@ templ DateInput(props DateInputProps) {
 
 		// Create date formatting handlers
 		createInputHandler := func(inputSignal, dateSignal string) string {
-			return "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+			baseHandler := "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
 				signals.Set(inputSignal, "evt.target.value") + "; " +
 				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
 				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
 				" : " + signals.Set(dateSignal, "''")
+
+			// Add calendar coordination if CalendarID is provided
+			if props.CalendarID != "" {
+				if strings.Contains(dateSignal, "startDateValue") {
+					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? $" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0') : ($" + props.CalendarID + ".rangeStart = '')"
+				} else if strings.Contains(dateSignal, "endDateValue") {
+					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? $" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0') : ($" + props.CalendarID + ".rangeEnd = '')"
+				}
+			}
+
+			return baseHandler
 		}
 
 		createBlurHandler := func(inputSignal, dateSignal string) string {
-			return "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
+			baseHandler := "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
 				"(parts => newValue => fullYear => " +
 				"(parts = evt.target.value.split('/'), " +
 				"fullYear = (parseInt(parts[2]) <= 30 ? '20' + parts[2] : '19' + parts[2]), " +
@@ -141,6 +152,17 @@ templ DateInput(props DateInputProps) {
 				signals.Set(inputSignal, "newValue") + ", " +
 				signals.Set(dateSignal, "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
 				"))() : null"
+
+			// Add calendar coordination if CalendarID is provided
+			if props.CalendarID != "" {
+				if strings.Contains(dateSignal, "startDateValue") {
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')))() : null")
+				} else if strings.Contains(dateSignal, "endDateValue") {
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')))() : null")
+				}
+			}
+
+			return baseHandler
 		}
 
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
