@@ -515,12 +515,73 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// Pre-calculate day data using Go time package (much cleaner)
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, props.CurrentDateStr, signals.Signal("today"))
 
-		// Simple click handler for day selection - use direct signal assignment
-		clickHandler := signals.Set("selectedDate", fmt.Sprintf("'%s'", dayData.DateString))
+		// Mode-aware click handler for day selection
+		var clickHandler string
+		if signals.Signal("mode") == "'range'" {
+			// Range mode: implement start/end date selection logic
+			clickHandler = fmt.Sprintf(`
+				// Range selection logic
+				let selectedStart = %s;
+				let selectedEnd = %s;
+				let clickedDate = '%s';
+				
+				if (!selectedStart) {
+					// No start date - set as start
+					%s;
+					%s;
+				} else if (!selectedEnd) {
+					// Have start, no end - set as end or swap if before start
+					if (clickedDate < selectedStart) {
+						// Clicked date is before start - swap them
+						%s;
+						%s;
+					} else {
+						// Clicked date is after start - set as end
+						%s;
+					}
+				} else {
+					// Have both start and end - reset with new start
+					%s;
+					%s;
+				}`,
+				signals.Signal("rangeStart"),
+				signals.Signal("rangeEnd"),
+				dayData.DateString,
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeEnd", "''"),
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeEnd", "selectedStart"),
+				signals.Set("rangeEnd", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeStart", fmt.Sprintf("'%s'", dayData.DateString)),
+				signals.Set("rangeEnd", "''"),
+			)
+		} else {
+			// Single mode: set selected date
+			clickHandler = signals.Set("selectedDate", fmt.Sprintf("'%s'", dayData.DateString))
+		}
+
+		// Add DateInput signal coordination if DatePickerInputsID is provided
+		// Note: DateInput uses the same signal namespace as calendar, not a separate one
+		if props.DatePickerInputsID != "" {
+			if signals.Signal("mode") == "'range'" {
+				// Update DateInput range signals to sync with calendar - use same namespace
+				clickHandler += fmt.Sprintf(`; %s = %s; %s = %s; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''`,
+					signals.Signal("startDateValue"), signals.Signal("rangeStart"),
+					signals.Signal("endDateValue"), signals.Signal("rangeEnd"),
+					signals.Signal("startInputValue"), signals.Signal("rangeStart"), signals.Signal("rangeStart"),
+					signals.Signal("endInputValue"), signals.Signal("rangeEnd"), signals.Signal("rangeEnd"))
+			} else {
+				// Update DateInput single date signal to sync with calendar - use same namespace
+				clickHandler += fmt.Sprintf(`; %s = %s; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''`,
+					signals.Signal("dateValue"), signals.Signal("selectedDate"),
+					signals.Signal("inputValue"), signals.Signal("selectedDate"), signals.Signal("selectedDate"))
+			}
+		}
 
 		// Debug: check what signals namespace we're using and if it's working
-		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); console.log('Setting %s.selectedDate to: %s'); %s; console.log('After set, %s.selectedDate is:', %s)",
-			props.ID, props.ID, dayData.DateString, clickHandler, props.ID, signals.Signal("selectedDate"))
+		// Fixed: Now using correct signal references without separate namespace
+		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
+			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
 		// CSS classes with conditional styling for today
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -531,9 +592,11 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			todayClasses = " bg-accent text-accent-foreground font-semibold"
 		}
 
-		// Signal-based conditional styling for selected date - object syntax for data-class
-		selectionClasses := fmt.Sprintf("{'bg-primary text-primary-foreground': %s === '%s'}",
-			signals.Signal("selectedDate"), dayData.DateString)
+		// Signal-based conditional styling for selected date and range - object syntax for data-class
+		selectionClasses := fmt.Sprintf("{'bg-primary text-primary-foreground': %s === '%s' || %s === '%s' || %s === '%s'}",
+			signals.Signal("selectedDate"), dayData.DateString, // Single mode selection
+			signals.Signal("rangeStart"), dayData.DateString, // Range start
+			signals.Signal("rangeEnd"), dayData.DateString) // Range end
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -563,7 +626,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 339, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 402, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -576,7 +639,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(debugClickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 340, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 403, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -589,7 +652,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 342, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 405, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
