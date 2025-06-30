@@ -224,19 +224,7 @@ templ DatePicker(props DatePickerProps) {
 					EndDateEnabled:  true,
 				})
 
-				// Sync DateInput range changes to DatePicker and trigger calendar update
-				startDateChangeHandler := dateInputSignals.Signal("startDateValue") + " ? " +
-					signals.Set("rangeStart", dateInputSignals.Signal("startDateValue")) + " : " +
-					signals.Set("rangeStart", "''")
-
-				endDateChangeHandler := dateInputSignals.Signal("endDateValue") + " ? " +
-					signals.Set("rangeEnd", dateInputSignals.Signal("endDateValue")) + " : " +
-					signals.Set("rangeEnd", "''")
-
-				// Combined change handler - calendar will read from DatePicker signals
-				rangeChangeHandler := startDateChangeHandler + "; " + endDateChangeHandler
-
-				// Focus is now handled at the container level with data-on-focus__capture
+				// DateInput will handle calendar coordination directly via CalendarID
 			}}
 			<div
 				class="relative flex items-center gap-2"
@@ -252,12 +240,11 @@ templ DatePicker(props DatePickerProps) {
 						EndValue:   initialEndValue,
 						StartName:  "",               // Handled by DatePicker's hidden inputs
 						EndName:    "",               // Handled by DatePicker's hidden inputs
-						CalendarID: "", // Use same namespace as DatePicker, no separate calendar coordination
+						CalendarID: datePickerID, // Coordinate with calendar using same namespace
 						Disabled:   props.Disabled,
 						Required:   props.Required,
 						Class:      props.InputClass,
 						Attributes: map[string]any{
-							"data-on-input":   rangeChangeHandler,
 							"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 						},
 					})
@@ -317,11 +304,7 @@ templ DatePicker(props DatePickerProps) {
 					EndDateEnabled:  false,
 				})
 
-				// Sync DateInput dateValue changes to DatePicker selectedDate
-				dateInputChangeHandler := dateInputSignals.Signal("dateValue") + " ? " +
-					signals.Set("selectedDate", dateInputSignals.Signal("dateValue")) + " : null"
-
-				// Focus is now handled at the container level with data-on-focus__capture
+				// DateInput will handle calendar coordination directly via CalendarID
 			}}
 			<div
 				data-signals={ dateInputSignals.DataSignals }
@@ -334,11 +317,11 @@ templ DatePicker(props DatePickerProps) {
 					Name:        "", // No form submission for DateInput itself
 					Placeholder: placeholder,
 					Value:       initialInputValue,
+					CalendarID:  datePickerID, // Coordinate with calendar using same namespace
 					Disabled:    props.Disabled,
 					Required:    props.Required,
 					Class:       props.InputClass,
 					Attributes: map[string]any{
-						"data-on-input":   dateInputChangeHandler,
 						"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 					},
 				})

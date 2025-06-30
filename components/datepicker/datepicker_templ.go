@@ -415,19 +415,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 				EndDateEnabled:  true,
 			})
 
-			// Sync DateInput range changes to DatePicker and trigger calendar update
-			startDateChangeHandler := dateInputSignals.Signal("startDateValue") + " ? " +
-				signals.Set("rangeStart", dateInputSignals.Signal("startDateValue")) + " : " +
-				signals.Set("rangeStart", "''")
-
-			endDateChangeHandler := dateInputSignals.Signal("endDateValue") + " ? " +
-				signals.Set("rangeEnd", dateInputSignals.Signal("endDateValue")) + " : " +
-				signals.Set("rangeEnd", "''")
-
-			// Combined change handler - calendar will read from DatePicker signals
-			rangeChangeHandler := startDateChangeHandler + "; " + endDateChangeHandler
-
-			// Focus is now handled at the container level with data-on-focus__capture
+			// DateInput will handle calendar coordination directly via CalendarID
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"relative flex items-center gap-2\" data-signals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -435,7 +423,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputSignals.DataSignals)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 243, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 231, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -451,14 +439,13 @@ func DatePicker(props DatePickerProps) templ.Component {
 				Mode:       "range",
 				StartValue: initialStartValue,
 				EndValue:   initialEndValue,
-				StartName:  "", // Handled by DatePicker's hidden inputs
-				EndName:    "", // Handled by DatePicker's hidden inputs
-				CalendarID: "", // Use same namespace as DatePicker, no separate calendar coordination
+				StartName:  "",           // Handled by DatePicker's hidden inputs
+				EndName:    "",           // Handled by DatePicker's hidden inputs
+				CalendarID: datePickerID, // Coordinate with calendar using same namespace
 				Disabled:   props.Disabled,
 				Required:   props.Required,
 				Class:      props.InputClass,
 				Attributes: map[string]any{
-					"data-on-input":   rangeChangeHandler,
 					"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
@@ -472,7 +459,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Toggle("open") + "; evt.stopPropagation()")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 271, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 258, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -512,11 +499,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 				EndDateEnabled:  false,
 			})
 
-			// Sync DateInput dateValue changes to DatePicker selectedDate
-			dateInputChangeHandler := dateInputSignals.Signal("dateValue") + " ? " +
-				signals.Set("selectedDate", dateInputSignals.Signal("dateValue")) + " : null"
-
-			// Focus is now handled at the container level with data-on-focus__capture
+			// DateInput will handle calendar coordination directly via CalendarID
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div data-signals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -524,7 +507,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputSignals.DataSignals)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 327, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 310, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -542,7 +525,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Set("open", "true"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 329, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 312, Col: 57}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 				if templ_7745c5c3_Err != nil {
@@ -562,11 +545,11 @@ func DatePicker(props DatePickerProps) templ.Component {
 				Name:        "", // No form submission for DateInput itself
 				Placeholder: placeholder,
 				Value:       initialInputValue,
+				CalendarID:  datePickerID, // Coordinate with calendar using same namespace
 				Disabled:    props.Disabled,
 				Required:    props.Required,
 				Class:       props.InputClass,
 				Attributes: map[string]any{
-					"data-on-input":   dateInputChangeHandler,
 					"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
@@ -580,7 +563,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Toggle("open") + "; evt.stopPropagation()")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 350, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 333, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -783,7 +766,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 512, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 495, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -796,7 +779,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(keyHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 513, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 496, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {

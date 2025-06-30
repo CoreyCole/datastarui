@@ -133,9 +133,12 @@ templ DateInput(props DateInputProps) {
 			// Add calendar coordination if CalendarID is provided
 			if props.CalendarID != "" {
 				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? $" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0') : ($" + props.CalendarID + ".rangeStart = '')"
+					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? ($" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01') : ($" + props.CalendarID + ".rangeStart = '')"
 				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? $" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0') : ($" + props.CalendarID + ".rangeEnd = '')"
+					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? ($" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01') : ($" + props.CalendarID + ".rangeEnd = '')"
+				} else if strings.Contains(dateSignal, "dateValue") {
+					// Single date mode - update selectedDate and currentDate
+					baseHandler += "; " + "evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? ($" + props.CalendarID + ".selectedDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01') : ($" + props.CalendarID + ".selectedDate = '')"
 				}
 			}
 
@@ -156,9 +159,12 @@ templ DateInput(props DateInputProps) {
 			// Add calendar coordination if CalendarID is provided
 			if props.CalendarID != "" {
 				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')))() : null")
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
 				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')))() : null")
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
+				} else if strings.Contains(dateSignal, "dateValue") {
+					// Single date mode - update selectedDate and currentDate
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".selectedDate = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
 				}
 			}
 

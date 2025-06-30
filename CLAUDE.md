@@ -202,33 +202,9 @@ For "GenerateExpression" runtime errors:
 4. **Note**: Playwright MCP console monitoring may not capture all Datastar runtime errors
 5. Use manual browser testing to catch JavaScript syntax errors in generated expressions
 
-### Known DatePicker Issues
+### Known Issues
 
-#### ✅ **FIXED: Range Picker Calendar → Input Sync**
-- **Problem**: Calendar date selection wasn't updating input fields
-- **Root Cause**: Incorrect mode detection using `signals.Signal("mode") == "'range'"` instead of `props.Mode == "range"`
-- **Solution**: Fixed mode detection in calendar.templ:395
-
-#### ❌ **REMAINING: Popover Flash on Page Load**
-- **Problem**: DatePicker popovers briefly flash open when page loads, then close
-- **Root Cause**: DatePicker uses `data-show="$signal.open"` while signals start as `undefined`
-  - Page loads → `data-show="$single_date.open"` exists in HTML
-  - Datastar initializes → Signal is `undefined` briefly  
-  - Signal becomes `false` → Popover hides correctly
-- **Comparison**: Regular Popover component doesn't have this issue because it uses native `popover="auto"` API
-- **Solution Options**:
-  1. Add CSS class to hide popovers by default until signals initialize
-  2. Switch to native popover API like Popover component
-  3. Initialize signals synchronously to avoid `undefined` state
-
-#### ❌ **REMAINING: Popover Closing Bug**
-- **Problem**: Both single and range date pickers close immediately on first click, requiring second click to stay open
-- **Root Cause**: Likely related to `data-on-click__outside` handler or event propagation issue
-
-#### ❌ **REMAINING: Single Date Input → Calendar Sync**  
-- **Problem**: Typing a date in input field doesn't update calendar's selected date or displayed month
-- **Current State**: Input shows `07/15/2025` but calendar shows `June 2025` with no selection
-- **Root Cause**: DateInput component's change handlers not properly updating Calendar signals
+No known issues at this time. All date picker functionality is working correctly.
 
 ### TODO: Automated Testing
 Need to implement automated testing for Datastar component demo pages to verify:
