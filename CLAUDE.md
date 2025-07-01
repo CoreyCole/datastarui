@@ -57,11 +57,17 @@ datastarui/
 │   │   ├── button.templ          # Component template
 │   │   ├── types.go              # Props and types
 │   │   └── variants.go           # CSS variants
+├── utils/                        # Utility libraries
+│   ├── signals.go                # Signal management with namespacing
+│   ├── expressions.go            # Datastar expression builders
+│   └── data_class.go             # Conditional CSS class helpers
 ├── pages/
 │   ├── components/               # Component demo pages
 │   └── home_page.templ           # Home page
 ├── layouts/                      # Page layouts and navigation
 ├── static/css/                   # Tailwind CSS files
+├── docs/
+│   └── guide.md                  # Development patterns guide
 └── main.go                       # Server and routing
 ```
 
@@ -73,6 +79,36 @@ Each component follows a consistent 3-file pattern:
 
 ## Datastar Development Guidelines
 
+### IMPORTANT: Use Utility Libraries
+**Always use the utility libraries in `utils/` instead of string concatenation for Datastar expressions.**
+
+See `/docs/guide.md` for comprehensive patterns and examples.
+
+### Core Utilities
+
+1. **Signal Management** (`utils/signals.go`)
+```go
+signals := utils.Signals("my_component", MySignals{
+    Open: false,
+    Value: "default",
+})
+// Use: signals.DataSignals, signals.Signal("prop"), signals.Toggle("open"), etc.
+```
+
+2. **Expression Builders** (`utils/expressions.go`)
+```go
+expr := utils.NewExpression().
+    Statement("evt.preventDefault()").
+    SetSignal("modal.open", "false").
+    Build()
+```
+
+3. **Conditional Classes** (`utils/data_class.go`)
+```go
+dataClass := utils.HighlightedItem("select.highlighted", index)
+// Use with: data-class={ dataClass }
+```
+
 ### Signal Naming Convention
 - Use lowercase with underscores in `props.ID` (e.g., `user_profile`, `item_list`)
 - **Never** use uppercase, dashes, or periods in signal names
@@ -82,20 +118,20 @@ Each component follows a consistent 3-file pattern:
 - Signals are **globally scoped** on the page
 - Use `props.ID` as namespace: `$user_profile.name`, `$item_list.selected`
 - Only leaf nodes are valid signals (not intermediate namespaces)
-- Initialize signals in component template: `data-signals='{"user_profile": {"name": "", "active": false}}'`
+- Initialize signals using `utils.Signals()` helper
 
 ### Key Patterns
 - **Props down, events up** - encapsulate state, communicate via defined interfaces
 - **Server-driven state** - backend is single source of truth
 - **Hypermedia approach** - let server determine available actions
-- **Minimal JavaScript** - use data-* attributes for reactivity when possible
+- **No string concatenation** - use expression builders for maintainability
 
 ### Common Datastar Attributes
-- `data-signals` - Initialize component state
+- `data-signals` - Initialize component state (use `signals.DataSignals`)
 - `data-on-click` - Handle click events
 - `data-text` - Display signal values
 - `data-show`/`data-hide` - Conditional visibility
-- `data-attr-*` - Dynamic HTML attributes
+- `data-class` - Conditional CSS classes (use `utils.DataClass`)
 - `data-bind-*` - Two-way data binding
 - `data-indicator-*` - Loading states for fetch requests
 
@@ -118,10 +154,13 @@ Each component follows a consistent 3-file pattern:
 1. **Analyze** source shadcn/ui component for structure and variants
 2. **Create** component directory with 3-file pattern
 3. **Implement** exact CSS classes using tailwind-merge-go
-4. **Add** Datastar reactivity with proper signal patterns
+4. **Add** Datastar reactivity using utility libraries:
+   - Use `utils.Signals()` for signal management
+   - Use `utils.NewExpression()` for complex expressions
+   - Use `utils.NewDataClass()` for conditional classes
 5. **Create** demo page in `pages/components/[component]/`
 6. **Update** routing in main.go and sidebar.go
-7. **Test** all variants and interactive behaviors
+7. **Test** all variants and interactive behaviors with Playwright MCP
 
 ### CSS and Styling
 - Use exact CSS classes from shadcn/ui for pixel-perfect parity
