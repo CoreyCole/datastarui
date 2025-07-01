@@ -59,6 +59,11 @@ type DatePickerProps struct {
 	// OpenOnFocus automatically opens the calendar when input is focused
 	OpenOnFocus bool
 
+	// DisablePopoverOpenOnFocus prevents the popover from opening on input focus
+	// When true, popover only opens when calendar icon is clicked
+	// When false (default), popover opens on input focus
+	DisablePopoverOpenOnFocus bool
+
 	// PopoverPosition controls where the popover appears relative to the input
 	// Options: "bottom" (default), "top"
 	PopoverPosition string

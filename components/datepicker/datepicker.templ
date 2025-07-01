@@ -204,6 +204,9 @@ templ DatePicker(props DatePickerProps) {
 			}}
 			<div
 				class="relative flex items-center gap-2"
+				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
+					data-on-focus__capture={ signals.Set("open", "true") }
+				}
 			>
 				<!-- DateInput without postfix -->
 				<div class="flex-1">
@@ -258,7 +261,7 @@ templ DatePicker(props DatePickerProps) {
 				// DateInput will handle calendar coordination directly via CalendarID
 			}}
 			<div
-				if props.OpenOnFocus {
+				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
 					data-on-focus__capture={ signals.Set("open", "true") }
 				}
 			>

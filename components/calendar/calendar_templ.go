@@ -534,7 +534,6 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
 		// Dynamic click handler that calculates the date using current signal value
-		dayIndexJS := fmt.Sprintf("%d", props.DayIndex)
 		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
 
 		var clickHandler string
@@ -542,78 +541,16 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		if !dayData.IsCurrentMonth {
 			clickHandler = "evt.preventDefault(); evt.stopPropagation()"
 		} else if props.Mode == "range" {
-			// Range mode: calculate date dynamically then handle range logic
-			clickHandler = fmt.Sprintf(`
-				// Calculate clicked date dynamically using current signal value
-				const currentDate = new Date(%s + 'T12:00:00Z');
-				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
-				const year = targetDate.getFullYear();
-				const month = targetDate.getMonth();
-				
-				// Calculate first day of month and weekday (0 = Sunday)
-				const firstDay = new Date(year, month, 1);
-				const startWeekday = firstDay.getDay();
-				
-				// Calculate day number for this grid position
-				const dayNumber = %s - startWeekday + 1;
-				
-				// Days in current month
-				const daysInMonth = new Date(year, month + 1, 0).getDate();
-				
-				// Calculate actual date for this cell
-				let actualDate, displayDayNumber;
-				
-				if (dayNumber <= 0) {
-					// Previous month
-					const prevMonthDays = new Date(year, month, 0).getDate();
-					displayDayNumber = prevMonthDays + dayNumber;
-					actualDate = new Date(year, month - 1, displayDayNumber);
-				} else if (dayNumber > daysInMonth) {
-					// Next month
-					displayDayNumber = dayNumber - daysInMonth;
-					actualDate = new Date(year, month + 1, displayDayNumber);
-				} else {
-					// Current month
-					displayDayNumber = dayNumber;
-					actualDate = new Date(year, month, dayNumber);
-				}
-				
-				// Format date as YYYY-MM-DD
-				const clickedDate = actualDate.getFullYear() + '-' + 
-					(actualDate.getMonth() + 1).toString().padStart(2, '0') + '-' + 
-					actualDate.getDate().toString().padStart(2, '0');
-				
-				// Range selection logic
-				let selectedStart = %s;
-				let selectedEnd = %s;
-				
-				if (!selectedStart) {
-					// No start date - set as start
-					%s;
-					%s;
-				} else if (!selectedEnd) {
-					// Have start, no end - set as end or swap if before start
-					if (clickedDate < selectedStart) {
-						%s;
-						%s;
-					} else {
-						%s;
-					}
-				} else {
-					// Have both - start new range
-					%s;
-					%s;
-				}`,
-				signals.Signal("currentDate"), monthOffsetJS, dayIndexJS,
+			// Range mode: simplified approach compatible with Datastar
+			// Use button text content for day number to avoid complex calculation
+			clickHandler = fmt.Sprintf("(buttonDay => clickedDate => !%s ? (%s, %s) : !%s ? (clickedDate < %s ? (%s, %s) : %s) : (%s, %s))(parseInt(evt.target.textContent))((new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + parseInt(evt.target.textContent).toString().padStart(2, '0')))",
 				signals.Signal("rangeStart"),
-				signals.Signal("rangeEnd"),
-				signals.Set("rangeStart", "clickedDate"),
-				signals.Set("rangeEnd", "''"),
-				signals.Set("rangeStart", "clickedDate"),
-				signals.Set("rangeEnd", "selectedStart"),
+				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", "''"),
+				signals.Signal("rangeEnd"), signals.Signal("rangeStart"),
+				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", signals.Signal("rangeStart")),
 				signals.Set("rangeEnd", "clickedDate"),
-				signals.Set("rangeStart", "clickedDate"),
-				signals.Set("rangeEnd", "''"))
+				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", "''"),
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS)
 		} else {
 			// Single mode: use the pre-calculated date from Go and adjust based on current signal
 			clickHandler = fmt.Sprintf(`
@@ -716,7 +653,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 489, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 426, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -729,7 +666,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 490, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 427, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -742,7 +679,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 492, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 429, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
