@@ -124,12 +124,28 @@ templ DateInput(props DateInputProps) {
 
 		// Create date formatting handlers
 		createInputHandler := func(inputSignal, dateSignal string) string {
-			// Check if cursor is at the end and we should apply formatting
-			baseHandler := "const cursorAtEnd = evt.target.selectionStart === evt.target.value.length; " +
+			// Handle slash typing and auto-format single digits
+			baseHandler := "const value = evt.target.value; " +
+				"const lastChar = value.slice(-1); " +
+				"const beforeSlash = value.slice(0, -1); " +
+				// Check if user typed a slash
+				"if (lastChar === '/') { " +
+				"const parts = beforeSlash.split('/'); " +
+				// Auto-format single digit before slash
+				"if (parts.length === 1 && parts[0].length === 1) { " +
+				"evt.target.value = '0' + parts[0] + '/'; " +
+				"} else if (parts.length === 2 && parts[1].length === 1) { " +
+				"evt.target.value = parts[0] + '/0' + parts[1] + '/'; " +
+				"} else { " +
+				"evt.target.value = value; " +
+				"} " +
+				"} else { " +
+				// Original formatting logic for digits
+				"const cursorAtEnd = evt.target.selectionStart === evt.target.value.length; " +
 				"const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length; " +
-				// If cursor at end and typing forward, apply formatting
 				"if (shouldFormat) { " +
 				"evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+				"} " +
 				"} " +
 				// Always update the signal
 				signals.Set(inputSignal, "evt.target.value") + "; " +
@@ -165,28 +181,36 @@ templ DateInput(props DateInputProps) {
 		}
 
 		createBlurHandler := func(inputSignal, dateSignal string) string {
-			baseHandler := "evt.target.value.includes('/') && evt.target.value.split('/')[2] && evt.target.value.split('/')[2].length === 2 ? " +
-				"(parts => (parts = evt.target.value.split('/'), evt.target.value = parts[0] + '/' + parts[1] + '/20' + parts[2], " +
-				signals.Set(inputSignal, "evt.target.value") + ", " +
-				signals.Set(dateSignal, "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") +
-				"))() : null"
+			// Use simple assignments compatible with Datastar - avoid complex expressions
+			baseHandler := "evt.target.value.split('/').length >= 2 ? " +
+				"(evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')) || " +
+				"($" + dateInputID + "." + inputSignal + " = evt.target.value) || " +
+				"(evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
+				"($" + dateInputID + "." + dateSignal + " = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) : null) : null"
 
 			// Add calendar coordination if CalendarID is provided
 			if props.CalendarID != "" {
 				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
+					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
+						"($" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
+						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
 				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
+					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
+						"($" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
+						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
 				} else if strings.Contains(dateSignal, "dateValue") {
 					// Single date mode - update selectedDate and currentDate (same namespace)
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", " + signals.Set("selectedDate", "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'") + "))() : null")
+					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
+						"($" + dateInputID + ".selectedDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
+						"($" + dateInputID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
 				}
 			}
 
 			return baseHandler
 		}
 
-		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
+		// Handler for allowed keys including slash and digits
+		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
 
 		// Set placeholder for single mode
 		placeholder := props.Placeholder
