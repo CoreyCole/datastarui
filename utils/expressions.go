@@ -394,14 +394,14 @@ func (c *CalendarDayHandler) BuildDateInputSync(datePickerInputsID string) strin
 	expr := NewExpression()
 
 	if c.mode == "range" {
-		// Sync range signals for DateInput 
-		expr.Statement(fmt.Sprintf("$%s.startDateValue = %s", datePickerInputsID, c.signals.Signal("rangeStart")))
-		expr.Statement(fmt.Sprintf("$%s.endDateValue = %s", datePickerInputsID, c.signals.Signal("rangeEnd")))
+		// Sync range signals for DateInput - use the same namespace since datePickerInputsID === calendarID
+		expr.Statement(c.signals.Set("startDateValue", c.signals.Signal("rangeStart")))
+		expr.Statement(c.signals.Set("endDateValue", c.signals.Signal("rangeEnd")))
 		expr.Statement(c.signals.Set("startInputValue", c.signals.Signal("rangeStart") + " ? new Date(" + c.signals.Signal("rangeStart") + " + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 		expr.Statement(c.signals.Set("endInputValue", c.signals.Signal("rangeEnd") + " ? new Date(" + c.signals.Signal("rangeEnd") + " + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 	} else {
-		// Sync single date signals for DateInput
-		expr.Statement(fmt.Sprintf("$%s.dateValue = %s", datePickerInputsID, c.signals.Signal("selectedDate")))
+		// Sync single date signals for DateInput - use the same namespace since datePickerInputsID === calendarID  
+		expr.Statement(c.signals.Set("dateValue", c.signals.Signal("selectedDate")))
 		expr.Statement(c.signals.Set("inputValue", c.signals.Signal("selectedDate") + " ? new Date(" + c.signals.Signal("selectedDate") + " + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 	}
 
@@ -465,5 +465,151 @@ func (c *CalendarSelectionClasses) Build() string {
 	}
 
 	return classExpr.Build()
+}
+
+// DatePickerPopoverHandler creates handlers for DatePicker popover functionality  
+type DatePickerPopoverHandler struct {
+	datePickerID string
+	dateInputID  string
+	mode         string
+	signals      *SignalManager
+}
+
+// NewDatePickerPopoverHandler creates a datepicker popover handler
+func NewDatePickerPopoverHandler(datePickerID, dateInputID, mode string, signals *SignalManager) *DatePickerPopoverHandler {
+	return &DatePickerPopoverHandler{
+		datePickerID: datePickerID,
+		dateInputID:  dateInputID,
+		mode:         mode,
+		signals:      signals,
+	}
+}
+
+// BuildEscapeHandler creates clean escape key handler for popover
+func (d *DatePickerPopoverHandler) BuildEscapeHandler() string {
+	openCheck := fmt.Sprintf("document.querySelector('[data-datepicker-id=\"%s\"]') && %s", d.datePickerID, d.signals.Signal("open"))
+	
+	inputID := d.dateInputID
+	if d.mode == "range" {
+		inputID += "_start" // Focus on start input in range mode
+	}
+	
+	return NewExpression().
+		Conditional(
+			fmt.Sprintf("evt.key === 'Escape' && %s", openCheck),
+			fmt.Sprintf("(evt.preventDefault(), evt.stopPropagation(), %s, document.getElementById('%s').focus())", 
+				d.signals.Set("open", "false"), inputID),
+			"null",
+		).
+		Build()
+}
+
+// BuildTabHandler creates clean tab key handler for popover
+func (d *DatePickerPopoverHandler) BuildTabHandler() string {
+	openCheck := fmt.Sprintf("document.querySelector('[data-datepicker-id=\"%s\"]') && %s", d.datePickerID, d.signals.Signal("open"))
+	
+	return NewExpression().
+		Conditional(
+			fmt.Sprintf("evt.key === 'Tab' && %s", openCheck),
+			d.signals.Set("open", "false"),
+			"null",
+		).
+		Build()
+}
+
+// BuildKeyboardHandler combines escape and tab handlers
+func (d *DatePickerPopoverHandler) BuildKeyboardHandler() string {
+	escapeHandler := d.BuildEscapeHandler()
+	tabHandler := d.BuildTabHandler()
+	return escapeHandler + "; " + tabHandler
+}
+
+// BuildDateSelectHandler creates the complex date selection handler with DateInput sync
+func (d *DatePickerPopoverHandler) BuildDateSelectHandler(closeOnSelect bool, dateInputSignals *SignalManager) string {
+	expr := NewExpression()
+	
+	if d.mode == "range" {
+		// Range mode: handle both start and end date selection
+		rangeCompleteCondition := "evt.detail.rangeStart && evt.detail.rangeEnd"
+		rangeCompleteActions := fmt.Sprintf(
+			"((startDisplay, endDisplay) => (%s, %s, %s, %s, %s, %s))(evt.detail.rangeStart.replace(/-/g, '/'), evt.detail.rangeEnd.replace(/-/g, '/'))",
+			dateInputSignals.Set("startInputValue", "startDisplay"),
+			dateInputSignals.Set("startDateValue", "evt.detail.rangeStart"),
+			dateInputSignals.Set("endInputValue", "endDisplay"),
+			dateInputSignals.Set("endDateValue", "evt.detail.rangeEnd"),
+			d.signals.Set("rangeStart", "evt.detail.rangeStart"),
+			d.signals.Set("rangeEnd", "evt.detail.rangeEnd"),
+		)
+		
+		rangeStartCondition := "evt.detail.rangeStart"
+		rangeStartActions := fmt.Sprintf(
+			"((startDisplay) => (%s, %s, %s, %s, %s, %s))(evt.detail.rangeStart.replace(/-/g, '/'))",
+			dateInputSignals.Set("startInputValue", "startDisplay"),
+			dateInputSignals.Set("startDateValue", "evt.detail.rangeStart"),
+			dateInputSignals.Set("endInputValue", "''"),
+			dateInputSignals.Set("endDateValue", "''"),
+			d.signals.Set("rangeStart", "evt.detail.rangeStart"),
+			d.signals.Set("rangeEnd", "''"),
+		)
+		
+		selectAction := fmt.Sprintf("%s ? %s : %s ? %s : null", 
+			rangeCompleteCondition, rangeCompleteActions,
+			rangeStartCondition, rangeStartActions)
+		
+		if closeOnSelect {
+			expr.Statement(fmt.Sprintf("(%s, %s)", selectAction, d.signals.Set("open", "false")))
+		} else {
+			expr.Statement(selectAction)
+		}
+	} else {
+		// Single mode: simpler date selection
+		singleDateCondition := "evt.detail.selectedDate"
+		singleDateActions := fmt.Sprintf(
+			"((displayDate) => (%s, %s, %s))(evt.detail.selectedDate.replace(/-/g, '/'))",
+			dateInputSignals.Set("inputValue", "displayDate"),
+			dateInputSignals.Set("dateValue", "evt.detail.selectedDate"),
+			d.signals.Set("selectedDate", "evt.detail.selectedDate"),
+		)
+		
+		selectAction := fmt.Sprintf("%s ? %s : null", singleDateCondition, singleDateActions)
+		
+		if closeOnSelect {
+			expr.Statement(fmt.Sprintf("(%s, %s)", selectAction, d.signals.Set("open", "false")))
+		} else {
+			expr.Statement(selectAction)
+		}
+	}
+	
+	return expr.Build()
+}
+
+// BuildMonthChangeHandler creates the month navigation handler
+func (d *DatePickerPopoverHandler) BuildMonthChangeHandler() string {
+	return NewExpression().
+		Conditional(
+			"evt.detail.displayMonth",
+			d.signals.Set("displayMonth", "evt.detail.displayMonth"),
+			"null",
+		).
+		Build()
+}
+
+// BuildOpenTriggerHandler creates the calendar icon click handler
+func (d *DatePickerPopoverHandler) BuildOpenTriggerHandler() string {
+	return NewExpression().
+		Statement(d.signals.Toggle("open")).
+		Statement("evt.stopPropagation()").
+		Build()
+}
+
+// BuildClickOutsideHandler creates the click outside handler to close popover
+func (d *DatePickerPopoverHandler) BuildClickOutsideHandler() string {
+	return NewExpression().
+		Conditional(
+			d.signals.Signal("open"),
+			d.signals.Set("open", "false"),
+			"null",
+		).
+		Build()
 }
 

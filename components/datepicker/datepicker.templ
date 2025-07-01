@@ -138,11 +138,14 @@ templ DatePicker(props DatePickerProps) {
 		// Container classes
 		containerClasses := "relative " + props.Class
 
-		// Click outside handler
-		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
-
 		// DateInput ID - use SAME ID for shared signal namespace
 		dateInputID := datePickerID
+		
+		// Create DatePicker handler for clean expressions
+		datePickerHandler := utils.NewDatePickerPopoverHandler(datePickerID, dateInputID, props.Mode, signals)
+		
+		// Click outside handler
+		clickOutsideHandler := datePickerHandler.BuildClickOutsideHandler()
 	}}
 	<div
 		data-slot="datepicker"
@@ -223,7 +226,7 @@ templ DatePicker(props DatePickerProps) {
 						Required:   props.Required,
 						Class:      props.InputClass,
 						Attributes: map[string]any{
-							"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
+							"data-on-keydown": utils.NewExpression().Conditional("evt.key === 'Escape'", signals.Set("open", "false"), "null").Build(),
 						},
 					})
 				</div>
@@ -233,7 +236,7 @@ templ DatePicker(props DatePickerProps) {
 						type="button"
 						class="text-muted-foreground hover:text-foreground"
 						tabindex="-1"
-						data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
+						data-on-click={ datePickerHandler.BuildOpenTriggerHandler() }
 					>
 						<svg
 							class="h-4 w-4"
@@ -275,7 +278,7 @@ templ DatePicker(props DatePickerProps) {
 					Required:    props.Required,
 					Class:       props.InputClass,
 					Attributes: map[string]any{
-						"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
+						"data-on-keydown": utils.NewExpression().Conditional("evt.key === 'Escape'", signals.Set("open", "false"), "null").Build(),
 					},
 				})
 				<!-- Calendar icon button positioned separately to maintain signal scope -->
@@ -283,7 +286,7 @@ templ DatePicker(props DatePickerProps) {
 					type="button"
 					class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
 					tabindex="-1"
-					data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
+					data-on-click={ datePickerHandler.BuildOpenTriggerHandler() }
 				>
 					<svg
 						class="h-4 w-4"
@@ -354,27 +357,14 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 		// Don't create new signals here - reference the existing ones
 		signals := utils.Signals(props.ID, DatePickerSignals{})
 
-		// Popover show/hide - explicitly handle undefined to prevent flash
-		showExpr := signals.Signal("open") + " === true"
+		// Popover show/hide - use simple signal reference
+		showExpr := signals.Signal("open")
 
-		// DatePicker open check (following select.templ pattern)
-		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
-
-		// Determine the correct input ID for focus
-		inputID := props.DateInputID
-		if props.Mode == "range" {
-			inputID = props.DateInputID + "_start" // Focus on start input in range mode
-		}
-
-		// Escape: close and return focus to input
-		escapeHandler := "evt.key === 'Escape' && " + datePickerOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "false") + ", document.getElementById('" + inputID + "').focus()) : null"
-
-		// Tab: close but allow tab to continue
-		tabHandler := "evt.key === 'Tab' && " + datePickerOpenCheck + " ? " + signals.Set("open", "false") + " : null"
-
-		// Combine keyboard handlers
-		keyHandler := escapeHandler + "; " + tabHandler
+		// Create popover handler for complex expressions
+		popoverHandler := utils.NewDatePickerPopoverHandler(props.ID, props.DateInputID, props.Mode, signals)
+		
+		// Combine keyboard handlers using expression builder
+		keyHandler := popoverHandler.BuildKeyboardHandler()
 
 		// Convert number of months
 		numMonths := props.NumberOfMonths
@@ -382,57 +372,14 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 			numMonths = 1
 		}
 
-		// Calendar date selection handler - update both DatePicker and DateInput signals
-		dateSelectHandler := ""
+		// Create DateInput signals for coordination
+		dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
+		
+		// Use expression builder for complex date selection handler
+		dateSelectHandler := popoverHandler.BuildDateSelectHandler(props.CloseOnSelect, dateInputSignals)
 
-		// Build the handler conditionally
-		if props.Mode == "range" {
-			// Range mode handler - sync with DateInput signals
-			dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
-
-			dateSelectHandler = "(evt.detail.rangeStart && evt.detail.rangeEnd) ? (" +
-				"(startDisplay => endDisplay => (" +
-				dateInputSignals.Set("startInputValue", "startDisplay") + ", " +
-				dateInputSignals.Set("startDateValue", "evt.detail.rangeStart") + ", " +
-				dateInputSignals.Set("endInputValue", "endDisplay") + ", " +
-				dateInputSignals.Set("endDateValue", "evt.detail.rangeEnd") + ", " +
-				signals.Set("rangeStart", "evt.detail.rangeStart") + ", " +
-				signals.Set("rangeEnd", "evt.detail.rangeEnd") +
-				"))(evt.detail.rangeStart.replace(/-/g, '/'))(evt.detail.rangeEnd.replace(/-/g, '/'))" +
-				") : evt.detail.rangeStart ? (" +
-				"(startDisplay => (" +
-				dateInputSignals.Set("startInputValue", "startDisplay") + ", " +
-				dateInputSignals.Set("startDateValue", "evt.detail.rangeStart") + ", " +
-				dateInputSignals.Set("endInputValue", "''") + ", " +
-				dateInputSignals.Set("endDateValue", "''") + ", " +
-				signals.Set("rangeStart", "evt.detail.rangeStart") + ", " +
-				signals.Set("rangeEnd", "''") +
-				"))(evt.detail.rangeStart.replace(/-/g, '/'))" +
-				") : null"
-
-			// Add close logic if needed for range mode
-			if props.CloseOnSelect {
-				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
-			}
-		} else {
-			// Single date mode handler - update both DateInput and DatePicker signals
-			dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
-			dateSelectHandler = "evt.detail.selectedDate ? (" +
-				"(displayDate => (" +
-				dateInputSignals.Set("inputValue", "displayDate") + ", " +
-				dateInputSignals.Set("dateValue", "evt.detail.selectedDate") + ", " +
-				signals.Set("selectedDate", "evt.detail.selectedDate") +
-				"))(evt.detail.selectedDate.replace(/-/g, '/'))" +
-				") : null"
-
-			// Add close logic if needed for single mode
-			if props.CloseOnSelect {
-				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
-			}
-		}
-
-		// Month navigation handler - sync display month
-		monthChangeHandler := "evt.detail.displayMonth ? " + signals.Set("displayMonth", "evt.detail.displayMonth") + " : null"
+		// Use expression builder for month navigation handler  
+		monthChangeHandler := popoverHandler.BuildMonthChangeHandler()
 
 		// Position classes
 		positionClasses := "absolute left-0 z-50 p-0"
