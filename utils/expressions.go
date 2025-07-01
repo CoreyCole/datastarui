@@ -644,20 +644,22 @@ func (d *DateInputHandler) BuildInputHandler(inputSignal, dateSignal string) str
 	expr.Statement("const lastChar = value.slice(-1)")
 	expr.Statement("const beforeSlash = value.slice(0, -1)")
 	
-	// Handle slash typing and auto-format single digits
-	expr.Statement(`if (lastChar === '/') {
-		const parts = beforeSlash.split('/');
-		if (parts.length === 1 && parts[0].length === 1) {
-			evt.target.value = '0' + parts[0] + '/';
-		} else if (parts.length === 2 && parts[1].length === 1) {
-			evt.target.value = parts[0] + '/0' + parts[1] + '/';
+	// Check cursor position and decide whether to apply formatting
+	expr.Statement("const cursorAtEnd = evt.target.selectionStart === evt.target.value.length")
+	expr.Statement("const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length")
+	
+	// Handle slash typing and auto-format single digits - only when cursor is at end
+	expr.Statement(`if (shouldFormat) {
+		if (lastChar === '/') {
+			const parts = beforeSlash.split('/');
+			if (parts.length === 1 && parts[0].length === 1) {
+				evt.target.value = '0' + parts[0] + '/';
+			} else if (parts.length === 2 && parts[1].length === 1) {
+				evt.target.value = parts[0] + '/0' + parts[1] + '/';
+			} else {
+				evt.target.value = value;
+			}
 		} else {
-			evt.target.value = value;
-		}
-	} else {
-		const cursorAtEnd = evt.target.selectionStart === evt.target.value.length;
-		const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length;
-		if (shouldFormat) {
 			evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, ''));
 		}
 	}`)
