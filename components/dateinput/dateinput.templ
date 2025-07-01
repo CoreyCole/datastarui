@@ -166,12 +166,12 @@ templ DateInput(props DateInputProps) {
 			// Add calendar coordination if CalendarID is provided
 			if props.CalendarID != "" {
 				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeStart = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
 				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", $" + props.CalendarID + ".rangeEnd = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = '20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'))() : null")
 				} else if strings.Contains(dateSignal, "dateValue") {
 					// Single date mode - update selectedDate and currentDate (same namespace)
-					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", " + signals.Set("selectedDate", "fullYear + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "fullYear + '-' + parts[0].padStart(2, '0') + '-01'") + "))() : null")
+					baseHandler = strings.ReplaceAll(baseHandler, "))() : null", ", " + signals.Set("selectedDate", "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "'20' + parts[2] + '-' + parts[0].padStart(2, '0') + '-01'") + "))() : null")
 				}
 			}
 

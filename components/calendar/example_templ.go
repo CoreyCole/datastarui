@@ -63,7 +63,7 @@ func CalendarExample() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div data-on-calendar-change=\"console.log('Calendar changed:', evt.detail)\" class=\"p-3 bg-muted rounded text-sm\"><p><strong>Selected Date:</strong> <span data-text=\"$calendar_events_selectedDate || 'None'\"></span></p></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div class=\"p-3 bg-muted rounded text-sm\"><p><strong>Selected Date:</strong> <span data-text=\"$calendar_events_selectedDate || 'None'\"></span></p></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

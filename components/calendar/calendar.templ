@@ -326,8 +326,6 @@ templ CalendarDay(props CalendarDayProps) {
 		
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
-		// Note: We now calculate dates dynamically in JavaScript, no need for static dateString
-		
 		// Dynamic click handler that calculates the date using current signal value
 		dayIndexJS := fmt.Sprintf("%d", props.DayIndex)
 		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
@@ -415,7 +413,6 @@ templ CalendarDay(props CalendarDayProps) {
 				const month = targetDate.getMonth();
 				const buttonDay = parseInt(evt.target.textContent);
 				const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0');
-				console.log('Debug: buttonDay=' + buttonDay + ', clickedDate=' + clickedDate);
 				%s`,
 				signals.Signal("currentDate"), monthOffsetJS,
 				signals.Set("selectedDate", "clickedDate"))
@@ -438,9 +435,6 @@ templ CalendarDay(props CalendarDayProps) {
 			}
 		}
 
-		// Debug logging - show dynamic date calculation
-		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
-			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
 		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -478,7 +472,7 @@ templ CalendarDay(props CalendarDayProps) {
 			type="button"
 			class={ baseClasses + todayClasses }
 			data-class={ selectionClasses }
-			data-on-click={ debugClickHandler }
+			data-on-click={ clickHandler }
 		>
 			{ fmt.Sprintf("%d", dayData.DayNumber) }
 		</button>

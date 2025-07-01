@@ -533,8 +533,6 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
-		// Note: We now calculate dates dynamically in JavaScript, no need for static dateString
-
 		// Dynamic click handler that calculates the date using current signal value
 		dayIndexJS := fmt.Sprintf("%d", props.DayIndex)
 		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
@@ -622,7 +620,6 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 				const month = targetDate.getMonth();
 				const buttonDay = parseInt(evt.target.textContent);
 				const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0');
-				console.log('Debug: buttonDay=' + buttonDay + ', clickedDate=' + clickedDate);
 				%s`,
 				signals.Signal("currentDate"), monthOffsetJS,
 				signals.Set("selectedDate", "clickedDate"))
@@ -644,10 +641,6 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 					signals.Signal("inputValue"), signals.Signal("selectedDate"), signals.Signal("selectedDate"))
 			}
 		}
-
-		// Debug logging - show dynamic date calculation
-		debugClickHandler := fmt.Sprintf("console.log('Calendar namespace: %s'); %s; console.log('After click - selectedDate:', %s, 'rangeStart:', %s, 'rangeEnd:', %s)",
-			props.ID, clickHandler, signals.Signal("selectedDate"), signals.Signal("rangeStart"), signals.Signal("rangeEnd"))
 
 		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -708,7 +701,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 480, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 474, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -719,9 +712,9 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
-		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(debugClickHandler)
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 481, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 475, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -734,7 +727,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 483, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 477, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
