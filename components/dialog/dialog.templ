@@ -26,11 +26,10 @@ templ Dialog(props DialogProps) {
 		// Generate the CSS classes for the inner dialog content container using our variant system
 		containerClasses := DialogVariants(props)
 
-		// Create unique backdrop click handler
-		backdropClickHandler := signals.ConditionalAction("evt.target === evt.currentTarget", "open", "false")
-
-		// ESC key handler for closing dialog - use window-level handler like other modal components
-		escapeHandler := "evt.key === 'Escape' && " + signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+		// Create dialog handler for clean expressions
+		dialogHandler := utils.NewDialogHandler(signals)
+		backdropClickHandler := dialogHandler.BuildBackdropClickHandler()
+		escapeHandler := dialogHandler.BuildEscapeHandler()
 	}}
 	<div data-signals={ signals.DataSignals }>
 		<!-- Dialog backdrop overlay -->
@@ -179,13 +178,9 @@ templ DialogClose(props DialogCloseProps) {
 		// Create signals manager for the target dialog
 		signals := utils.Signals(props.DialogID, DialogSignals{})
 
-		// Set return value if specified
-		var clickHandler string
-		if props.ReturnValue != "" {
-			clickHandler = signals.Set("open", "false") + "; " + signals.Set("returnValue", "'"+props.ReturnValue+"'")
-		} else {
-			clickHandler = signals.Set("open", "false")
-		}
+		// Create dialog handler for clean expressions
+		dialogHandler := utils.NewDialogHandler(signals)
+		clickHandler := dialogHandler.BuildCloseHandler(props.ReturnValue)
 
 		// Default button classes matching the Button component design
 		baseClasses := "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"

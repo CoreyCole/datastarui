@@ -644,11 +644,12 @@ func (d *DateInputHandler) BuildInputHandler(inputSignal, dateSignal string) str
 	expr.Statement("const lastChar = value.slice(-1)")
 	expr.Statement("const beforeSlash = value.slice(0, -1)")
 	
-	// Check cursor position and decide whether to apply formatting
+	// Check cursor position and text selection state
 	expr.Statement("const cursorAtEnd = evt.target.selectionStart === evt.target.value.length")
-	expr.Statement("const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length")
+	expr.Statement("const hasSelection = evt.target.selectionStart !== evt.target.selectionEnd")
+	expr.Statement("const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length && !hasSelection")
 	
-	// Handle slash typing and auto-format single digits - only when cursor is at end
+	// Handle slash typing and auto-format single digits - only when appropriate
 	expr.Statement(`if (shouldFormat) {
 		if (lastChar === '/') {
 			const parts = beforeSlash.split('/');
@@ -667,15 +668,15 @@ func (d *DateInputHandler) BuildInputHandler(inputSignal, dateSignal string) str
 	// Always update input signal
 	expr.Statement(d.signals.Set(inputSignal, "evt.target.value"))
 	
-	// Update date signal based on valid date patterns
+	// Update date signal based on valid date patterns - be more lenient during input
 	fourDigitYear := d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
 	twoDigitYear := d.signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
-	clearDate := d.signals.Set(dateSignal, "''")
 	
+	// Only clear date signal if we have less than 3 parts or empty year, allow partial editing
 	expr.Statement(fmt.Sprintf(
-		"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? %s : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? %s : %s",
-		fourDigitYear, twoDigitYear, clearDate,
-	))
+		"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length >= 1 ? (evt.target.value.split('/')[2].length === 4 ? %s : evt.target.value.split('/')[2].length === 2 ? %s : null) : %s",
+		fourDigitYear, twoDigitYear, d.signals.Set(dateSignal, "''")),
+	)
 	
 	// Add calendar coordination if provided
 	if d.calendarID != "" {
@@ -913,5 +914,39 @@ func (t *TabsHandler) BuildContentShowExpression(value string) string {
 func (t *TabsHandler) BuildContentAriaHidden(value string) string {
 	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
 	return fmt.Sprintf("%s ? 'false' : 'true'", condition)
+}
+
+// DialogHandler creates handlers for Dialog component functionality
+type DialogHandler struct {
+	signals *SignalManager
+}
+
+// NewDialogHandler creates a dialog handler
+func NewDialogHandler(signals *SignalManager) *DialogHandler {
+	return &DialogHandler{
+		signals: signals,
+	}
+}
+
+// BuildBackdropClickHandler creates the backdrop click handler for closing dialog
+func (d *DialogHandler) BuildBackdropClickHandler() string {
+	return d.signals.ConditionalAction("evt.target === evt.currentTarget", "open", "false")
+}
+
+// BuildEscapeHandler creates an escape key handler for closing dialog
+func (d *DialogHandler) BuildEscapeHandler() string {
+	condition := fmt.Sprintf("evt.key === 'Escape' && %s", d.signals.Signal("open"))
+	return d.signals.ConditionalAction(condition, "open", "false")
+}
+
+// BuildCloseHandler creates a close handler with optional return value
+func (d *DialogHandler) BuildCloseHandler(returnValue string) string {
+	expr := NewExpression().Statement(d.signals.Set("open", "false"))
+	
+	if returnValue != "" {
+		expr.Statement(d.signals.SetString("returnValue", returnValue))
+	}
+	
+	return expr.Build()
 }
 
