@@ -264,11 +264,11 @@ func DateInput(props DateInputProps) templ.Component {
 				Class:       props.Class,
 				Disabled:    props.Disabled,
 				Attributes: templ.Attributes{
-					"maxlength":       "10",
-					"data-bind":       signals.Signal("inputValue"),
-					"data-on-input":   dateInputHandler.BuildInputHandler("inputValue", "dateValue"),
-					"data-on-blur":    dateInputHandler.BuildBlurHandler("inputValue", "dateValue"),
-					"data-on-keydown": keyHandler,
+					"maxlength":                     "12",
+					"data-bind":                     signals.Signal("inputValue"),
+					"data-on-input__debounce_300ms": dateInputHandler.BuildInputHandler("inputValue", "dateValue"),
+					"data-on-blur":                  dateInputHandler.BuildBlurHandler("inputValue", "dateValue"),
+					"data-on-keydown":               keyHandler,
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -627,11 +627,11 @@ func DateInput(props DateInputProps) templ.Component {
 				Class:       props.Class,
 				Disabled:    props.Disabled,
 				Attributes: templ.Attributes{
-					"maxlength":       "10",
-					"data-bind":       signals.Signal("startInputValue"),
-					"data-on-input":   dateInputHandler.BuildInputHandler("startInputValue", "startDateValue"),
-					"data-on-blur":    dateInputHandler.BuildBlurHandler("startInputValue", "startDateValue"),
-					"data-on-keydown": keyHandler + "; " + startTabHandler,
+					"maxlength":                     "12",
+					"data-bind":                     signals.Signal("startInputValue"),
+					"data-on-input__debounce_300ms": dateInputHandler.BuildInputHandler("startInputValue", "startDateValue"),
+					"data-on-blur":                  dateInputHandler.BuildBlurHandler("startInputValue", "startDateValue"),
+					"data-on-keydown":               keyHandler + "; " + startTabHandler,
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -694,13 +694,13 @@ func DateInput(props DateInputProps) templ.Component {
 				Class:       props.Class,
 				Disabled:    props.Disabled,
 				Attributes: templ.Attributes{
-					"maxlength":          "10",
-					"data-bind":          signals.Signal("endInputValue"),
-					"data-on-input":      dateInputHandler.BuildInputHandler("endInputValue", "endDateValue"),
-					"data-on-blur":       dateInputHandler.BuildBlurHandler("endInputValue", "endDateValue"),
-					"data-on-keydown":    keyHandler,
-					"data-attr-disabled": "!" + signals.Signal("endDateEnabled"),
-					"data-attr-tabindex": signals.Signal("endDateEnabled") + " ? '0' : '-1'",
+					"maxlength":                     "12",
+					"data-bind":                     signals.Signal("endInputValue"),
+					"data-on-input__debounce_300ms": dateInputHandler.BuildInputHandler("endInputValue", "endDateValue"),
+					"data-on-blur":                  dateInputHandler.BuildBlurHandler("endInputValue", "endDateValue"),
+					"data-on-keydown":               keyHandler,
+					"data-attr-disabled":            "!" + signals.Signal("endDateEnabled"),
+					"data-attr-tabindex":            signals.Signal("endDateEnabled") + " ? '0' : '-1'",
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {

@@ -610,9 +610,13 @@ func (d *DatePickerPopoverHandler) BuildOpenTriggerHandler() string {
 
 // BuildClickOutsideHandler creates the click outside handler to close popover
 func (d *DatePickerPopoverHandler) BuildClickOutsideHandler() string {
+	// Check if the click target is the calendar icon button or its children (SVG elements)
+	// This prevents the popover from closing when clicking the calendar icon
+	isCalendarButton := "evt.target.closest('button[data-on-click*=\"" + d.signals.Signal("open") + "\"]')"
+	
 	return NewExpression().
 		Conditional(
-			d.signals.Signal("open"),
+			d.signals.Signal("open") + " && !" + isCalendarButton,
 			d.signals.Set("open", "false"),
 			"null",
 		).
@@ -635,52 +639,74 @@ func NewDateInputHandler(inputID string, signals *SignalManager, calendarID stri
 	}
 }
 
-// BuildInputHandler creates the complex input formatting handler
+// BuildInputHandler creates a simpler input handler that works with data-bind
 func (d *DateInputHandler) BuildInputHandler(inputSignal, dateSignal string) string {
 	expr := NewExpression()
 	
-	// Core date formatting logic
-	expr.Statement("const value = evt.target.value")
-	expr.Statement("const lastChar = value.slice(-1)")
-	expr.Statement("const beforeSlash = value.slice(0, -1)")
+	// Get the raw input value
+	expr.Statement("const rawValue = evt.target.value")
 	
-	// Check cursor position and text selection state
-	expr.Statement("const cursorAtEnd = evt.target.selectionStart === evt.target.value.length")
-	expr.Statement("const hasSelection = evt.target.selectionStart !== evt.target.selectionEnd")
-	expr.Statement("const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length && !hasSelection")
-	
-	// Handle slash typing and auto-format single digits - only when appropriate
-	expr.Statement(`if (shouldFormat) {
-		if (lastChar === '/') {
-			const parts = beforeSlash.split('/');
-			if (parts.length === 1 && parts[0].length === 1) {
-				evt.target.value = '0' + parts[0] + '/';
-			} else if (parts.length === 2 && parts[1].length === 1) {
-				evt.target.value = parts[0] + '/0' + parts[1] + '/';
-			} else {
-				evt.target.value = value;
+	// Apply formatting to convert to MM/DD/YYYY format
+	expr.Statement(`const formatValue = (value) => {
+		// If the value already contains slashes, handle carefully
+		if (value.includes('/')) {
+			// Split by slashes to get month, day, year parts
+			const parts = value.split('/');
+			let month = parts[0] || '';
+			let day = parts[1] || '';
+			let year = parts[2] || '';
+			
+			// Remove non-digits from each part
+			month = month.replace(/[^\d]/g, '');
+			day = day.replace(/[^\d]/g, '');
+			year = year.replace(/[^\d]/g, '');
+			
+			// Special case: if typing in day field and it gets too long, move overflow to year
+			// This handles the case where user types "11/112025" (meaning they typed year after day)
+			if (day.length > 2 && !year) {
+				year = day.substring(2);
+				day = day.substring(0, 2);
 			}
-		} else {
-			evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, ''));
+			
+			// Reconstruct with slashes
+			if (!month) return '';
+			if (!day && !year) return month;
+			if (!year) return month + '/' + day;
+			return month + '/' + day + '/' + year;
 		}
+		
+		// For values without slashes (like initial typing), apply standard formatting
+		const digits = value.replace(/[^\d]/g, '');
+		if (digits.length === 0) return '';
+		if (digits.length <= 2) return digits;
+		if (digits.length <= 4) return digits.substring(0,2) + '/' + digits.substring(2);
+		return digits.substring(0,2) + '/' + digits.substring(2,4) + '/' + digits.substring(4,8);
 	}`)
 	
-	// Always update input signal
-	expr.Statement(d.signals.Set(inputSignal, "evt.target.value"))
+	// Format the value
+	expr.Statement("const formattedValue = formatValue(rawValue)")
 	
-	// Update date signal based on valid date patterns - be more lenient during input
-	fourDigitYear := d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
-	twoDigitYear := d.signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
+	// Update the input signal with formatted value
+	expr.Statement(d.signals.Set(inputSignal, "formattedValue"))
 	
-	// Only clear date signal if we have less than 3 parts or empty year, allow partial editing
+	// Update date signal based on valid date patterns
+	fourDigitYear := d.signals.Set(dateSignal, "formattedValue.split('/')[2] + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-' + formattedValue.split('/')[1].padStart(2, '0')")
+	twoDigitYear := d.signals.Set(dateSignal, "'20' + formattedValue.split('/')[2] + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-' + formattedValue.split('/')[1].padStart(2, '0')")
+	
+	// Set date signal based on completeness
 	expr.Statement(fmt.Sprintf(
-		"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length >= 1 ? (evt.target.value.split('/')[2].length === 4 ? %s : evt.target.value.split('/')[2].length === 2 ? %s : null) : %s",
+		"formattedValue.split('/').length === 3 && formattedValue.split('/')[2].length >= 1 ? (formattedValue.split('/')[2].length === 4 ? %s : formattedValue.split('/')[2].length === 2 ? %s : null) : %s",
 		fourDigitYear, twoDigitYear, d.signals.Set(dateSignal, "''")),
 	)
 	
 	// Add calendar coordination if provided
 	if d.calendarID != "" {
-		d.addCalendarCoordination(expr, dateSignal)
+		expr.Statement(fmt.Sprintf(
+			"formattedValue.split('/').length === 3 && (formattedValue.split('/')[2].length === 4 || formattedValue.split('/')[2].length === 2) ? (fullYear => (%s, %s))(formattedValue.split('/')[2].length === 4 ? formattedValue.split('/')[2] : '20' + formattedValue.split('/')[2]) : %s",
+			d.signals.Set("selectedDate", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-' + formattedValue.split('/')[1].padStart(2, '0')"),
+			d.signals.Set("currentDate", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-01'"),
+			d.signals.Set("selectedDate", "''"),
+		))
 	}
 	
 	return expr.Build()
