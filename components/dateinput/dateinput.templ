@@ -122,92 +122,9 @@ templ DateInput(props DateInputProps) {
 
 		// Input classes will be handled by the Input component
 
-		// Create date formatting handlers
-		createInputHandler := func(inputSignal, dateSignal string) string {
-			// Handle slash typing and auto-format single digits
-			baseHandler := "const value = evt.target.value; " +
-				"const lastChar = value.slice(-1); " +
-				"const beforeSlash = value.slice(0, -1); " +
-				// Check if user typed a slash
-				"if (lastChar === '/') { " +
-				"const parts = beforeSlash.split('/'); " +
-				// Auto-format single digit before slash
-				"if (parts.length === 1 && parts[0].length === 1) { " +
-				"evt.target.value = '0' + parts[0] + '/'; " +
-				"} else if (parts.length === 2 && parts[1].length === 1) { " +
-				"evt.target.value = parts[0] + '/0' + parts[1] + '/'; " +
-				"} else { " +
-				"evt.target.value = value; " +
-				"} " +
-				"} else { " +
-				// Original formatting logic for digits
-				"const cursorAtEnd = evt.target.selectionStart === evt.target.value.length; " +
-				"const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length; " +
-				"if (shouldFormat) { " +
-				"evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
-				"} " +
-				"} " +
-				// Always update the signal
-				signals.Set(inputSignal, "evt.target.value") + "; " +
-				// Update the date signal if we have a valid date
-				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
-				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
-				" : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? " +
-				signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
-				" : " + signals.Set(dateSignal, "''")
+		// Create DateInput handler using expression builder
+		dateInputHandler := utils.NewDateInputHandler(dateInputID, signals, props.CalendarID)
 
-			// Add calendar coordination if CalendarID is provided
-			if props.CalendarID != "" {
-				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => ($" + props.CalendarID + ".rangeStart = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						"($" + props.CalendarID + ".rangeStart = '')"
-				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => ($" + props.CalendarID + ".rangeEnd = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						"($" + props.CalendarID + ".rangeEnd = '')"
-				} else if strings.Contains(dateSignal, "dateValue") {
-					// Single date mode - update selectedDate and currentDate (same namespace) - handle both 2-digit and 4-digit years
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => (" + signals.Set("selectedDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'") + "))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						signals.Set("selectedDate", "''")
-				}
-			}
-
-			return baseHandler
-		}
-
-		createBlurHandler := func(inputSignal, dateSignal string) string {
-			// Use simple assignments compatible with Datastar - avoid complex expressions
-			baseHandler := "evt.target.value.split('/').length >= 2 ? " +
-				"(evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')) || " +
-				"($" + dateInputID + "." + inputSignal + " = evt.target.value) || " +
-				"(evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-				"($" + dateInputID + "." + dateSignal + " = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) : null) : null"
-
-			// Add calendar coordination if CalendarID is provided
-			if props.CalendarID != "" {
-				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				} else if strings.Contains(dateSignal, "dateValue") {
-					// Single date mode - update selectedDate and currentDate (same namespace)
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + dateInputID + ".selectedDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + dateInputID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				}
-			}
-
-			return baseHandler
-		}
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
@@ -252,8 +169,8 @@ templ DateInput(props DateInputProps) {
 					Attributes: templ.Attributes{
 						"maxlength":       "10",
 						"data-bind":       signals.Signal("inputValue"),
-						"data-on-input":   createInputHandler("inputValue", "dateValue"),
-						"data-on-blur":    createBlurHandler("inputValue", "dateValue"),
+						"data-on-input":   dateInputHandler.BuildInputHandler("inputValue", "dateValue"),
+						"data-on-blur":    dateInputHandler.BuildBlurHandler("inputValue", "dateValue"),
 						"data-on-keydown": keyHandler,
 					},
 				})
@@ -301,16 +218,9 @@ templ DateInput(props DateInputProps) {
 				endFieldName = props.Name + "_end"
 			}
 
-			// Special handler for tab from start to end date (triggers start date completion)
-			startTabHandler := "evt.key === 'Tab' && !evt.shiftKey ? (" +
-				createBlurHandler("startInputValue", "startDateValue") +
-				") : null"
-
-			// Checkbox change handler - when checkbox changes, update endDateEnabled signal
-			checkboxChangeHandler := signals.Signal("endDateEnabled") + " ? " +
-				"document.getElementById('" + dateInputID + "_end').focus() : " +
-				"(" + signals.Set("endInputValue", "''") + ", " + signals.Set("endDateValue", "''") + ", " +
-				"document.getElementById('" + dateInputID + "_end').value = '')"
+			// Use expression builders for tab and checkbox handlers
+			startTabHandler := dateInputHandler.BuildTabHandler("startInputValue", "startDateValue")
+			checkboxChangeHandler := dateInputHandler.BuildCheckboxChangeHandler(dateInputID + "_end")
 
 			// Layout classes
 			containerClass := "space-y-4"
@@ -404,8 +314,8 @@ templ DateInput(props DateInputProps) {
 						Attributes: templ.Attributes{
 							"maxlength":       "10",
 							"data-bind":       signals.Signal("startInputValue"),
-							"data-on-input":   createInputHandler("startInputValue", "startDateValue"),
-							"data-on-blur":    createBlurHandler("startInputValue", "startDateValue"),
+							"data-on-input":   dateInputHandler.BuildInputHandler("startInputValue", "startDateValue"),
+							"data-on-blur":    dateInputHandler.BuildBlurHandler("startInputValue", "startDateValue"),
 							"data-on-keydown": keyHandler + "; " + startTabHandler,
 						},
 					})
@@ -434,8 +344,8 @@ templ DateInput(props DateInputProps) {
 						Attributes: templ.Attributes{
 							"maxlength":          "10",
 							"data-bind":          signals.Signal("endInputValue"),
-							"data-on-input":      createInputHandler("endInputValue", "endDateValue"),
-							"data-on-blur":       createBlurHandler("endInputValue", "endDateValue"),
+							"data-on-input":      dateInputHandler.BuildInputHandler("endInputValue", "endDateValue"),
+							"data-on-blur":       dateInputHandler.BuildBlurHandler("endInputValue", "endDateValue"),
 							"data-on-keydown":    keyHandler,
 							"data-attr-disabled": "!" + signals.Signal("endDateEnabled"),
 							"data-attr-tabindex": signals.Signal("endDateEnabled") + " ? '0' : '-1'",

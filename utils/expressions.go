@@ -359,7 +359,12 @@ func (c *CalendarDayHandler) BuildClickHandler() string {
 			c.monthOffset,
 		)
 
-		// Use functional approach with immediately invoked arrow function
+		// Use functional approach with intelligent date swapping
+		// If no rangeStart: set rangeStart
+		// If rangeStart but no rangeEnd: 
+		//   - If clicked < rangeStart: swap (clicked becomes start, old start becomes end)
+		//   - If clicked > rangeStart: set as end
+		// If both exist: reset and start over
 		expr.Statement(fmt.Sprintf(
 			"((clickedDate) => !%s ? (%s, %s) : !%s ? (clickedDate < %s ? (%s, %s) : (%s, %s)) : (%s, %s))(%s)",
 			c.signals.Signal("rangeStart"),
@@ -367,8 +372,8 @@ func (c *CalendarDayHandler) BuildClickHandler() string {
 			c.signals.Set("rangeEnd", "''"),
 			c.signals.Signal("rangeEnd"),
 			c.signals.Signal("rangeStart"),
-			c.signals.Set("rangeStart", "clickedDate"),
 			c.signals.Set("rangeEnd", c.signals.Signal("rangeStart")),
+			c.signals.Set("rangeStart", "clickedDate"),
 			c.signals.Set("rangeStart", c.signals.Signal("rangeStart")),
 			c.signals.Set("rangeEnd", "clickedDate"),
 			c.signals.Set("rangeStart", "clickedDate"),
@@ -597,8 +602,9 @@ func (d *DatePickerPopoverHandler) BuildMonthChangeHandler() string {
 // BuildOpenTriggerHandler creates the calendar icon click handler
 func (d *DatePickerPopoverHandler) BuildOpenTriggerHandler() string {
 	return NewExpression().
-		Statement(d.signals.Toggle("open")).
+		Statement("evt.preventDefault()").
 		Statement("evt.stopPropagation()").
+		Statement(d.signals.Toggle("open")).
 		Build()
 }
 
@@ -609,6 +615,162 @@ func (d *DatePickerPopoverHandler) BuildClickOutsideHandler() string {
 			d.signals.Signal("open"),
 			d.signals.Set("open", "false"),
 			"null",
+		).
+		Build()
+}
+
+// DateInputHandler creates handlers for DateInput component functionality
+type DateInputHandler struct {
+	inputID    string
+	signals    *SignalManager
+	calendarID string // Optional calendar coordination
+}
+
+// NewDateInputHandler creates a DateInput handler
+func NewDateInputHandler(inputID string, signals *SignalManager, calendarID string) *DateInputHandler {
+	return &DateInputHandler{
+		inputID:    inputID,
+		signals:    signals,
+		calendarID: calendarID,
+	}
+}
+
+// BuildInputHandler creates the complex input formatting handler
+func (d *DateInputHandler) BuildInputHandler(inputSignal, dateSignal string) string {
+	expr := NewExpression()
+	
+	// Core date formatting logic
+	expr.Statement("const value = evt.target.value")
+	expr.Statement("const lastChar = value.slice(-1)")
+	expr.Statement("const beforeSlash = value.slice(0, -1)")
+	
+	// Handle slash typing and auto-format single digits
+	expr.Statement(`if (lastChar === '/') {
+		const parts = beforeSlash.split('/');
+		if (parts.length === 1 && parts[0].length === 1) {
+			evt.target.value = '0' + parts[0] + '/';
+		} else if (parts.length === 2 && parts[1].length === 1) {
+			evt.target.value = parts[0] + '/0' + parts[1] + '/';
+		} else {
+			evt.target.value = value;
+		}
+	} else {
+		const cursorAtEnd = evt.target.selectionStart === evt.target.value.length;
+		const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length;
+		if (shouldFormat) {
+			evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, ''));
+		}
+	}`)
+	
+	// Always update input signal
+	expr.Statement(d.signals.Set(inputSignal, "evt.target.value"))
+	
+	// Update date signal based on valid date patterns
+	fourDigitYear := d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
+	twoDigitYear := d.signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')")
+	clearDate := d.signals.Set(dateSignal, "''")
+	
+	expr.Statement(fmt.Sprintf(
+		"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? %s : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? %s : %s",
+		fourDigitYear, twoDigitYear, clearDate,
+	))
+	
+	// Add calendar coordination if provided
+	if d.calendarID != "" {
+		d.addCalendarCoordination(expr, dateSignal)
+	}
+	
+	return expr.Build()
+}
+
+// addCalendarCoordination adds calendar synchronization logic
+func (d *DateInputHandler) addCalendarCoordination(expr *DatastarExpression, dateSignal string) {
+	if strings.Contains(dateSignal, "startDateValue") {
+		// Start date coordination
+		expr.Statement(fmt.Sprintf(
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => ($%s.rangeStart = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $%s.currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : ($%s.rangeStart = '')",
+			d.calendarID, d.calendarID, d.calendarID,
+		))
+	} else if strings.Contains(dateSignal, "endDateValue") {
+		// End date coordination
+		expr.Statement(fmt.Sprintf(
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => ($%s.rangeEnd = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $%s.currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : ($%s.rangeEnd = '')",
+			d.calendarID, d.calendarID, d.calendarID,
+		))
+	} else if strings.Contains(dateSignal, "dateValue") {
+		// Single date coordination
+		expr.Statement(fmt.Sprintf(
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => (%s, %s))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : %s",
+			d.signals.Set("selectedDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')"),
+			d.signals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'"),
+			d.signals.Set("selectedDate", "''"),
+		))
+	}
+}
+
+// BuildBlurHandler creates the blur completion handler
+func (d *DateInputHandler) BuildBlurHandler(inputSignal, dateSignal string) string {
+	expr := NewExpression()
+	
+	// Core blur logic - pad and complete partial dates
+	expr.Statement("if (evt.target.value.split('/').length >= 2) {")
+	expr.Statement("evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')")
+	expr.Statement(d.signals.Set(inputSignal, "evt.target.value"))
+	expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
+	expr.Statement(d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"))
+	expr.Statement("}")
+	expr.Statement("}")
+	
+	// Add calendar coordination if provided  
+	if d.calendarID != "" {
+		d.addCalendarBlurCoordination(expr, dateSignal)
+	}
+	
+	return expr.Build()
+}
+
+// addCalendarBlurCoordination adds calendar coordination for blur events
+func (d *DateInputHandler) addCalendarBlurCoordination(expr *DatastarExpression, dateSignal string) {
+	if strings.Contains(dateSignal, "startDateValue") {
+		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
+		expr.Statement(fmt.Sprintf("$%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]", d.calendarID))
+		expr.Statement(fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID))
+		expr.Statement("}")
+	} else if strings.Contains(dateSignal, "endDateValue") {
+		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
+		expr.Statement(fmt.Sprintf("$%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]", d.calendarID))
+		expr.Statement(fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID))
+		expr.Statement("}")
+	} else if strings.Contains(dateSignal, "dateValue") {
+		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
+		expr.Statement(d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"))
+		expr.Statement(d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
+		expr.Statement("}")
+	}
+}
+
+// BuildTabHandler creates the tab completion handler for range mode
+func (d *DateInputHandler) BuildTabHandler(inputSignal, dateSignal string) string {
+	return NewExpression().
+		Conditional(
+			"evt.key === 'Tab' && !evt.shiftKey",
+			d.BuildBlurHandler(inputSignal, dateSignal),
+			"null",
+		).
+		Build()
+}
+
+// BuildCheckboxChangeHandler creates the checkbox change handler for range mode
+func (d *DateInputHandler) BuildCheckboxChangeHandler(endInputID string) string {
+	return NewExpression().
+		Conditional(
+			d.signals.Signal("endDateEnabled"),
+			fmt.Sprintf("document.getElementById('%s').focus()", endInputID),
+			fmt.Sprintf("(%s, %s, document.getElementById('%s').value = '')",
+				d.signals.Set("endInputValue", "''"),
+				d.signals.Set("endDateValue", "''"),
+				endInputID,
+			),
 		).
 		Build()
 }

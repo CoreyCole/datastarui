@@ -150,92 +150,8 @@ func DateInput(props DateInputProps) templ.Component {
 
 		// Input classes will be handled by the Input component
 
-		// Create date formatting handlers
-		createInputHandler := func(inputSignal, dateSignal string) string {
-			// Handle slash typing and auto-format single digits
-			baseHandler := "const value = evt.target.value; " +
-				"const lastChar = value.slice(-1); " +
-				"const beforeSlash = value.slice(0, -1); " +
-				// Check if user typed a slash
-				"if (lastChar === '/') { " +
-				"const parts = beforeSlash.split('/'); " +
-				// Auto-format single digit before slash
-				"if (parts.length === 1 && parts[0].length === 1) { " +
-				"evt.target.value = '0' + parts[0] + '/'; " +
-				"} else if (parts.length === 2 && parts[1].length === 1) { " +
-				"evt.target.value = parts[0] + '/0' + parts[1] + '/'; " +
-				"} else { " +
-				"evt.target.value = value; " +
-				"} " +
-				"} else { " +
-				// Original formatting logic for digits
-				"const cursorAtEnd = evt.target.selectionStart === evt.target.value.length; " +
-				"const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length; " +
-				"if (shouldFormat) { " +
-				"evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
-				"} " +
-				"} " +
-				// Always update the signal
-				signals.Set(inputSignal, "evt.target.value") + "; " +
-				// Update the date signal if we have a valid date
-				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
-				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
-				" : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? " +
-				signals.Set(dateSignal, "'20' + evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
-				" : " + signals.Set(dateSignal, "''")
-
-			// Add calendar coordination if CalendarID is provided
-			if props.CalendarID != "" {
-				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => ($" + props.CalendarID + ".rangeStart = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						"($" + props.CalendarID + ".rangeStart = '')"
-				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => ($" + props.CalendarID + ".rangeEnd = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $" + props.CalendarID + ".currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						"($" + props.CalendarID + ".rangeEnd = '')"
-				} else if strings.Contains(dateSignal, "dateValue") {
-					// Single date mode - update selectedDate and currentDate (same namespace) - handle both 2-digit and 4-digit years
-					baseHandler += "; " + "evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? " +
-						"(fullYear => (" + signals.Set("selectedDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") + ", " + signals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'") + "))" +
-						"(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : " +
-						signals.Set("selectedDate", "''")
-				}
-			}
-
-			return baseHandler
-		}
-
-		createBlurHandler := func(inputSignal, dateSignal string) string {
-			// Use simple assignments compatible with Datastar - avoid complex expressions
-			baseHandler := "evt.target.value.split('/').length >= 2 ? " +
-				"(evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')) || " +
-				"($" + dateInputID + "." + inputSignal + " = evt.target.value) || " +
-				"(evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-				"($" + dateInputID + "." + dateSignal + " = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) : null) : null"
-
-			// Add calendar coordination if CalendarID is provided
-			if props.CalendarID != "" {
-				if strings.Contains(dateSignal, "startDateValue") {
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + props.CalendarID + ".rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				} else if strings.Contains(dateSignal, "endDateValue") {
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + props.CalendarID + ".rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + props.CalendarID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				} else if strings.Contains(dateSignal, "dateValue") {
-					// Single date mode - update selectedDate and currentDate (same namespace)
-					baseHandler += " || (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? " +
-						"($" + dateInputID + ".selectedDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]) || " +
-						"($" + dateInputID + ".currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01') : null)"
-				}
-			}
-
-			return baseHandler
-		}
+		// Create DateInput handler using expression builder
+		dateInputHandler := utils.NewDateInputHandler(dateInputID, signals, props.CalendarID)
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
@@ -253,7 +169,7 @@ func DateInput(props DateInputProps) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 225, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 142, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -271,7 +187,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 227, Col: 38}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 144, Col: 38}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -302,7 +218,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 236, Col: 22}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 153, Col: 22}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -315,7 +231,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("dateValue"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 237, Col: 44}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 154, Col: 44}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -350,8 +266,8 @@ func DateInput(props DateInputProps) templ.Component {
 				Attributes: templ.Attributes{
 					"maxlength":       "10",
 					"data-bind":       signals.Signal("inputValue"),
-					"data-on-input":   createInputHandler("inputValue", "dateValue"),
-					"data-on-blur":    createBlurHandler("inputValue", "dateValue"),
+					"data-on-input":   dateInputHandler.BuildInputHandler("inputValue", "dateValue"),
+					"data-on-blur":    dateInputHandler.BuildBlurHandler("inputValue", "dateValue"),
 					"data-on-keydown": keyHandler,
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
@@ -416,16 +332,9 @@ func DateInput(props DateInputProps) templ.Component {
 				endFieldName = props.Name + "_end"
 			}
 
-			// Special handler for tab from start to end date (triggers start date completion)
-			startTabHandler := "evt.key === 'Tab' && !evt.shiftKey ? (" +
-				createBlurHandler("startInputValue", "startDateValue") +
-				") : null"
-
-			// Checkbox change handler - when checkbox changes, update endDateEnabled signal
-			checkboxChangeHandler := signals.Signal("endDateEnabled") + " ? " +
-				"document.getElementById('" + dateInputID + "_end').focus() : " +
-				"(" + signals.Set("endInputValue", "''") + ", " + signals.Set("endDateValue", "''") + ", " +
-				"document.getElementById('" + dateInputID + "_end').value = '')"
+			// Use expression builders for tab and checkbox handlers
+			startTabHandler := dateInputHandler.BuildTabHandler("startInputValue", "startDateValue")
+			checkboxChangeHandler := dateInputHandler.BuildCheckboxChangeHandler(dateInputID + "_end")
 
 			// Layout classes
 			containerClass := "space-y-4"
@@ -446,7 +355,7 @@ func DateInput(props DateInputProps) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 325, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 235, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -464,7 +373,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(signals.DataSignals)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 327, Col: 38}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 237, Col: 38}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -508,7 +417,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(startFieldName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 336, Col: 26}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 246, Col: 26}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -521,7 +430,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("startDateValue"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 337, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 247, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -544,7 +453,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(endFieldName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 345, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 255, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -557,7 +466,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " ? " + signals.Signal("endDateValue") + " : ''")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 346, Col: 100}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 256, Col: 100}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -570,7 +479,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", props.Required))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 347, Col: 98}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 257, Col: 98}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -593,7 +502,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputID + "_checkbox")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 356, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 266, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -606,7 +515,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Toggle("endDateEnabled") + "; " + checkboxChangeHandler)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 359, Col: 85}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 269, Col: 85}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
@@ -619,7 +528,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " ? 'true' : 'false'")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 360, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 270, Col: 87}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -632,7 +541,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " ? 'checked' : 'unchecked'")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 361, Col: 92}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 271, Col: 92}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 				if templ_7745c5c3_Err != nil {
@@ -645,7 +554,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " ? 'opacity: 1' : 'opacity: 0'")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 373, Col: 92}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 283, Col: 92}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
@@ -658,7 +567,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var20 string
 				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputID + "_checkbox")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 379, Col: 37}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 289, Col: 37}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 				if templ_7745c5c3_Err != nil {
@@ -720,8 +629,8 @@ func DateInput(props DateInputProps) templ.Component {
 				Attributes: templ.Attributes{
 					"maxlength":       "10",
 					"data-bind":       signals.Signal("startInputValue"),
-					"data-on-input":   createInputHandler("startInputValue", "startDateValue"),
-					"data-on-blur":    createBlurHandler("startInputValue", "startDateValue"),
+					"data-on-input":   dateInputHandler.BuildInputHandler("startInputValue", "startDateValue"),
+					"data-on-blur":    dateInputHandler.BuildBlurHandler("startInputValue", "startDateValue"),
 					"data-on-keydown": keyHandler + "; " + startTabHandler,
 				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
@@ -740,7 +649,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var23 string
 				templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(dateInputID + "_end")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 417, Col: 33}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 327, Col: 33}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 				if templ_7745c5c3_Err != nil {
@@ -753,7 +662,7 @@ func DateInput(props DateInputProps) templ.Component {
 				var templ_7745c5c3_Var24 string
 				templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs("{'text-foreground': " + signals.Signal("endDateEnabled") + ", 'text-muted-foreground': !" + signals.Signal("endDateEnabled") + "}")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 419, Col: 151}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 329, Col: 151}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 				if templ_7745c5c3_Err != nil {
@@ -787,8 +696,8 @@ func DateInput(props DateInputProps) templ.Component {
 				Attributes: templ.Attributes{
 					"maxlength":          "10",
 					"data-bind":          signals.Signal("endInputValue"),
-					"data-on-input":      createInputHandler("endInputValue", "endDateValue"),
-					"data-on-blur":       createBlurHandler("endInputValue", "endDateValue"),
+					"data-on-input":      dateInputHandler.BuildInputHandler("endInputValue", "endDateValue"),
+					"data-on-blur":       dateInputHandler.BuildBlurHandler("endInputValue", "endDateValue"),
 					"data-on-keydown":    keyHandler,
 					"data-attr-disabled": "!" + signals.Signal("endDateEnabled"),
 					"data-attr-tabindex": signals.Signal("endDateEnabled") + " ? '0' : '-1'",
