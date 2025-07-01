@@ -538,7 +538,10 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
 
 		var clickHandler string
-		if props.Mode == "range" {
+		// Only allow clicks on days in the current month
+		if !dayData.IsCurrentMonth {
+			clickHandler = "evt.preventDefault(); evt.stopPropagation()"
+		} else if props.Mode == "range" {
 			// Range mode: calculate date dynamically then handle range logic
 			clickHandler = fmt.Sprintf(`
 				// Calculate clicked date dynamically using current signal value
@@ -645,6 +648,11 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
 
+		// Add styling for outside days
+		if dayData.IsOutsideDay {
+			baseClasses += " text-muted-foreground opacity-50"
+		}
+
 		// Add today styling
 		todayClasses := ""
 		if dayData.IsToday {
@@ -654,14 +662,21 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		// Dynamic selection styling that matches the click handler
 		// Calculate the expected date using the same logic as the click handler
 		dayStr := fmt.Sprintf("%d", dayData.DayNumber)
-		selectionClasses := fmt.Sprintf(`{
-			'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0'))
-		}`,
-			signals.Signal("selectedDate"),
-			signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr)
+		// Only apply selection styling if this day is in the current month
+		selectionClasses := ""
+		if dayData.IsCurrentMonth {
+			selectionClasses = fmt.Sprintf(`{
+				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0'))
+			}`,
+				signals.Signal("selectedDate"),
+				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr)
+		} else {
+			// For outside days, no selection styling
+			selectionClasses = "{}"
+		}
 
 		// For range mode, add range styling
-		if props.Mode == "range" {
+		if props.Mode == "range" && dayData.IsCurrentMonth {
 			selectionClasses = fmt.Sprintf(`{
 				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) || %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')),
 				'bg-accent text-accent-foreground': %s && %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) > %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) < %s
@@ -701,7 +716,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 474, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 489, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -714,7 +729,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 475, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 490, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -727,7 +742,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 477, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 492, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
