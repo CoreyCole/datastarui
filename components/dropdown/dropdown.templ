@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/coreycole/datastarui/utils"
-	"strconv"
 )
 
 // DropdownSignals defines the signal structure for dropdown components
@@ -34,8 +33,9 @@ templ DropdownMenu(props DropdownMenuProps) {
 			Open: openState,
 		})
 
-		// Click outside handler - use conditional pattern from Datastar docs
-		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+		// Click outside handler using expression builder
+		dropdownHandler := utils.NewDropdownHandler(signals)
+		clickOutsideHandler := dropdownHandler.BuildClickOutsideHandler()
 	}}
 	<div
 		data-slot="dropdown-menu"
@@ -97,33 +97,17 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 			alignClass = "left-0"
 		}
 
-		sideClass := ""
-		sideOffset := props.SideOffset
-		if sideOffset == 0 {
-			sideOffset = 4 // Default offset like shadcn/ui
-		}
-
-		switch props.Side {
-		case "top":
-			sideClass = "bottom-full mb-" + strconv.Itoa(sideOffset)
-		case "bottom":
-			sideClass = "top-full mt-" + strconv.Itoa(sideOffset)
-		case "left":
-			sideClass = "right-full mr-" + strconv.Itoa(sideOffset)
-		case "right":
-			sideClass = "left-full ml-" + strconv.Itoa(sideOffset)
-		default:
-			sideClass = "top-full mt-" + strconv.Itoa(sideOffset)
-		}
-
+		// Generate positioning classes using expression builder helper
+		sideClass := utils.CreateSideClasses(props.Side, props.SideOffset)
 		positionClasses := "absolute " + sideClass + " " + alignClass
 
 		// Create signals manager for this dropdown
 		signals := utils.Signals(props.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
 
-		// ESC key handler for closing dropdown - use window-level handler for consistency with dialog
-		escapeHandler := "evt.key === 'Escape' && " + signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+		// ESC key handler for closing dropdown using expression builder
+		dropdownHandler := utils.NewDropdownHandler(signals)
+		escapeHandler := dropdownHandler.BuildEscapeHandler()
 	}}
 	<div
 		data-slot="dropdown-menu-content"

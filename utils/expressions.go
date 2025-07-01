@@ -784,3 +784,46 @@ func (d *DateInputHandler) BuildCheckboxChangeHandler(endInputID string) string 
 		Build()
 }
 
+// DropdownHandler creates handlers for dropdown components
+type DropdownHandler struct {
+	signals *SignalManager
+}
+
+// NewDropdownHandler creates a dropdown handler
+func NewDropdownHandler(signals *SignalManager) *DropdownHandler {
+	return &DropdownHandler{
+		signals: signals,
+	}
+}
+
+// BuildClickOutsideHandler creates a click outside handler for closing dropdown
+func (d *DropdownHandler) BuildClickOutsideHandler() string {
+	return d.signals.ConditionalAction(d.signals.Signal("open"), "open", "false")
+}
+
+// BuildEscapeHandler creates an escape key handler for closing dropdown
+func (d *DropdownHandler) BuildEscapeHandler() string {
+	condition := fmt.Sprintf("evt.key === 'Escape' && %s", d.signals.Signal("open"))
+	return d.signals.ConditionalAction(condition, "open", "false")
+}
+
+// CreateSideClasses generates positioning classes for dropdown sides
+func CreateSideClasses(side string, offset int) string {
+	if offset == 0 {
+		offset = 4 // Default offset like shadcn/ui
+	}
+
+	switch side {
+	case "top":
+		return fmt.Sprintf("bottom-full mb-%d", offset)
+	case "bottom":
+		return fmt.Sprintf("top-full mt-%d", offset)
+	case "left":
+		return fmt.Sprintf("right-full mr-%d", offset)
+	case "right":
+		return fmt.Sprintf("left-full ml-%d", offset)
+	default:
+		return fmt.Sprintf("top-full mt-%d", offset)
+	}
+}
+
