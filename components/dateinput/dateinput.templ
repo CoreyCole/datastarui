@@ -124,8 +124,16 @@ templ DateInput(props DateInputProps) {
 
 		// Create date formatting handlers
 		createInputHandler := func(inputSignal, dateSignal string) string {
-			baseHandler := "evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+			// Check if cursor is at the end and we should apply formatting
+			baseHandler := "const cursorAtEnd = evt.target.selectionStart === evt.target.value.length; " +
+				"const shouldFormat = cursorAtEnd && evt.target.value.replace(/[^\\d]/g, '').length <= evt.target.value.length; " +
+				// If cursor at end and typing forward, apply formatting
+				"if (shouldFormat) { " +
+				"evt.target.value = (digits => digits.length >= 1 ? digits.substring(0,2) + (digits.length >= 3 ? '/' + digits.substring(2,4) + (digits.length >= 5 ? '/' + digits.substring(4,8) : '') : '') : '')(evt.target.value.replace(/[^\\d]/g, '')); " +
+				"} " +
+				// Always update the signal
 				signals.Set(inputSignal, "evt.target.value") + "; " +
+				// Update the date signal if we have a valid date
 				"evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 4 ? " +
 				signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')") +
 				" : evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2].length === 2 ? " +
