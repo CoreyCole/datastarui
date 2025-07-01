@@ -710,42 +710,51 @@ func (d *DateInputHandler) addCalendarCoordination(expr *DatastarExpression, dat
 
 // BuildBlurHandler creates the blur completion handler
 func (d *DateInputHandler) BuildBlurHandler(inputSignal, dateSignal string) string {
-	expr := NewExpression()
-	
-	// Core blur logic - pad and complete partial dates
-	expr.Statement("if (evt.target.value.split('/').length >= 2) {")
-	expr.Statement("evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')")
-	expr.Statement(d.signals.Set(inputSignal, "evt.target.value"))
-	expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
-	expr.Statement(d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"))
-	expr.Statement("}")
-	expr.Statement("}")
-	
-	// Add calendar coordination if provided  
+	// Build calendar coordination logic if needed
+	var calendarLogic string
 	if d.calendarID != "" {
-		d.addCalendarBlurCoordination(expr, dateSignal)
+		if strings.Contains(dateSignal, "startDateValue") {
+			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { $%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]; $%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'; }`, d.calendarID, d.calendarID)
+		} else if strings.Contains(dateSignal, "endDateValue") {
+			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { $%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]; $%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'; }`, d.calendarID, d.calendarID)
+		} else if strings.Contains(dateSignal, "dateValue") {
+			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { %s; %s; }`, 
+				d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+				d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
+		}
 	}
 	
-	return expr.Build()
+	// Build complete blur logic as a single statement with proper spacing
+	blurLogic := fmt.Sprintf(`if (evt.target.value.split('/').length >= 2) { evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/'); %s; if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { %s; }%s }`, 
+		d.signals.Set(inputSignal, "evt.target.value"),
+		d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+		calendarLogic)
+	
+	return blurLogic
 }
 
 // addCalendarBlurCoordination adds calendar coordination for blur events
 func (d *DateInputHandler) addCalendarBlurCoordination(expr *DatastarExpression, dateSignal string) {
 	if strings.Contains(dateSignal, "startDateValue") {
-		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
-		expr.Statement(fmt.Sprintf("$%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]", d.calendarID))
-		expr.Statement(fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID))
-		expr.Statement("}")
+		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
+			$%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1];
+			$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01';
+		}`, d.calendarID, d.calendarID)
+		expr.Statement(calendarSync)
 	} else if strings.Contains(dateSignal, "endDateValue") {
-		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
-		expr.Statement(fmt.Sprintf("$%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]", d.calendarID))
-		expr.Statement(fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID))
-		expr.Statement("}")
+		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
+			$%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1];
+			$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01';
+		}`, d.calendarID, d.calendarID)
+		expr.Statement(calendarSync)
 	} else if strings.Contains(dateSignal, "dateValue") {
-		expr.Statement("if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {")
-		expr.Statement(d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"))
-		expr.Statement(d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
-		expr.Statement("}")
+		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
+			%s;
+			%s;
+		}`, 
+			d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+			d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
+		expr.Statement(calendarSync)
 	}
 }
 
