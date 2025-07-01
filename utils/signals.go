@@ -68,6 +68,12 @@ func (sm *SignalManager) Set(property, value string) string {
 	return fmt.Sprintf("%s = %s", sm.Signal(property), value)
 }
 
+// SetString returns a set expression for a string signal property with proper quoting
+// Example: signals.SetString("value", "hello") returns "$myComponent.value = 'hello'"
+func (sm *SignalManager) SetString(property, value string) string {
+	return fmt.Sprintf("%s = '%s'", sm.Signal(property), value)
+}
+
 // Conditional returns a conditional expression for a signal property
 // Example: signals.Conditional("loading", "Saving...", "Save") returns "$myComponent.loading ? 'Saving...' : 'Save'"
 func (sm *SignalManager) Conditional(property, trueValue, falseValue string) string {
@@ -97,6 +103,7 @@ func (sm *SignalManager) ConditionalMultiAction(condition string, actions ...str
 	}
 	return fmt.Sprintf("%s ? (%s) : void 0", condition, actionsStr)
 }
+
 
 // MultiStateConditional creates a chain of conditional expressions for handling multiple states
 //

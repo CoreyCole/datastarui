@@ -77,12 +77,15 @@ templ TabsTrigger(props TabsTriggerProps) {
 		// Use the correct variant function that matches shadcn/ui exactly
 		baseClasses := tabsTriggerVariantsBase(props.Class)
 
-		// Create expressions using the new signals system
-		signalRef := signals.Signal("active")
-		clickExpr := signals.Set("active", "'"+props.Value+"'")
-
-		// Active state classes to be applied conditionally - using Datastar object syntax
-		activeClassesObj := "{'bg-background': " + signalRef + " === '" + props.Value + "', 'text-foreground': " + signalRef + " === '" + props.Value + "', 'shadow-sm': " + signalRef + " === '" + props.Value + "'}"
+		// Create tabs handler for clean expressions
+		tabsHandler := utils.NewTabsHandler(props.ID, signals)
+		
+		// Use expression builders for clean, maintainable code
+		clickExpr := tabsHandler.BuildTriggerClickHandler(props.Value)
+		activeClassesObj := tabsHandler.BuildTriggerDataClass(props.Value)
+		stateAttr := tabsHandler.BuildTriggerStateAttr(props.Value)
+		ariaSelected := tabsHandler.BuildTriggerAriaSelected(props.Value)
+		tabIndex := tabsHandler.BuildTriggerTabIndex(props.Value)
 	}}
 	<button
 		type="button"
@@ -92,9 +95,9 @@ templ TabsTrigger(props TabsTriggerProps) {
 		role="tab"
 		data-value={ props.Value }
 		data-on-click={ clickExpr }
-		data-attr-data-state={ signalRef + " === '" + props.Value + "' ? 'active' : 'inactive'" }
-		data-attr-aria-selected={ signalRef + " === '" + props.Value + "' ? 'true' : 'false'" }
-		data-attr-tabindex={ signalRef + " === '" + props.Value + "' ? '0' : '-1'" }
+		data-attr-data-state={ stateAttr }
+		data-attr-aria-selected={ ariaSelected }
+		data-attr-tabindex={ tabIndex }
 		disabled?={ props.Disabled }
 		{ props.Attributes... }
 	>
@@ -111,9 +114,12 @@ templ TabsContent(props TabsContentProps) {
 		// Generate CSS classes
 		classes := tabsContentVariants(props.Class)
 
-		// Create expressions using the new signals system
-		signalRef := signals.Signal("active")
-		showExpr := signalRef + " === '" + props.Value + "'"
+		// Create tabs handler for clean expressions
+		tabsHandler := utils.NewTabsHandler(props.ID, signals)
+		
+		// Use expression builders for clean, maintainable code
+		showExpr := tabsHandler.BuildContentShowExpression(props.Value)
+		ariaHidden := tabsHandler.BuildContentAriaHidden(props.Value)
 	}}
 	<div
 		data-slot="tabs-content"
@@ -121,7 +127,7 @@ templ TabsContent(props TabsContentProps) {
 		role="tabpanel"
 		data-value={ props.Value }
 		data-show={ showExpr }
-		data-attr-aria-hidden={ signalRef + " === '" + props.Value + "' ? 'false' : 'true'" }
+		data-attr-aria-hidden={ ariaHidden }
 		tabindex="0"
 		{ props.Attributes... }
 	>

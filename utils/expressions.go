@@ -710,27 +710,54 @@ func (d *DateInputHandler) addCalendarCoordination(expr *DatastarExpression, dat
 
 // BuildBlurHandler creates the blur completion handler
 func (d *DateInputHandler) BuildBlurHandler(inputSignal, dateSignal string) string {
-	// Build calendar coordination logic if needed
-	var calendarLogic string
+	expr := NewExpression()
+	
+	// Format date padding logic
+	formatValue := "evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/')"
+	
+	// Build the actions for when we have at least 2 parts (MM/DD or MM/DD/YY)
+	formatActions := []string{
+		"evt.target.value = " + formatValue,
+		d.signals.Set(inputSignal, "evt.target.value"),
+	}
+	
+	// Build actions for when we have complete date (MM/DD/YYYY)
+	var dateConversionActions []string
+	isoDateExpr := "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"
+	dateConversionActions = append(dateConversionActions, d.signals.Set(dateSignal, isoDateExpr))
+	
+	// Add calendar coordination if needed
 	if d.calendarID != "" {
 		if strings.Contains(dateSignal, "startDateValue") {
-			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { $%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]; $%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'; }`, d.calendarID, d.calendarID)
+			dateConversionActions = append(dateConversionActions,
+				fmt.Sprintf("$%s.rangeStart = %s", d.calendarID, isoDateExpr),
+				fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID),
+			)
 		} else if strings.Contains(dateSignal, "endDateValue") {
-			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { $%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]; $%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'; }`, d.calendarID, d.calendarID)
+			dateConversionActions = append(dateConversionActions,
+				fmt.Sprintf("$%s.rangeEnd = %s", d.calendarID, isoDateExpr),
+				fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID),
+			)
 		} else if strings.Contains(dateSignal, "dateValue") {
-			calendarLogic = fmt.Sprintf(` if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { %s; %s; }`, 
-				d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
-				d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
+			dateConversionActions = append(dateConversionActions,
+				d.signals.Set("selectedDate", isoDateExpr),
+				d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"),
+			)
 		}
 	}
 	
-	// Build complete blur logic as a single statement with proper spacing
-	blurLogic := fmt.Sprintf(`if (evt.target.value.split('/').length >= 2) { evt.target.value = evt.target.value.split('/').map((p,i) => i < 2 ? p.padStart(2, '0') : (p.length === 2 ? '20' + p : p)).join('/'); %s; if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) { %s; }%s }`, 
-		d.signals.Set(inputSignal, "evt.target.value"),
-		d.signals.Set(dateSignal, "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
-		calendarLogic)
+	// Build nested conditional: if has 2+ parts, format, then if has 3 parts, convert to ISO
+	nestedCondition := fmt.Sprintf("evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2] ? (%s) : null",
+		strings.Join(dateConversionActions, ", "))
 	
-	return blurLogic
+	formatActions = append(formatActions, nestedCondition)
+	
+	// Build the main conditional
+	return expr.Conditional(
+		"evt.target.value.split('/').length >= 2",
+		fmt.Sprintf("(%s)", strings.Join(formatActions, ", ")),
+		"null",
+	).Build()
 }
 
 // addCalendarBlurCoordination adds calendar coordination for blur events
@@ -825,5 +852,64 @@ func CreateSideClasses(side string, offset int) string {
 	default:
 		return fmt.Sprintf("top-full mt-%d", offset)
 	}
+}
+
+// TabsHandler creates handlers for Tabs component functionality
+type TabsHandler struct {
+	tabsID  string
+	signals *SignalManager
+}
+
+// NewTabsHandler creates a tabs handler
+func NewTabsHandler(tabsID string, signals *SignalManager) *TabsHandler {
+	return &TabsHandler{
+		tabsID:  tabsID,
+		signals: signals,
+	}
+}
+
+// BuildTriggerClickHandler creates the tab trigger click handler
+func (t *TabsHandler) BuildTriggerClickHandler(value string) string {
+	return t.signals.SetString("active", value)
+}
+
+// BuildTriggerDataClass creates conditional classes for tab triggers
+func (t *TabsHandler) BuildTriggerDataClass(value string) string {
+	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+	
+	return NewDataClass().
+		Add("bg-background", condition).
+		Add("text-foreground", condition).
+		Add("shadow-sm", condition).
+		Build()
+}
+
+// BuildTriggerStateAttr creates the data-state attribute expression
+func (t *TabsHandler) BuildTriggerStateAttr(value string) string {
+	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+	return fmt.Sprintf("%s ? 'active' : 'inactive'", condition)
+}
+
+// BuildTriggerAriaSelected creates the aria-selected attribute expression
+func (t *TabsHandler) BuildTriggerAriaSelected(value string) string {
+	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+	return fmt.Sprintf("%s ? 'true' : 'false'", condition)
+}
+
+// BuildTriggerTabIndex creates the tabindex attribute expression
+func (t *TabsHandler) BuildTriggerTabIndex(value string) string {
+	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+	return fmt.Sprintf("%s ? '0' : '-1'", condition)
+}
+
+// BuildContentShowExpression creates the show expression for tab content
+func (t *TabsHandler) BuildContentShowExpression(value string) string {
+	return fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+}
+
+// BuildContentAriaHidden creates the aria-hidden attribute expression
+func (t *TabsHandler) BuildContentAriaHidden(value string) string {
+	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
+	return fmt.Sprintf("%s ? 'false' : 'true'", condition)
 }
 
