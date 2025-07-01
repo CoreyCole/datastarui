@@ -601,26 +601,15 @@ func (d *DatePickerPopoverHandler) BuildMonthChangeHandler() string {
 
 // BuildOpenTriggerHandler creates the calendar icon click handler
 func (d *DatePickerPopoverHandler) BuildOpenTriggerHandler() string {
-	return NewExpression().
-		Statement("evt.preventDefault()").
-		Statement("evt.stopPropagation()").
-		Statement(d.signals.Toggle("open")).
-		Build()
+	// Toggle open state - removed stopPropagation to allow click-outside handlers to work
+	return d.signals.Toggle("open")
 }
 
 // BuildClickOutsideHandler creates the click outside handler to close popover
 func (d *DatePickerPopoverHandler) BuildClickOutsideHandler() string {
-	// Check if the click target is the calendar icon button or its children (SVG elements)
-	// This prevents the popover from closing when clicking the calendar icon
-	isCalendarButton := "evt.target.closest('button[data-on-click*=\"" + d.signals.Signal("open") + "\"]')"
-	
-	return NewExpression().
-		Conditional(
-			d.signals.Signal("open") + " && !" + isCalendarButton,
-			d.signals.Set("open", "false"),
-			"null",
-		).
-		Build()
+	// Conditional handler - only close when actually open
+	// This prevents the click-outside from interfering with the initial click
+	return d.signals.Signal("open") + " ? " + d.signals.Set("open", "false") + " : null"
 }
 
 // DateInputHandler creates handlers for DateInput component functionality
