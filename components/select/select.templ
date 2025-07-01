@@ -169,22 +169,10 @@ templ SelectTrigger(props SelectTriggerProps) {
 		// Generate the CSS classes using our variant system
 		classes := selectTriggerVariants(props.Class)
 
-		// Simpler approach to find current selection index - use the select container's ID for specificity
-		findCurrentIndexJs := "Array.from(document.querySelectorAll('[data-select-id=\"" + props.ID + "\"] [data-select-item]:not([data-disabled])')).findIndex(el => el.dataset.value === " + signals.Signal("value") + ")"
-
-		// Set highlighted to current selection index, or 0 if no selection (findIndex returns -1 when not found)
-		setHighlightedJs := signals.Set("highlighted", "Math.max(0, "+findCurrentIndexJs+")")
-
-		// Click handler - toggle open and highlight current selection
-		clickExpr := signals.Toggle("open") + "; " +
-			signals.Signal("open") + " ? " + setHighlightedJs + " : null"
-
-		// Keyboard handler - open and highlight current selection when closed
-		triggerKeyHandler := "(evt.key === 'ArrowDown' || evt.key === 'ArrowUp' || evt.key === ' ' || evt.key === 'Enter') && !" + signals.Signal("open") + " ? (" +
-			"evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "true") + ", " +
-			setHighlightedJs +
-			") : null"
+		// Generate trigger handlers using expression builder
+		triggerHandler := utils.NewSelectTriggerHandler(props.ID, signals)
+		clickExpr := triggerHandler.BuildClickHandler()
+		triggerKeyHandler := triggerHandler.BuildKeyboardHandler()
 	}}
 	<button
 		data-slot="select-trigger"
@@ -249,34 +237,9 @@ templ SelectContent(props SelectContentProps) {
 		// Create expressions
 		showExpr := signals.Signal("open")
 
-		// Get the maximum selectable item count for bounds checking - scoped to this select only
-		maxItemsJs := "document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelectorAll('[data-select-item]:not([data-disabled])').length - 1"
-
-		// Enhanced keyboard navigation - only respond if THIS select is open
-		selectOpenCheck := "document.querySelector('[data-select-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
-
-		// Arrow Down: increment highlighted (with upper bound)
-		arrowDownHandler := "evt.key === 'ArrowDown' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("highlighted", "Math.min("+maxItemsJs+", "+signals.Signal("highlighted")+" + 1)") + ") : null"
-
-		// Arrow Up: decrement highlighted (with lower bound)
-		arrowUpHandler := "evt.key === 'ArrowUp' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("highlighted", "Math.max(0, "+signals.Signal("highlighted")+" - 1)") + ") : null"
-
-		// Enter/Space: select highlighted item - scoped to this select only
-		selectHandler := "(evt.key === 'Enter' || evt.key === ' ') && " + selectOpenCheck + " && " +
-			signals.Signal("highlighted") + " >= 0 ? (evt.preventDefault(), evt.stopPropagation(), " +
-			"document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelector('[data-select-item][data-index=\"' + " + signals.Signal("highlighted") + " + '\"]')?.click()) : null"
-
-		// Escape: close dropdown
-		escapeHandler := "evt.key === 'Escape' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "false") + ") : null"
-
-		// Tab: close dropdown but allow default tab behavior to continue
-		tabHandler := "evt.key === 'Tab' && " + selectOpenCheck + " ? " + signals.Set("open", "false") + " : null"
-
-		// Combine all keyboard handlers
-		keyHandler := arrowDownHandler + "; " + arrowUpHandler + "; " + selectHandler + "; " + escapeHandler + "; " + tabHandler
+		// Generate content keyboard navigation using expression builder
+		contentHandler := utils.NewSelectContentHandler(props.ID, signals)
+		keyHandler := contentHandler.BuildKeyboardHandler()
 
 		// Generate viewport classes
 		viewportClasses := selectViewportVariants(props.Position, "")
@@ -306,27 +269,19 @@ templ SelectItem(props SelectItemProps) {
 		// Generate the CSS classes using our variant system
 		classes := selectItemVariants(props.Class)
 
-		// Create individual action expressions
-		setValue := signals.Set("value", "'"+props.Value+"'")
-		setLabel := signals.Set("label", "evt.currentTarget.querySelector('.select-item-text').textContent")
-		closeDropdown := signals.Set("open", "false")
-		resetHighlight := signals.Set("highlighted", "-1")
+		// Generate item selection handlers using expression builder
+		itemHandler := utils.NewSelectItemHandler(props.ID, props.Value)
+		selectExpr := itemHandler.BuildClickHandler()
+		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 
-		// Create click expression with semicolon separation (for click events)
-		selectExpr := setValue + "; " + setLabel + "; " + closeDropdown + "; " + resetHighlight
-
-		// Create keyboard handler using conditional expression instead of if statement
-		itemKeyHandler := "(evt.key === ' ' || evt.key === 'Enter') ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.ConditionalMultiAction("true", setValue, setLabel, closeDropdown, resetHighlight) + ") : null"
-
-		// Add highlighted class conditionally
-		highlightedClass := signals.Signal("highlighted") + " === " + fmt.Sprintf("%d", props.Index) + " ? ' bg-accent text-accent-foreground' : ''"
+		// Add highlighted class conditionally using data-class helper
+		highlightedClass := utils.HighlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
 	}}
 	<div
 		data-slot="select-item"
 		data-select-item
 		class={ classes }
-		data-attr-class={ highlightedClass }
+		data-class={ highlightedClass }
 		role="option"
 		data-value={ props.Value }
 		data-index={ fmt.Sprintf("%d", props.Index) }

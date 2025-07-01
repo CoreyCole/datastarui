@@ -494,22 +494,10 @@ func SelectTrigger(props SelectTriggerProps) templ.Component {
 		// Generate the CSS classes using our variant system
 		classes := selectTriggerVariants(props.Class)
 
-		// Simpler approach to find current selection index - use the select container's ID for specificity
-		findCurrentIndexJs := "Array.from(document.querySelectorAll('[data-select-id=\"" + props.ID + "\"] [data-select-item]:not([data-disabled])')).findIndex(el => el.dataset.value === " + signals.Signal("value") + ")"
-
-		// Set highlighted to current selection index, or 0 if no selection (findIndex returns -1 when not found)
-		setHighlightedJs := signals.Set("highlighted", "Math.max(0, "+findCurrentIndexJs+")")
-
-		// Click handler - toggle open and highlight current selection
-		clickExpr := signals.Toggle("open") + "; " +
-			signals.Signal("open") + " ? " + setHighlightedJs + " : null"
-
-		// Keyboard handler - open and highlight current selection when closed
-		triggerKeyHandler := "(evt.key === 'ArrowDown' || evt.key === 'ArrowUp' || evt.key === ' ' || evt.key === 'Enter') && !" + signals.Signal("open") + " ? (" +
-			"evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "true") + ", " +
-			setHighlightedJs +
-			") : null"
+		// Generate trigger handlers using expression builder
+		triggerHandler := utils.NewSelectTriggerHandler(props.ID, signals)
+		clickExpr := triggerHandler.BuildClickHandler()
+		triggerKeyHandler := triggerHandler.BuildKeyboardHandler()
 		var templ_7745c5c3_Var20 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var20...)
 		if templ_7745c5c3_Err != nil {
@@ -522,7 +510,7 @@ func SelectTrigger(props SelectTriggerProps) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("open"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 193, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 181, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -558,7 +546,7 @@ func SelectTrigger(props SelectTriggerProps) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(clickExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 196, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 184, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -571,7 +559,7 @@ func SelectTrigger(props SelectTriggerProps) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(triggerKeyHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 197, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 185, Col: 37}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -636,7 +624,7 @@ func SelectValue(props SelectValueProps) templ.Component {
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(displayText)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 231, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 219, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
@@ -658,7 +646,7 @@ func SelectValue(props SelectValueProps) templ.Component {
 			var templ_7745c5c3_Var27 string
 			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(props.Placeholder)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 235, Col: 22}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 223, Col: 22}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 			if templ_7745c5c3_Err != nil {
@@ -705,34 +693,9 @@ func SelectContent(props SelectContentProps) templ.Component {
 		// Create expressions
 		showExpr := signals.Signal("open")
 
-		// Get the maximum selectable item count for bounds checking - scoped to this select only
-		maxItemsJs := "document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelectorAll('[data-select-item]:not([data-disabled])').length - 1"
-
-		// Enhanced keyboard navigation - only respond if THIS select is open
-		selectOpenCheck := "document.querySelector('[data-select-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
-
-		// Arrow Down: increment highlighted (with upper bound)
-		arrowDownHandler := "evt.key === 'ArrowDown' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("highlighted", "Math.min("+maxItemsJs+", "+signals.Signal("highlighted")+" + 1)") + ") : null"
-
-		// Arrow Up: decrement highlighted (with lower bound)
-		arrowUpHandler := "evt.key === 'ArrowUp' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("highlighted", "Math.max(0, "+signals.Signal("highlighted")+" - 1)") + ") : null"
-
-		// Enter/Space: select highlighted item - scoped to this select only
-		selectHandler := "(evt.key === 'Enter' || evt.key === ' ') && " + selectOpenCheck + " && " +
-			signals.Signal("highlighted") + " >= 0 ? (evt.preventDefault(), evt.stopPropagation(), " +
-			"document.querySelector('[data-select-id=\"" + props.ID + "\"]').querySelector('[data-select-item][data-index=\"' + " + signals.Signal("highlighted") + " + '\"]')?.click()) : null"
-
-		// Escape: close dropdown
-		escapeHandler := "evt.key === 'Escape' && " + selectOpenCheck + " ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.Set("open", "false") + ") : null"
-
-		// Tab: close dropdown but allow default tab behavior to continue
-		tabHandler := "evt.key === 'Tab' && " + selectOpenCheck + " ? " + signals.Set("open", "false") + " : null"
-
-		// Combine all keyboard handlers
-		keyHandler := arrowDownHandler + "; " + arrowUpHandler + "; " + selectHandler + "; " + escapeHandler + "; " + tabHandler
+		// Generate content keyboard navigation using expression builder
+		contentHandler := utils.NewSelectContentHandler(props.ID, signals)
+		keyHandler := contentHandler.BuildKeyboardHandler()
 
 		// Generate viewport classes
 		viewportClasses := selectViewportVariants(props.Position, "")
@@ -761,7 +724,7 @@ func SelectContent(props SelectContentProps) templ.Component {
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 287, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 250, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
@@ -774,7 +737,7 @@ func SelectContent(props SelectContentProps) templ.Component {
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(keyHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 288, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 251, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
@@ -855,21 +818,13 @@ func SelectItem(props SelectItemProps) templ.Component {
 		// Generate the CSS classes using our variant system
 		classes := selectItemVariants(props.Class)
 
-		// Create individual action expressions
-		setValue := signals.Set("value", "'"+props.Value+"'")
-		setLabel := signals.Set("label", "evt.currentTarget.querySelector('.select-item-text').textContent")
-		closeDropdown := signals.Set("open", "false")
-		resetHighlight := signals.Set("highlighted", "-1")
+		// Generate item selection handlers using expression builder
+		itemHandler := utils.NewSelectItemHandler(props.ID, props.Value)
+		selectExpr := itemHandler.BuildClickHandler()
+		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 
-		// Create click expression with semicolon separation (for click events)
-		selectExpr := setValue + "; " + setLabel + "; " + closeDropdown + "; " + resetHighlight
-
-		// Create keyboard handler using conditional expression instead of if statement
-		itemKeyHandler := "(evt.key === ' ' || evt.key === 'Enter') ? (evt.preventDefault(), evt.stopPropagation(), " +
-			signals.ConditionalMultiAction("true", setValue, setLabel, closeDropdown, resetHighlight) + ") : null"
-
-		// Add highlighted class conditionally
-		highlightedClass := signals.Signal("highlighted") + " === " + fmt.Sprintf("%d", props.Index) + " ? ' bg-accent text-accent-foreground' : ''"
+		// Add highlighted class conditionally using data-class helper
+		highlightedClass := utils.HighlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
 		var templ_7745c5c3_Var36 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var36...)
 		if templ_7745c5c3_Err != nil {
@@ -888,14 +843,14 @@ func SelectItem(props SelectItemProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" data-attr-class=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" data-class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(highlightedClass)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 329, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 284, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -908,7 +863,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 		var templ_7745c5c3_Var39 string
 		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(props.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 331, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 286, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 		if templ_7745c5c3_Err != nil {
@@ -921,7 +876,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 		var templ_7745c5c3_Var40 string
 		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", props.Index))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 332, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 287, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
@@ -939,7 +894,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 			var templ_7745c5c3_Var41 string
 			templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(selectExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 335, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 290, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 			if templ_7745c5c3_Err != nil {
@@ -952,7 +907,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 			var templ_7745c5c3_Var42 string
 			templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(itemKeyHandler)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 336, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 291, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 			if templ_7745c5c3_Err != nil {
@@ -980,7 +935,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 		var templ_7745c5c3_Var43 string
 		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("value") + " === '" + props.Value + "'")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 347, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 302, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 		if templ_7745c5c3_Err != nil {
