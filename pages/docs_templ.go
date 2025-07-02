@@ -223,7 +223,7 @@ func DocsPage() templ.Component {
 					}
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></section><!-- Tech Stack Section --><section class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Tech Stack</h2><div class=\"grid gap-4 sm:grid-cols-2 lg:grid-cols-4\"><div class=\"space-y-2\"><h3 class=\"font-semibold\">Go + templ</h3><p class=\"text-sm text-muted-foreground\">Type-safe server-side rendering with Go's performance</p></div><div class=\"space-y-2\"><h3 class=\"font-semibold\">Datastar</h3><p class=\"text-sm text-muted-foreground\">15KB hypermedia library for reactivity without complexity</p></div><div class=\"space-y-2\"><h3 class=\"font-semibold\">Tailwind CSS</h3><p class=\"text-sm text-muted-foreground\">Utility-first CSS matching shadcn/ui exactly</p></div><div class=\"space-y-2\"><h3 class=\"font-semibold\">Echo</h3><p class=\"text-sm text-muted-foreground\">High performance, minimalist Go web framework</p></div></div></section></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></section></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
