@@ -55,7 +55,7 @@ func SelectPage() templ.Component {
 				ID:          "slice_theme_select",
 				Name:        "theme",
 				Placeholder: "Select a theme...",
-				Options: []selectui.SelectOption{
+				Options: []selectui.SelectOptionProps{
 					{Value: "light", Label: "Light"},
 					{Value: "dark", Label: "Dark"},
 					{Value: "system", Label: "System"},
@@ -72,7 +72,7 @@ func SelectPage() templ.Component {
 				ID:          "slice_language_select",
 				Name:        "language",
 				Placeholder: "Select a language...",
-				Options: []selectui.SelectOption{
+				Options: []selectui.SelectOptionProps{
 					{Value: "en", Label: "English", Group: "Popular"},
 					{Value: "es", Label: "Spanish", Group: "Popular"},
 					{Value: "fr", Label: "French", Group: "Popular"},
@@ -92,7 +92,7 @@ func SelectPage() templ.Component {
 				ID:          "slice_account_select",
 				Name:        "account",
 				Placeholder: "Choose account type...",
-				Options: []selectui.SelectOption{
+				Options: []selectui.SelectOptionProps{
 					{Value: "free", Label: "Free"},
 					{Value: "pro", Label: "Pro"},
 					{Value: "enterprise", Label: "Enterprise (Contact Sales)", Disabled: true},
@@ -110,7 +110,7 @@ func SelectPage() templ.Component {
 				Name:        "priority",
 				Value:       "medium", // Pre-selected
 				Placeholder: "Select priority...",
-				Options: []selectui.SelectOption{
+				Options: []selectui.SelectOptionProps{
 					{Value: "low", Label: "Low Priority"},
 					{Value: "medium", Label: "Medium Priority"},
 					{Value: "high", Label: "High Priority"},

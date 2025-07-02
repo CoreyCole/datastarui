@@ -2,8 +2,8 @@ package selectcomponent
 
 import "github.com/a-h/templ"
 
-// SelectOption represents a single option in the select dropdown
-type SelectOption struct {
+// SelectOptionProps represents a single option in the select dropdown
+type SelectOptionProps struct {
 	// Value is the value of this option
 	Value string `json:"value"`
 
@@ -35,7 +35,7 @@ type SelectProps struct {
 	DefaultValue string
 
 	// Options is a slice of options to render automatically
-	Options []SelectOption
+	Options []SelectOptionProps
 
 	// Name for form submission
 	Name string

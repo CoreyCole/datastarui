@@ -279,7 +279,7 @@ func Select(props SelectProps) templ.Component {
 }
 
 // renderSelectOptions renders a slice of SelectOptions with proper grouping
-func renderSelectOptions(selectID string, options []SelectOption) templ.Component {
+func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -302,8 +302,8 @@ func renderSelectOptions(selectID string, options []SelectOption) templ.Componen
 		ctx = templ.ClearChildren(ctx)
 
 		// Group options by their Group field
-		groupedOptions := make(map[string][]SelectOption)
-		ungroupedOptions := []SelectOption{}
+		groupedOptions := make(map[string][]SelectOptionProps)
+		ungroupedOptions := []SelectOptionProps{}
 
 		for _, option := range options {
 			if option.Group != "" {

@@ -104,11 +104,11 @@ templ Select(props SelectProps) {
 }
 
 // renderSelectOptions renders a slice of SelectOptions with proper grouping
-templ renderSelectOptions(selectID string, options []SelectOption) {
+templ renderSelectOptions(selectID string, options []SelectOptionProps) {
 	{{
 		// Group options by their Group field
-		groupedOptions := make(map[string][]SelectOption)
-		ungroupedOptions := []SelectOption{}
+		groupedOptions := make(map[string][]SelectOptionProps)
+		ungroupedOptions := []SelectOptionProps{}
 
 		for _, option := range options {
 			if option.Group != "" {
