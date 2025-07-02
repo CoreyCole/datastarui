@@ -19,7 +19,7 @@ import (
 )
 
 // datePickerSignals defines the reactive state for the DatePicker component
-type datePickerSignals struct {
+type DatePickerSignals struct {
 	// Open state of the popover
 	Open bool `json:"open"`
 
@@ -607,26 +607,6 @@ func DatePicker(props DatePickerProps) templ.Component {
 	})
 }
 
-// DatePickerPopoverProps defines properties for the popover calendar
-type DatePickerPopoverProps struct {
-	ID                  string
-	DateInputID         string
-	Mode                string
-	NumberOfMonths      int
-	MinDate             string
-	MaxDate             string
-	DisabledDates       string
-	HideOutsideDays     bool
-	CloseOnSelect       bool
-	Class               string
-	Position            string
-	InitialSelectedDate string
-	InitialDisplayMonth string
-	InitialRangeStart   string
-	InitialRangeEnd     string
-	DatePickerInputsID  string // ID of date picker inputs to send signals to for synchronization
-}
-
 // DatePickerPopover renders the calendar popover with keyboard navigation
 func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -766,7 +746,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 499, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 479, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -779,7 +759,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(keyHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 500, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 480, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {

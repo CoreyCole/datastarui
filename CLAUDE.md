@@ -65,9 +65,9 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 
 ```
 datastarui/
-├── components/                    # Reusable UI components
+├── components/                   # Reusable UI components
 │   ├── button/
-│   │   ├── button.templ          # Component template (and internal signal type)
+│   │   ├── button.templ          # Component template (and signal type)
 │   │   ├── props.go              # Component parameter props
 |   │   ├── expressions.go        # Datastar expression builders
 │   │   └── variants.go           # CSS variants
@@ -90,7 +90,7 @@ datastarui/
 Each component follows a consistent 3-file pattern:
 
 1. **Template** (`component.templ`) - templ markup with Datastar attributes
-   - **IMPORTANT:** Always put the private signal struct in the top of this file
+   - **IMPORTANT:** Always put the signal struct in the top of this file
 1. **Types** (`types.go`) - Go structs defining component props
 1. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
 
@@ -107,7 +107,7 @@ See `/docs/guide.md` for comprehensive patterns and examples.
 1. **Signal Management** (`utils/signals.go`)
 
 ```go
-signals := utils.Signals("my_component", MySignals{
+signals := utils.Signals(props.ID, MySignals{
     Open: false,
     Value: "default",
 })
@@ -118,12 +118,11 @@ signals := utils.Signals("my_component", MySignals{
 
 ```go
 expr := utils.NewExpression().
-    Statement("evt.preventDefault()").
     SetSignal("modal.open", "false").
     Build()
 ```
 
-3. **Conditional Classes** (`utils/data_class.go`)
+3. **Conditional Signal Classes** (`utils/data_class.go`)
 
 ```go
 dataClass := utils.HighlightedItem("select.highlighted", index)
@@ -364,8 +363,6 @@ The Playwright MCP server provides browser automation for debugging Datastar com
 - `mcp__playwright__playwright_navigate` - Navigate to a URL (e.g., http://localhost:4242/components/datepicker)
 - `mcp__playwright__playwright_screenshot name="[component]-[state]"` - Capture visual state
 - `mcp__playwright__playwright_get_visible_html` - Get DOM structure
-- `mcp__playwright__playwright_console_logs type="all" clear=true` - Get all console logs
-- `mcp__playwright__playwright_console_logs type="error"` - Get console errors
 - `mcp__playwright__playwright_click "[data-selector]"` - Click element
 - `mcp__playwright__playwright_press_key "ArrowDown"` - Press key
 - `mcp__playwright__playwright_hover "[element]"` - Hover over element
@@ -375,6 +372,8 @@ The Playwright MCP server provides browser automation for debugging Datastar com
 
 - `mcp__playwright__playwright_console_logs` - Enhanced console logging with error detection (requires executeautomation/mcp-playwright)
 - **Supports log levels**: `error`, `warn`, `info`, `log`, `debug`, `all`
+- `mcp__playwright__playwright_console_logs type="all" clear=true` - Get all console logs
+- `mcp__playwright__playwright_console_logs type="error"` - Get console errors
 - **Captures Datastar errors**: Successfully detects "GenerateExpression" runtime errors with full context
 - **Usage**: `mcp__playwright__playwright_console_logs type="error"` for JavaScript errors
 - **Error Types**: Detects JavaScript syntax errors in Datastar expressions (missing quotes, parentheses, etc.)
@@ -408,23 +407,6 @@ The Playwright MCP server provides browser automation for debugging Datastar com
 - **Popover State**: Always check popover visibility before clicking calendar days
 - **Solution**: Use the specific `data-datepicker-id` + element role pattern above
 
-#### Basic Commands
-
-- `mcp__playwright__playwright_click` - Click elements using specific selectors above
-- `mcp__playwright__playwright_fill` - Type in input fields
-- `mcp__playwright__playwright_evaluate` - Execute JavaScript for state checking
-
-### Streamlined Error Detection Workflow
-
-This workflow tests the complete cycle of detecting, fixing, and verifying Datastar expression errors:
-
-1. **Create test error** (optional): Edit templ file to introduce JavaScript syntax error
-1. **Verify compilation**: `just docker-tail app` - Look for "templ has changed", "building...", "Complete" (shows 20 lines to catch compilation errors)
-1. **Check for errors**: Navigate to page and run `mcp__playwright__browser_console_logs type="all" clear=true`
-1. **Fix the error**: Edit templ file to correct the syntax issue
-1. **Verify fix compiled**: `just docker-tail app` - Confirm successful rebuild
-1. **Confirm error gone**: Navigate and run `mcp__playwright__browser_console_logs type="all" clear=true`
-
 ### Common Debugging Workflow
 
 1. Navigate to component page: `mcp__playwright__browser_navigate`
@@ -433,27 +415,3 @@ This workflow tests the complete cycle of detecting, fixing, and verifying Datas
 1. Check console for all messages: `mcp__playwright__browser_console_logs type="all"` (includes errors, logs, and debug messages)
 1. Take screenshot to verify visual state: `mcp__playwright__browser_take_screenshot`
 1. Inspect DOM for signal attributes: `mcp__playwright__browser_snapshot`
-
-### Debugging Datastar Expression Errors
-
-For "GenerateExpression" runtime errors:
-
-1. Check browser DevTools console immediately after page interactions (clicks, typing)
-1. Look for complex expressions in calendar components (calendar.templ:380-381)
-1. Common causes: unescaped quotes in console.log statements, missing parentheses, undefined signal references
-1. **Note**: Playwright MCP console monitoring may not capture all Datastar runtime errors
-1. Use manual browser testing to catch JavaScript syntax errors in generated expressions
-
-### Known Issues
-
-No known issues at this time. All date picker functionality is working correctly.
-
-### TODO: Automated Testing
-
-Need to implement automated testing for Datastar component demo pages to verify:
-
-- Component rendering across all variants
-- Interactive behavior with Datastar signals
-- Visual regression testing
-- Accessibility compliance
-

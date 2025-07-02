@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import "github.com/coreycole/datastarui/utils"
 
 // CheckboxSignals defines the signal structure for checkbox components
-type checkboxSignals struct {
+type CheckboxSignals struct {
 	Checked bool `json:"checked"`
 }
 
@@ -39,7 +39,7 @@ func Checkbox(props CheckboxProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals using the new structured system
-		signals := utils.Signals(props.ID, checkboxSignals{
+		signals := utils.Signals(props.ID, CheckboxSignals{
 			Checked: props.Checked,
 		})
 

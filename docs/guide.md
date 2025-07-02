@@ -87,21 +87,22 @@ dataClass := utils.NewDataClass().
 ### Basic Component Structure
 
 ```go
-// types.go - Define props and signals
+// props.go - Define props and signals
 type SelectProps struct {
     ID          string
     Options     []SelectOption
     Placeholder string
     Class       string
 }
+```
 
+```go
+// signals.go - Define signals
 type SelectSignals struct {
     Open  bool   `json:"open"`
     Value string `json:"value"`
 }
-```
 
-```go
 // select.templ - Component template
 templ Select(props SelectProps) {
     {{
@@ -322,4 +323,3 @@ This approach provides:
 - Readable, maintainable code
 - Proper escaping and syntax
 - Reusable patterns
-

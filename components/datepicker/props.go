@@ -95,3 +95,23 @@ type DatePickerCalendarProps struct {
 	// Embed calendar props for full calendar functionality
 	calendar.CalendarProps
 }
+
+// DatePickerPopoverProps defines properties for the popover calendar
+type DatePickerPopoverProps struct {
+	ID                  string
+	DateInputID         string
+	Mode                string
+	NumberOfMonths      int
+	MinDate             string
+	MaxDate             string
+	DisabledDates       string
+	HideOutsideDays     bool
+	CloseOnSelect       bool
+	Class               string
+	Position            string
+	InitialSelectedDate string
+	InitialDisplayMonth string
+	InitialRangeStart   string
+	InitialRangeEnd     string
+	DatePickerInputsID  string // ID of date picker inputs to send signals to for synchronization
+}

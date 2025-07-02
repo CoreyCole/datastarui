@@ -79,7 +79,7 @@ templ TabsTrigger(props TabsTriggerProps) {
 
 		// Create tabs handler for clean expressions
 		tabsHandler := NewTabsHandler(props.ID, signals)
-		
+
 		// Use expression builders for clean, maintainable code
 		clickExpr := tabsHandler.BuildTriggerClickHandler(props.Value)
 		activeClassesObj := tabsHandler.BuildTriggerDataClass(props.Value)
@@ -116,7 +116,7 @@ templ TabsContent(props TabsContentProps) {
 
 		// Create tabs handler for clean expressions
 		tabsHandler := NewTabsHandler(props.ID, signals)
-		
+
 		// Use expression builders for clean, maintainable code
 		showExpr := tabsHandler.BuildContentShowExpression(props.Value)
 		ariaHidden := tabsHandler.BuildContentAriaHidden(props.Value)
