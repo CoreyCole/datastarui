@@ -207,7 +207,7 @@ templ DatePicker(props DatePickerProps) {
 			<div
 				class="relative flex items-center gap-2"
 				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ signals.Set("open", "true") }
+					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				<!-- DateInput without postfix -->
@@ -264,7 +264,7 @@ templ DatePicker(props DatePickerProps) {
 			}}
 			<div
 				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ signals.Set("open", "true") }
+					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				@dateinput.DateInput(dateinput.DateInputProps{

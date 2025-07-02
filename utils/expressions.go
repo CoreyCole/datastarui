@@ -607,9 +607,10 @@ func (d *DatePickerPopoverHandler) BuildOpenTriggerHandler() string {
 
 // BuildClickOutsideHandler creates the click outside handler to close popover
 func (d *DatePickerPopoverHandler) BuildClickOutsideHandler() string {
-	// Conditional handler - only close when actually open
-	// This prevents the click-outside from interfering with the initial click
-	return d.signals.Signal("open") + " ? " + d.signals.Set("open", "false") + " : null"
+	// Only close when open AND the click target is not THIS datepicker's calendar button
+	// Allow other calendar buttons to close this popover for coordination
+	datepickerSelector := fmt.Sprintf("[data-datepicker-id=\"%s\"]", d.datePickerID)
+	return d.signals.Signal("open") + " && !evt.target.closest('" + datepickerSelector + " button[data-on-click*=\"open\"]') ? " + d.signals.Set("open", "false") + " : null"
 }
 
 // DateInputHandler creates handlers for DateInput component functionality
