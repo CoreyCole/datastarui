@@ -99,8 +99,6 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 
 		// Generate positioning classes using expression builder helper
 		sideClass := utils.CreateSideClasses(props.Side, props.SideOffset)
-		positionClasses := "absolute " + sideClass + " " + alignClass
-
 		// Create signals manager for this dropdown
 		signals := utils.Signals(props.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
@@ -111,7 +109,7 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 	}}
 	<div
 		data-slot="dropdown-menu-content"
-		class={ dropdownMenuContentVariants(props.Class) + " " + positionClasses }
+		class={ utils.TwMerge(dropdownMenuContentVariants(props.Class), "absolute", sideClass, alignClass) }
 		data-show={ showExpr }
 		data-on-keydown__window={ escapeHandler }
 		role="menu"

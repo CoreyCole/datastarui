@@ -612,11 +612,11 @@ func SelectValue(props SelectValueProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		// Create signals manager for this select to access the label
-		signals := utils.Signals(props.ID, SelectSignals{})
+		// Build the label signal reference manually
+		labelSignal := "$" + props.ID + ".label"
 
-		// Create expression to show label or placeholder
-		displayText := signals.Signal("label") + " || '" + props.Placeholder + "'"
+		// Create expression to show label or placeholder using utility function
+		displayText := utils.DefaultValue(labelSignal, props.Placeholder)
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<span data-slot=\"select-value\" class=\"pointer-events-none truncate\" data-text=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -933,9 +933,9 @@ func SelectItem(props SelectItemProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var43 string
-		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("value") + " === '" + props.Value + "'")
+		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Equals("value", props.Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 302, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/select/select.templ`, Line: 302, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 		if templ_7745c5c3_Err != nil {

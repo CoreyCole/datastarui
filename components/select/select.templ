@@ -207,11 +207,11 @@ templ SelectTrigger(props SelectTriggerProps) {
 // SelectValue displays the currently selected value or placeholder
 templ SelectValue(props SelectValueProps) {
 	{{
-		// Create signals manager for this select to access the label
-		signals := utils.Signals(props.ID, SelectSignals{})
-
-		// Create expression to show label or placeholder
-		displayText := signals.Signal("label") + " || '" + props.Placeholder + "'"
+		// Build the label signal reference manually
+		labelSignal := "$" + props.ID + ".label"
+		
+		// Create expression to show label or placeholder using utility function
+		displayText := utils.DefaultValue(labelSignal, props.Placeholder)
 	}}
 	<span
 		data-slot="select-value"
@@ -299,7 +299,7 @@ templ SelectItem(props SelectItemProps) {
 			<!-- Check icon for selected state -->
 			<svg
 				class="h-4 w-4"
-				data-show={ signals.Signal("value") + " === '" + props.Value + "'" }
+				data-show={ signals.Equals("value", props.Value) }
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"

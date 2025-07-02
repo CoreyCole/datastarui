@@ -13,51 +13,49 @@ templ Popover(props PopoverProps) {
 
 // PopoverTrigger creates a trigger button for the popover
 templ PopoverTrigger(props PopoverTriggerProps) {
+	{{
+		// Create popover handler for clean expressions
+		popoverHandler := utils.NewPopoverHandler(props.PopoverID)
+		toggleHandler := popoverHandler.BuildToggleHandler()
+		anchorStyle := popoverHandler.BuildAnchorStyle(props.AnchorName)
+		
+		// Build style attribute
+		style := ""
+		if props.AsChild {
+			style = "cursor: pointer;"
+			if anchorStyle != "" {
+				style += " " + anchorStyle
+			}
+		} else if anchorStyle != "" {
+			style = anchorStyle
+		}
+	}}
 	if props.AsChild {
 		// When AsChild is true, make the wrapper behave like the child
-		if props.AnchorName != "" {
-			<div
-				data-on-click={ "document.getElementById('" + props.PopoverID + "').togglePopover()" }
-				style={ "cursor: pointer; anchor-name: --" + props.AnchorName }
-				class={ props.Class }
-				{ props.Attributes... }
-			>
-				{ children... }
-			</div>
-		} else {
-			<div
-				data-on-click={ "document.getElementById('" + props.PopoverID + "').togglePopover()" }
-				style="cursor: pointer;"
-				class={ props.Class }
-				{ props.Attributes... }
-			>
-				{ children... }
-			</div>
-		}
+		<div
+			data-on-click={ toggleHandler }
+			if style != "" {
+				style={ style }
+			}
+			class={ props.Class }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</div>
 	} else {
 		// Default button trigger
-		if props.AnchorName != "" {
-			<button
-				id={ props.ID }
-				popovertarget={ props.PopoverID }
-				popovertargetaction="toggle"
-				style={ "anchor-name: --" + props.AnchorName }
-				class={ props.Class }
-				{ props.Attributes... }
-			>
-				{ children... }
-			</button>
-		} else {
-			<button
-				id={ props.ID }
-				popovertarget={ props.PopoverID }
-				popovertargetaction="toggle"
-				class={ props.Class }
-				{ props.Attributes... }
-			>
-				{ children... }
-			</button>
-		}
+		<button
+			id={ props.ID }
+			popovertarget={ props.PopoverID }
+			popovertargetaction="toggle"
+			if style != "" {
+				style={ style }
+			}
+			class={ props.Class }
+			{ props.Attributes... }
+		>
+			{ children... }
+		</button>
 	}
 }
 
@@ -66,12 +64,15 @@ templ PopoverContent(props PopoverContentProps) {
 	{{
 		contentClasses := PopoverContentVariants(props)
 
+		// Create popover handler for clean expressions
+		popoverHandler := utils.NewPopoverHandler(props.ID)
+		
 		// Generate positioning styles
 		positioningStyle := ""
 
 		if props.UseAnchor && props.AnchorName != "" {
 			// Simplified positioning API
-			positioningStyle = "position: absolute; position-anchor: --" + props.AnchorName + "; z-index: 50; "
+			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(props.AnchorName) + "; z-index: 50; "
 
 			if props.Side != "" || props.Align != "" {
 				sideOffset := props.SideOffset

@@ -1,5 +1,7 @@
 package sidebar
 
+import "github.com/coreycole/datastarui/utils"
+
 templ Sidebar(props SidebarProps) {
 	<aside class={ "border-grid fixed top-0 z-30 hidden h-screen w-full shrink-0 border-r md:sticky md:block", props.Class } { props.Attributes... }>
 		<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
@@ -29,9 +31,9 @@ templ SidebarLink(item SidebarItem, currentPath string) {
 	isActive := item.Href == currentPath
 	linkClasses := "group relative flex h-8 w-full items-center rounded-lg px-2 after:absolute after:inset-x-0 after:inset-y-[-2px] after:rounded-lg hover:bg-accent hover:text-accent-foreground"
 	if isActive {
-		linkClasses += " bg-accent font-medium text-accent-foreground"
+		linkClasses = utils.TwMerge(linkClasses, "bg-accent font-medium text-accent-foreground")
 	} else {
-		linkClasses += " font-normal text-foreground"
+		linkClasses = utils.TwMerge(linkClasses, "font-normal text-foreground")
 	}
 	}}
 	<a

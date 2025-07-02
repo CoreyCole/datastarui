@@ -121,9 +121,9 @@ func Checkbox(props CheckboxProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " ? 'true' : 'false'")
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Conditional("checked", "'true'", "'false'"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 38, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 38, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -134,9 +134,9 @@ func Checkbox(props CheckboxProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " ? 'checked' : 'unchecked'")
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Conditional("checked", "'checked'", "'unchecked'"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 39, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 39, Col: 84}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -155,9 +155,9 @@ func Checkbox(props CheckboxProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " ? 'opacity: 1' : 'opacity: 0'")
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(signals.TernaryStyle("checked", "opacity: 1", "opacity: 0"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 52, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 52, Col: 81}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -194,9 +194,9 @@ func Checkbox(props CheckboxProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(signalRef + " ? 'true' : 'false'")
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Conditional("checked", "'true'", "'false'"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 63, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/checkbox/checkbox.templ`, Line: 63, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {

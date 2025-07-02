@@ -472,6 +472,39 @@ func (c *CalendarSelectionClasses) Build() string {
 	return classExpr.Build()
 }
 
+// PopoverHandler builds expressions for popover behavior
+type PopoverHandler struct {
+	popoverID string
+}
+
+// NewPopoverHandler creates a new popover expression handler
+func NewPopoverHandler(popoverID string) *PopoverHandler {
+	return &PopoverHandler{
+		popoverID: popoverID,
+	}
+}
+
+// BuildToggleHandler creates a popover toggle expression
+func (p *PopoverHandler) BuildToggleHandler() string {
+	return fmt.Sprintf("document.getElementById('%s').togglePopover()", p.popoverID)
+}
+
+// BuildAnchorStyle creates anchor positioning style
+func (p *PopoverHandler) BuildAnchorStyle(anchorName string) string {
+	if anchorName == "" {
+		return ""
+	}
+	return fmt.Sprintf("anchor-name: --%s", anchorName)
+}
+
+// BuildPositionAnchorStyle creates position anchor style
+func (p *PopoverHandler) BuildPositionAnchorStyle(anchorName string) string {
+	if anchorName == "" {
+		return ""
+	}
+	return fmt.Sprintf("position-anchor: --%s", anchorName)
+}
+
 // DatePickerPopoverHandler creates handlers for DatePicker popover functionality  
 type DatePickerPopoverHandler struct {
 	datePickerID string
@@ -964,5 +997,271 @@ func (d *DialogHandler) BuildCloseHandler(returnValue string) string {
 	}
 	
 	return expr.Build()
+}
+
+// ===============================
+// Enhanced Utility Functions
+// ===============================
+
+// ConditionalExpression creates clean conditional expressions
+type ConditionalExpression struct {
+	condition string
+	trueExpr  string
+	falseExpr string
+}
+
+// NewConditional creates a new conditional expression
+func NewConditional(condition, trueExpr, falseExpr string) *ConditionalExpression {
+	return &ConditionalExpression{
+		condition: condition,
+		trueExpr:  trueExpr,
+		falseExpr: falseExpr,
+	}
+}
+
+// Build creates the conditional expression
+func (c *ConditionalExpression) Build() string {
+	if c.falseExpr == "" {
+		c.falseExpr = "null"
+	}
+	return fmt.Sprintf("%s ? %s : %s", c.condition, c.trueExpr, c.falseExpr)
+}
+
+// MultipleAssignments handles comma-separated signal updates
+type MultipleAssignments struct {
+	assignments []string
+}
+
+// NewMultipleAssignments creates a new multiple assignments builder
+func NewMultipleAssignments() *MultipleAssignments {
+	return &MultipleAssignments{assignments: []string{}}
+}
+
+// Add adds an assignment to the list
+func (m *MultipleAssignments) Add(assignment string) *MultipleAssignments {
+	m.assignments = append(m.assignments, assignment)
+	return m
+}
+
+// AddSignalSet adds a signal assignment
+func (m *MultipleAssignments) AddSignalSet(signals *SignalManager, signal, value string) *MultipleAssignments {
+	m.assignments = append(m.assignments, signals.Set(signal, value))
+	return m
+}
+
+// Build creates the comma-separated assignments
+func (m *MultipleAssignments) Build() string {
+	if len(m.assignments) == 0 {
+		return ""
+	}
+	if len(m.assignments) == 1 {
+		return m.assignments[0]
+	}
+	return "(" + strings.Join(m.assignments, ", ") + ")"
+}
+
+// KeyEventHandler creates keyboard event handlers
+type KeyEventHandler struct {
+	key       string
+	condition string
+	actions   []string
+}
+
+// NewKeyHandler creates a new keyboard event handler
+func NewKeyHandler(key string) *KeyEventHandler {
+	return &KeyEventHandler{
+		key:     key,
+		actions: []string{},
+	}
+}
+
+// WithCondition adds a condition to the key handler
+func (k *KeyEventHandler) WithCondition(condition string) *KeyEventHandler {
+	k.condition = condition
+	return k
+}
+
+// PreventDefault adds preventDefault to the actions
+func (k *KeyEventHandler) PreventDefault() *KeyEventHandler {
+	k.actions = append(k.actions, "evt.preventDefault()")
+	return k
+}
+
+// StopPropagation adds stopPropagation to the actions
+func (k *KeyEventHandler) StopPropagation() *KeyEventHandler {
+	k.actions = append(k.actions, "evt.stopPropagation()")
+	return k
+}
+
+// AddAction adds a custom action
+func (k *KeyEventHandler) AddAction(action string) *KeyEventHandler {
+	k.actions = append(k.actions, action)
+	return k
+}
+
+// AddSignalSet adds a signal assignment action
+func (k *KeyEventHandler) AddSignalSet(signals *SignalManager, signal, value string) *KeyEventHandler {
+	k.actions = append(k.actions, signals.Set(signal, value))
+	return k
+}
+
+// FocusElement adds focus action for an element
+func (k *KeyEventHandler) FocusElement(elementID string) *KeyEventHandler {
+	k.actions = append(k.actions, fmt.Sprintf("document.getElementById('%s').focus()", elementID))
+	return k
+}
+
+// Build creates the complete key event handler
+func (k *KeyEventHandler) Build() string {
+	keyCondition := fmt.Sprintf("evt.key === '%s'", k.key)
+	
+	var fullCondition string
+	if k.condition != "" {
+		fullCondition = fmt.Sprintf("%s && %s", keyCondition, k.condition)
+	} else {
+		fullCondition = keyCondition
+	}
+	
+	var actionExpr string
+	if len(k.actions) == 0 {
+		actionExpr = "null"
+	} else if len(k.actions) == 1 {
+		actionExpr = k.actions[0]
+	} else {
+		actionExpr = "(" + strings.Join(k.actions, ", ") + ")"
+	}
+	
+	return NewConditional(fullCondition, actionExpr, "null").Build()
+}
+
+// FocusCapture creates smart focus capture handlers
+type FocusCapture struct {
+	targetSelector string
+	action        string
+}
+
+// NewFocusCapture creates a focus capture handler
+func NewFocusCapture() *FocusCapture {
+	return &FocusCapture{}
+}
+
+// OnlyInputs restricts to input elements only
+func (f *FocusCapture) OnlyInputs() *FocusCapture {
+	f.targetSelector = "evt.target.tagName.toLowerCase() === 'input'"
+	return f
+}
+
+// OnSelector restricts to specific selector
+func (f *FocusCapture) OnSelector(selector string) *FocusCapture {
+	f.targetSelector = fmt.Sprintf("evt.target.matches('%s')", selector)
+	return f
+}
+
+// SetSignal sets a signal when focus condition is met
+func (f *FocusCapture) SetSignal(signals *SignalManager, signal, value string) *FocusCapture {
+	f.action = signals.Set(signal, value)
+	return f
+}
+
+// Build creates the focus capture handler
+func (f *FocusCapture) Build() string {
+	if f.targetSelector == "" {
+		return f.action
+	}
+	return NewConditional(f.targetSelector, f.action, "null").Build()
+}
+
+// DefaultValue builds an expression for showing a value or a default/placeholder
+func DefaultValue(valueExpr, defaultValue string) string {
+	// Escape single quotes in the default value
+	escapedDefault := strings.ReplaceAll(defaultValue, "'", "\\'")
+	return fmt.Sprintf("%s || '%s'", valueExpr, escapedDefault)
+}
+
+// DateSelectionHandler creates complex date selection logic
+type DateSelectionHandler struct {
+	mode            string
+	dateInputSignals *SignalManager
+	pickerSignals   *SignalManager
+	closeOnSelect   bool
+}
+
+// NewDateSelectionHandler creates a date selection handler
+func NewDateSelectionHandler(mode string, dateInputSignals, pickerSignals *SignalManager, closeOnSelect bool) *DateSelectionHandler {
+	return &DateSelectionHandler{
+		mode:            mode,
+		dateInputSignals: dateInputSignals,
+		pickerSignals:   pickerSignals,
+		closeOnSelect:   closeOnSelect,
+	}
+}
+
+// Build creates the complete date selection handler
+func (d *DateSelectionHandler) Build() string {
+	if d.mode == "range" {
+		return d.buildRangeHandler()
+	}
+	return d.buildSingleHandler()
+}
+
+// buildRangeHandler creates range mode selection logic
+func (d *DateSelectionHandler) buildRangeHandler() string {
+	// Complete range selection
+	completeActions := NewMultipleAssignments().
+		Add("(startDisplay => endDisplay => (" + NewMultipleAssignments().
+			AddSignalSet(d.dateInputSignals, "startInputValue", "startDisplay").
+			AddSignalSet(d.dateInputSignals, "startDateValue", "evt.detail.rangeStart").
+			AddSignalSet(d.dateInputSignals, "endInputValue", "endDisplay").
+			AddSignalSet(d.dateInputSignals, "endDateValue", "evt.detail.rangeEnd").
+			AddSignalSet(d.pickerSignals, "rangeStart", "evt.detail.rangeStart").
+			AddSignalSet(d.pickerSignals, "rangeEnd", "evt.detail.rangeEnd").
+			Build() + "))(evt.detail.rangeStart.replace(/-/g, '/'))(evt.detail.rangeEnd.replace(/-/g, '/'))")
+
+	// Partial range selection  
+	partialActions := NewMultipleAssignments().
+		Add("(startDisplay => (" + NewMultipleAssignments().
+			AddSignalSet(d.dateInputSignals, "startInputValue", "startDisplay").
+			AddSignalSet(d.dateInputSignals, "startDateValue", "evt.detail.rangeStart").
+			AddSignalSet(d.dateInputSignals, "endInputValue", "''").
+			AddSignalSet(d.dateInputSignals, "endDateValue", "''").
+			AddSignalSet(d.pickerSignals, "rangeStart", "evt.detail.rangeStart").
+			AddSignalSet(d.pickerSignals, "rangeEnd", "''").
+			Build() + "))(evt.detail.rangeStart.replace(/-/g, '/'))")
+
+	baseHandler := NewConditional(
+		"evt.detail.rangeStart && evt.detail.rangeEnd",
+		completeActions.Build(),
+		NewConditional("evt.detail.rangeStart", partialActions.Build(), "null").Build(),
+	).Build()
+
+	if d.closeOnSelect {
+		return NewMultipleAssignments().
+			Add(baseHandler).
+			AddSignalSet(d.pickerSignals, "open", "false").
+			Build()
+	}
+	
+	return baseHandler
+}
+
+// buildSingleHandler creates single mode selection logic
+func (d *DateSelectionHandler) buildSingleHandler() string {
+	actions := NewMultipleAssignments().
+		Add("(displayDate => (" + NewMultipleAssignments().
+			AddSignalSet(d.dateInputSignals, "inputValue", "displayDate").
+			AddSignalSet(d.dateInputSignals, "dateValue", "evt.detail.selectedDate").
+			AddSignalSet(d.pickerSignals, "selectedDate", "evt.detail.selectedDate").
+			Build() + "))(evt.detail.selectedDate.replace(/-/g, '/'))")
+
+	baseHandler := NewConditional("evt.detail.selectedDate", actions.Build(), "null").Build()
+	
+	if d.closeOnSelect {
+		return NewMultipleAssignments().
+			Add(baseHandler).
+			AddSignalSet(d.pickerSignals, "open", "false").
+			Build()
+	}
+	
+	return baseHandler
 }
 

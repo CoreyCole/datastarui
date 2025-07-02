@@ -317,8 +317,6 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 
 		// Generate positioning classes using expression builder helper
 		sideClass := utils.CreateSideClasses(props.Side, props.SideOffset)
-		positionClasses := "absolute " + sideClass + " " + alignClass
-
 		// Create signals manager for this dropdown
 		signals := utils.Signals(props.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
@@ -326,7 +324,7 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		// ESC key handler for closing dropdown using expression builder
 		dropdownHandler := utils.NewDropdownHandler(signals)
 		escapeHandler := dropdownHandler.BuildEscapeHandler()
-		var templ_7745c5c3_Var14 = []any{dropdownMenuContentVariants(props.Class) + " " + positionClasses}
+		var templ_7745c5c3_Var14 = []any{utils.TwMerge(dropdownMenuContentVariants(props.Class), "absolute", sideClass, alignClass)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var14...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -351,7 +349,7 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 115, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 113, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -364,7 +362,7 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(escapeHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 116, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 114, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -499,7 +497,7 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(hideExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 155, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 153, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {

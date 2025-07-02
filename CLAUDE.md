@@ -120,6 +120,143 @@ dataClass := utils.HighlightedItem("select.highlighted", index)
 - Only leaf nodes are valid signals (not intermediate namespaces)
 - Initialize signals using `utils.Signals()` helper
 
+### ⚠️ Datastar Footguns & Best Practices
+
+#### 1. **Click-Outside Handler Issues**
+**Problem**: `data-on-click__outside` fires immediately when clicking the element that opens a popover/dropdown, causing the "two-click" bug.
+
+**Why it happens**:
+- User clicks button to open popover → handler sets `open = true`
+- Click event bubbles up → Datastar evaluates click-outside
+- Click-outside sees `open = true` and immediately sets it back to `false`
+
+**Solutions**:
+```go
+// ❌ BAD: Generic click-outside handler
+clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+
+// ✅ GOOD: Exclude the trigger button from click-outside
+datepickerSelector := fmt.Sprintf("[data-datepicker-id=\"%s\"]", datePickerID)
+clickOutsideHandler := signals.Signal("open") + " && !evt.target.closest('" + datepickerSelector + " button[data-on-click*=\"open\"]') ? " + signals.Set("open", "false") + " : null"
+
+// ✅ BETTER: Use utility function
+clickOutsideHandler := utils.NewConditional(
+    signals.Signal("open") + " && !evt.target.closest('" + triggerSelector + "')",
+    signals.Set("open", "false"),
+    "null"
+).Build()
+```
+
+#### 2. **Focus Capture Conflicts**
+**Problem**: `data-on-focus__capture` on containers captures ALL focus events, including button clicks.
+
+**Why it happens**:
+- Container has `data-on-focus__capture="$signal.open = true"`
+- Click calendar button → button receives focus → capture fires
+- Creates conflicts with button's own click handler
+
+**Solutions**:
+```go
+// ❌ BAD: Captures all focus events
+data-on-focus__capture={ signals.Set("open", "true") }
+
+// ✅ GOOD: Only capture input focus
+focusCapture := utils.NewFocusCapture().
+    OnlyInputs().
+    SetSignal(signals, "open", "true").
+    Build()
+// Result: evt.target.tagName.toLowerCase() === 'input' ? $signal.open = true : null
+```
+
+#### 3. **Event Propagation Issues**
+**Problem**: Using `evt.stopPropagation()` breaks event coordination between components.
+
+**Why it happens**:
+- Component A uses stopPropagation to prevent unwanted behavior
+- Component B's click-outside handler never fires because event doesn't bubble
+- Multiple popovers/dropdowns stay open simultaneously
+
+**Solutions**:
+```go
+// ❌ BAD: Stops all event propagation
+return signals.Toggle("open") + "; evt.stopPropagation()"
+
+// ✅ GOOD: Use targeted click-outside exclusions instead
+// Let events bubble naturally and handle them specifically
+```
+
+#### 4. **Signal Initialization Timing**
+**Problem**: Signals used before initialization cause runtime errors.
+
+**Solutions**:
+```go
+// ❌ BAD: Using signals without checking initialization
+data-show={ signals.Signal("open") }
+
+// ✅ GOOD: Explicit comparison prevents undefined errors
+data-show={ signals.Signal("open") + " === true" }
+```
+
+#### 5. **Complex Expression Readability**
+**Problem**: String concatenation creates unreadable, error-prone expressions.
+
+**Solutions**:
+```go
+// ❌ BAD: String concatenation nightmare
+handler := "evt.key === 'Escape' && " + check + " ? (" + 
+    "evt.preventDefault(), " + signals.Set("open", "false") + 
+    ", document.getElementById('" + id + "').focus()) : null"
+
+// ✅ GOOD: Use expression builders
+handler := utils.NewKeyHandler("Escape").
+    WithCondition(check).
+    PreventDefault().
+    AddSignalSet(signals, "open", "false").
+    FocusElement(id).
+    Build()
+```
+
+#### 6. **Multiple Event Handlers**
+**Problem**: Combining multiple event handlers with string concatenation is error-prone.
+
+**Solutions**:
+```go
+// ❌ BAD: Manual concatenation
+keyHandler := escapeHandler + "; " + tabHandler + "; " + enterHandler
+
+// ✅ GOOD: Use utilities
+keyHandler := utils.NewMultipleAssignments().
+    Add(escapeHandler).
+    Add(tabHandler).
+    Add(enterHandler).
+    Build()
+```
+
+#### 7. **Blur/Focus Handler Ordering**
+**Problem**: Blur handlers can interfere with click handlers due to event ordering.
+
+**Why it happens**:
+1. User clicks button
+2. Input loses focus → blur handler fires
+3. Button click handler fires
+4. Conflicting state changes
+
+**Solutions**:
+- Use debounced handlers when appropriate
+- Carefully order signal updates
+- Test interaction between blur and click handlers
+
+### Best Practices Summary
+
+1. **Always use utility functions** instead of string concatenation
+2. **Test event bubbling** - use browser DevTools to trace event flow
+3. **Be specific with selectors** in click-outside handlers
+4. **Avoid stopPropagation** unless absolutely necessary
+5. **Initialize signals properly** with explicit values
+6. **Use conditional expressions** for null-safe operations
+7. **Test focus/blur interactions** thoroughly
+8. **Document complex event flows** in comments
+
 ### Key Patterns
 - **Props down, events up** - encapsulate state, communicate via defined interfaces
 - **Server-driven state** - backend is single source of truth
