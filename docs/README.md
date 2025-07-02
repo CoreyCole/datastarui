@@ -27,9 +27,9 @@ Welcome to the DatastarUI documentation! This directory contains comprehensive g
 ## 🚀 Quick Start
 
 1. **New to DatastarUI?** Start with the [Development Guide](./guide.md)
-2. **Building components?** Follow the utility patterns in the guide
-3. **Debugging issues?** Check the [Debugging Guide](./debugging.md)
-4. **Writing tests?** Use [Playwright Testing](./playwright.md)
+1. **Building components?** Follow the utility patterns in the guide
+1. **Debugging issues?** Check the [Debugging Guide](./debugging.md)
+1. **Writing tests?** Use [Playwright Testing](./playwright.md)
 
 ## 🛠️ Modern Development Approach
 
@@ -63,40 +63,44 @@ dataClass := utils.HighlightedItem("select.highlighted", index)
 Our documentation follows these principles:
 
 1. **Example-driven** - Show real code from working components
-2. **Progressive complexity** - Start simple, build up to advanced patterns
-3. **Best practices** - Highlight the recommended approach
-4. **Common pitfalls** - Explain what to avoid and why
+1. **Progressive complexity** - Start simple, build up to advanced patterns
+1. **Best practices** - Highlight the recommended approach
+1. **Common pitfalls** - Explain what to avoid and why
 
 ## 🔄 Migration from Legacy Patterns
 
 If you're working with older DatastarUI code that uses string concatenation:
 
 1. Read the [Development Guide](./guide.md) for modern patterns
-2. Use [Signals Management](./signals.md) as a reference for legacy code
-3. Follow the migration examples in the guide
-4. Test thoroughly using [Debugging Guide](./debugging.md)
+1. Use [Signals Management](./signals.md) as a reference for legacy code
+1. Follow the migration examples in the guide
+1. Test thoroughly using [Debugging Guide](./debugging.md)
 
 ## 🤝 Contributing to Documentation
 
 When adding or updating documentation:
 
 1. **Follow existing patterns** - Use the same structure and formatting
-2. **Include examples** - Show working code from actual components
-3. **Test examples** - Ensure all code examples actually work
-4. **Cross-reference** - Link to related documentation
-5. **Update this index** - Add new docs to the overview above
+1. **Include examples** - Show working code from actual components
+1. **Test examples** - Ensure all code examples actually work
+1. **Cross-reference** - Link to related documentation
+1. **Update this index** - Add new docs to the overview above
 
 ## 📋 Documentation Checklist
 
 For each new component or pattern:
 
 - [ ] Implementation follows [Development Guide](./guide.md) patterns
-- [ ] Uses utility libraries instead of string concatenation  
+- [ ] Uses utility libraries instead of string concatenation
 - [ ] Has proper signal management with `utils.Signals()`
+- [ ] Use datastar data-class utility objects with `utils.NewDataClass()`
 - [ ] Uses expression builders for complex Datastar expressions
+- [ ] Uses local `expression.go` file for local expression builders only used in this component
+- [ ] Try to avoid complex string concatenation and fmt.Sprintf() in favor of expression builders if possible
 - [ ] Includes tests following [Playwright Testing](./playwright.md)
 - [ ] Documentation updated in relevant guides
 
 ## 🎯 Next Steps
 
 Ready to build components? Head to the [Development Guide](./guide.md) and start with the utility patterns!
+

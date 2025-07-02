@@ -3,6 +3,7 @@
 This guide explains how to build clean, maintainable Datastar components using templ and our utility libraries.
 
 ## Table of Contents
+
 - [Core Utilities](#core-utilities)
 - [Signal Management](#signal-management)
 - [Expression Builders](#expression-builders)
@@ -35,6 +36,7 @@ signals := utils.Signals("my_select", SelectSignals{
 ```
 
 **Signal Manager Methods:**
+
 - `signals.DataSignals` - Returns the JSON for `data-signals` attribute
 - `signals.Signal("prop")` - Returns signal reference: `$my_select.prop`
 - `signals.Toggle("open")` - Toggle boolean: `$my_select.open = !$my_select.open`
@@ -190,16 +192,19 @@ keyHandler := utils.NewKeyboardHandler("Enter", "Space").
 ## Best Practices
 
 ### 1. Signal Naming Conventions
+
 - Use lowercase with underscores for component IDs: `user_profile`, `item_list`
 - Never use uppercase, dashes, or periods in signal names
 - Validate IDs in your components
 
 ### 2. Expression Building
+
 - Use expression builders instead of string concatenation
 - Use comma operator for multiple statements in conditionals: `(stmt1, stmt2, stmt3)`
 - Always escape string values in expressions
 
 ### 3. Component Composition
+
 ```go
 // Parent provides signals context
 templ SelectWrapper(props WrapperProps) {
@@ -216,24 +221,28 @@ templ SelectWrapper(props WrapperProps) {
 ### 4. Avoiding Common Pitfalls
 
 **DON'T: String concatenation**
+
 ```go
 // Bad
 clickHandler := "$" + id + ".open = !" + "$" + id + ".open"
 ```
 
 **DO: Use utilities**
+
 ```go
 // Good
 clickHandler := signals.Toggle("open")
 ```
 
 **DON'T: Mix quote styles**
+
 ```go
 // Bad - will cause syntax errors
 expr := `$select.value = "` + value + `"`
 ```
 
 **DO: Consistent escaping**
+
 ```go
 // Good
 expr := signals.Set("value", fmt.Sprintf("'%s'", value))
@@ -242,6 +251,7 @@ expr := signals.Set("value", fmt.Sprintf("'%s'", value))
 ## Advanced Patterns
 
 ### Multi-Signal Coordination
+
 ```go
 // Update multiple related signals
 expr := utils.NewExpression().
@@ -252,6 +262,7 @@ expr := utils.NewExpression().
 ```
 
 ### Complex Conditionals
+
 ```go
 // Nested conditions with proper parentheses
 expr := utils.NewExpression().
@@ -264,6 +275,7 @@ expr := utils.NewExpression().
 ```
 
 ### Event Modifiers
+
 ```go
 // Click outside handler
 <div data-on-click__outside={ signals.Set("open", "false") }>
@@ -278,22 +290,25 @@ expr := utils.NewExpression().
 ## Testing Expressions
 
 Always test your expressions in the browser console:
+
 1. Open DevTools
-2. Check for Datastar errors in console
-3. Use `mcp__playwright__playwright_console_logs` to capture runtime errors
-4. Verify signal updates with Datastar DevTools
+1. Check for Datastar errors in console
+1. Use `mcp__playwright__playwright_console_logs` to capture runtime errors
+1. Verify signal updates with Datastar DevTools
 
 ## Migration Guide
 
 Converting string concatenation to utilities:
 
 **Before:**
+
 ```go
 clickHandler := fmt.Sprintf("(evt) => { %s = !%s; %s = %s ? 0 : -1 }", 
     openSignal, openSignal, highlightSignal, openSignal)
 ```
 
 **After:**
+
 ```go
 clickHandler := utils.NewExpression().
     Statement(signals.Toggle("open")).
@@ -302,7 +317,9 @@ clickHandler := utils.NewExpression().
 ```
 
 This approach provides:
+
 - Type safety where possible
 - Readable, maintainable code
 - Proper escaping and syntax
 - Reusable patterns
+

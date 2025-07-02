@@ -25,6 +25,7 @@ mcp__playwright__playwright_navigate http://localhost:4242/components/calendar
 ## 🖱️ Interaction Commands
 
 ### Clicking Elements
+
 ```bash
 # Click with specific selectors
 mcp__playwright__playwright_click "button[type='button']"
@@ -36,6 +37,7 @@ mcp__playwright__playwright_click "[data-datepicker-id='range_date'] [data-slot=
 ```
 
 ### Keyboard Interaction
+
 ```bash
 # Press individual keys
 mcp__playwright__playwright_press_key "ArrowDown"
@@ -50,6 +52,7 @@ mcp__playwright__playwright_press_key "Shift+Tab"
 ```
 
 ### Form Input
+
 ```bash
 # Fill input fields
 mcp__playwright__playwright_fill "input[type='text']" "test value"
@@ -60,6 +63,7 @@ mcp__playwright__playwright_fill "input[type='text']" ""
 ```
 
 ### Hover Actions
+
 ```bash
 # Hover over elements
 mcp__playwright__playwright_hover "button[variant='outline']"
@@ -69,6 +73,7 @@ mcp__playwright__playwright_hover ".hover-target"
 ## 📸 Visual Testing Commands
 
 ### Screenshots
+
 ```bash
 # Full page screenshot
 mcp__playwright__playwright_screenshot name="component-baseline"
@@ -83,6 +88,7 @@ mcp__playwright__playwright_screenshot name="responsive-mobile" fullPage=true
 ```
 
 ### Screen Resizing
+
 ```bash
 # Change viewport size for responsive testing
 mcp__playwright__playwright_evaluate "window.resizeTo(768, 1024)"  # Tablet
@@ -93,6 +99,7 @@ mcp__playwright__playwright_evaluate "window.resizeTo(1280, 720)"  # Desktop
 ## 🐛 Debugging Commands
 
 ### Console Monitoring
+
 ```bash
 # Check all console messages
 mcp__playwright__playwright_console_logs type="all" clear=true
@@ -110,6 +117,7 @@ mcp__playwright__playwright_console_logs type="all" clear=true
 ```
 
 ### DOM Inspection
+
 ```bash
 # Get visible HTML structure
 mcp__playwright__playwright_get_visible_html
@@ -125,6 +133,7 @@ mcp__playwright__playwright_get_visible_html cleanHtml=true removeScripts=true
 ```
 
 ### JavaScript Evaluation
+
 ```bash
 # Execute JavaScript
 mcp__playwright__playwright_evaluate "console.log('Testing expression')"
@@ -138,6 +147,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ## 🎯 Component-Specific Selectors
 
 ### Select Component
+
 ```bash
 # Trigger button
 "[data-select-id='component_id'] [data-slot='select-trigger']"
@@ -151,6 +161,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ```
 
 ### DatePicker Component
+
 ```bash
 # Calendar icon button
 "[data-datepicker-id='picker_id'] button[data-on-click*='open']"
@@ -166,6 +177,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ```
 
 ### Calendar Component
+
 ```bash
 # Month navigation
 "[data-slot='calendar'] button[data-on-click*='currentDate']"
@@ -178,6 +190,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ```
 
 ### Tabs Component
+
 ```bash
 # Tab triggers
 "[data-slot='tabs-list'] button[role='tab']"
@@ -188,6 +201,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ```
 
 ### Dialog/Modal Component
+
 ```bash
 # Trigger button
 "[data-dialog-trigger]"
@@ -202,6 +216,7 @@ mcp__playwright__playwright_evaluate "getComputedStyle(document.querySelector('.
 ## 🔄 Common Testing Workflows
 
 ### Basic Component Test
+
 ```bash
 # 1. Navigate
 mcp__playwright__playwright_navigate http://localhost:4242/components/button
@@ -224,6 +239,7 @@ mcp__playwright__playwright_screenshot name="button-tested"
 ```
 
 ### Keyboard Navigation Test
+
 ```bash
 # 1. Open component
 mcp__playwright__playwright_click "[data-select-id='test'] button"
@@ -244,6 +260,7 @@ mcp__playwright__playwright_console_logs type="error"
 ```
 
 ### Error Detection Workflow
+
 ```bash
 # 1. Clear console and navigate
 mcp__playwright__playwright_console_logs type="all" clear=true
@@ -269,8 +286,9 @@ mcp__playwright__playwright_close
 ## 💡 Tips
 
 1. **Use specific selectors** - Avoid generic selectors like `button` that match multiple elements
-2. **Check console regularly** - Always check for errors after interactions
-3. **Take screenshots liberally** - Visual verification is crucial
-4. **Test keyboard navigation** - Ensure accessibility is preserved
-5. **Clear console logs** - Use `clear=true` to get fresh error detection
-6. **Wait for animations** - Some components may need brief delays after interactions
+1. **Check console regularly** - Always check for errors after interactions
+1. **Take screenshots liberally** - Visual verification is crucial
+1. **Test keyboard navigation** - Ensure accessibility is preserved
+1. **Clear console logs** - Use `clear=true` to get fresh error detection
+1. **Wait for animations** - Some components may need brief delays after interactions
+

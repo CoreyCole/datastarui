@@ -6,6 +6,22 @@ import (
 	"github.com/coreycole/datastarui/utils"
 )
 
+// HighlightedItem creates a data-class expression for highlighted select/list items
+func highlightedItem(signalPath string, index int) string {
+	return utils.NewDataClass().
+		Add("bg-accent", fmt.Sprintf("$%s === %d", signalPath, index)).
+		Add("text-accent-foreground", fmt.Sprintf("$%s === %d", signalPath, index)).
+		Build()
+}
+
+// SelectedItem creates a data-class expression for selected items
+func selectedItem(signalPath, value string) string {
+	return utils.NewDataClass().
+		Add("bg-primary", fmt.Sprintf("$%s === '%s'", signalPath, value)).
+		Add("text-primary-foreground", fmt.Sprintf("$%s === '%s'", signalPath, value)).
+		Build()
+}
+
 // SelectTriggerHandler creates handlers for select trigger functionality
 type SelectTriggerHandler struct {
 	selectID string
@@ -162,4 +178,3 @@ func (s *SelectItemHandler) BuildClickHandler() string {
 func (s *SelectItemHandler) BuildKeyboardHandler() string {
 	return fmt.Sprintf(`(evt.key === 'Enter' || evt.key === ' ') ? (evt.preventDefault(), evt.target.click()) : null`)
 }
-

@@ -276,7 +276,7 @@ templ SelectItem(props SelectItemProps) {
 		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 
 		// Add highlighted class conditionally using data-class helper
-		highlightedClass := utils.HighlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
+		highlightedClass := highlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
 	}}
 	<div
 		data-slot="select-item"

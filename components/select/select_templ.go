@@ -825,7 +825,7 @@ func SelectItem(props SelectItemProps) templ.Component {
 		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 
 		// Add highlighted class conditionally using data-class helper
-		highlightedClass := utils.HighlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
+		highlightedClass := highlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
 		var templ_7745c5c3_Var36 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var36...)
 		if templ_7745c5c3_Err != nil {

@@ -9,6 +9,7 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 ## Common Commands
 
 ### Development
+
 - `just tailwind` - Start Tailwind CSS watcher (monitors .templ files for class changes)
 - `just watch` - Start Go server with live reload using Air
 - `just build` - Generate templ files and build binary
@@ -16,6 +17,7 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 - `just install` - Install all dependencies (air, templ, go modules)
 
 ### Docker Development
+
 - `just up` - Start Docker development environment
 - `just down` - Stop Docker development environment
 - `just docker-tail app` - Show recent app logs (shows 20 lines by default - use this to check for compilation errors)
@@ -23,12 +25,14 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 - `just docker-shell app` - Open shell in app container
 
 ### Playwright Browser Testing
+
 - `just playwright-up` - Start Playwright container for browser automation
 - `just playwright-test` - Run all browser tests
 - `just playwright-shell` - Open shell in Playwright container for interactive testing
 - `just playwright-ui` - Open Playwright UI for visual test debugging
 
 ### Important Notes
+
 - **DO NOT** run `go run main.go` or `go build` directly - use `just` commands
 - **DO NOT** try to run the compiled binary - the developer has live reload running
 - **DO NOT** use `just docker-follow` - Claude cannot use interactive/following commands
@@ -43,19 +47,22 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 ## Architecture
 
 ### Expression Builders Organization
+
 - **utils/expressions.go** - Contains ONLY generic expression builders used across multiple components
 - **components/[name]/expressions.go** - Contains component-specific expression builders
 - **Naming Convention**: Use lowercase function names for component-specific expression builders to avoid polluting the public namespace
 - **IMPORTANT**: Never add component-specific logic to utils/expressions.go. If an expression builder is only used by one component, it belongs in that component's folder
 
 ### Tech Stack
+
 - **Go 1.24+** with Echo framework for HTTP server
 - **templ** - Go templating engine for type-safe HTML templates
-- **Datastar** - 15KB JavaScript library for reactivity via data-* attributes
+- **Datastar** - 15KB JavaScript library for reactivity via data-\* attributes
 - **Tailwind CSS** - Utility-first CSS framework, exact classes from shadcn/ui
 - **tailwind-merge-go** - For merging Tailwind classes safely
 
 ### Project Structure
+
 ```
 datastarui/
 ├── components/                    # Reusable UI components
@@ -78,14 +85,17 @@ datastarui/
 ```
 
 ### Component Pattern
+
 Each component follows a consistent 3-file pattern:
+
 1. **Template** (`component.templ`) - templ markup with Datastar attributes
-2. **Types** (`types.go`) - Go structs defining component props
-3. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
+1. **Types** (`types.go`) - Go structs defining component props
+1. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
 
 ## Datastar Development Guidelines
 
 ### IMPORTANT: Use Utility Libraries
+
 **Always use the utility libraries in `utils/` instead of string concatenation for Datastar expressions.**
 
 See `/docs/guide.md` for comprehensive patterns and examples.
@@ -93,6 +103,7 @@ See `/docs/guide.md` for comprehensive patterns and examples.
 ### Core Utilities
 
 1. **Signal Management** (`utils/signals.go`)
+
 ```go
 signals := utils.Signals("my_component", MySignals{
     Open: false,
@@ -102,6 +113,7 @@ signals := utils.Signals("my_component", MySignals{
 ```
 
 2. **Expression Builders** (`utils/expressions.go`)
+
 ```go
 expr := utils.NewExpression().
     Statement("evt.preventDefault()").
@@ -110,17 +122,20 @@ expr := utils.NewExpression().
 ```
 
 3. **Conditional Classes** (`utils/data_class.go`)
+
 ```go
 dataClass := utils.HighlightedItem("select.highlighted", index)
 // Use with: data-class={ dataClass }
 ```
 
 ### Signal Naming Convention
+
 - Use lowercase with underscores in `props.ID` (e.g., `user_profile`, `item_list`)
 - **Never** use uppercase, dashes, or periods in signal names
 - Components should validate `props.ID` format and throw errors for invalid names
 
 ### Signal Architecture
+
 - Signals are **globally scoped** on the page
 - Use `props.ID` as namespace: `$user_profile.name`, `$item_list.selected`
 - Only leaf nodes are valid signals (not intermediate namespaces)
@@ -129,14 +144,17 @@ dataClass := utils.HighlightedItem("select.highlighted", index)
 ### ⚠️ Datastar Footguns & Best Practices
 
 #### 1. **Click-Outside Handler Issues**
+
 **Problem**: `data-on-click__outside` fires immediately when clicking the element that opens a popover/dropdown, causing the "two-click" bug.
 
 **Why it happens**:
+
 - User clicks button to open popover → handler sets `open = true`
 - Click event bubbles up → Datastar evaluates click-outside
 - Click-outside sees `open = true` and immediately sets it back to `false`
 
 **Solutions**:
+
 ```go
 // ❌ BAD: Generic click-outside handler
 clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
@@ -154,14 +172,17 @@ clickOutsideHandler := utils.NewConditional(
 ```
 
 #### 2. **Focus Capture Conflicts**
+
 **Problem**: `data-on-focus__capture` on containers captures ALL focus events, including button clicks.
 
 **Why it happens**:
+
 - Container has `data-on-focus__capture="$signal.open = true"`
 - Click calendar button → button receives focus → capture fires
 - Creates conflicts with button's own click handler
 
 **Solutions**:
+
 ```go
 // ❌ BAD: Captures all focus events
 data-on-focus__capture={ signals.Set("open", "true") }
@@ -175,14 +196,17 @@ focusCapture := utils.NewFocusCapture().
 ```
 
 #### 3. **Event Propagation Issues**
+
 **Problem**: Using `evt.stopPropagation()` breaks event coordination between components.
 
 **Why it happens**:
+
 - Component A uses stopPropagation to prevent unwanted behavior
 - Component B's click-outside handler never fires because event doesn't bubble
 - Multiple popovers/dropdowns stay open simultaneously
 
 **Solutions**:
+
 ```go
 // ❌ BAD: Stops all event propagation
 return signals.Toggle("open") + "; evt.stopPropagation()"
@@ -192,9 +216,11 @@ return signals.Toggle("open") + "; evt.stopPropagation()"
 ```
 
 #### 4. **Signal Initialization Timing**
+
 **Problem**: Signals used before initialization cause runtime errors.
 
 **Solutions**:
+
 ```go
 // ❌ BAD: Using signals without checking initialization
 data-show={ signals.Signal("open") }
@@ -204,9 +230,11 @@ data-show={ signals.Signal("open") + " === true" }
 ```
 
 #### 5. **Complex Expression Readability**
+
 **Problem**: String concatenation creates unreadable, error-prone expressions.
 
 **Solutions**:
+
 ```go
 // ❌ BAD: String concatenation nightmare
 handler := "evt.key === 'Escape' && " + check + " ? (" + 
@@ -223,9 +251,11 @@ handler := utils.NewKeyHandler("Escape").
 ```
 
 #### 6. **Multiple Event Handlers**
+
 **Problem**: Combining multiple event handlers with string concatenation is error-prone.
 
 **Solutions**:
+
 ```go
 // ❌ BAD: Manual concatenation
 keyHandler := escapeHandler + "; " + tabHandler + "; " + enterHandler
@@ -239,15 +269,18 @@ keyHandler := utils.NewMultipleAssignments().
 ```
 
 #### 7. **Blur/Focus Handler Ordering**
+
 **Problem**: Blur handlers can interfere with click handlers due to event ordering.
 
 **Why it happens**:
+
 1. User clicks button
-2. Input loses focus → blur handler fires
-3. Button click handler fires
-4. Conflicting state changes
+1. Input loses focus → blur handler fires
+1. Button click handler fires
+1. Conflicting state changes
 
 **Solutions**:
+
 - Use debounced handlers when appropriate
 - Carefully order signal updates
 - Test interaction between blur and click handlers
@@ -255,15 +288,16 @@ keyHandler := utils.NewMultipleAssignments().
 ### Best Practices Summary
 
 1. **Always use utility functions** instead of string concatenation
-2. **Test event bubbling** - use browser DevTools to trace event flow
-3. **Be specific with selectors** in click-outside handlers
-4. **Avoid stopPropagation** unless absolutely necessary
-5. **Initialize signals properly** with explicit values
-6. **Use conditional expressions** for null-safe operations
-7. **Test focus/blur interactions** thoroughly
-8. **Document complex event flows** in comments
+1. **Test event bubbling** - use browser DevTools to trace event flow
+1. **Be specific with selectors** in click-outside handlers
+1. **Avoid stopPropagation** unless absolutely necessary
+1. **Initialize signals properly** with explicit values
+1. **Use conditional expressions** for null-safe operations
+1. **Test focus/blur interactions** thoroughly
+1. **Document complex event flows** in comments
 
 ### Key Patterns
+
 - **Props down, events up** - encapsulate state, communicate via defined interfaces
 - **Server-driven state** - backend is single source of truth
 - **Hypermedia approach** - let server determine available actions
@@ -271,6 +305,7 @@ keyHandler := utils.NewMultipleAssignments().
 - **Component-specific expressions** - Keep component-specific logic in component folders, not utils
 
 ### Common Datastar Attributes
+
 - `data-signals` - Initialize component state (use `signals.DataSignals`)
 - `data-on-click` - Handle click events
 - `data-text` - Display signal values
@@ -282,12 +317,14 @@ keyHandler := utils.NewMultipleAssignments().
 ## templ Specific Guidelines
 
 ### Required Patterns
+
 - All page content must be inside `@l.Root()` layout wrapper
 - Use `templ.SafeURL()` for href attributes to prevent XSS
 - Use `templ.Attributes` for flexible HTML attribute passing
 - Implement conditional rendering with `switch` statements
 
 ### Component Composition
+
 - Nest components properly for multi-part components (e.g., breadcrumbs)
 - Follow existing import patterns in main.go for routing
 - Create comprehensive demo pages showing all component variants
@@ -295,18 +332,20 @@ keyHandler := utils.NewMultipleAssignments().
 ## Development Workflow
 
 ### Adding New Components
+
 1. **Analyze** source shadcn/ui component for structure and variants
-2. **Create** component directory with 3-file pattern
-3. **Implement** exact CSS classes using tailwind-merge-go
-4. **Add** Datastar reactivity using utility libraries:
+1. **Create** component directory with 3-file pattern
+1. **Implement** exact CSS classes using tailwind-merge-go
+1. **Add** Datastar reactivity using utility libraries:
    - Use `utils.Signals()` for signal management
    - Use `utils.NewExpression()` for complex expressions
    - Use `utils.NewDataClass()` for conditional classes
-5. **Create** demo page in `pages/components/[component]/`
-6. **Update** routing in main.go and sidebar.go
-7. **Test** all variants and interactive behaviors with Playwright MCP
+1. **Create** demo page in `pages/components/[component]/`
+1. **Update** routing in main.go and sidebar.go
+1. **Test** all variants and interactive behaviors with Playwright MCP
 
 ### CSS and Styling
+
 - Use exact CSS classes from shadcn/ui for pixel-perfect parity
 - Leverage Tailwind CSS design tokens (colors, spacing, typography)
 - Support dark mode with CSS custom properties
@@ -315,14 +354,23 @@ keyHandler := utils.NewMultipleAssignments().
 ## Testing Strategy
 
 ### Playwright MCP for Debugging
+
 The Playwright MCP server provides browser automation for debugging Datastar components. Key commands:
 
 #### Navigation and Setup
+
 - `mcp__playwright__playwright_navigate` - Navigate to a URL (e.g., http://localhost:4242/components/datepicker)
-- `mcp__playwright__playwright_screenshot` - Capture visual state
+- `mcp__playwright__playwright_screenshot name="[component]-[state]"` - Capture visual state
 - `mcp__playwright__playwright_get_visible_html` - Get DOM structure
+- `mcp__playwright__playwright_console_logs type="all" clear=true` - Get all console logs
+- `mcp__playwright__playwright_console_logs type="error"` - Get console errors
+- `mcp__playwright__playwright_click "[data-selector]"` - Click element
+- `mcp__playwright__playwright_press_key "ArrowDown"` - Press key
+- `mcp__playwright__playwright_hover "[element]"` - Hover over element
+- More in [docs/playwright-commands.md](./docs/playwright-commands.md)
 
 #### Console Monitoring
+
 - `mcp__playwright__playwright_console_logs` - Enhanced console logging with error detection (requires executeautomation/mcp-playwright)
 - **Supports log levels**: `error`, `warn`, `info`, `log`, `debug`, `all`
 - **Captures Datastar errors**: Successfully detects "GenerateExpression" runtime errors with full context
@@ -332,9 +380,11 @@ The Playwright MCP server provides browser automation for debugging Datastar com
 - **Best practice**: Start debugging sessions with `mcp__playwright__playwright_console_logs type="all" clear=true`
 
 #### Interaction Testing - Specific Selectors
+
 **CRITICAL**: Always use highly specific selectors to avoid 30-second timeouts from multiple element matches.
 
 **DatePicker Component Selectors:**
+
 - **Calendar icon button**: `[data-datepicker-id="PICKER_ID"] button[data-on-click*="open"]`
   - Example: `[data-datepicker-id="range_date"] button[data-on-click*="open"]`
   - This targets the calendar icon that toggles the popover
@@ -345,53 +395,63 @@ The Playwright MCP server provides browser automation for debugging Datastar com
   - Only click when popover is visible (check `style.display !== "none"`)
 
 **Navigation and Calendar Testing:**
+
 - **Month navigation**: `[data-datepicker-id="PICKER_ID"] [data-slot="datepicker-popover"] button[data-on-click*="currentDate"]`
 - **Input fields**: `[data-datepicker-id="PICKER_ID"] input[type="text"]`
 
 **Common Issues:**
+
 - **Element Overlap**: Calendar day buttons can overlap calendar icon buttons, causing click timeouts
 - **Multiple Matches**: Generic selectors like `button[type="button"]` match 38-73 elements per datepicker
 - **Popover State**: Always check popover visibility before clicking calendar days
 - **Solution**: Use the specific `data-datepicker-id` + element role pattern above
 
 #### Basic Commands
+
 - `mcp__playwright__playwright_click` - Click elements using specific selectors above
 - `mcp__playwright__playwright_fill` - Type in input fields
 - `mcp__playwright__playwright_evaluate` - Execute JavaScript for state checking
 
 ### Streamlined Error Detection Workflow
+
 This workflow tests the complete cycle of detecting, fixing, and verifying Datastar expression errors:
 
 1. **Create test error** (optional): Edit templ file to introduce JavaScript syntax error
-2. **Verify compilation**: `just docker-tail app` - Look for "templ has changed", "building...", "Complete" (shows 20 lines to catch compilation errors)
-3. **Check for errors**: Navigate to page and run `mcp__playwright__browser_console_logs type="all" clear=true`
-4. **Fix the error**: Edit templ file to correct the syntax issue  
-5. **Verify fix compiled**: `just docker-tail app` - Confirm successful rebuild
-6. **Confirm error gone**: Navigate and run `mcp__playwright__browser_console_logs type="all" clear=true`
+1. **Verify compilation**: `just docker-tail app` - Look for "templ has changed", "building...", "Complete" (shows 20 lines to catch compilation errors)
+1. **Check for errors**: Navigate to page and run `mcp__playwright__browser_console_logs type="all" clear=true`
+1. **Fix the error**: Edit templ file to correct the syntax issue
+1. **Verify fix compiled**: `just docker-tail app` - Confirm successful rebuild
+1. **Confirm error gone**: Navigate and run `mcp__playwright__browser_console_logs type="all" clear=true`
 
 ### Common Debugging Workflow
+
 1. Navigate to component page: `mcp__playwright__browser_navigate`
-2. Clear console and check for initial errors: `mcp__playwright__browser_console_logs type="all" clear=true`
-3. Interact with component: `mcp__playwright__browser_click`, `mcp__playwright__browser_type`
-4. Check console for all messages: `mcp__playwright__browser_console_logs type="all"` (includes errors, logs, and debug messages)
-5. Take screenshot to verify visual state: `mcp__playwright__browser_take_screenshot`
-6. Inspect DOM for signal attributes: `mcp__playwright__browser_snapshot`
+1. Clear console and check for initial errors: `mcp__playwright__browser_console_logs type="all" clear=true`
+1. Interact with component: `mcp__playwright__browser_click`, `mcp__playwright__browser_type`
+1. Check console for all messages: `mcp__playwright__browser_console_logs type="all"` (includes errors, logs, and debug messages)
+1. Take screenshot to verify visual state: `mcp__playwright__browser_take_screenshot`
+1. Inspect DOM for signal attributes: `mcp__playwright__browser_snapshot`
 
 ### Debugging Datastar Expression Errors
+
 For "GenerateExpression" runtime errors:
+
 1. Check browser DevTools console immediately after page interactions (clicks, typing)
-2. Look for complex expressions in calendar components (calendar.templ:380-381)
-3. Common causes: unescaped quotes in console.log statements, missing parentheses, undefined signal references
-4. **Note**: Playwright MCP console monitoring may not capture all Datastar runtime errors
-5. Use manual browser testing to catch JavaScript syntax errors in generated expressions
+1. Look for complex expressions in calendar components (calendar.templ:380-381)
+1. Common causes: unescaped quotes in console.log statements, missing parentheses, undefined signal references
+1. **Note**: Playwright MCP console monitoring may not capture all Datastar runtime errors
+1. Use manual browser testing to catch JavaScript syntax errors in generated expressions
 
 ### Known Issues
 
 No known issues at this time. All date picker functionality is working correctly.
 
 ### TODO: Automated Testing
+
 Need to implement automated testing for Datastar component demo pages to verify:
+
 - Component rendering across all variants
-- Interactive behavior with Datastar signals  
+- Interactive behavior with Datastar signals
 - Visual regression testing
 - Accessibility compliance
+
