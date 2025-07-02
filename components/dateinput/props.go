@@ -33,20 +33,3 @@ type DateInputProps struct {
 	Separator        string // Text between inputs (default: "to")
 	Orientation      string // "horizontal" (default) or "vertical"
 }
-
-type DateInputSignals struct {
-	// Single mode signals
-	InputValue string `json:"inputValue"` // "12/25/2023" - display format
-	DateValue  string `json:"dateValue"`  // "2023-12-25" - ISO format for forms
-
-	// Range mode signals
-	StartInputValue string `json:"startInputValue"` // Start date display format
-	StartDateValue  string `json:"startDateValue"`  // Start date ISO format
-	EndInputValue   string `json:"endInputValue"`   // End date display format
-	EndDateValue    string `json:"endDateValue"`    // End date ISO format
-	EndDateEnabled  bool   `json:"endDateEnabled"`  // Checkbox state for optional end date
-
-	// Shared validation
-	IsValid      bool   `json:"isValid"`      // Overall validation state
-	ErrorMessage string `json:"errorMessage"` // Validation error message
-}

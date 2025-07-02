@@ -323,58 +323,29 @@ templ CalendarDay(props CalendarDayProps) {
 			now := time.Now()
 			currentDateForCalc = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
 		}
-		
+
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
-		// Dynamic click handler that calculates the date using current signal value
-		monthOffsetJS := fmt.Sprintf("%d", props.MonthOffset)
-		
+		// Create calendar day handler using expression builder
+		dayHandler := newCalendarDayHandler(props.ID, signals, props.MonthOffset, props.Mode, dayData.DayNumber)
+
 		var clickHandler string
 		// Only allow clicks on days in the current month
 		if !dayData.IsCurrentMonth {
-			clickHandler = "evt.preventDefault(); evt.stopPropagation()"
-		} else if props.Mode == "range" {
-			// Range mode: simplified approach compatible with Datastar
-			// Use button text content for day number to avoid complex calculation
-			clickHandler = fmt.Sprintf("(buttonDay => clickedDate => !%s ? (%s, %s) : !%s ? (clickedDate < %s ? (%s, %s) : %s) : (%s, %s))(parseInt(evt.target.textContent))((new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + parseInt(evt.target.textContent).toString().padStart(2, '0')))",
-				signals.Signal("rangeStart"),
-				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", "''"),
-				signals.Signal("rangeEnd"), signals.Signal("rangeStart"),
-				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", signals.Signal("rangeStart")),
-				signals.Set("rangeEnd", "clickedDate"),
-				signals.Set("rangeStart", "clickedDate"), signals.Set("rangeEnd", "''"),
-				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS)
+			clickHandler = utils.NewExpression().
+				Statement("evt.preventDefault()").
+				Statement("evt.stopPropagation()").
+				Build()
 		} else {
-			// Single mode: use the pre-calculated date from Go and adjust based on current signal
-			clickHandler = fmt.Sprintf(`
-				const currentDate = new Date(%s + 'T12:00:00Z');
-				const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + %s, 1);
-				const year = targetDate.getFullYear();
-				const month = targetDate.getMonth();
-				const buttonDay = parseInt(evt.target.textContent);
-				const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0');
-				%s`,
-				signals.Signal("currentDate"), monthOffsetJS,
-				signals.Set("selectedDate", "clickedDate"))
-		}
+			// Use expression builder for clean click handling
+			clickHandler = dayHandler.buildClickHandler()
 
-		// Add DateInput signal coordination if DatePickerInputsID is provided
-		if props.DatePickerInputsID != "" {
-			if props.Mode == "range" {
-				// Update DateInput range signals to sync with calendar - use same namespace
-				clickHandler += fmt.Sprintf(`; %s = %s; %s = %s; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''`,
-					signals.Signal("startDateValue"), signals.Signal("rangeStart"),
-					signals.Signal("endDateValue"), signals.Signal("rangeEnd"),
-					signals.Signal("startInputValue"), signals.Signal("rangeStart"), signals.Signal("rangeStart"),
-					signals.Signal("endInputValue"), signals.Signal("rangeEnd"), signals.Signal("rangeEnd"))
-			} else {
-				// Update DateInput single date signal to sync with calendar - use same namespace
-				clickHandler += fmt.Sprintf(`; %s = %s; %s = %s ? new Date(%s + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''`,
-					signals.Signal("dateValue"), signals.Signal("selectedDate"),
-					signals.Signal("inputValue"), signals.Signal("selectedDate"), signals.Signal("selectedDate"))
+			// Add DateInput signal coordination if needed
+			if props.DatePickerInputsID != "" {
+				dateInputSync := dayHandler.buildDateInputSync(props.DatePickerInputsID)
+				clickHandler += "; " + dateInputSync
 			}
 		}
-
 
 		// CSS classes
 		baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 size-8 p-0 font-normal aria-selected:opacity-100 cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -390,33 +361,15 @@ templ CalendarDay(props CalendarDayProps) {
 			todayClasses = " bg-accent text-accent-foreground font-semibold"
 		}
 
-		// Dynamic selection styling that matches the click handler
-		// Calculate the expected date using the same logic as the click handler
-		dayStr := fmt.Sprintf("%d", dayData.DayNumber)
-		// Only apply selection styling if this day is in the current month
-		selectionClasses := ""
+		// Use expression builder for clean conditional classes
+		var selectionClasses string
 		if dayData.IsCurrentMonth {
-			selectionClasses = fmt.Sprintf(`{
-				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0'))
-			}`, 
-				signals.Signal("selectedDate"), 
-				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr)
+			// Create calendar selection class helper
+			selectionClassHelper := newCalendarSelectionClasses(props.ID, signals, props.MonthOffset, dayData.DayNumber, props.Mode)
+			selectionClasses = selectionClassHelper.build()
 		} else {
 			// For outside days, no selection styling
 			selectionClasses = "{}"
-		}
-		
-		// For range mode, add range styling
-		if props.Mode == "range" && dayData.IsCurrentMonth {
-			selectionClasses = fmt.Sprintf(`{
-				'bg-primary text-primary-foreground': %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) || %s === (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')),
-				'bg-accent text-accent-foreground': %s && %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) > %s && (new Date(%s + 'T12:00:00Z').getFullYear() + '-' + (new Date(%s + 'T12:00:00Z').getMonth() + 1 + %s).toString().padStart(2, '0') + '-' + (%s).toString().padStart(2, '0')) < %s
-			}`,
-				signals.Signal("rangeStart"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
-				signals.Signal("rangeEnd"), signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr,
-				signals.Signal("rangeStart"), signals.Signal("rangeEnd"), 
-				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeStart"),
-				signals.Signal("currentDate"), signals.Signal("currentDate"), monthOffsetJS, dayStr, signals.Signal("rangeEnd"))
 		}
 	}}
 	<div class="relative p-0 text-center text-sm focus-within:relative focus-within:z-20 flex items-center justify-center">

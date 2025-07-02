@@ -68,6 +68,12 @@ func (sm *SignalManager) Set(property, value string) string {
 	return fmt.Sprintf("%s = %s", sm.Signal(property), value)
 }
 
+// SetString returns a set expression for a string signal property with proper quoting
+// Example: signals.SetString("value", "hello") returns "$myComponent.value = 'hello'"
+func (sm *SignalManager) SetString(property, value string) string {
+	return fmt.Sprintf("%s = '%s'", sm.Signal(property), value)
+}
+
 // Conditional returns a conditional expression for a signal property
 // Example: signals.Conditional("loading", "Saving...", "Save") returns "$myComponent.loading ? 'Saving...' : 'Save'"
 func (sm *SignalManager) Conditional(property, trueValue, falseValue string) string {
@@ -97,6 +103,7 @@ func (sm *SignalManager) ConditionalMultiAction(condition string, actions ...str
 	}
 	return fmt.Sprintf("%s ? (%s) : void 0", condition, actionsStr)
 }
+
 
 // MultiStateConditional creates a chain of conditional expressions for handling multiple states
 //
@@ -257,4 +264,30 @@ func (sm *SignalManager) DataClass(classConditions map[string]string) string {
 	}
 
 	return fmt.Sprintf("{%s}", strings.Join(parts, ", "))
+}
+
+// Equals creates a comparison expression between a signal and a value
+// Example: signals.Equals("value", "option1") returns "$component.value === 'option1'"
+func (sm *SignalManager) Equals(property, value string) string {
+	return fmt.Sprintf("%s === '%s'", sm.Signal(property), value)
+}
+
+// NotEquals creates a not-equals comparison expression
+// Example: signals.NotEquals("value", "option1") returns "$component.value !== 'option1'"
+func (sm *SignalManager) NotEquals(property, value string) string {
+	return fmt.Sprintf("%s !== '%s'", sm.Signal(property), value)
+}
+
+// TernaryClass creates a ternary expression for conditional CSS classes
+// Example: signals.TernaryClass("checked", "bg-primary", "bg-secondary")
+// Returns: "$component.checked ? 'bg-primary' : 'bg-secondary'"
+func (sm *SignalManager) TernaryClass(property, trueClass, falseClass string) string {
+	return fmt.Sprintf("%s ? '%s' : '%s'", sm.Signal(property), trueClass, falseClass)
+}
+
+// TernaryStyle creates a ternary expression for conditional inline styles
+// Example: signals.TernaryStyle("visible", "opacity: 1", "opacity: 0")
+// Returns: "$component.visible ? 'opacity: 1' : 'opacity: 0'"
+func (sm *SignalManager) TernaryStyle(property, trueStyle, falseStyle string) string {
+	return fmt.Sprintf("%s ? '%s' : '%s'", sm.Signal(property), trueStyle, falseStyle)
 }

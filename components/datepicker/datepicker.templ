@@ -10,6 +10,55 @@ import (
 	"time"
 )
 
+// datePickerSignals defines the reactive state for the DatePicker component
+type DatePickerSignals struct {
+	// Open state of the popover
+	Open bool `json:"open"`
+
+	// Input value (what user sees in the input field - YYYY/MM/DD format)
+	InputValue string `json:"inputValue"`
+
+	// Selected date in internal format (YYYY-MM-DD)
+	SelectedDate string `json:"selectedDate"`
+
+	// Range start date (YYYY-MM-DD format)
+	RangeStart string `json:"rangeStart"`
+
+	// Range end date (YYYY-MM-DD format)
+	RangeEnd string `json:"rangeEnd"`
+
+	// Current display month (YYYY-MM-DD format, first day of month)
+	DisplayMonth string `json:"displayMonth"`
+
+	// Validation state
+	IsValid bool `json:"isValid"`
+
+	// Error message for invalid dates
+	ErrorMessage string `json:"errorMessage"`
+
+	// Whether user is currently typing (affects calendar sync behavior)
+	IsTyping bool `json:"isTyping"`
+
+	// Focused date in calendar (for keyboard navigation)
+	FocusedDate string `json:"focusedDate"`
+
+	// Highlighted date (for keyboard navigation within calendar)
+	HighlightedDate string `json:"highlightedDate"`
+
+	// Calendar-specific signals (needed for Calendar component compatibility)
+	CurrentDate string `json:"currentDate"`
+	Mode        string `json:"mode"`
+	Today       string `json:"today"`
+
+	// DateInput-specific signals (needed for DateInput component compatibility)
+	DateValue       string `json:"dateValue"`
+	StartInputValue string `json:"startInputValue"`
+	StartDateValue  string `json:"startDateValue"`
+	EndInputValue   string `json:"endInputValue"`
+	EndDateValue    string `json:"endDateValue"`
+	EndDateEnabled  bool   `json:"endDateEnabled"`
+}
+
 // calendarIconButton creates a calendar icon button component for use as postfix
 templ calendarIconButton(onClickHandler string) {
 	<button
@@ -108,7 +157,7 @@ templ DatePicker(props DatePickerProps) {
 		now := time.Now()
 		todayStr := now.Format("2006-01-02")
 
-		signals := utils.Signals(datePickerID, DatePickerSignals{
+		signals := utils.Signals(datePickerID, datePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
 			SelectedDate:    initialSelectedDate,
@@ -138,8 +187,10 @@ templ DatePicker(props DatePickerProps) {
 		// Container classes
 		containerClasses := "relative " + props.Class
 
-		// Click outside handler
-		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+		// Use expression builders for clean event handling
+		popoverHandler := newDatePickerPopoverHandler(datePickerID, datePickerID, props.Mode, signals)
+		clickOutsideHandler := popoverHandler.buildClickOutsideHandler()
+		calendarIconClickHandler := popoverHandler.buildOpenTriggerHandler()
 
 		// DateInput ID - use SAME ID for shared signal namespace
 		dateInputID := datePickerID
@@ -205,7 +256,7 @@ templ DatePicker(props DatePickerProps) {
 			<div
 				class="relative flex items-center gap-2"
 				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ signals.Set("open", "true") }
+					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				<!-- DateInput without postfix -->
@@ -216,8 +267,8 @@ templ DatePicker(props DatePickerProps) {
 						Mode:       "range",
 						StartValue: initialStartValue,
 						EndValue:   initialEndValue,
-						StartName:  "",               // Handled by DatePicker's hidden inputs
-						EndName:    "",               // Handled by DatePicker's hidden inputs
+						StartName:  "",           // Handled by DatePicker's hidden inputs
+						EndName:    "",           // Handled by DatePicker's hidden inputs
 						CalendarID: datePickerID, // Coordinate with calendar using same namespace
 						Disabled:   props.Disabled,
 						Required:   props.Required,
@@ -233,7 +284,7 @@ templ DatePicker(props DatePickerProps) {
 						type="button"
 						class="text-muted-foreground hover:text-foreground"
 						tabindex="-1"
-						data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
+						data-on-click={ calendarIconClickHandler }
 					>
 						<svg
 							class="h-4 w-4"
@@ -262,7 +313,7 @@ templ DatePicker(props DatePickerProps) {
 			}}
 			<div
 				if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ signals.Set("open", "true") }
+					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				@dateinput.DateInput(dateinput.DateInputProps{
@@ -283,7 +334,7 @@ templ DatePicker(props DatePickerProps) {
 					type="button"
 					class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
 					tabindex="-1"
-					data-on-click={ signals.Toggle("open") + "; evt.stopPropagation()" }
+					data-on-click={ calendarIconClickHandler }
 				>
 					<svg
 						class="h-4 w-4"
@@ -327,32 +378,12 @@ templ DatePicker(props DatePickerProps) {
 	</div>
 }
 
-// DatePickerPopoverProps defines properties for the popover calendar
-type DatePickerPopoverProps struct {
-	ID                  string
-	DateInputID         string
-	Mode                string
-	NumberOfMonths      int
-	MinDate             string
-	MaxDate             string
-	DisabledDates       string
-	HideOutsideDays     bool
-	CloseOnSelect       bool
-	Class               string
-	Position            string
-	InitialSelectedDate string
-	InitialDisplayMonth string
-	InitialRangeStart   string
-	InitialRangeEnd     string
-	DatePickerInputsID  string // ID of date picker inputs to send signals to for synchronization
-}
-
 // DatePickerPopover renders the calendar popover with keyboard navigation
 templ DatePickerPopover(props DatePickerPopoverProps) {
 	{{
 		// IMPORTANT: We need to use the same signal namespace as the parent DatePicker
 		// Don't create new signals here - reference the existing ones
-		signals := utils.Signals(props.ID, DatePickerSignals{})
+		signals := utils.Signals(props.ID, datePickerSignals{})
 
 		// Popover show/hide - explicitly handle undefined to prevent flash
 		showExpr := signals.Signal("open") + " === true"

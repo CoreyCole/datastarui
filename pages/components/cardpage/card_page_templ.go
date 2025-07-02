@@ -507,7 +507,7 @@ func CardPage() templ.Component {
 						ID:          "framework",
 						Name:        "framework",
 						Placeholder: "Select",
-						Options: []selectui.SelectOption{
+						Options: []selectui.SelectOptionProps{
 							{Value: "next", Label: "Next.js"},
 							{Value: "sveltekit", Label: "SvelteKit"},
 							{Value: "astro", Label: "Astro"},

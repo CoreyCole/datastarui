@@ -51,7 +51,17 @@ datastarui/
 │   │   ├── button.templ # Template file
 │   │   ├── types.go     # Props and types
 │   │   └── variants.go  # CSS class variants
-│   └── dropdown/        # Dropdown component
+│   └── select/          # Select component (fully refactored)
+├── utils/               # Utility libraries
+│   ├── signals.go       # Signal management with namespacing
+│   ├── expressions.go   # Datastar expression builders
+│   └── data_class.go    # Conditional CSS class helpers
+├── docs/                # Documentation
+│   ├── guide.md         # Development patterns guide
+│   ├── debugging.md     # Testing and troubleshooting
+│   ├── playwright.md    # Browser automation testing
+│   ├── signals.md       # Signal management reference
+│   └── templ.md         # templ syntax guide
 ├── pages/               # Page templates
 │   └── components/      # Component demo pages
 ├── layouts/             # Layout templates
@@ -62,18 +72,40 @@ datastarui/
 
 ## 🧩 Component Architecture
 
-Each component follows a consistent pattern:
+Each component follows a consistent 3-file pattern with utility-driven Datastar integration:
 
 ### 1. Template File (`component.templ`)
 
 ```go
 package button
 
+import "github.com/coreycole/datastarui/utils"
+
+type ButtonSignals struct {
+    Clicked bool `json:"clicked"`
+    Loading bool `json:"loading"`
+}
+
 templ Button(props ButtonProps) {
+    {{
+        // Use utilities for signal management
+        signals := utils.Signals(props.ID, ButtonSignals{
+            Clicked: false,
+            Loading: props.Loading,
+        })
+        
+        // Use expression builders for click handlers
+        clickHandler := utils.NewExpression().
+            Statement("evt.preventDefault()").
+            SetSignal("clicked", "true").
+            Build()
+    }}
     <button
         type={ props.Type }
         class={ buttonVariants(props.Variant, props.Size, props.Class) }
         disabled?={ props.Disabled }
+        data-signals={ signals.DataSignals }
+        data-on-click={ clickHandler }
         { props.Attributes... }
     >
         { children... }
@@ -81,17 +113,21 @@ templ Button(props ButtonProps) {
 }
 ```
 
-### 2. Props Definition (`props.go`)
+### 2. Props Definition (`types.go`)
 
 ```go
 package button
 
+import "github.com/a-h/templ"
+
 type ButtonProps struct {
+    ID         string           // Component identifier for signals
     Variant    string           // "default", "destructive", "outline"
     Size       string           // "default", "sm", "lg", "icon"
     Class      string           // Additional CSS classes
     Attributes templ.Attributes // HTML attributes
     Disabled   bool             // Interactive state
+    Loading    bool             // Loading state
     Type       string           // Button type
 }
 ```
@@ -101,16 +137,29 @@ type ButtonProps struct {
 ```go
 package button
 
+import "github.com/coreycole/datastarui/utils"
+
 func buttonVariants(variant, size, className string) string {
     // Exact CSS classes from shadcn/ui
-    baseClasses := "inline-flex items-center justify-center..."
+    baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
 
     variantClasses := map[string]string{
-        "default": "bg-primary text-primary-foreground...",
-        "outline": "border border-input bg-background...",
+        "default":     "bg-primary text-primary-foreground hover:bg-primary/90",
+        "destructive": "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        "outline":     "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        "secondary":   "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost":       "hover:bg-accent hover:text-accent-foreground",
+        "link":        "text-primary underline-offset-4 hover:underline",
     }
 
-    return utils.TwMerge(baseClasses, variantClasses[variant], className)
+    sizeClasses := map[string]string{
+        "default": "h-10 px-4 py-2",
+        "sm":      "h-9 rounded-md px-3",
+        "lg":      "h-11 rounded-md px-8",
+        "icon":    "h-10 w-10",
+    }
+
+    return utils.TwMerge(baseClasses, variantClasses[variant], sizeClasses[size], className)
 }
 ```
 
@@ -127,18 +176,22 @@ The project uses the same design tokens as shadcn/ui:
 ## 🤝 Contributing
 
 1. **Pick a component** from the [shadcn/ui registry](https://ui.shadcn.com/docs/components)
-1. **Follow the architecture** outlined in the development guide
-1. **Maintain pixel-perfect accuracy** to the original
-1. **Add Datastar reactivity** where needed
-1. **Create comprehensive demos** showing all variants
+2. **Follow the utility-driven architecture** using expression builders
+3. **Maintain pixel-perfect accuracy** to the original
+4. **Use structured Datastar integration** with utilities
+5. **Create comprehensive demos** showing all variants
 
-See the [Development Guide](./.cursor/rules/datastar.mdc) for detailed implementation instructions.
+See the [Development Guide](./docs/guide.md) for detailed implementation patterns.
 
 ## 📖 Documentation
 
-- [Component Development Guide](./.cursor/rules/datastar.mdc) - Detailed implementation patterns
+- [Development Guide](./docs/guide.md) - Comprehensive utility patterns and best practices
+- [Signals Management](./docs/signals.md) - Signal management patterns (legacy reference)
+- [Debugging Guide](./docs/debugging.md) - Testing and troubleshooting components
+- [templ Syntax Guide](./docs/templ.md) - Complete templ templating reference
+- [Playwright Testing](./docs/playwright.md) - Browser automation testing
 - [Datastar Documentation](https://data-star.dev/) - Reactivity framework
-- [templ Documentation](https://templ.guide/) - Go templating
+- [templ Documentation](https://templ.guide/) - Go templating engine
 - [shadcn/ui](https://ui.shadcn.com/) - Original component library
 
 ## 📄 License
