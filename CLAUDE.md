@@ -67,6 +67,7 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 datastarui/
 ├── components/                   # Reusable UI components
 │   ├── button/
+![](/mnt/d/cdev/datastarui/C:/Users/stapl/OneDrive/Documents/ShareX/Screenshots/2025-07/zen_vmBiYiiwOM.png)
 │   │   ├── button.templ          # Component template (and signal type)
 │   │   ├── props.go              # Component parameter props
 |   │   ├── expressions.go        # Datastar expression builders

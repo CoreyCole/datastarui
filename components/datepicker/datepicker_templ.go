@@ -200,7 +200,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 		now := time.Now()
 		todayStr := now.Format("2006-01-02")
 
-		signals := utils.Signals(datePickerID, datePickerSignals{
+		signals := utils.Signals(datePickerID, DatePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
 			SelectedDate:    initialSelectedDate,
@@ -632,7 +632,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 
 		// IMPORTANT: We need to use the same signal namespace as the parent DatePicker
 		// Don't create new signals here - reference the existing ones
-		signals := utils.Signals(props.ID, datePickerSignals{})
+		signals := utils.Signals(props.ID, DatePickerSignals{})
 
 		// Popover show/hide - explicitly handle undefined to prevent flash
 		showExpr := signals.Signal("open") + " === true"
