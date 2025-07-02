@@ -15,10 +15,10 @@ templ Popover(props PopoverProps) {
 templ PopoverTrigger(props PopoverTriggerProps) {
 	{{
 		// Create popover handler for clean expressions
-		popoverHandler := utils.NewPopoverHandler(props.PopoverID)
+		popoverHandler := NewPopoverHandler(props.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
 		anchorStyle := popoverHandler.BuildAnchorStyle(props.AnchorName)
-		
+
 		// Build style attribute
 		style := ""
 		if props.AsChild {
@@ -65,8 +65,8 @@ templ PopoverContent(props PopoverContentProps) {
 		contentClasses := PopoverContentVariants(props)
 
 		// Create popover handler for clean expressions
-		popoverHandler := utils.NewPopoverHandler(props.ID)
-		
+		popoverHandler := NewPopoverHandler(props.ID)
+
 		// Generate positioning styles
 		positioningStyle := ""
 

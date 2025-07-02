@@ -16,7 +16,7 @@ import (
 )
 
 // CalendarDayData represents pre-calculated day information
-type CalendarDayData struct {
+type calendarDayData struct {
 	DateString     string // YYYY-MM-DD format
 	DayNumber      int    // Day of month (1-31)
 	IsCurrentMonth bool   // Is this day in the target month
@@ -25,7 +25,7 @@ type CalendarDayData struct {
 }
 
 // calculateDayData pre-calculates day information based on the current month
-func calculateDayData(dayIndex, monthOffset int, currentDateStr, todaySignal string) CalendarDayData {
+func calculateDayData(dayIndex, monthOffset int, currentDateStr, todaySignal string) calendarDayData {
 	// Parse the current date to determine the year and month being displayed
 	currentDate, err := time.Parse("2006-01-02", currentDateStr)
 	if err != nil {
@@ -76,7 +76,7 @@ func calculateDayData(dayIndex, monthOffset int, currentDateStr, todaySignal str
 	today := time.Now().Format("2006-01-02")
 	isToday := dateString == today
 
-	return CalendarDayData{
+	return calendarDayData{
 		DateString:     dateString,
 		DayNumber:      displayDayNumber,
 		IsCurrentMonth: isCurrentMonth,
@@ -534,19 +534,22 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
 		// Create calendar day handler using expression builder
-		dayHandler := utils.NewCalendarDayHandler(props.ID, signals, props.MonthOffset, props.Mode, dayData.DayNumber)
+		dayHandler := newCalendarDayHandler(props.ID, signals, props.MonthOffset, props.Mode, dayData.DayNumber)
 
 		var clickHandler string
 		// Only allow clicks on days in the current month
 		if !dayData.IsCurrentMonth {
-			clickHandler = utils.NewExpression().PreventDefault().Build()
+			clickHandler = utils.NewExpression().
+				Statement("evt.preventDefault()").
+				Statement("evt.stopPropagation()").
+				Build()
 		} else {
 			// Use expression builder for clean click handling
-			clickHandler = dayHandler.BuildClickHandler()
+			clickHandler = dayHandler.buildClickHandler()
 
 			// Add DateInput signal coordination if needed
 			if props.DatePickerInputsID != "" {
-				dateInputSync := dayHandler.BuildDateInputSync(props.DatePickerInputsID)
+				dateInputSync := dayHandler.buildDateInputSync(props.DatePickerInputsID)
 				clickHandler += "; " + dateInputSync
 			}
 		}
@@ -569,8 +572,8 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var selectionClasses string
 		if dayData.IsCurrentMonth {
 			// Create calendar selection class helper
-			selectionClassHelper := utils.NewCalendarSelectionClasses(props.ID, signals, props.MonthOffset, dayData.DayNumber, props.Mode)
-			selectionClasses = selectionClassHelper.Build()
+			selectionClassHelper := newCalendarSelectionClasses(props.ID, signals, props.MonthOffset, dayData.DayNumber, props.Mode)
+			selectionClasses = selectionClassHelper.build()
 		} else {
 			// For outside days, no selection styling
 			selectionClasses = "{}"
@@ -604,7 +607,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(selectionClasses)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 377, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 379, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -617,7 +620,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(clickHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 378, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 380, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -630,7 +633,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", dayData.DayNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 380, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/calendar/calendar.templ`, Line: 382, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {

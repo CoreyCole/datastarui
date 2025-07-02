@@ -55,7 +55,7 @@ func Dialog(props DialogProps) templ.Component {
 		containerClasses := DialogVariants(props)
 
 		// Create dialog handler for clean expressions
-		dialogHandler := utils.NewDialogHandler(signals)
+		dialogHandler := NewDialogHandler(signals)
 		backdropClickHandler := dialogHandler.BuildBackdropClickHandler()
 		escapeHandler := dialogHandler.BuildEscapeHandler()
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-signals=\"")
@@ -785,7 +785,7 @@ func DialogClose(props DialogCloseProps) templ.Component {
 		signals := utils.Signals(props.DialogID, DialogSignals{})
 
 		// Create dialog handler for clean expressions
-		dialogHandler := utils.NewDialogHandler(signals)
+		dialogHandler := NewDialogHandler(signals)
 		clickHandler := dialogHandler.BuildCloseHandler(props.ReturnValue)
 
 		// Default button classes matching the Button component design

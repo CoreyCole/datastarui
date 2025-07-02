@@ -62,8 +62,8 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 		})
 
 		// Click outside handler using expression builder
-		dropdownHandler := utils.NewDropdownHandler(signals)
-		clickOutsideHandler := dropdownHandler.BuildClickOutsideHandler()
+		dropdownHandler := newDropdownHandler(signals)
+		clickOutsideHandler := dropdownHandler.buildClickOutsideHandler()
 		var templ_7745c5c3_Var2 = []any{dropdownMenuVariants(props.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
@@ -316,14 +316,14 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		}
 
 		// Generate positioning classes using expression builder helper
-		sideClass := utils.CreateSideClasses(props.Side, props.SideOffset)
+		sideClass := createSideClasses(props.Side, props.SideOffset)
 		// Create signals manager for this dropdown
 		signals := utils.Signals(props.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
 
 		// ESC key handler for closing dropdown using expression builder
-		dropdownHandler := utils.NewDropdownHandler(signals)
-		escapeHandler := dropdownHandler.BuildEscapeHandler()
+		dropdownHandler := newDropdownHandler(signals)
+		escapeHandler := dropdownHandler.buildEscapeHandler()
 		var templ_7745c5c3_Var14 = []any{utils.TwMerge(dropdownMenuContentVariants(props.Class), "absolute", sideClass, alignClass)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var14...)
 		if templ_7745c5c3_Err != nil {

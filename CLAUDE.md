@@ -42,6 +42,12 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 
 ## Architecture
 
+### Expression Builders Organization
+- **utils/expressions.go** - Contains ONLY generic expression builders used across multiple components
+- **components/[name]/expressions.go** - Contains component-specific expression builders
+- **Naming Convention**: Use lowercase function names for component-specific expression builders to avoid polluting the public namespace
+- **IMPORTANT**: Never add component-specific logic to utils/expressions.go. If an expression builder is only used by one component, it belongs in that component's folder
+
 ### Tech Stack
 - **Go 1.24+** with Echo framework for HTTP server
 - **templ** - Go templating engine for type-safe HTML templates
@@ -262,6 +268,7 @@ keyHandler := utils.NewMultipleAssignments().
 - **Server-driven state** - backend is single source of truth
 - **Hypermedia approach** - let server determine available actions
 - **No string concatenation** - use expression builders for maintainability
+- **Component-specific expressions** - Keep component-specific logic in component folders, not utils
 
 ### Common Datastar Attributes
 - `data-signals` - Initialize component state (use `signals.DataSignals`)

@@ -182,9 +182,9 @@ func DatePicker(props DatePickerProps) templ.Component {
 		containerClasses := "relative " + props.Class
 
 		// Use expression builders for clean event handling
-		popoverHandler := utils.NewDatePickerPopoverHandler(datePickerID, datePickerID, props.Mode, signals)
-		clickOutsideHandler := popoverHandler.BuildClickOutsideHandler()
-		calendarIconClickHandler := popoverHandler.BuildOpenTriggerHandler()
+		popoverHandler := newDatePickerPopoverHandler(datePickerID, datePickerID, props.Mode, signals)
+		clickOutsideHandler := popoverHandler.buildClickOutsideHandler()
+		calendarIconClickHandler := popoverHandler.buildOpenTriggerHandler()
 
 		// DateInput ID - use SAME ID for shared signal namespace
 		dateInputID := datePickerID

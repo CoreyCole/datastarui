@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/coreycole/datastarui/utils"
+	"strings"
 )
 
 // SelectSignals defines the signal structure for select components
@@ -170,7 +171,7 @@ templ SelectTrigger(props SelectTriggerProps) {
 		classes := selectTriggerVariants(props.Class)
 
 		// Generate trigger handlers using expression builder
-		triggerHandler := utils.NewSelectTriggerHandler(props.ID, signals)
+		triggerHandler := NewSelectTriggerHandler(props.ID, signals)
 		clickExpr := triggerHandler.BuildClickHandler()
 		triggerKeyHandler := triggerHandler.BuildKeyboardHandler()
 	}}
@@ -209,9 +210,9 @@ templ SelectValue(props SelectValueProps) {
 	{{
 		// Build the label signal reference manually
 		labelSignal := "$" + props.ID + ".label"
-		
-		// Create expression to show label or placeholder using utility function
-		displayText := utils.DefaultValue(labelSignal, props.Placeholder)
+
+		escapedDefault := strings.ReplaceAll(props.Placeholder, "'", "\\'")
+		displayText := fmt.Sprintf("%s || '%s'", labelSignal, escapedDefault)
 	}}
 	<span
 		data-slot="select-value"
@@ -238,7 +239,7 @@ templ SelectContent(props SelectContentProps) {
 		showExpr := signals.Signal("open")
 
 		// Generate content keyboard navigation using expression builder
-		contentHandler := utils.NewSelectContentHandler(props.ID, signals)
+		contentHandler := NewSelectContentHandler(props.ID, signals)
 		keyHandler := contentHandler.BuildKeyboardHandler()
 
 		// Generate viewport classes
@@ -270,7 +271,7 @@ templ SelectItem(props SelectItemProps) {
 		classes := selectItemVariants(props.Class)
 
 		// Generate item selection handlers using expression builder
-		itemHandler := utils.NewSelectItemHandler(props.ID, props.Value)
+		itemHandler := NewSelectItemHandler(props.ID, props.Value)
 		selectExpr := itemHandler.BuildClickHandler()
 		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 

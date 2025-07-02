@@ -123,8 +123,7 @@ templ DateInput(props DateInputProps) {
 		// Input classes will be handled by the Input component
 
 		// Create DateInput handler using expression builder
-		dateInputHandler := utils.NewDateInputHandler(dateInputID, signals, props.CalendarID)
-
+		dateInputHandler := newDateInputHandler(dateInputID, signals, props.CalendarID)
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
@@ -167,11 +166,11 @@ templ DateInput(props DateInputProps) {
 					Class:       props.Class,
 					Disabled:    props.Disabled,
 					Attributes: templ.Attributes{
-						"maxlength":       "12",
-						"data-bind":       signals.Signal("inputValue"),
-						"data-on-input__debounce_300ms":   dateInputHandler.BuildInputHandler("inputValue", "dateValue"),
-						"data-on-blur":    dateInputHandler.BuildBlurHandler("inputValue", "dateValue"),
-						"data-on-keydown": keyHandler,
+						"maxlength":                     "12",
+						"data-bind":                     signals.Signal("inputValue"),
+						"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("inputValue", "dateValue"),
+						"data-on-blur":                  dateInputHandler.buildBlurHandler("inputValue", "dateValue"),
+						"data-on-keydown":               keyHandler,
 					},
 				})
 				if props.Postfix != nil {
@@ -219,8 +218,8 @@ templ DateInput(props DateInputProps) {
 			}
 
 			// Use expression builders for tab and checkbox handlers
-			startTabHandler := dateInputHandler.BuildTabHandler("startInputValue", "startDateValue")
-			checkboxChangeHandler := dateInputHandler.BuildCheckboxChangeHandler(dateInputID + "_end")
+			startTabHandler := dateInputHandler.buildTabHandler("startInputValue", "startDateValue")
+			checkboxChangeHandler := dateInputHandler.buildCheckboxChangeHandler(dateInputID + "_end")
 
 			// Layout classes
 			containerClass := "space-y-4"
@@ -312,11 +311,11 @@ templ DateInput(props DateInputProps) {
 						Class:       props.Class,
 						Disabled:    props.Disabled,
 						Attributes: templ.Attributes{
-							"maxlength":       "12",
-							"data-bind":       signals.Signal("startInputValue"),
-							"data-on-input__debounce_300ms":   dateInputHandler.BuildInputHandler("startInputValue", "startDateValue"),
-							"data-on-blur":    dateInputHandler.BuildBlurHandler("startInputValue", "startDateValue"),
-							"data-on-keydown": keyHandler + "; " + startTabHandler,
+							"maxlength":                     "12",
+							"data-bind":                     signals.Signal("startInputValue"),
+							"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("startInputValue", "startDateValue"),
+							"data-on-blur":                  dateInputHandler.buildBlurHandler("startInputValue", "startDateValue"),
+							"data-on-keydown":               keyHandler + "; " + startTabHandler,
 						},
 					})
 				</div>
@@ -326,7 +325,10 @@ templ DateInput(props DateInputProps) {
 						<label
 							for={ dateInputID + "_end" }
 							class="text-sm font-medium"
-							data-class={ "{'text-foreground': " + signals.Signal("endDateEnabled") + ", 'text-muted-foreground': !" + signals.Signal("endDateEnabled") + "}" }
+							data-class={ utils.NewDataClass().
+								Add("text-foreground", signals.Signal("endDateEnabled")).
+								Add("text-muted-foreground", "!"+signals.Signal("endDateEnabled")).
+								Build() }
 						>
 							End Date
 							if props.Required && !props.EndDateOptional {
@@ -342,13 +344,13 @@ templ DateInput(props DateInputProps) {
 						Class:       props.Class,
 						Disabled:    props.Disabled,
 						Attributes: templ.Attributes{
-							"maxlength":          "12",
-							"data-bind":          signals.Signal("endInputValue"),
-							"data-on-input__debounce_300ms":      dateInputHandler.BuildInputHandler("endInputValue", "endDateValue"),
-							"data-on-blur":       dateInputHandler.BuildBlurHandler("endInputValue", "endDateValue"),
-							"data-on-keydown":    keyHandler,
-							"data-attr-disabled": "!" + signals.Signal("endDateEnabled"),
-							"data-attr-tabindex": signals.Signal("endDateEnabled") + " ? '0' : '-1'",
+							"maxlength":                     "12",
+							"data-bind":                     signals.Signal("endInputValue"),
+							"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("endInputValue", "endDateValue"),
+							"data-on-blur":                  dateInputHandler.buildBlurHandler("endInputValue", "endDateValue"),
+							"data-on-keydown":               keyHandler,
+							"data-attr-disabled":            "!" + signals.Signal("endDateEnabled"),
+							"data-attr-tabindex":            signals.Signal("endDateEnabled") + " ? '0' : '-1'",
 						},
 					})
 				</div>

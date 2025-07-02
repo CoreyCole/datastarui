@@ -34,8 +34,8 @@ templ DropdownMenu(props DropdownMenuProps) {
 		})
 
 		// Click outside handler using expression builder
-		dropdownHandler := utils.NewDropdownHandler(signals)
-		clickOutsideHandler := dropdownHandler.BuildClickOutsideHandler()
+		dropdownHandler := newDropdownHandler(signals)
+		clickOutsideHandler := dropdownHandler.buildClickOutsideHandler()
 	}}
 	<div
 		data-slot="dropdown-menu"
@@ -98,14 +98,14 @@ templ DropdownMenuContent(props DropdownMenuContentProps) {
 		}
 
 		// Generate positioning classes using expression builder helper
-		sideClass := utils.CreateSideClasses(props.Side, props.SideOffset)
+		sideClass := createSideClasses(props.Side, props.SideOffset)
 		// Create signals manager for this dropdown
 		signals := utils.Signals(props.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
 
 		// ESC key handler for closing dropdown using expression builder
-		dropdownHandler := utils.NewDropdownHandler(signals)
-		escapeHandler := dropdownHandler.BuildEscapeHandler()
+		dropdownHandler := newDropdownHandler(signals)
+		escapeHandler := dropdownHandler.buildEscapeHandler()
 	}}
 	<div
 		data-slot="dropdown-menu-content"

@@ -222,7 +222,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		baseClasses := tabsTriggerVariantsBase(props.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := utils.NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(props.ID, signals)
 
 		// Use expression builders for clean, maintainable code
 		clickExpr := tabsHandler.BuildTriggerClickHandler(props.Value)
@@ -386,7 +386,7 @@ func TabsContent(props TabsContentProps) templ.Component {
 		classes := tabsContentVariants(props.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := utils.NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(props.ID, signals)
 
 		// Use expression builders for clean, maintainable code
 		showExpr := tabsHandler.BuildContentShowExpression(props.Value)

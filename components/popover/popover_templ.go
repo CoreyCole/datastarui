@@ -90,7 +90,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create popover handler for clean expressions
-		popoverHandler := utils.NewPopoverHandler(props.PopoverID)
+		popoverHandler := NewPopoverHandler(props.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
 		anchorStyle := popoverHandler.BuildAnchorStyle(props.AnchorName)
 
@@ -306,7 +306,7 @@ func PopoverContent(props PopoverContentProps) templ.Component {
 		contentClasses := PopoverContentVariants(props)
 
 		// Create popover handler for clean expressions
-		popoverHandler := utils.NewPopoverHandler(props.ID)
+		popoverHandler := NewPopoverHandler(props.ID)
 
 		// Generate positioning styles
 		positioningStyle := ""
