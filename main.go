@@ -20,6 +20,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
+	"github.com/coreycole/datastarui/utils"
 )
 
 const port = "4242"
@@ -32,6 +33,17 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
+	
+	// Mobile detection middleware
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			isMobile := utils.IsMobile(c)
+			// Add mobile detection to context
+			ctx := utils.WithMobile(c.Request().Context(), isMobile)
+			c.SetRequest(c.Request().WithContext(ctx))
+			return next(c)
+		}
+	})
 
 	// Serve the home page at the root route
 	e.GET("/", func(c echo.Context) error {

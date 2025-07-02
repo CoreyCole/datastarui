@@ -4,6 +4,7 @@ import (
 	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
+	"github.com/coreycole/datastarui/utils"
 )
 
 templ ComponentPageBreadcrumbs(currentPage string) {
@@ -27,6 +28,10 @@ templ ComponentPageBreadcrumbs(currentPage string) {
 }
 
 templ Root(currentPage string) {
+	{{
+		// Get mobile detection from context
+		isMobile := utils.GetMobile(ctx)
+	}}
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -85,7 +90,14 @@ templ Root(currentPage string) {
 			<!-- Datastar -->
 			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"></script>
 		</head>
-		<body class="min-h-svh bg-background font-sans antialiased" data-signals="{theme: initTheme()}">
+		{{
+			// Build data-signals based on mobile detection
+			dataSignals := "{theme: initTheme()}"
+			if isMobile {
+				dataSignals = "{theme: initTheme(), mobile_menu: {open: false}}"
+			}
+		}}
+		<body class="min-h-svh bg-background font-sans antialiased" data-signals={ dataSignals }>
 			<div class="relative flex min-h-svh flex-col bg-background">
 				<div data-wrapper="" class="border-grid flex flex-1 flex-col">
 					<!-- Header -->
@@ -123,7 +135,7 @@ templ Root(currentPage string) {
 										}
 									</nav>
 								</div>
-								<!-- Right side: Search and Actions (full width, right-aligned) -->
+								<!-- Right side: Actions (full width, right-aligned) -->
 								<div class="flex items-center justify-end space-x-2 flex-1 pl-6">
 									<nav class="flex items-center space-x-1">
 										<a href="https://github.com/coreycole/datastarui" target="_blank" rel="noreferrer">
@@ -140,6 +152,7 @@ templ Root(currentPage string) {
 											</div>
 										</a>
 										@themetoggle.ThemeToggle(themetoggle.ThemeToggleProps{})
+										@sidebar.MobileMenuToggle(isMobile)
 									</nav>
 								</div>
 							</div>
@@ -149,8 +162,9 @@ templ Root(currentPage string) {
 						<div class="container-wrapper">
 							<div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
 								@sidebar.Sidebar(sidebar.SidebarProps{
-									Sections:    getSidebarSections(),
+									Sections:    GetSidebarSections(),
 									CurrentPath: getCurrentPath(currentPage),
+									IsMobile:    isMobile,
 									Class:       "",
 								})
 								<main class="relative pb-6">

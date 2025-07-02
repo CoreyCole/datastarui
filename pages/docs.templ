@@ -5,7 +5,7 @@ import b "github.com/coreycole/datastarui/components/breadcrumb"
 
 templ DocsPage() {
 	@l.Root("docs") {
-		<div class="space-y-8">
+		<div class="space-y-8 max-w-4xl">
 			<!-- Breadcrumb Navigation -->
 			@b.Breadcrumb(b.BreadcrumbProps{}) {
 				@b.BreadcrumbList(b.BreadcrumbListProps{}) {
@@ -23,103 +23,102 @@ templ DocsPage() {
 				}
 			}
 			<!-- Page Header -->
-			<div class="space-y-2">
-				<h1 class="text-3xl font-bold tracking-tight">Documentation</h1>
-				<p class="text-lg text-muted-foreground">
-					DatastarUI component library with structured Datastar signals.
+			<div class="space-y-4">
+				<h1 class="text-4xl font-bold tracking-tight">Documentation</h1>
+				<p class="text-xl text-muted-foreground">
+					Beautiful, accessible components built with Go, templ, and Datastar.
 				</p>
 			</div>
-			<!-- Signals Documentation -->
-			<div class="space-y-6">
-				<div class="space-y-4">
-					<h2 class="text-2xl font-semibold tracking-tight">Signal Management</h2>
-					<p class="text-muted-foreground">
-						DatastarUI provides a structured way to manage Datastar signals using Go structs with JSON tags. 
-						This eliminates manual JSON construction and provides type-safe signal management.
+			<!-- Philosophy Section -->
+			<section class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Philosophy</h2>
+				<div class="space-y-4 text-muted-foreground">
+					<p>
+						DatastarUI is inspired by <a href="https://ui.shadcn.com" class="font-medium underline underline-offset-4 hover:text-primary" target="_blank" rel="noopener noreferrer">shadcn/ui</a>. 
+						Like shadcn, this is NOT a component library that you install as a dependency. It's a collection of 
+						reusable components that you can copy and paste into your apps.
+					</p>
+					<p>
+						<strong class="text-foreground">Why copy/paste instead of packaging?</strong>
+					</p>
+					<ul class="list-disc pl-6 space-y-2">
+						<li>You own the code. Need to change something? Just edit it.</li>
+						<li>No versioning conflicts or breaking changes to worry about.</li>
+						<li>Zero configuration complexity. Customize by changing the code.</li>
+					</ul>
+					<p>
+						Every component maintains pixel-perfect parity with shadcn/ui while using server-side rendering 
+						with Go/templ and only 15KB of JavaScript (the Datastar library) for reactivity.
 					</p>
 				</div>
-				<div class="space-y-4">
-					<h3 class="text-xl font-semibold tracking-tight">Signal Helper Methods</h3>
-					<p class="text-muted-foreground mb-4">
-						The SignalManager provides helper methods for creating signal references and expressions:
+			</section>
+			<!-- Getting Started Section -->
+			<section class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Getting Started</h2>
+				<div class="space-y-4 text-muted-foreground">
+					<p>
+						Each component follows a consistent pattern with:
 					</p>
-					<div class="space-y-3">
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">Signal(property)</h4>
-							<p class="text-sm text-muted-foreground">Returns a reference to a signal property</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">$[componentID].property</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">Toggle(property)</h4>
-							<p class="text-sm text-muted-foreground">Creates a toggle expression for boolean properties</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">$[componentID].property = !$[componentID].property</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">Set(property, value)</h4>
-							<p class="text-sm text-muted-foreground">Creates a set expression for any property</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">$[componentID].property = value</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">Conditional(property, trueValue, falseValue)</h4>
-							<p class="text-sm text-muted-foreground">Creates conditional expressions</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">$[componentID].property ? trueValue : falseValue</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">ConditionalAction(condition, property, value)</h4>
-							<p class="text-sm text-muted-foreground">Creates safe conditional actions for event handlers</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">condition ? ($[componentID].property = value) : void 0</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">ConditionalMultiAction(condition, actions...)</h4>
-							<p class="text-sm text-muted-foreground">Creates safe conditional expressions with multiple actions</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">condition ? (action1, action2, ...) : void 0</p>
-						</div>
-					</div>
-				</div>
-				<div class="space-y-4">
-					<h3 class="text-xl font-semibold tracking-tight">Multi-Namespace Signals</h3>
-					<p class="text-muted-foreground mb-4">
-						For complex components that need multiple signal namespaces, use MultiSignals and MultiSignalRef:
-					</p>
-					<div class="space-y-3">
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">MultiSignals(signalsMap)</h4>
-							<p class="text-sm text-muted-foreground">Creates signals with multiple namespaces from a map</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">MultiSignals(signalsMap map[string]interface&#123;&#125;)</p>
-						</div>
-						<div class="border rounded-lg p-4 space-y-2">
-							<h4 class="font-medium">MultiSignalRef(namespace, property)</h4>
-							<p class="text-sm text-muted-foreground">Returns a reference to a signal property in a multi-signal context</p>
-							<p class="text-sm font-mono bg-muted px-2 py-1 rounded">$namespace.property</p>
-						</div>
-					</div>
-				</div>
-				<div class="space-y-4">
-					<h3 class="text-xl font-semibold tracking-tight">Benefits</h3>
-					<ul class="space-y-2 text-muted-foreground">
-						<li class="flex items-start space-x-2">
-							<span class="text-green-500 mt-1">•</span>
-							<span><strong>Type Safety:</strong> Signal structures defined with Go structs</span>
-						</li>
-						<li class="flex items-start space-x-2">
-							<span class="text-green-500 mt-1">•</span>
-							<span><strong>Maintainability:</strong> No manual JSON string construction</span>
-						</li>
-						<li class="flex items-start space-x-2">
-							<span class="text-green-500 mt-1">•</span>
-							<span><strong>IDE Support:</strong> Autocomplete and type checking</span>
-						</li>
-						<li class="flex items-start space-x-2">
-							<span class="text-green-500 mt-1">•</span>
-							<span><strong>Namespace Support:</strong> Automatic ID-based namespacing</span>
-						</li>
-						<li class="flex items-start space-x-2">
-							<span class="text-green-500 mt-1">•</span>
-							<span><strong>Consistency:</strong> Standardized approach across components</span>
-						</li>
+					<ul class="list-disc pl-6 space-y-1">
+						<li><code class="text-sm bg-muted px-1 py-0.5 rounded">component.templ</code> - The component template and signals</li>
+						<li><code class="text-sm bg-muted px-1 py-0.5 rounded">props.go</code> - Component props parameter definitions</li>
+						<li><code class="text-sm bg-muted px-1 py-0.5 rounded">variants.go</code> - CSS variant configurations based on shadcn</li>
+						<li><code class="text-sm bg-muted px-1 py-0.5 rounded">expressions.go</code> - Component-specific Datastar expressions (if needed)</li>
 					</ul>
 				</div>
-			</div>
+			</section>
+			<!-- Components List Section -->
+			<section class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Available Components</h2>
+				<p class="text-muted-foreground">
+					All components are built with accessibility in mind and follow the same patterns as shadcn/ui.
+				</p>
+				{{
+					// Get the component list from the sidebar
+					sections := l.GetSidebarSections()
+				}}
+				<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+					for _, section := range sections {
+						if section.Title == "Components" {
+							for _, item := range section.Items {
+								<a href={ templ.SafeURL(item.Href) } class="block rounded-lg border p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
+									<h3 class="font-semibold">{ item.Title }</h3>
+								</a>
+							}
+						}
+					}
+				</div>
+			</section>
+			<!-- Tech Stack Section -->
+			<section class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Tech Stack</h2>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					<div class="space-y-2">
+						<h3 class="font-semibold">Go + templ</h3>
+						<p class="text-sm text-muted-foreground">
+							Type-safe server-side rendering with Go's performance
+						</p>
+					</div>
+					<div class="space-y-2">
+						<h3 class="font-semibold">Datastar</h3>
+						<p class="text-sm text-muted-foreground">
+							15KB hypermedia library for reactivity without complexity
+						</p>
+					</div>
+					<div class="space-y-2">
+						<h3 class="font-semibold">Tailwind CSS</h3>
+						<p class="text-sm text-muted-foreground">
+							Utility-first CSS matching shadcn/ui exactly
+						</p>
+					</div>
+					<div class="space-y-2">
+						<h3 class="font-semibold">Echo</h3>
+						<p class="text-sm text-muted-foreground">
+							High performance, minimalist Go web framework
+						</p>
+					</div>
+				</div>
+			</section>
 		</div>
 	}
 }

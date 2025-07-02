@@ -18,6 +18,7 @@ type SidebarSection struct {
 type SidebarProps struct {
 	Sections    []SidebarSection
 	CurrentPath string
+	IsMobile    bool
 	Class       string
 	Attributes  templ.Attributes
 }

@@ -2,7 +2,7 @@ package layouts
 
 import "github.com/coreycole/datastarui/components/sidebar"
 
-func getSidebarSections() []sidebar.SidebarSection {
+func GetSidebarSections() []sidebar.SidebarSection {
 	return []sidebar.SidebarSection{
 		{
 			Title: "Components",

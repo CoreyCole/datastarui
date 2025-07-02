@@ -71,7 +71,7 @@ templ CheckboxIndicator(props CheckboxIndicatorProps) {
 	<span
 		data-slot="checkbox-indicator"
 		class={ checkboxIndicatorVariants(props.ClassName) }
-		{ utils.MergeAttributes(props.Attributes)... }
+		{ props.Attributes... }
 	>
 		{ children... }
 	</span>

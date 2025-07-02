@@ -358,6 +358,12 @@ keyHandler := utils.NewMultipleAssignments().
 
 The Playwright MCP server provides browser automation for debugging Datastar components. Key commands:
 
+#### IMPORTANT: Always Check Console First
+
+- **First step after navigating**: Run `mcp__playwright__playwright_console_logs type="all" clear=true`
+- **After each interaction**: Check console again for Datastar runtime errors
+- **Common errors**: Undefined signals, expression syntax errors, missing signal namespaces
+
 #### Navigation and Setup
 
 - `mcp__playwright__playwright_navigate` - Navigate to a URL (e.g., http://localhost:4242/components/datepicker)
