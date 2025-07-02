@@ -2,6 +2,7 @@ package datepicker
 
 import (
 	"github.com/a-h/templ"
+
 	"github.com/coreycole/datastarui/components/calendar"
 )
 
@@ -87,55 +88,6 @@ type DatePickerProps struct {
 
 	// Attributes allows additional HTML attributes to be added
 	Attributes templ.Attributes
-}
-
-// DatePickerSignals defines the reactive state for the DatePicker component
-type DatePickerSignals struct {
-	// Open state of the popover
-	Open bool `json:"open"`
-
-	// Input value (what user sees in the input field - YYYY/MM/DD format)
-	InputValue string `json:"inputValue"`
-
-	// Selected date in internal format (YYYY-MM-DD)
-	SelectedDate string `json:"selectedDate"`
-
-	// Range start date (YYYY-MM-DD format)
-	RangeStart string `json:"rangeStart"`
-
-	// Range end date (YYYY-MM-DD format)
-	RangeEnd string `json:"rangeEnd"`
-
-	// Current display month (YYYY-MM-DD format, first day of month)
-	DisplayMonth string `json:"displayMonth"`
-
-	// Validation state
-	IsValid bool `json:"isValid"`
-
-	// Error message for invalid dates
-	ErrorMessage string `json:"errorMessage"`
-
-	// Whether user is currently typing (affects calendar sync behavior)
-	IsTyping bool `json:"isTyping"`
-
-	// Focused date in calendar (for keyboard navigation)
-	FocusedDate string `json:"focusedDate"`
-
-	// Highlighted date (for keyboard navigation within calendar)
-	HighlightedDate string `json:"highlightedDate"`
-
-	// Calendar-specific signals (needed for Calendar component compatibility)
-	CurrentDate string `json:"currentDate"`
-	Mode        string `json:"mode"`
-	Today       string `json:"today"`
-
-	// DateInput-specific signals (needed for DateInput component compatibility)
-	DateValue       string `json:"dateValue"`
-	StartInputValue string `json:"startInputValue"`
-	StartDateValue  string `json:"startDateValue"`
-	EndInputValue   string `json:"endInputValue"`
-	EndDateValue    string `json:"endDateValue"`
-	EndDateEnabled  bool   `json:"endDateEnabled"`
 }
 
 // DatePickerCalendarProps defines properties for the calendar part of the date picker

@@ -10,6 +10,55 @@ import (
 	"time"
 )
 
+// datePickerSignals defines the reactive state for the DatePicker component
+type datePickerSignals struct {
+	// Open state of the popover
+	Open bool `json:"open"`
+
+	// Input value (what user sees in the input field - YYYY/MM/DD format)
+	InputValue string `json:"inputValue"`
+
+	// Selected date in internal format (YYYY-MM-DD)
+	SelectedDate string `json:"selectedDate"`
+
+	// Range start date (YYYY-MM-DD format)
+	RangeStart string `json:"rangeStart"`
+
+	// Range end date (YYYY-MM-DD format)
+	RangeEnd string `json:"rangeEnd"`
+
+	// Current display month (YYYY-MM-DD format, first day of month)
+	DisplayMonth string `json:"displayMonth"`
+
+	// Validation state
+	IsValid bool `json:"isValid"`
+
+	// Error message for invalid dates
+	ErrorMessage string `json:"errorMessage"`
+
+	// Whether user is currently typing (affects calendar sync behavior)
+	IsTyping bool `json:"isTyping"`
+
+	// Focused date in calendar (for keyboard navigation)
+	FocusedDate string `json:"focusedDate"`
+
+	// Highlighted date (for keyboard navigation within calendar)
+	HighlightedDate string `json:"highlightedDate"`
+
+	// Calendar-specific signals (needed for Calendar component compatibility)
+	CurrentDate string `json:"currentDate"`
+	Mode        string `json:"mode"`
+	Today       string `json:"today"`
+
+	// DateInput-specific signals (needed for DateInput component compatibility)
+	DateValue       string `json:"dateValue"`
+	StartInputValue string `json:"startInputValue"`
+	StartDateValue  string `json:"startDateValue"`
+	EndInputValue   string `json:"endInputValue"`
+	EndDateValue    string `json:"endDateValue"`
+	EndDateEnabled  bool   `json:"endDateEnabled"`
+}
+
 // calendarIconButton creates a calendar icon button component for use as postfix
 templ calendarIconButton(onClickHandler string) {
 	<button
@@ -108,7 +157,7 @@ templ DatePicker(props DatePickerProps) {
 		now := time.Now()
 		todayStr := now.Format("2006-01-02")
 
-		signals := utils.Signals(datePickerID, DatePickerSignals{
+		signals := utils.Signals(datePickerID, datePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
 			SelectedDate:    initialSelectedDate,
@@ -354,7 +403,7 @@ templ DatePickerPopover(props DatePickerPopoverProps) {
 	{{
 		// IMPORTANT: We need to use the same signal namespace as the parent DatePicker
 		// Don't create new signals here - reference the existing ones
-		signals := utils.Signals(props.ID, DatePickerSignals{})
+		signals := utils.Signals(props.ID, datePickerSignals{})
 
 		// Popover show/hide - explicitly handle undefined to prevent flash
 		showExpr := signals.Signal("open") + " === true"

@@ -67,8 +67,9 @@ DatastarUI is a Go/templ port of shadcn/ui components that maintains pixel-perfe
 datastarui/
 ├── components/                    # Reusable UI components
 │   ├── button/
-│   │   ├── button.templ          # Component template
-│   │   ├── types.go              # Props and types
+│   │   ├── button.templ          # Component template (and internal signal type)
+│   │   ├── props.go              # Component parameter props
+|   │   ├── expressions.go        # Datastar expression builders
 │   │   └── variants.go           # CSS variants
 ├── utils/                        # Utility libraries
 │   ├── signals.go                # Signal management with namespacing
@@ -89,6 +90,7 @@ datastarui/
 Each component follows a consistent 3-file pattern:
 
 1. **Template** (`component.templ`) - templ markup with Datastar attributes
+   - **IMPORTANT:** Always put the private signal struct in the top of this file
 1. **Types** (`types.go`) - Go structs defining component props
 1. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
 

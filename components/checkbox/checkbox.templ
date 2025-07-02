@@ -3,7 +3,7 @@ package checkbox
 import "github.com/coreycole/datastarui/utils"
 
 // CheckboxSignals defines the signal structure for checkbox components
-type CheckboxSignals struct {
+type checkboxSignals struct {
 	Checked bool `json:"checked"`
 }
 
@@ -11,7 +11,7 @@ type CheckboxSignals struct {
 templ Checkbox(props CheckboxProps) {
 	{{
 		// Create signals using the new structured system
-		signals := utils.Signals(props.ID, CheckboxSignals{
+		signals := utils.Signals(props.ID, checkboxSignals{
 			Checked: props.Checked,
 		})
 
