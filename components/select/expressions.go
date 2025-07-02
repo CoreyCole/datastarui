@@ -22,21 +22,42 @@ func NewSelectTriggerHandler(selectID string, signals *utils.SignalManager) *Sel
 
 // BuildClickHandler creates the trigger click handler
 func (s *SelectTriggerHandler) BuildClickHandler() string {
-	return s.signals.Toggle("open") + "; " + s.signals.Set("highlighted", "-1")
+	return fmt.Sprintf(
+		"%s ? (%s, %s) : (%s, %s)",
+		s.signals.Signal("open"),
+		s.signals.Set("open", "false"),
+		s.signals.Set("highlighted", "-1"),
+		s.signals.Set("open", "true"),
+		s.signals.Set("highlighted", "-1"),
+	)
 }
 
 // BuildKeyboardHandler creates the trigger keyboard navigation handler
 func (s *SelectTriggerHandler) BuildKeyboardHandler() string {
 	expr := utils.NewExpression()
 
-	// ArrowDown/Up: open dropdown
-	expr.Statement(fmt.Sprintf("(evt.key === 'ArrowDown' || evt.key === 'ArrowUp') && !%s ? (%s, evt.preventDefault()) : null",
+	// ArrowDown: open dropdown and highlight first item
+	expr.Statement(fmt.Sprintf("evt.key === 'ArrowDown' && !%s ? (%s, %s, evt.preventDefault()) : null",
 		s.signals.Signal("open"),
-		s.signals.Set("open", "true")))
+		s.signals.Set("open", "true"),
+		s.signals.Set("highlighted", "0")))
 
-	// Space/Enter: toggle dropdown
-	expr.Statement(fmt.Sprintf("(evt.key === ' ' || evt.key === 'Enter') ? (%s, %s, evt.preventDefault()) : null",
-		s.signals.Toggle("open"),
+	// ArrowUp: open dropdown and highlight last item
+	expr.Statement(fmt.Sprintf("evt.key === 'ArrowUp' && !%s ? (%s, %s, evt.preventDefault()) : null",
+		s.signals.Signal("open"),
+		s.signals.Set("open", "true"),
+		s.signals.Set("highlighted", "document.querySelector('[data-select-id=\""+s.selectID+"\"]').querySelectorAll('[data-select-item]:not([data-disabled])').length - 1")))
+
+	// Space: open dropdown without highlighting
+	expr.Statement(fmt.Sprintf("evt.key === ' ' && !%s ? (%s, %s, evt.preventDefault()) : null",
+		s.signals.Signal("open"),
+		s.signals.Set("open", "true"),
+		s.signals.Set("highlighted", "-1")))
+
+	// Enter: just open dropdown if closed, don't highlight anything
+	expr.Statement(fmt.Sprintf("evt.key === 'Enter' && !%s ? (%s, %s, evt.preventDefault()) : null",
+		s.signals.Signal("open"),
+		s.signals.Set("open", "true"),
 		s.signals.Set("highlighted", "-1")))
 
 	return expr.Build()
