@@ -49,7 +49,7 @@ datastarui/
 ├── components/          # Reusable UI components
 │   ├── button/          # Button component
 │   │   ├── button.templ # Template file
-│   │   ├── types.go     # Args and types
+│   │   ├── args.go      # Component arguments
 │   │   └── variants.go  # CSS class variants
 │   └── select/          # Select component (fully refactored)
 ├── utils/               # Utility libraries
@@ -176,19 +176,11 @@ The project uses the same design tokens as shadcn/ui:
 ## 🤝 Contributing
 
 1. **Pick a component** from the [shadcn/ui registry](https://ui.shadcn.com/docs/components)
-2. **Follow the utility-driven architecture** using expression builders
-3. **Maintain pixel-perfect accuracy** to the original
-4. **Use structured Datastar integration** with utilities
-5. **Create comprehensive demos** showing all variants
-
-See the [Development Guide](./docs/guide.md) for detailed implementation patterns.
+1. **Follow the utility-driven architecture** using expression builders
+1. **Create comprehensive demos** showing all variants
 
 ## 📖 Documentation
 
-- [Development Guide](./docs/guide.md) - Comprehensive utility patterns and best practices
-- [Signals Management](./docs/signals.md) - Signal management patterns (legacy reference)
-- [Debugging Guide](./docs/debugging.md) - Testing and troubleshooting components
-- [templ Syntax Guide](./docs/templ.md) - Complete templ templating reference
 - [Playwright Testing](./docs/playwright.md) - Browser automation testing
 - [Datastar Documentation](https://data-star.dev/) - Reactivity framework
 - [templ Documentation](https://templ.guide/) - Go templating engine
@@ -196,4 +188,4 @@ See the [Development Guide](./docs/guide.md) for detailed implementation pattern
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](./LICENSE) for details.
