@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import "github.com/coreycole/datastarui/utils"
 
 // Popover creates a popover container component
-func Popover(props PopoverProps) templ.Component {
+func Popover(args PopoverProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -32,7 +32,7 @@ func Popover(props PopoverProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{utils.TwMerge("relative", props.Class)}
+		var templ_7745c5c3_Var2 = []any{utils.TwMerge("relative", args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -67,7 +67,7 @@ func Popover(props PopoverProps) templ.Component {
 }
 
 // PopoverTrigger creates a trigger button for the popover
-func PopoverTrigger(props PopoverTriggerProps) templ.Component {
+func PopoverTrigger(args PopoverTriggerProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -90,13 +90,13 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create popover handler for clean expressions
-		popoverHandler := NewPopoverHandler(props.PopoverID)
+		popoverHandler := NewPopoverHandler(args.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
-		anchorStyle := popoverHandler.BuildAnchorStyle(props.AnchorName)
+		anchorStyle := popoverHandler.BuildAnchorStyle(args.AnchorName)
 
 		// Build style attribute
 		style := ""
-		if props.AsChild {
+		if args.AsChild {
 			style = "cursor: pointer;"
 			if anchorStyle != "" {
 				style += " " + anchorStyle
@@ -104,12 +104,12 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 		} else if anchorStyle != "" {
 			style = anchorStyle
 		}
-		if props.AsChild {
+		if args.AsChild {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var5 = []any{props.Class}
+			var templ_7745c5c3_Var5 = []any{args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -167,7 +167,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -188,7 +188,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var9 = []any{props.Class}
+			var templ_7745c5c3_Var9 = []any{args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -198,7 +198,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 48, Col: 16}
 			}
@@ -211,7 +211,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(props.PopoverID)
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(args.PopoverID)
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 49, Col: 34}
 			}
@@ -259,7 +259,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -281,7 +281,7 @@ func PopoverTrigger(props PopoverTriggerProps) templ.Component {
 }
 
 // PopoverContent creates the popover content panel
-func PopoverContent(props PopoverContentProps) templ.Component {
+func PopoverContent(args PopoverContentProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -303,24 +303,24 @@ func PopoverContent(props PopoverContentProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		contentClasses := PopoverContentVariants(props)
+		contentClasses := PopoverContentVariants(args)
 
 		// Create popover handler for clean expressions
-		popoverHandler := NewPopoverHandler(props.ID)
+		popoverHandler := NewPopoverHandler(args.ID)
 
 		// Generate positioning styles
 		positioningStyle := ""
 
-		if props.UseAnchor && props.AnchorName != "" {
+		if args.UseAnchor && args.AnchorName != "" {
 			// Simplified positioning API
-			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(props.AnchorName) + "; z-index: 50; "
+			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
 
-			if props.Side != "" || props.Align != "" {
-				sideOffset := props.SideOffset
+			if args.Side != "" || args.Align != "" {
+				sideOffset := args.SideOffset
 				if sideOffset == 0 {
 					sideOffset = 8 // default offset
 				}
-				anchorCSS := GetAnchorPosition(props.Side, props.Align, sideOffset)
+				anchorCSS := GetAnchorPosition(args.Side, args.Align, sideOffset)
 				positioningStyle += anchorCSS + ";"
 			}
 		} else {
@@ -329,7 +329,7 @@ func PopoverContent(props PopoverContentProps) templ.Component {
 		}
 
 		// Add anchor-positioned class if using anchor positioning
-		if props.UseAnchor && props.AnchorName != "" {
+		if args.UseAnchor && args.AnchorName != "" {
 			contentClasses += " anchor-positioned"
 		}
 		var templ_7745c5c3_Var15 = []any{contentClasses}
@@ -342,7 +342,7 @@ func PopoverContent(props PopoverContentProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
-		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 96, Col: 15}
 		}
@@ -380,7 +380,7 @@ func PopoverContent(props PopoverContentProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -20,7 +20,7 @@ type DropdownSignals struct {
 }
 
 // DropdownMenu renders the main dropdown wrapper with Datastar state management
-func DropdownMenu(props DropdownMenuProps) templ.Component {
+func DropdownMenu(args DropdownMenuProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -43,7 +43,7 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate unique ID if not provided
-		dropdownID := props.ID
+		dropdownID := args.ID
 		if dropdownID == "" {
 			// Generate a random ID
 			b := make([]byte, 4)
@@ -52,7 +52,7 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 		}
 
 		openState := false
-		if props.DefaultOpen || props.Open {
+		if args.DefaultOpen || args.Open {
 			openState = true
 		}
 
@@ -64,7 +64,7 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 		// Click outside handler using expression builder
 		dropdownHandler := newDropdownHandler(signals)
 		clickOutsideHandler := dropdownHandler.buildClickOutsideHandler()
-		var templ_7745c5c3_Var2 = []any{dropdownMenuVariants(props.Class)}
+		var templ_7745c5c3_Var2 = []any{dropdownMenuVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -112,7 +112,7 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -133,7 +133,7 @@ func DropdownMenu(props DropdownMenuProps) templ.Component {
 }
 
 // DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
-func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
+func DropdownMenuTrigger(args DropdownMenuTriggerProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -156,10 +156,10 @@ func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for this dropdown
-		signals := utils.Signals(props.ID, DropdownSignals{})
+		signals := utils.Signals(args.ID, DropdownSignals{})
 		toggleExpr := signals.Toggle("open")
-		if props.AsChild {
-			var templ_7745c5c3_Var7 = []any{dropdownMenuTriggerVariants(props.Class)}
+		if args.AsChild {
+			var templ_7745c5c3_Var7 = []any{dropdownMenuTriggerVariants(args.Class)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var7...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -194,13 +194,13 @@ func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " aria-disabled=\"true\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -217,7 +217,7 @@ func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var10 = []any{dropdownMenuTriggerVariants(props.Class)}
+			var templ_7745c5c3_Var10 = []any{dropdownMenuTriggerVariants(args.Class)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -252,13 +252,13 @@ func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " disabled")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -280,7 +280,7 @@ func DropdownMenuTrigger(props DropdownMenuTriggerProps) templ.Component {
 }
 
 // DropdownMenuContent renders the dropdown content panel
-func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
+func DropdownMenuContent(args DropdownMenuContentProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -302,9 +302,9 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		// Calculate positioning classes based on props
+		// Calculate positioning classes based on args
 		alignClass := ""
-		switch props.Align {
+		switch args.Align {
 		case "start":
 			alignClass = "left-0"
 		case "end":
@@ -316,15 +316,15 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		}
 
 		// Generate positioning classes using expression builder helper
-		sideClass := createSideClasses(props.Side, props.SideOffset)
+		sideClass := createSideClasses(args.Side, args.SideOffset)
 		// Create signals manager for this dropdown
-		signals := utils.Signals(props.ID, DropdownSignals{})
+		signals := utils.Signals(args.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
 
 		// ESC key handler for closing dropdown using expression builder
 		dropdownHandler := newDropdownHandler(signals)
 		escapeHandler := dropdownHandler.buildEscapeHandler()
-		var templ_7745c5c3_Var14 = []any{utils.TwMerge(dropdownMenuContentVariants(props.Class), "absolute", sideClass, alignClass)}
+		var templ_7745c5c3_Var14 = []any{utils.TwMerge(dropdownMenuContentVariants(args.Class), "absolute", sideClass, alignClass)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var14...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -372,7 +372,7 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -393,7 +393,7 @@ func DropdownMenuContent(props DropdownMenuContentProps) templ.Component {
 }
 
 // DropdownMenuItem renders a clickable menu item
-func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
+func DropdownMenuItem(args DropdownMenuItemProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -416,10 +416,10 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for this dropdown
-		signals := utils.Signals(props.ID, DropdownSignals{})
+		signals := utils.Signals(args.ID, DropdownSignals{})
 		hideExpr := signals.Set("open", "false")
-		if props.AsChild {
-			var templ_7745c5c3_Var19 = []any{dropdownMenuItemVariants(props.Variant, props.Class, props.Inset, props.Disabled)}
+		if args.AsChild {
+			var templ_7745c5c3_Var19 = []any{dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var19...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -441,21 +441,21 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, " aria-disabled=\"true\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, templ.Attributes(map[string]any{
-				"data-inset":    props.Inset,
-				"data-variant":  props.Variant,
-				"data-disabled": props.Disabled,
+				"data-inset":    args.Inset,
+				"data-variant":  args.Variant,
+				"data-disabled": args.Disabled,
 			}))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -472,7 +472,7 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var21 = []any{dropdownMenuItemVariants(props.Variant, props.Class, props.Inset, props.Disabled)}
+			var templ_7745c5c3_Var21 = []any{dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var21...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -507,21 +507,21 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, " aria-disabled=\"true\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, templ.Attributes(map[string]any{
-				"data-inset":    props.Inset,
-				"data-variant":  props.Variant,
-				"data-disabled": props.Disabled,
+				"data-inset":    args.Inset,
+				"data-variant":  args.Variant,
+				"data-disabled": args.Disabled,
 			}))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -543,7 +543,7 @@ func DropdownMenuItem(props DropdownMenuItemProps) templ.Component {
 }
 
 // DropdownMenuLabel renders a non-interactive label
-func DropdownMenuLabel(props DropdownMenuLabelProps) templ.Component {
+func DropdownMenuLabel(args DropdownMenuLabelProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -564,7 +564,7 @@ func DropdownMenuLabel(props DropdownMenuLabelProps) templ.Component {
 			templ_7745c5c3_Var24 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var25 = []any{dropdownMenuLabelVariants(props.Class, props.Inset)}
+		var templ_7745c5c3_Var25 = []any{dropdownMenuLabelVariants(args.Class, args.Inset)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var25...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -587,12 +587,12 @@ func DropdownMenuLabel(props DropdownMenuLabelProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, templ.Attributes(map[string]any{
-			"data-inset": props.Inset,
+			"data-inset": args.Inset,
 		}))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -613,7 +613,7 @@ func DropdownMenuLabel(props DropdownMenuLabelProps) templ.Component {
 }
 
 // DropdownMenuSeparator renders a visual separator
-func DropdownMenuSeparator(props DropdownMenuSeparatorProps) templ.Component {
+func DropdownMenuSeparator(args DropdownMenuSeparatorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -634,7 +634,7 @@ func DropdownMenuSeparator(props DropdownMenuSeparatorProps) templ.Component {
 			templ_7745c5c3_Var27 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var28 = []any{dropdownMenuSeparatorVariants(props.Class)}
+		var templ_7745c5c3_Var28 = []any{dropdownMenuSeparatorVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var28...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -656,7 +656,7 @@ func DropdownMenuSeparator(props DropdownMenuSeparatorProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -669,7 +669,7 @@ func DropdownMenuSeparator(props DropdownMenuSeparatorProps) templ.Component {
 }
 
 // DropdownMenuShortcut renders keyboard shortcut text
-func DropdownMenuShortcut(props DropdownMenuShortcutProps) templ.Component {
+func DropdownMenuShortcut(args DropdownMenuShortcutProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -690,7 +690,7 @@ func DropdownMenuShortcut(props DropdownMenuShortcutProps) templ.Component {
 			templ_7745c5c3_Var30 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var31 = []any{dropdownMenuShortcutVariants(props.Class)}
+		var templ_7745c5c3_Var31 = []any{dropdownMenuShortcutVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var31...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -712,7 +712,7 @@ func DropdownMenuShortcut(props DropdownMenuShortcutProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -733,7 +733,7 @@ func DropdownMenuShortcut(props DropdownMenuShortcutProps) templ.Component {
 }
 
 // DropdownMenuGroup renders a logical grouping of menu items
-func DropdownMenuGroup(props DropdownMenuGroupProps) templ.Component {
+func DropdownMenuGroup(args DropdownMenuGroupProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -754,7 +754,7 @@ func DropdownMenuGroup(props DropdownMenuGroupProps) templ.Component {
 			templ_7745c5c3_Var33 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var34 = []any{dropdownMenuGroupVariants(props.Class)}
+		var templ_7745c5c3_Var34 = []any{dropdownMenuGroupVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var34...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -776,7 +776,7 @@ func DropdownMenuGroup(props DropdownMenuGroupProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

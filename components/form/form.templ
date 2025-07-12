@@ -14,10 +14,10 @@ type FormSignals struct {
 }
 
 // Form wrapper component
-templ Form(props FormProps) {
+templ Form(args FormProps) {
 	{{
 		// Create signals using the new structured system
-		signals := utils.Signals(props.ID, FormSignals{
+		signals := utils.Signals(args.ID, FormSignals{
 			Submitted: false,
 			Name:      "",
 			Email:     "",
@@ -28,28 +28,28 @@ templ Form(props FormProps) {
 		formAttrs = make(templ.Attributes)
 
 		// Copy user-provided attributes first
-		for k, v := range props.Attributes {
+		for k, v := range args.Attributes {
 			formAttrs[k] = v
 		}
 
 		// Add form-specific attributes
-		if props.ID != "" {
-			formAttrs["id"] = props.ID
+		if args.ID != "" {
+			formAttrs["id"] = args.ID
 		}
 
-		if props.Action != "" {
+		if args.Action != "" {
 			// Check if there's a target specified in attributes
 			target := ""
-			if targetAttr, exists := props.Attributes["data-target"]; exists {
+			if targetAttr, exists := args.Attributes["data-target"]; exists {
 				target = fmt.Sprintf(", target: '%s'", targetAttr)
 				// Remove data-target from attributes as we've handled it
 				delete(formAttrs, "data-target")
 			}
-			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(props.Action), target)
+			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(args.Action), target)
 		}
 
-		if props.Class != "" {
-			formAttrs["class"] = props.Class
+		if args.Class != "" {
+			formAttrs["class"] = args.Class
 		}
 	}}
 	<div data-signals={ signals.DataSignals }>
@@ -62,30 +62,30 @@ templ Form(props FormProps) {
 }
 
 // FormItem component - container for form field
-templ FormItem(props FormItemProps) {
+templ FormItem(args FormItemProps) {
 	{{
-		classes := formItemVariants(props.Class)
+		classes := formItemVariants(args.Class)
 	}}
 	<div
 		data-slot="form-item"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // FormLabel component - label for form field
-templ FormLabel(props FormLabelProps) {
+templ FormLabel(args FormLabelProps) {
 	{{
-		classes := formLabelVariants(props.Class, props.HasError)
+		classes := formLabelVariants(args.Class, args.HasError)
 	}}
 	@label.Label(label.LabelProps{
 		Class: classes,
-		For:   props.For,
+		For:   args.For,
 		Attributes: templ.Attributes{
 			"data-slot":  "form-label",
-			"data-error": templ.Bool(props.HasError),
+			"data-error": templ.Bool(args.HasError),
 		},
 	}) {
 		{ children... }
@@ -93,38 +93,38 @@ templ FormLabel(props FormLabelProps) {
 }
 
 // FormDescription component - help text for form field
-templ FormDescription(props FormDescriptionProps) {
+templ FormDescription(args FormDescriptionProps) {
 	{{
-		classes := formDescriptionVariants(props.Class)
+		classes := formDescriptionVariants(args.Class)
 	}}
 	<p
 		data-slot="form-description"
-		if props.ID != "" {
-			id={ props.ID }
+		if args.ID != "" {
+			id={ args.ID }
 		}
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</p>
 }
 
 // FormMessage component - error message for form field
-templ FormMessage(props FormMessageProps) {
-	if props.Message != "" {
+templ FormMessage(args FormMessageProps) {
+	if args.Message != "" {
 		{{
-			classes := formMessageVariants(props.Class)
+			classes := formMessageVariants(args.Class)
 		}}
 		<p
 			data-slot="form-message"
-			if props.ID != "" {
-				id={ props.ID }
+			if args.ID != "" {
+				id={ args.ID }
 			}
 			class={ classes }
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
-			if props.Message != "" {
-				{ props.Message }
+			if args.Message != "" {
+				{ args.Message }
 			} else {
 				{ children... }
 			}

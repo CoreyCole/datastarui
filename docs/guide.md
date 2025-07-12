@@ -87,7 +87,7 @@ dataClass := utils.NewDataClass().
 ### Basic Component Structure
 
 ```go
-// props.go - Define props and signals
+// args.go - Define args and signals
 type SelectProps struct {
     ID          string
     Options     []SelectOption
@@ -104,12 +104,12 @@ type SelectSignals struct {
 }
 
 // select.templ - Component template
-templ Select(props SelectProps) {
+templ Select(args SelectProps) {
     {{
         // Initialize signals
-        signals := utils.Signals(props.ID, SelectSignals{
+        signals := utils.Signals(args.ID, SelectSignals{
             Open:  false,
-            Value: props.DefaultValue,
+            Value: args.DefaultValue,
         })
         
         // Build expressions
@@ -130,7 +130,7 @@ Use expression builders for complex keyboard handlers:
 
 ```go
 // Build keyboard navigation for dropdown
-handler := utils.NewSelectContentHandler(props.ID, signals)
+handler := utils.NewSelectContentHandler(args.ID, signals)
 keyboardExpr := handler.BuildKeyboardHandler()
 
 // In template
@@ -141,11 +141,11 @@ keyboardExpr := handler.BuildKeyboardHandler()
 
 ```go
 // Conditional highlighting
-templ SelectItem(props SelectItemProps) {
+templ SelectItem(args SelectItemProps) {
     {{
         highlightClass := utils.HighlightedItem(
-            fmt.Sprintf("%s.highlighted", props.ID), 
-            props.Index
+            fmt.Sprintf("%s.highlighted", args.ID), 
+            args.Index
         )
     }}
     <div 
@@ -208,10 +208,10 @@ keyHandler := utils.NewKeyboardHandler("Enter", "Space").
 
 ```go
 // Parent provides signals context
-templ SelectWrapper(props WrapperProps) {
+templ SelectWrapper(args WrapperProps) {
     @Select(SelectProps{
         ID: "my_select",
-        Options: props.Options,
+        Options: args.Options,
     }) {
         @SelectTrigger(SelectTriggerProps{ID: "my_select"})
         @SelectContent(SelectContentProps{ID: "my_select"})

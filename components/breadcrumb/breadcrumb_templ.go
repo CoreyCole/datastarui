@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 // Breadcrumb renders the main navigation wrapper
-func Breadcrumb(props BreadcrumbProps) templ.Component {
+func Breadcrumb(args BreadcrumbProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -30,7 +30,7 @@ func Breadcrumb(props BreadcrumbProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{breadcrumbVariants(props.Class)}
+		var templ_7745c5c3_Var2 = []any{breadcrumbVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -52,7 +52,7 @@ func Breadcrumb(props BreadcrumbProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -73,7 +73,7 @@ func Breadcrumb(props BreadcrumbProps) templ.Component {
 }
 
 // BreadcrumbList renders the ordered list container for breadcrumb items
-func BreadcrumbList(props BreadcrumbListProps) templ.Component {
+func BreadcrumbList(args BreadcrumbListProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -94,7 +94,7 @@ func BreadcrumbList(props BreadcrumbListProps) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var5 = []any{breadcrumbListVariants(props.Class)}
+		var templ_7745c5c3_Var5 = []any{breadcrumbListVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -116,7 +116,7 @@ func BreadcrumbList(props BreadcrumbListProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -137,7 +137,7 @@ func BreadcrumbList(props BreadcrumbListProps) templ.Component {
 }
 
 // BreadcrumbItem renders a list item wrapper for breadcrumb content
-func BreadcrumbItem(props BreadcrumbItemProps) templ.Component {
+func BreadcrumbItem(args BreadcrumbItemProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -158,7 +158,7 @@ func BreadcrumbItem(props BreadcrumbItemProps) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var8 = []any{breadcrumbItemVariants(props.Class)}
+		var templ_7745c5c3_Var8 = []any{breadcrumbItemVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -180,7 +180,7 @@ func BreadcrumbItem(props BreadcrumbItemProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -201,7 +201,7 @@ func BreadcrumbItem(props BreadcrumbItemProps) templ.Component {
 }
 
 // BreadcrumbLink renders a clickable breadcrumb link
-func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
+func BreadcrumbLink(args BreadcrumbLinkProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -222,8 +222,8 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 			templ_7745c5c3_Var10 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		if props.AsChild {
-			var templ_7745c5c3_Var11 = []any{breadcrumbLinkVariants(props.Class)}
+		if args.AsChild {
+			var templ_7745c5c3_Var11 = []any{breadcrumbLinkVariants(args.Class)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var11...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -245,7 +245,7 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -262,7 +262,7 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var13 = []any{breadcrumbLinkVariants(props.Class)}
+			var templ_7745c5c3_Var13 = []any{breadcrumbLinkVariants(args.Class)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var13...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -272,7 +272,7 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var14 templ.SafeURL
-			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(props.Href))
+			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(args.Href))
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/breadcrumb/breadcrumb.templ`, Line: 50, Col: 35}
 			}
@@ -297,7 +297,7 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -319,7 +319,7 @@ func BreadcrumbLink(props BreadcrumbLinkProps) templ.Component {
 }
 
 // BreadcrumbPage renders the current page indicator (non-clickable)
-func BreadcrumbPage(props BreadcrumbPageProps) templ.Component {
+func BreadcrumbPage(args BreadcrumbPageProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -340,7 +340,7 @@ func BreadcrumbPage(props BreadcrumbPageProps) templ.Component {
 			templ_7745c5c3_Var16 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var17 = []any{breadcrumbPageVariants(props.Class)}
+		var templ_7745c5c3_Var17 = []any{breadcrumbPageVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var17...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -362,7 +362,7 @@ func BreadcrumbPage(props BreadcrumbPageProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -383,7 +383,7 @@ func BreadcrumbPage(props BreadcrumbPageProps) templ.Component {
 }
 
 // BreadcrumbSeparator renders the separator between breadcrumb items
-func BreadcrumbSeparator(props BreadcrumbSeparatorProps) templ.Component {
+func BreadcrumbSeparator(args BreadcrumbSeparatorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -404,7 +404,7 @@ func BreadcrumbSeparator(props BreadcrumbSeparatorProps) templ.Component {
 			templ_7745c5c3_Var19 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var20 = []any{breadcrumbSeparatorVariants(props.Class)}
+		var templ_7745c5c3_Var20 = []any{breadcrumbSeparatorVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var20...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -426,7 +426,7 @@ func BreadcrumbSeparator(props BreadcrumbSeparatorProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -434,7 +434,7 @@ func BreadcrumbSeparator(props BreadcrumbSeparatorProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.CustomIcon {
+		if args.CustomIcon {
 			templ_7745c5c3_Err = templ_7745c5c3_Var19.Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -454,7 +454,7 @@ func BreadcrumbSeparator(props BreadcrumbSeparatorProps) templ.Component {
 }
 
 // BreadcrumbEllipsis renders an ellipsis indicator for collapsed breadcrumbs
-func BreadcrumbEllipsis(props BreadcrumbEllipsisProps) templ.Component {
+func BreadcrumbEllipsis(args BreadcrumbEllipsisProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -475,7 +475,7 @@ func BreadcrumbEllipsis(props BreadcrumbEllipsisProps) templ.Component {
 			templ_7745c5c3_Var22 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var23 = []any{breadcrumbEllipsisVariants(props.Class)}
+		var templ_7745c5c3_Var23 = []any{breadcrumbEllipsisVariants(args.Class)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var23...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -497,7 +497,7 @@ func BreadcrumbEllipsis(props BreadcrumbEllipsisProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

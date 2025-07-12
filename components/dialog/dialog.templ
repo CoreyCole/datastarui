@@ -9,11 +9,11 @@ type DialogSignals struct {
 }
 
 // Dialog container - pure Datastar signal-based modal using data-show
-templ Dialog(props DialogProps) {
+templ Dialog(args DialogProps) {
 	{{
 		// Create signals using the new structured system with proper initial state
-		signals := utils.Signals(props.ID, DialogSignals{
-			Open:        props.DefaultOpen,
+		signals := utils.Signals(args.ID, DialogSignals{
+			Open:        args.DefaultOpen,
 			ReturnValue: nil,
 		})
 
@@ -24,7 +24,7 @@ templ Dialog(props DialogProps) {
 		dialogClasses := "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
 
 		// Generate the CSS classes for the inner dialog content container using our variant system
-		containerClasses := DialogVariants(props)
+		containerClasses := DialogVariants(args)
 
 		// Create dialog handler for clean expressions
 		dialogHandler := NewDialogHandler(signals)
@@ -38,13 +38,13 @@ templ Dialog(props DialogProps) {
 			class={ backdropClasses }
 			data-on-click={ backdropClickHandler }
 			data-on-keydown__window={ escapeHandler }
-			if !props.DefaultOpen {
+			if !args.DefaultOpen {
 				style="display: none;"
 			}
 		>
 			<!-- Dialog content container -->
 			<div
-				id={ props.ID }
+				id={ args.ID }
 				class={ dialogClasses }
 				role="dialog"
 				aria-modal="true"
@@ -61,18 +61,18 @@ templ Dialog(props DialogProps) {
 }
 
 // DialogTrigger - button or element that opens the dialog using Datastar signals
-templ DialogTrigger(props DialogTriggerProps) {
+templ DialogTrigger(args DialogTriggerProps) {
 	{{
 		// Create signals manager for the target dialog
-		signals := utils.Signals(props.DialogID, DialogSignals{})
+		signals := utils.Signals(args.DialogID, DialogSignals{})
 		clickHandler := signals.Set("open", "true")
 	}}
-	if props.AsChild {
+	if args.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
 		<div
 			data-on-click={ clickHandler }
-			{ props.Attributes... }
-			class={ props.Class }
+			{ args.Attributes... }
+			class={ args.Class }
 		>
 			{ children... }
 		</div>
@@ -80,8 +80,8 @@ templ DialogTrigger(props DialogTriggerProps) {
 		<button
 			type="button"
 			data-on-click={ clickHandler }
-			{ props.Attributes... }
-			class={ props.Class }
+			{ args.Attributes... }
+			class={ args.Class }
 		>
 			{ children... }
 		</button>
@@ -89,104 +89,104 @@ templ DialogTrigger(props DialogTriggerProps) {
 }
 
 // DialogContent - content section of the dialog
-templ DialogContent(props DialogContentProps) {
+templ DialogContent(args DialogContentProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := DialogContentVariants(props)
+		classes := DialogContentVariants(args)
 	}}
 	<div
 		data-slot="dialog-content"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // DialogOverlay - backdrop overlay (for styling compatibility)
-templ DialogOverlay(props DialogOverlayProps) {
+templ DialogOverlay(args DialogOverlayProps) {
 	<div
-		id={ props.ID }
-		class={ DialogOverlayVariants(props) }
-		{ props.Attributes... }
+		id={ args.ID }
+		class={ DialogOverlayVariants(args) }
+		{ args.Attributes... }
 	></div>
 }
 
 // DialogHeader - header section of the dialog
-templ DialogHeader(props DialogHeaderProps) {
+templ DialogHeader(args DialogHeaderProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := DialogHeaderVariants(props)
+		classes := DialogHeaderVariants(args)
 	}}
 	<div
 		data-slot="dialog-header"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // DialogFooter - footer section of the dialog
-templ DialogFooter(props DialogFooterProps) {
+templ DialogFooter(args DialogFooterProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := DialogFooterVariants(props)
+		classes := DialogFooterVariants(args)
 	}}
 	<div
 		data-slot="dialog-footer"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // DialogTitle - title element in the dialog header
-templ DialogTitle(props DialogTitleProps) {
+templ DialogTitle(args DialogTitleProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := DialogTitleVariants(props)
+		classes := DialogTitleVariants(args)
 	}}
 	<h2
 		data-slot="dialog-title"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</h2>
 }
 
 // DialogDescription - description element in the dialog header
-templ DialogDescription(props DialogDescriptionProps) {
+templ DialogDescription(args DialogDescriptionProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := DialogDescriptionVariants(props)
+		classes := DialogDescriptionVariants(args)
 	}}
 	<p
 		data-slot="dialog-description"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</p>
 }
 
 // DialogClose - button that closes the dialog using Datastar signals
-templ DialogClose(props DialogCloseProps) {
+templ DialogClose(args DialogCloseProps) {
 	{{
 		// Create signals manager for the target dialog
-		signals := utils.Signals(props.DialogID, DialogSignals{})
+		signals := utils.Signals(args.DialogID, DialogSignals{})
 
 		// Create dialog handler for clean expressions
 		dialogHandler := NewDialogHandler(signals)
-		clickHandler := dialogHandler.BuildCloseHandler(props.ReturnValue)
+		clickHandler := dialogHandler.BuildCloseHandler(args.ReturnValue)
 
 		// Default button classes matching the Button component design
 		baseClasses := "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
 
-		// Add variant-specific classes based on props.Variant (default to "default")
-		variant := props.Variant
+		// Add variant-specific classes based on args.Variant (default to "default")
+		variant := args.Variant
 		if variant == "" {
 			variant = "default"
 		}
@@ -208,14 +208,14 @@ templ DialogClose(props DialogCloseProps) {
 		}
 
 		buttonClasses := baseClasses + " " + variantClasses
-		if props.Class != "" {
-			buttonClasses += " " + props.Class
+		if args.Class != "" {
+			buttonClasses += " " + args.Class
 		}
 	}}
 	<button
 		type="button"
 		data-on-click={ clickHandler }
-		{ props.Attributes... }
+		{ args.Attributes... }
 		class={ buttonClasses }
 	>
 		{ children... }

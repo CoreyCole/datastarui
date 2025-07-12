@@ -111,7 +111,7 @@ func calendarIconButton(onClickHandler string) templ.Component {
 }
 
 // DatePicker renders a date picker with input field and calendar popover
-func DatePicker(props DatePickerProps) templ.Component {
+func DatePicker(args DatePickerProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -134,7 +134,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate unique ID if not provided
-		datePickerID := props.ID
+		datePickerID := args.ID
 		if datePickerID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
@@ -143,23 +143,23 @@ func DatePicker(props DatePickerProps) templ.Component {
 
 		// CloseOnSelect defaults based on mode
 		closeOnSelect := true
-		if props.Mode == "range" {
+		if args.Mode == "range" {
 			closeOnSelect = false // Don't close on first selection in range mode
 		}
 
 		// Determine initial values
 		initialInputValue := ""
-		initialSelectedDate := props.SelectedDate
-		initialRangeStart := props.RangeStart
-		initialRangeEnd := props.RangeEnd
+		initialSelectedDate := args.SelectedDate
+		initialRangeStart := args.RangeStart
+		initialRangeEnd := args.RangeEnd
 
 		// Set initial display month
-		initialDisplayMonth := props.DefaultDate
+		initialDisplayMonth := args.DefaultDate
 		if initialDisplayMonth == "" {
-			if props.SelectedDate != "" {
-				initialDisplayMonth = props.SelectedDate[:7] + "-01" // First day of selected month
-			} else if props.RangeStart != "" {
-				initialDisplayMonth = props.RangeStart[:7] + "-01"
+			if args.SelectedDate != "" {
+				initialDisplayMonth = args.SelectedDate[:7] + "-01" // First day of selected month
+			} else if args.RangeStart != "" {
+				initialDisplayMonth = args.RangeStart[:7] + "-01"
 			} else {
 				// Current month
 				now := time.Now()
@@ -168,7 +168,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 		}
 
 		// Convert internal date to display format for input
-		if props.Mode == "range" {
+		if args.Mode == "range" {
 			if initialRangeStart != "" && initialRangeEnd != "" {
 				startDisplay := strings.ReplaceAll(initialRangeStart, "-", "/")
 				endDisplay := strings.ReplaceAll(initialRangeEnd, "-", "/")
@@ -187,9 +187,9 @@ func DatePicker(props DatePickerProps) templ.Component {
 		}
 
 		// Set appropriate placeholder based on mode
-		placeholder := props.Placeholder
+		placeholder := args.Placeholder
 		if placeholder == "" {
-			if props.Mode == "range" {
+			if args.Mode == "range" {
 				placeholder = "MM/DD/YYYY - MM/DD/YYYY"
 			} else {
 				placeholder = "MM/DD/YYYY"
@@ -215,7 +215,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 
 			// Calendar-specific signals
 			CurrentDate: initialDisplayMonth,
-			Mode:        props.Mode,
+			Mode:        args.Mode,
 			Today:       todayStr,
 
 			// DateInput-specific signals
@@ -224,14 +224,14 @@ func DatePicker(props DatePickerProps) templ.Component {
 			StartDateValue:  initialRangeStart,
 			EndInputValue:   "",
 			EndDateValue:    initialRangeEnd,
-			EndDateEnabled:  props.Mode == "range",
+			EndDateEnabled:  args.Mode == "range",
 		})
 
 		// Container classes
-		containerClasses := "relative " + props.Class
+		containerClasses := "relative " + args.Class
 
 		// Use expression builders for clean event handling
-		popoverHandler := newDatePickerPopoverHandler(datePickerID, datePickerID, props.Mode, signals)
+		popoverHandler := newDatePickerPopoverHandler(datePickerID, datePickerID, args.Mode, signals)
 		clickOutsideHandler := popoverHandler.buildClickOutsideHandler()
 		calendarIconClickHandler := popoverHandler.buildOpenTriggerHandler()
 
@@ -298,7 +298,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -306,14 +306,14 @@ func DatePicker(props DatePickerProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.Name != "" {
-			if props.Mode == "range" {
+		if args.Name != "" {
+			if args.Mode == "range" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<!-- Range mode: separate inputs for start and end --> <input type=\"hidden\" name=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name + "_start")
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(args.Name + "_start")
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 212, Col: 33}
 				}
@@ -338,7 +338,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required {
+				if args.Required {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " required")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -349,7 +349,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name + "_end")
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(args.Name + "_end")
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 220, Col: 31}
 				}
@@ -380,7 +380,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name)
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(args.Name)
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/datepicker/datepicker.templ`, Line: 227, Col: 22}
 				}
@@ -405,7 +405,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required {
+				if args.Required {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " required")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -421,7 +421,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.Mode == "range" {
+		if args.Mode == "range" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<!-- Range mode: use DateInput with calendar icon outside --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -447,7 +447,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
+			if args.OpenOnFocus || !args.DisablePopoverOpenOnFocus {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, " data-on-focus__capture=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -479,9 +479,9 @@ func DatePicker(props DatePickerProps) templ.Component {
 				StartName:  "",           // Handled by DatePicker's hidden inputs
 				EndName:    "",           // Handled by DatePicker's hidden inputs
 				CalendarID: datePickerID, // Coordinate with calendar using same namespace
-				Disabled:   props.Disabled,
-				Required:   props.Required,
-				Class:      props.InputClass,
+				Disabled:   args.Disabled,
+				Required:   args.Required,
+				Class:      args.InputClass,
 				Attributes: map[string]any{
 					"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 				},
@@ -517,7 +517,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.OpenOnFocus || !props.DisablePopoverOpenOnFocus {
+			if args.OpenOnFocus || !args.DisablePopoverOpenOnFocus {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, " data-on-focus__capture=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -546,9 +546,9 @@ func DatePicker(props DatePickerProps) templ.Component {
 				Placeholder: placeholder,
 				Value:       initialInputValue,
 				CalendarID:  datePickerID, // Coordinate with calendar using same namespace
-				Disabled:    props.Disabled,
-				Required:    props.Required,
-				Class:       props.InputClass,
+				Disabled:    args.Disabled,
+				Required:    args.Required,
+				Class:       args.InputClass,
 				Attributes: map[string]any{
 					"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 				},
@@ -581,20 +581,20 @@ func DatePicker(props DatePickerProps) templ.Component {
 		templ_7745c5c3_Err = DatePickerPopover(DatePickerPopoverProps{
 			ID:                  datePickerID,
 			DateInputID:         dateInputID,
-			Mode:                props.Mode,
-			NumberOfMonths:      props.NumberOfMonths,
-			MinDate:             props.MinDate,
-			MaxDate:             props.MaxDate,
-			DisabledDates:       props.DisabledDates,
-			HideOutsideDays:     props.HideOutsideDays,
+			Mode:                args.Mode,
+			NumberOfMonths:      args.NumberOfMonths,
+			MinDate:             args.MinDate,
+			MaxDate:             args.MaxDate,
+			DisabledDates:       args.DisabledDates,
+			HideOutsideDays:     args.HideOutsideDays,
 			CloseOnSelect:       closeOnSelect,
-			Class:               props.CalendarClass,
-			Position:            props.PopoverPosition,
+			Class:               args.CalendarClass,
+			Position:            args.PopoverPosition,
 			InitialSelectedDate: initialSelectedDate,
 			InitialDisplayMonth: initialDisplayMonth,
 			InitialRangeStart:   initialRangeStart,
 			InitialRangeEnd:     initialRangeEnd,
-			DatePickerInputsID:  props.DatePickerInputsID,
+			DatePickerInputsID:  args.DatePickerInputsID,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -608,7 +608,7 @@ func DatePicker(props DatePickerProps) templ.Component {
 }
 
 // DatePickerPopover renders the calendar popover with keyboard navigation
-func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
+func DatePickerPopover(args DatePickerPopoverProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -632,18 +632,18 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 
 		// IMPORTANT: We need to use the same signal namespace as the parent DatePicker
 		// Don't create new signals here - reference the existing ones
-		signals := utils.Signals(props.ID, DatePickerSignals{})
+		signals := utils.Signals(args.ID, DatePickerSignals{})
 
 		// Popover show/hide - explicitly handle undefined to prevent flash
 		showExpr := signals.Signal("open") + " === true"
 
 		// DatePicker open check (following select.templ pattern)
-		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + props.ID + "\"]') && " + signals.Signal("open")
+		datePickerOpenCheck := "document.querySelector('[data-datepicker-id=\"" + args.ID + "\"]') && " + signals.Signal("open")
 
 		// Determine the correct input ID for focus
-		inputID := props.DateInputID
-		if props.Mode == "range" {
-			inputID = props.DateInputID + "_start" // Focus on start input in range mode
+		inputID := args.DateInputID
+		if args.Mode == "range" {
+			inputID = args.DateInputID + "_start" // Focus on start input in range mode
 		}
 
 		// Escape: close and return focus to input
@@ -657,7 +657,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		keyHandler := escapeHandler + "; " + tabHandler
 
 		// Convert number of months
-		numMonths := props.NumberOfMonths
+		numMonths := args.NumberOfMonths
 		if numMonths <= 0 {
 			numMonths = 1
 		}
@@ -666,9 +666,9 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		dateSelectHandler := ""
 
 		// Build the handler conditionally
-		if props.Mode == "range" {
+		if args.Mode == "range" {
 			// Range mode handler - sync with DateInput signals
-			dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
+			dateInputSignals := utils.Signals(args.DateInputID, dateinput.DateInputSignals{})
 
 			dateSelectHandler = "(evt.detail.rangeStart && evt.detail.rangeEnd) ? (" +
 				"(startDisplay => endDisplay => (" +
@@ -691,12 +691,12 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 				") : null"
 
 			// Add close logic if needed for range mode
-			if props.CloseOnSelect {
+			if args.CloseOnSelect {
 				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
 			}
 		} else {
 			// Single date mode handler - update both DateInput and DatePicker signals
-			dateInputSignals := utils.Signals(props.DateInputID, dateinput.DateInputSignals{})
+			dateInputSignals := utils.Signals(args.DateInputID, dateinput.DateInputSignals{})
 			dateSelectHandler = "evt.detail.selectedDate ? (" +
 				"(displayDate => (" +
 				dateInputSignals.Set("inputValue", "displayDate") + ", " +
@@ -706,7 +706,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 				") : null"
 
 			// Add close logic if needed for single mode
-			if props.CloseOnSelect {
+			if args.CloseOnSelect {
 				dateSelectHandler = "(" + dateSelectHandler + ", " + signals.Set("open", "false") + ")"
 			}
 		}
@@ -716,7 +716,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 
 		// Position classes
 		positionClasses := "absolute left-0 z-50 p-0"
-		if props.Position == "top" {
+		if args.Position == "top" {
 			positionClasses += " bottom-full mb-1"
 		} else {
 			positionClasses += " top-full mt-1"
@@ -769,7 +769,7 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var24 = []any{"rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + props.Class}
+		var templ_7745c5c3_Var24 = []any{"rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + args.Class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var24...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -792,18 +792,18 @@ func DatePickerPopover(props DatePickerPopoverProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
-			ID:                 props.ID,
-			Mode:               props.Mode,
-			SelectedDate:       props.InitialSelectedDate,
-			DefaultDate:        props.InitialDisplayMonth,
-			RangeStart:         props.InitialRangeStart,
-			RangeEnd:           props.InitialRangeEnd,
+			ID:                 args.ID,
+			Mode:               args.Mode,
+			SelectedDate:       args.InitialSelectedDate,
+			DefaultDate:        args.InitialDisplayMonth,
+			RangeStart:         args.InitialRangeStart,
+			RangeEnd:           args.InitialRangeEnd,
 			NumberOfMonths:     numMonths,
-			Disabled:           props.DisabledDates,
-			HideOutsideDays:    props.HideOutsideDays,
-			DatePickerInputsID: props.DatePickerInputsID, // Pass DatePickerInputsID for signal coordination
-			MinDate:            props.MinDate,
-			MaxDate:            props.MaxDate,
+			Disabled:           args.DisabledDates,
+			HideOutsideDays:    args.HideOutsideDays,
+			DatePickerInputsID: args.DatePickerInputsID, // Pass DatePickerInputsID for signal coordination
+			MinDate:            args.MinDate,
+			MaxDate:            args.MaxDate,
 			Attributes: map[string]any{
 				"data-on-date-select":  dateSelectHandler,
 				"data-on-month-change": monthChangeHandler,

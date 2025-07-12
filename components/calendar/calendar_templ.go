@@ -101,7 +101,7 @@ type CalendarSignals struct {
 }
 
 // Calendar renders a simple, elegant calendar
-func Calendar(props CalendarProps) templ.Component {
+func Calendar(args CalendarProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -124,7 +124,7 @@ func Calendar(props CalendarProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate unique ID
-		calendarID := props.ID
+		calendarID := args.ID
 		if calendarID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
@@ -132,12 +132,12 @@ func Calendar(props CalendarProps) templ.Component {
 		}
 
 		// Set defaults
-		mode := props.Mode
+		mode := args.Mode
 		if mode == "" {
 			mode = "single"
 		}
 
-		numberOfMonths := props.NumberOfMonths
+		numberOfMonths := args.NumberOfMonths
 		if numberOfMonths <= 0 {
 			numberOfMonths = 1
 		}
@@ -145,9 +145,9 @@ func Calendar(props CalendarProps) templ.Component {
 		// Determine the initial month to display
 		var currentDateStr string
 		now := time.Now()
-		if props.DefaultDate != "" {
+		if args.DefaultDate != "" {
 			// Use the provided DefaultDate, normalized to first day of month
-			if t, err := time.Parse("2006-01-02", props.DefaultDate); err == nil {
+			if t, err := time.Parse("2006-01-02", args.DefaultDate); err == nil {
 				currentDateStr = fmt.Sprintf("%04d-%02d-01", t.Year(), int(t.Month()))
 			} else {
 				// Fallback to current month if DefaultDate is invalid
@@ -166,12 +166,12 @@ func Calendar(props CalendarProps) templ.Component {
 			CurrentDate:  currentDateStr,
 			Mode:         mode,
 			Today:        todayStr,
-			SelectedDate: props.SelectedDate,
-			RangeStart:   props.RangeStart,
-			RangeEnd:     props.RangeEnd,
+			SelectedDate: args.SelectedDate,
+			RangeStart:   args.RangeStart,
+			RangeEnd:     args.RangeEnd,
 		})
 
-		classes := calendarVariants(props.Class)
+		classes := calendarVariants(args.Class)
 		var templ_7745c5c3_Var2 = []any{"p-3 " + classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
@@ -194,7 +194,7 @@ func Calendar(props CalendarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.DatePickerInputsID == "" {
+		if args.DatePickerInputsID == "" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " data-signals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -213,7 +213,7 @@ func Calendar(props CalendarProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -237,11 +237,11 @@ func Calendar(props CalendarProps) templ.Component {
 			templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
 				ID:                 calendarID,
 				MonthOffset:        0,
-				HideOutsideDays:    props.HideOutsideDays,
+				HideOutsideDays:    args.HideOutsideDays,
 				NumberOfMonths:     numberOfMonths,
 				CurrentDateStr:     currentDateStr,
 				Mode:               mode,
-				DatePickerInputsID: props.DatePickerInputsID,
+				DatePickerInputsID: args.DatePickerInputsID,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -272,11 +272,11 @@ func Calendar(props CalendarProps) templ.Component {
 				templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
 					ID:                 calendarID,
 					MonthOffset:        monthIndex,
-					HideOutsideDays:    props.HideOutsideDays,
+					HideOutsideDays:    args.HideOutsideDays,
 					NumberOfMonths:     numberOfMonths,
 					CurrentDateStr:     currentDateStr,
 					Mode:               mode,
-					DatePickerInputsID: props.DatePickerInputsID,
+					DatePickerInputsID: args.DatePickerInputsID,
 				}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -300,7 +300,7 @@ func Calendar(props CalendarProps) templ.Component {
 }
 
 // CalendarHeader renders the month navigation
-func CalendarHeader(props CalendarHeaderProps) templ.Component {
+func CalendarHeader(args CalendarHeaderProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -323,7 +323,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Use the same signal namespace as the parent calendar - don't create new signals
-		signals := utils.Signals(props.ID, CalendarSignals{})
+		signals := utils.Signals(args.ID, CalendarSignals{})
 
 		// Signal references
 		currentDateRef := signals.Signal("currentDate")
@@ -333,7 +333,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 		nextMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() + 1, 1)).toISOString().slice(0, 10)")
 
 		// Month display expressions for multiple months
-		numberOfMonths := props.NumberOfMonths
+		numberOfMonths := args.NumberOfMonths
 		if numberOfMonths <= 0 {
 			numberOfMonths = 1
 		}
@@ -444,7 +444,7 @@ func CalendarHeader(props CalendarHeaderProps) templ.Component {
 }
 
 // CalendarGrid renders the calendar days
-func CalendarGrid(props CalendarGridProps) templ.Component {
+func CalendarGrid(args CalendarGridProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -475,13 +475,13 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 		}
 		for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
 			templ_7745c5c3_Err = CalendarDay(CalendarDayProps{
-				ID:                 props.ID,
+				ID:                 args.ID,
 				DayIndex:           dayIndex,
-				MonthOffset:        props.MonthOffset,
-				HideOutsideDays:    props.HideOutsideDays,
-				CurrentDateStr:     props.CurrentDateStr,
-				Mode:               props.Mode,
-				DatePickerInputsID: props.DatePickerInputsID,
+				MonthOffset:        args.MonthOffset,
+				HideOutsideDays:    args.HideOutsideDays,
+				CurrentDateStr:     args.CurrentDateStr,
+				Mode:               args.Mode,
+				DatePickerInputsID: args.DatePickerInputsID,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -496,7 +496,7 @@ func CalendarGrid(props CalendarGridProps) templ.Component {
 }
 
 // CalendarDay renders individual day button with pre-calculated data
-func CalendarDay(props CalendarDayProps) templ.Component {
+func CalendarDay(args CalendarDayProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -519,22 +519,22 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Share the same signal namespace as the parent calendar - don't create new signals
-		signals := utils.Signals(props.ID, CalendarSignals{})
+		signals := utils.Signals(args.ID, CalendarSignals{})
 
 		// Pre-calculate day data using the static current date for now
 		// The real fix is that we need to make the grid responsive to currentDate signal changes
 		// For now, let's calculate the day correctly based on the fallback
-		currentDateForCalc := props.CurrentDateStr
+		currentDateForCalc := args.CurrentDateStr
 		if currentDateForCalc == "" {
 			// Fallback
 			now := time.Now()
 			currentDateForCalc = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
 		}
 
-		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
+		dayData := calculateDayData(args.DayIndex, args.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
 		// Create calendar day handler using expression builder
-		dayHandler := newCalendarDayHandler(props.ID, signals, props.MonthOffset, props.Mode, dayData.DayNumber)
+		dayHandler := newCalendarDayHandler(args.ID, signals, args.MonthOffset, args.Mode, dayData.DayNumber)
 
 		var clickHandler string
 		// Only allow clicks on days in the current month
@@ -548,8 +548,8 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 			clickHandler = dayHandler.buildClickHandler()
 
 			// Add DateInput signal coordination if needed
-			if props.DatePickerInputsID != "" {
-				dateInputSync := dayHandler.buildDateInputSync(props.DatePickerInputsID)
+			if args.DatePickerInputsID != "" {
+				dateInputSync := dayHandler.buildDateInputSync(args.DatePickerInputsID)
 				clickHandler += "; " + dateInputSync
 			}
 		}
@@ -572,7 +572,7 @@ func CalendarDay(props CalendarDayProps) templ.Component {
 		var selectionClasses string
 		if dayData.IsCurrentMonth {
 			// Create calendar selection class helper
-			selectionClassHelper := newCalendarSelectionClasses(props.ID, signals, props.MonthOffset, dayData.DayNumber, props.Mode)
+			selectionClassHelper := newCalendarSelectionClasses(args.ID, signals, args.MonthOffset, dayData.DayNumber, args.Mode)
 			selectionClasses = selectionClassHelper.build()
 		} else {
 			// For outside days, no selection styling

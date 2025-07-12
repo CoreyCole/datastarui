@@ -68,7 +68,7 @@ datastarui/
 ├── components/                   # Reusable UI components
 │   ├── button/
 │   │   ├── button.templ          # Component template (and signal type)
-│   │   ├── props.go              # Component parameter props
+│   │   ├── args.go              # Component parameter args
 |   │   ├── expressions.go        # Datastar expression builders
 │   │   └── variants.go           # CSS variants
 ├── utils/                        # Utility libraries
@@ -91,7 +91,7 @@ Each component follows a consistent 3-file pattern:
 
 1. **Template** (`component.templ`) - templ markup with Datastar attributes
    - **IMPORTANT:** Always put the signal struct in the top of this file
-1. **Types** (`types.go`) - Go structs defining component props
+1. **Types** (`types.go`) - Go structs defining component args
 1. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
 
 ## Datastar Development Guidelines
@@ -107,7 +107,7 @@ See `/docs/guide.md` for comprehensive patterns and examples.
 1. **Signal Management** (`utils/signals.go`)
 
 ```go
-signals := utils.Signals(props.ID, MySignals{
+signals := utils.Signals(args.ID, MySignals{
     Open: false,
     Value: "default",
 })
@@ -131,14 +131,14 @@ dataClass := utils.HighlightedItem("select.highlighted", index)
 
 ### Signal Naming Convention
 
-- Use lowercase with underscores in `props.ID` (e.g., `user_profile`, `item_list`)
+- Use lowercase with underscores in `args.ID` (e.g., `user_profile`, `item_list`)
 - **Never** use uppercase, dashes, or periods in signal names
-- Components should validate `props.ID` format and throw errors for invalid names
+- Components should validate `args.ID` format and throw errors for invalid names
 
 ### Signal Architecture
 
 - Signals are **globally scoped** on the page
-- Use `props.ID` as namespace: `$user_profile.name`, `$item_list.selected`
+- Use `args.ID` as namespace: `$user_profile.name`, `$item_list.selected`
 - Only leaf nodes are valid signals (not intermediate namespaces)
 - Initialize signals using `utils.Signals()` helper
 
@@ -299,7 +299,7 @@ keyHandler := utils.NewMultipleAssignments().
 
 ### Key Patterns
 
-- **Props down, events up** - encapsulate state, communicate via defined interfaces
+- **Args down, events up** - encapsulate state, communicate via defined interfaces
 - **Server-driven state** - backend is single source of truth
 - **Hypermedia approach** - let server determine available actions
 - **No string concatenation** - use expression builders for maintainability

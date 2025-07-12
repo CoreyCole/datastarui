@@ -6,7 +6,7 @@ type ThemeToggleSignals struct {
 	Theme string `json:"theme"`
 }
 
-templ ThemeToggle(props ThemeToggleProps) {
+templ ThemeToggle(args ThemeToggleProps) {
 	{{
 		// Use the global theme signal instead of creating a local one
 		// The global theme is initialized at the body level as $theme
@@ -14,9 +14,9 @@ templ ThemeToggle(props ThemeToggleProps) {
 	}}
 	<div>
 		<button
-			class={ "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0", props.Class }
+			class={ "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0", args.Class }
 			data-on-click={ toggleExpr }
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
 			<!-- Sun icon (visible in dark mode) -->
 			<svg

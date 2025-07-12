@@ -27,10 +27,10 @@ type DateInputSignals struct {
 
 // DateInput renders a smart date input with auto-formatting and validation
 // Supports both single mode and range mode with optional end dates
-templ DateInput(props DateInputProps) {
+templ DateInput(args DateInputProps) {
 	{{
 		// Generate unique ID if not provided
-		dateInputID := props.ID
+		dateInputID := args.ID
 		if dateInputID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
@@ -38,7 +38,7 @@ templ DateInput(props DateInputProps) {
 		}
 
 		// Determine mode (default to single)
-		mode := props.Mode
+		mode := args.Mode
 		if mode == "" {
 			mode = "single"
 		}
@@ -49,12 +49,12 @@ templ DateInput(props DateInputProps) {
 		// Initialize based on mode
 		if mode == "single" {
 			// Single mode initialization (existing logic)
-			placeholder := props.Placeholder
+			placeholder := args.Placeholder
 			if placeholder == "" {
 				placeholder = "MM/DD/YYYY"
 			}
 
-			initialInputValue := props.Value
+			initialInputValue := args.Value
 			initialDateValue := ""
 
 			// Convert input value to ISO format if provided
@@ -82,11 +82,11 @@ templ DateInput(props DateInputProps) {
 			})
 		} else {
 			// Range mode initialization
-			initialStartInput := props.StartValue
-			initialEndInput := props.EndValue
+			initialStartInput := args.StartValue
+			initialEndInput := args.EndValue
 			initialStartDate := ""
 			initialEndDate := ""
-			initialEndEnabled := !props.EndDateOptional // If not optional, end date is enabled by default
+			initialEndEnabled := !args.EndDateOptional // If not optional, end date is enabled by default
 
 			// If end date has a value, it should be enabled regardless of optional setting
 			if initialEndInput != "" {
@@ -140,13 +140,13 @@ templ DateInput(props DateInputProps) {
 		// Input classes will be handled by the Input component
 
 		// Create DateInput handler using expression builder
-		dateInputHandler := newDateInputHandler(dateInputID, signals, props.CalendarID)
+		dateInputHandler := newDateInputHandler(dateInputID, signals, args.CalendarID)
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
 
 		// Set placeholder for single mode
-		placeholder := props.Placeholder
+		placeholder := args.Placeholder
 		if mode == "single" && placeholder == "" {
 			placeholder = "MM/DD/YYYY"
 		}
@@ -156,19 +156,19 @@ templ DateInput(props DateInputProps) {
 		<div
 			data-slot="dateinput"
 			data-dateinput-id={ dateInputID }
-			if props.CalendarID == "" {
+			if args.CalendarID == "" {
 				data-signals={ signals.DataSignals }
 			}
 			class="relative w-full"
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
 			<!-- Hidden input for form submission (ISO format) -->
-			if props.Name != "" {
+			if args.Name != "" {
 				<input
 					type="hidden"
-					name={ props.Name }
+					name={ args.Name }
 					data-bind={ signals.Signal("dateValue") }
-					if props.Required {
+					if args.Required {
 						required
 					}
 				/>
@@ -178,10 +178,10 @@ templ DateInput(props DateInputProps) {
 				@input.Input(input.InputProps{
 					Type:        "text",
 					ID:          dateInputID,
-					Name:        props.Name + "_display",
+					Name:        args.Name + "_display",
 					Placeholder: placeholder,
-					Class:       props.Class,
-					Disabled:    props.Disabled,
+					Class:       args.Class,
+					Disabled:    args.Disabled,
 					Attributes: templ.Attributes{
 						"maxlength":                     "12",
 						"data-bind":                     signals.Signal("inputValue"),
@@ -190,9 +190,9 @@ templ DateInput(props DateInputProps) {
 						"data-on-keydown":               keyHandler,
 					},
 				})
-				if props.Postfix != nil {
+				if args.Postfix != nil {
 					<div class="absolute right-3 top-1/2 -translate-y-1/2">
-						@props.Postfix
+						@args.Postfix
 					</div>
 				}
 			</div>
@@ -201,37 +201,37 @@ templ DateInput(props DateInputProps) {
 		<!-- Range Mode DateInput -->
 		{{
 			// Determine layout
-			orientation := props.Orientation
+			orientation := args.Orientation
 			if orientation == "" {
 				orientation = "horizontal"
 			}
 
 			// Determine separator
-			separator := props.Separator
+			separator := args.Separator
 			if separator == "" {
 				separator = "to"
 			}
 
 			// Determine placeholders
-			startPlaceholder := props.StartPlaceholder
+			startPlaceholder := args.StartPlaceholder
 			if startPlaceholder == "" {
 				startPlaceholder = "MM/DD/YYYY"
 			}
 
-			endPlaceholder := props.EndPlaceholder
+			endPlaceholder := args.EndPlaceholder
 			if endPlaceholder == "" {
 				endPlaceholder = "MM/DD/YYYY"
 			}
 
 			// Form field names
-			startFieldName := props.StartName
+			startFieldName := args.StartName
 			if startFieldName == "" {
-				startFieldName = props.Name + "_start"
+				startFieldName = args.Name + "_start"
 			}
 
-			endFieldName := props.EndName
+			endFieldName := args.EndName
 			if endFieldName == "" {
-				endFieldName = props.Name + "_end"
+				endFieldName = args.Name + "_end"
 			}
 
 			// Use expression builders for tab and checkbox handlers
@@ -249,19 +249,19 @@ templ DateInput(props DateInputProps) {
 		<div
 			data-slot="dateinput-range"
 			data-dateinput-id={ dateInputID }
-			if props.CalendarID == "" {
+			if args.CalendarID == "" {
 				data-signals={ signals.DataSignals }
 			}
 			class={ "w-full " + containerClass }
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
 			<!-- Hidden inputs for form submission -->
-			if props.Name != "" || props.StartName != "" {
+			if args.Name != "" || args.StartName != "" {
 				<input
 					type="hidden"
 					name={ startFieldName }
 					data-bind={ signals.Signal("startDateValue") }
-					if props.Required {
+					if args.Required {
 						required
 					}
 				/>
@@ -270,11 +270,11 @@ templ DateInput(props DateInputProps) {
 					type="hidden"
 					name={ endFieldName }
 					data-bind={ signals.Signal("endDateEnabled") + " ? " + signals.Signal("endDateValue") + " : ''" }
-					data-required={ signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", props.Required) }
+					data-required={ signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", args.Required) }
 				/>
 			}
 			<!-- Optional end date checkbox -->
-			if props.EndDateOptional {
+			if args.EndDateOptional {
 				<div class="flex items-center space-x-2">
 					<!-- Using button with checkbox role to avoid signal conflicts -->
 					<button
@@ -313,10 +313,10 @@ templ DateInput(props DateInputProps) {
 			<div class={ inputContainerClass }>
 				<!-- Start date input -->
 				<div class="flex-1 space-y-1">
-					if orientation == "vertical" || props.EndDateOptional {
+					if orientation == "vertical" || args.EndDateOptional {
 						<label class="text-sm font-medium text-foreground">
 							Start Date
-							if props.Required {
+							if args.Required {
 								<span class="text-destructive">*</span>
 							}
 						</label>
@@ -325,8 +325,8 @@ templ DateInput(props DateInputProps) {
 						Type:        "text",
 						ID:          dateInputID + "_start",
 						Placeholder: startPlaceholder,
-						Class:       props.Class,
-						Disabled:    props.Disabled,
+						Class:       args.Class,
+						Disabled:    args.Disabled,
 						Attributes: templ.Attributes{
 							"maxlength":                     "12",
 							"data-bind":                     signals.Signal("startInputValue"),
@@ -338,7 +338,7 @@ templ DateInput(props DateInputProps) {
 				</div>
 				<!-- End date input with dynamic disable state -->
 				<div class="flex-1 space-y-1">
-					if orientation == "vertical" || props.EndDateOptional {
+					if orientation == "vertical" || args.EndDateOptional {
 						<label
 							for={ dateInputID + "_end" }
 							class="text-sm font-medium"
@@ -348,7 +348,7 @@ templ DateInput(props DateInputProps) {
 								Build() }
 						>
 							End Date
-							if props.Required && !props.EndDateOptional {
+							if args.Required && !args.EndDateOptional {
 								<span class="text-destructive">*</span>
 							}
 						</label>
@@ -358,8 +358,8 @@ templ DateInput(props DateInputProps) {
 						Type:        "text",
 						ID:          dateInputID + "_end",
 						Placeholder: endPlaceholder,
-						Class:       props.Class,
-						Disabled:    props.Disabled,
+						Class:       args.Class,
+						Disabled:    args.Disabled,
 						Attributes: templ.Attributes{
 							"maxlength":                     "12",
 							"data-bind":                     signals.Signal("endInputValue"),

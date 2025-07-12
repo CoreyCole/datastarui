@@ -12,10 +12,10 @@ type TabsSignals struct {
 }
 
 // Tabs is the root container component that manages tab state
-templ Tabs(props TabsProps) {
+templ Tabs(args TabsProps) {
 	{{
 		// Generate unique ID if not provided
-		tabsID := props.ID
+		tabsID := args.ID
 		if tabsID == "" {
 			// Generate a random ID
 			b := make([]byte, 4)
@@ -24,16 +24,16 @@ templ Tabs(props TabsProps) {
 		}
 
 		// Generate CSS classes
-		classes := tabsVariants(props.Class)
+		classes := tabsVariants(args.Class)
 
 		// Set up the default active tab
-		defaultValue := props.DefaultValue
+		defaultValue := args.DefaultValue
 		if defaultValue == "" {
 			defaultValue = "tab1" // fallback default
 		}
 
 		// Use controlled value if provided, otherwise use default
-		activeTab := props.Value
+		activeTab := args.Value
 		if activeTab == "" {
 			activeTab = defaultValue
 		}
@@ -47,45 +47,45 @@ templ Tabs(props TabsProps) {
 		data-slot="tabs"
 		data-signals={ signals.DataSignals }
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // TabsList contains the tab triggers
-templ TabsList(props TabsListProps) {
+templ TabsList(args TabsListProps) {
 	{{
 		// Generate CSS classes
-		classes := tabsListVariants(props.Class)
+		classes := tabsListVariants(args.Class)
 	}}
 	<div
 		class={ classes }
 		role="tablist"
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // TabsTrigger is a clickable tab button
-templ TabsTrigger(props TabsTriggerProps) {
+templ TabsTrigger(args TabsTriggerProps) {
 	{{
 		// Create signals manager for this tabs component
-		signals := utils.Signals(props.ID, TabsSignals{})
+		signals := utils.Signals(args.ID, TabsSignals{})
 
 		// Use the correct variant function that matches shadcn/ui exactly
-		baseClasses := tabsTriggerVariantsBase(props.Class)
+		baseClasses := tabsTriggerVariantsBase(args.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(args.ID, signals)
 
 		// Use expression builders for clean, maintainable code
-		clickExpr := tabsHandler.BuildTriggerClickHandler(props.Value)
-		activeClassesObj := tabsHandler.BuildTriggerDataClass(props.Value)
-		stateAttr := tabsHandler.BuildTriggerStateAttr(props.Value)
-		ariaSelected := tabsHandler.BuildTriggerAriaSelected(props.Value)
-		tabIndex := tabsHandler.BuildTriggerTabIndex(props.Value)
+		clickExpr := tabsHandler.BuildTriggerClickHandler(args.Value)
+		activeClassesObj := tabsHandler.BuildTriggerDataClass(args.Value)
+		stateAttr := tabsHandler.BuildTriggerStateAttr(args.Value)
+		ariaSelected := tabsHandler.BuildTriggerAriaSelected(args.Value)
+		tabIndex := tabsHandler.BuildTriggerTabIndex(args.Value)
 	}}
 	<button
 		type="button"
@@ -93,43 +93,43 @@ templ TabsTrigger(props TabsTriggerProps) {
 		class={ baseClasses }
 		data-class={ activeClassesObj }
 		role="tab"
-		data-value={ props.Value }
+		data-value={ args.Value }
 		data-on-click={ clickExpr }
 		data-attr-data-state={ stateAttr }
 		data-attr-aria-selected={ ariaSelected }
 		data-attr-tabindex={ tabIndex }
-		disabled?={ props.Disabled }
-		{ props.Attributes... }
+		disabled?={ args.Disabled }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</button>
 }
 
 // TabsContent displays the content for the active tab
-templ TabsContent(props TabsContentProps) {
+templ TabsContent(args TabsContentProps) {
 	{{
 		// Create signals manager for this tabs component
-		signals := utils.Signals(props.ID, TabsSignals{})
+		signals := utils.Signals(args.ID, TabsSignals{})
 
 		// Generate CSS classes
-		classes := tabsContentVariants(props.Class)
+		classes := tabsContentVariants(args.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(args.ID, signals)
 
 		// Use expression builders for clean, maintainable code
-		showExpr := tabsHandler.BuildContentShowExpression(props.Value)
-		ariaHidden := tabsHandler.BuildContentAriaHidden(props.Value)
+		showExpr := tabsHandler.BuildContentShowExpression(args.Value)
+		ariaHidden := tabsHandler.BuildContentAriaHidden(args.Value)
 	}}
 	<div
 		data-slot="tabs-content"
 		class={ classes }
 		role="tabpanel"
-		data-value={ props.Value }
+		data-value={ args.Value }
 		data-show={ showExpr }
 		data-attr-aria-hidden={ ariaHidden }
 		tabindex="0"
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>

@@ -8,7 +8,7 @@ package button
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Button(props ButtonProps) templ.Component {
+func Button(args ButtonProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -31,14 +31,14 @@ func Button(props ButtonProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Set default values
-		buttonType := props.Type
+		buttonType := args.Type
 		if buttonType == "" {
 			buttonType = "button"
 		}
 
 		// Generate the CSS classes using our variant system
-		classes := buttonVariants(props.Variant, props.Size, props.Class)
-		if props.AsChild {
+		classes := buttonVariants(args.Variant, args.Size, args.Class)
+		if args.AsChild {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- When AsChild is true, we render a span that can be styled as a button --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -65,13 +65,13 @@ func Button(props ButtonProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " aria-disabled=\"true\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -127,13 +127,13 @@ func Button(props ButtonProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Disabled {
+			if args.Disabled {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " disabled")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -2199,7 +2199,7 @@ func TabsPage() templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 117, "</div><!-- Technical Explanation --><div class=\"p-4 bg-muted rounded-md\"><h4 class=\"text-sm font-medium mb-2\">How the Variant System Works</h4><div class=\"text-xs text-muted-foreground space-y-1\"><p><strong>1. Base Classes:</strong> Applied via <code>tabsTriggerVariantsBase(props.Class)</code></p><p><strong>2. Conditional Classes:</strong> Applied via <code>data-class</code> when tab is active</p><p><strong>3. Custom Classes:</strong> Merged with base classes using <code>utils.TwMerge()</code></p><p><strong>4. State Management:</strong> Datastar signals control active state reactively</p></div></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 117, "</div><!-- Technical Explanation --><div class=\"p-4 bg-muted rounded-md\"><h4 class=\"text-sm font-medium mb-2\">How the Variant System Works</h4><div class=\"text-xs text-muted-foreground space-y-1\"><p><strong>1. Base Classes:</strong> Applied via <code>tabsTriggerVariantsBase(args.Class)</code></p><p><strong>2. Conditional Classes:</strong> Applied via <code>data-class</code> when tab is active</p><p><strong>3. Custom Classes:</strong> Merged with base classes using <code>utils.TwMerge()</code></p><p><strong>4. State Management:</strong> Datastar signals control active state reactively</p></div></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
