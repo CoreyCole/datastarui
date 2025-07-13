@@ -3,25 +3,25 @@ package popover
 import "github.com/coreycole/datastarui/utils"
 
 // Popover creates a popover container component
-templ Popover(props PopoverProps) {
+templ Popover(args PopoverProps) {
 	<div
-		class={ utils.TwMerge("relative", props.Class) }
+		class={ utils.TwMerge("relative", args.Class) }
 	>
 		{ children... }
 	</div>
 }
 
 // PopoverTrigger creates a trigger button for the popover
-templ PopoverTrigger(props PopoverTriggerProps) {
+templ PopoverTrigger(args PopoverTriggerProps) {
 	{{
 		// Create popover handler for clean expressions
-		popoverHandler := NewPopoverHandler(props.PopoverID)
+		popoverHandler := NewPopoverHandler(args.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
-		anchorStyle := popoverHandler.BuildAnchorStyle(props.AnchorName)
+		anchorStyle := popoverHandler.BuildAnchorStyle(args.AnchorName)
 
 		// Build style attribute
 		style := ""
-		if props.AsChild {
+		if args.AsChild {
 			style = "cursor: pointer;"
 			if anchorStyle != "" {
 				style += " " + anchorStyle
@@ -30,29 +30,29 @@ templ PopoverTrigger(props PopoverTriggerProps) {
 			style = anchorStyle
 		}
 	}}
-	if props.AsChild {
+	if args.AsChild {
 		// When AsChild is true, make the wrapper behave like the child
 		<div
 			data-on-click={ toggleHandler }
 			if style != "" {
 				style={ style }
 			}
-			class={ props.Class }
-			{ props.Attributes... }
+			class={ args.Class }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</div>
 	} else {
 		// Default button trigger
 		<button
-			id={ props.ID }
-			popovertarget={ props.PopoverID }
+			id={ args.ID }
+			popovertarget={ args.PopoverID }
 			popovertargetaction="toggle"
 			if style != "" {
 				style={ style }
 			}
-			class={ props.Class }
-			{ props.Attributes... }
+			class={ args.Class }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</button>
@@ -60,26 +60,26 @@ templ PopoverTrigger(props PopoverTriggerProps) {
 }
 
 // PopoverContent creates the popover content panel
-templ PopoverContent(props PopoverContentProps) {
+templ PopoverContent(args PopoverContentProps) {
 	{{
-		contentClasses := PopoverContentVariants(props)
+		contentClasses := PopoverContentVariants(args)
 
 		// Create popover handler for clean expressions
-		popoverHandler := NewPopoverHandler(props.ID)
+		popoverHandler := NewPopoverHandler(args.ID)
 
 		// Generate positioning styles
 		positioningStyle := ""
 
-		if props.UseAnchor && props.AnchorName != "" {
+		if args.UseAnchor && args.AnchorName != "" {
 			// Simplified positioning API
-			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(props.AnchorName) + "; z-index: 50; "
+			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
 
-			if props.Side != "" || props.Align != "" {
-				sideOffset := props.SideOffset
+			if args.Side != "" || args.Align != "" {
+				sideOffset := args.SideOffset
 				if sideOffset == 0 {
 					sideOffset = 8 // default offset
 				}
-				anchorCSS := GetAnchorPosition(props.Side, props.Align, sideOffset)
+				anchorCSS := GetAnchorPosition(args.Side, args.Align, sideOffset)
 				positioningStyle += anchorCSS + ";"
 			}
 		} else {
@@ -88,16 +88,16 @@ templ PopoverContent(props PopoverContentProps) {
 		}
 
 		// Add anchor-positioned class if using anchor positioning
-		if props.UseAnchor && props.AnchorName != "" {
+		if args.UseAnchor && args.AnchorName != "" {
 			contentClasses += " anchor-positioned"
 		}
 	}}
 	<div
-		id={ props.ID }
+		id={ args.ID }
 		popover="auto"
 		class={ contentClasses }
 		style={ positioningStyle }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>

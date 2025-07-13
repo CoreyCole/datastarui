@@ -20,7 +20,7 @@ type TabsSignals struct {
 }
 
 // Tabs is the root container component that manages tab state
-func Tabs(props TabsProps) templ.Component {
+func Tabs(args TabsProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -43,7 +43,7 @@ func Tabs(props TabsProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate unique ID if not provided
-		tabsID := props.ID
+		tabsID := args.ID
 		if tabsID == "" {
 			// Generate a random ID
 			b := make([]byte, 4)
@@ -52,16 +52,16 @@ func Tabs(props TabsProps) templ.Component {
 		}
 
 		// Generate CSS classes
-		classes := tabsVariants(props.Class)
+		classes := tabsVariants(args.Class)
 
 		// Set up the default active tab
-		defaultValue := props.DefaultValue
+		defaultValue := args.DefaultValue
 		if defaultValue == "" {
 			defaultValue = "tab1" // fallback default
 		}
 
 		// Use controlled value if provided, otherwise use default
-		activeTab := props.Value
+		activeTab := args.Value
 		if activeTab == "" {
 			activeTab = defaultValue
 		}
@@ -105,7 +105,7 @@ func Tabs(props TabsProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -126,7 +126,7 @@ func Tabs(props TabsProps) templ.Component {
 }
 
 // TabsList contains the tab triggers
-func TabsList(props TabsListProps) templ.Component {
+func TabsList(args TabsListProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -149,7 +149,7 @@ func TabsList(props TabsListProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate CSS classes
-		classes := tabsListVariants(props.Class)
+		classes := tabsListVariants(args.Class)
 		var templ_7745c5c3_Var6 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var6...)
 		if templ_7745c5c3_Err != nil {
@@ -172,7 +172,7 @@ func TabsList(props TabsListProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -193,7 +193,7 @@ func TabsList(props TabsListProps) templ.Component {
 }
 
 // TabsTrigger is a clickable tab button
-func TabsTrigger(props TabsTriggerProps) templ.Component {
+func TabsTrigger(args TabsTriggerProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -216,20 +216,20 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for this tabs component
-		signals := utils.Signals(props.ID, TabsSignals{})
+		signals := utils.Signals(args.ID, TabsSignals{})
 
 		// Use the correct variant function that matches shadcn/ui exactly
-		baseClasses := tabsTriggerVariantsBase(props.Class)
+		baseClasses := tabsTriggerVariantsBase(args.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(args.ID, signals)
 
 		// Use expression builders for clean, maintainable code
-		clickExpr := tabsHandler.BuildTriggerClickHandler(props.Value)
-		activeClassesObj := tabsHandler.BuildTriggerDataClass(props.Value)
-		stateAttr := tabsHandler.BuildTriggerStateAttr(props.Value)
-		ariaSelected := tabsHandler.BuildTriggerAriaSelected(props.Value)
-		tabIndex := tabsHandler.BuildTriggerTabIndex(props.Value)
+		clickExpr := tabsHandler.BuildTriggerClickHandler(args.Value)
+		activeClassesObj := tabsHandler.BuildTriggerDataClass(args.Value)
+		stateAttr := tabsHandler.BuildTriggerStateAttr(args.Value)
+		ariaSelected := tabsHandler.BuildTriggerAriaSelected(args.Value)
+		tabIndex := tabsHandler.BuildTriggerTabIndex(args.Value)
 		var templ_7745c5c3_Var9 = []any{baseClasses}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
 		if templ_7745c5c3_Err != nil {
@@ -266,9 +266,9 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(props.Value)
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(args.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 96, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 96, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -330,13 +330,13 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.Disabled {
+		if args.Disabled {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " disabled")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -357,7 +357,7 @@ func TabsTrigger(props TabsTriggerProps) templ.Component {
 }
 
 // TabsContent displays the content for the active tab
-func TabsContent(props TabsContentProps) templ.Component {
+func TabsContent(args TabsContentProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -380,17 +380,17 @@ func TabsContent(props TabsContentProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for this tabs component
-		signals := utils.Signals(props.ID, TabsSignals{})
+		signals := utils.Signals(args.ID, TabsSignals{})
 
 		// Generate CSS classes
-		classes := tabsContentVariants(props.Class)
+		classes := tabsContentVariants(args.Class)
 
 		// Create tabs handler for clean expressions
-		tabsHandler := NewTabsHandler(props.ID, signals)
+		tabsHandler := NewTabsHandler(args.ID, signals)
 
 		// Use expression builders for clean, maintainable code
-		showExpr := tabsHandler.BuildContentShowExpression(props.Value)
-		ariaHidden := tabsHandler.BuildContentAriaHidden(props.Value)
+		showExpr := tabsHandler.BuildContentShowExpression(args.Value)
+		ariaHidden := tabsHandler.BuildContentAriaHidden(args.Value)
 		var templ_7745c5c3_Var18 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var18...)
 		if templ_7745c5c3_Err != nil {
@@ -414,9 +414,9 @@ func TabsContent(props TabsContentProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(props.Value)
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(args.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 128, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/tabs/tabs.templ`, Line: 128, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -452,7 +452,7 @@ func TabsContent(props TabsContentProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

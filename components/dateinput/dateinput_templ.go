@@ -35,7 +35,7 @@ type DateInputSignals struct {
 
 // DateInput renders a smart date input with auto-formatting and validation
 // Supports both single mode and range mode with optional end dates
-func DateInput(props DateInputProps) templ.Component {
+func DateInput(args DateInputProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -58,7 +58,7 @@ func DateInput(props DateInputProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate unique ID if not provided
-		dateInputID := props.ID
+		dateInputID := args.ID
 		if dateInputID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
@@ -66,7 +66,7 @@ func DateInput(props DateInputProps) templ.Component {
 		}
 
 		// Determine mode (default to single)
-		mode := props.Mode
+		mode := args.Mode
 		if mode == "" {
 			mode = "single"
 		}
@@ -77,12 +77,12 @@ func DateInput(props DateInputProps) templ.Component {
 		// Initialize based on mode
 		if mode == "single" {
 			// Single mode initialization (existing logic)
-			placeholder := props.Placeholder
+			placeholder := args.Placeholder
 			if placeholder == "" {
 				placeholder = "MM/DD/YYYY"
 			}
 
-			initialInputValue := props.Value
+			initialInputValue := args.Value
 			initialDateValue := ""
 
 			// Convert input value to ISO format if provided
@@ -110,11 +110,11 @@ func DateInput(props DateInputProps) templ.Component {
 			})
 		} else {
 			// Range mode initialization
-			initialStartInput := props.StartValue
-			initialEndInput := props.EndValue
+			initialStartInput := args.StartValue
+			initialEndInput := args.EndValue
 			initialStartDate := ""
 			initialEndDate := ""
-			initialEndEnabled := !props.EndDateOptional // If not optional, end date is enabled by default
+			initialEndEnabled := !args.EndDateOptional // If not optional, end date is enabled by default
 
 			// If end date has a value, it should be enabled regardless of optional setting
 			if initialEndInput != "" {
@@ -168,13 +168,13 @@ func DateInput(props DateInputProps) templ.Component {
 		// Input classes will be handled by the Input component
 
 		// Create DateInput handler using expression builder
-		dateInputHandler := newDateInputHandler(dateInputID, signals, props.CalendarID)
+		dateInputHandler := newDateInputHandler(dateInputID, signals, args.CalendarID)
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
 
 		// Set placeholder for single mode
-		placeholder := props.Placeholder
+		placeholder := args.Placeholder
 		if mode == "single" && placeholder == "" {
 			placeholder = "MM/DD/YYYY"
 		}
@@ -196,7 +196,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.CalendarID == "" {
+			if args.CalendarID == "" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " data-signals=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -219,7 +219,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -227,15 +227,15 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Name != "" {
+			if args.Name != "" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<input type=\"hidden\" name=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(args.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 169, Col: 22}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 169, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -258,7 +258,7 @@ func DateInput(props DateInputProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required {
+				if args.Required {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " required")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -276,10 +276,10 @@ func DateInput(props DateInputProps) templ.Component {
 			templ_7745c5c3_Err = input.Input(input.InputProps{
 				Type:        "text",
 				ID:          dateInputID,
-				Name:        props.Name + "_display",
+				Name:        args.Name + "_display",
 				Placeholder: placeholder,
-				Class:       props.Class,
-				Disabled:    props.Disabled,
+				Class:       args.Class,
+				Disabled:    args.Disabled,
 				Attributes: templ.Attributes{
 					"maxlength":                     "12",
 					"data-bind":                     signals.Signal("inputValue"),
@@ -291,12 +291,12 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Postfix != nil {
+			if args.Postfix != nil {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"absolute right-3 top-1/2 -translate-y-1/2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = props.Postfix.Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = args.Postfix.Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -316,37 +316,37 @@ func DateInput(props DateInputProps) templ.Component {
 			}
 
 			// Determine layout
-			orientation := props.Orientation
+			orientation := args.Orientation
 			if orientation == "" {
 				orientation = "horizontal"
 			}
 
 			// Determine separator
-			separator := props.Separator
+			separator := args.Separator
 			if separator == "" {
 				separator = "to"
 			}
 
 			// Determine placeholders
-			startPlaceholder := props.StartPlaceholder
+			startPlaceholder := args.StartPlaceholder
 			if startPlaceholder == "" {
 				startPlaceholder = "MM/DD/YYYY"
 			}
 
-			endPlaceholder := props.EndPlaceholder
+			endPlaceholder := args.EndPlaceholder
 			if endPlaceholder == "" {
 				endPlaceholder = "MM/DD/YYYY"
 			}
 
 			// Form field names
-			startFieldName := props.StartName
+			startFieldName := args.StartName
 			if startFieldName == "" {
-				startFieldName = props.Name + "_start"
+				startFieldName = args.Name + "_start"
 			}
 
-			endFieldName := props.EndName
+			endFieldName := args.EndName
 			if endFieldName == "" {
-				endFieldName = props.Name + "_end"
+				endFieldName = args.Name + "_end"
 			}
 
 			// Use expression builders for tab and checkbox handlers
@@ -382,7 +382,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.CalendarID == "" {
+			if args.CalendarID == "" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " data-signals=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -418,7 +418,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -426,7 +426,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Name != "" || props.StartName != "" {
+			if args.Name != "" || args.StartName != "" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<input type=\"hidden\" name=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -457,7 +457,7 @@ func DateInput(props DateInputProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required {
+				if args.Required {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, " required")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -494,9 +494,9 @@ func DateInput(props DateInputProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", props.Required))
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", args.Required))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 273, Col: 98}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dateinput/dateinput.templ`, Line: 273, Col: 97}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -511,7 +511,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.EndDateOptional {
+			if args.EndDateOptional {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div class=\"flex items-center space-x-2\"><!-- Using button with checkbox role to avoid signal conflicts --><button type=\"button\" id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -621,12 +621,12 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if orientation == "vertical" || props.EndDateOptional {
+			if orientation == "vertical" || args.EndDateOptional {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<label class=\"text-sm font-medium text-foreground\">Start Date ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required {
+				if args.Required {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<span class=\"text-destructive\">*</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -641,8 +641,8 @@ func DateInput(props DateInputProps) templ.Component {
 				Type:        "text",
 				ID:          dateInputID + "_start",
 				Placeholder: startPlaceholder,
-				Class:       props.Class,
-				Disabled:    props.Disabled,
+				Class:       args.Class,
+				Disabled:    args.Disabled,
 				Attributes: templ.Attributes{
 					"maxlength":                     "12",
 					"data-bind":                     signals.Signal("startInputValue"),
@@ -658,7 +658,7 @@ func DateInput(props DateInputProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if orientation == "vertical" || props.EndDateOptional {
+			if orientation == "vertical" || args.EndDateOptional {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<label for=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -692,7 +692,7 @@ func DateInput(props DateInputProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if props.Required && !props.EndDateOptional {
+				if args.Required && !args.EndDateOptional {
 					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "<span class=\"text-destructive\">*</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -711,8 +711,8 @@ func DateInput(props DateInputProps) templ.Component {
 				Type:        "text",
 				ID:          dateInputID + "_end",
 				Placeholder: endPlaceholder,
-				Class:       props.Class,
-				Disabled:    props.Disabled,
+				Class:       args.Class,
+				Disabled:    args.Disabled,
 				Attributes: templ.Attributes{
 					"maxlength":                     "12",
 					"data-bind":                     signals.Signal("endInputValue"),

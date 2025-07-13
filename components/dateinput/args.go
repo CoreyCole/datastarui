@@ -3,7 +3,7 @@ package dateinput
 import "github.com/a-h/templ"
 
 type DateInputProps struct {
-	// Basic props
+	// Basic args
 	ID          string           // Required for signal namespacing
 	Name        string           // For form submission (single mode) or base name (range mode)
 	Class       string           // Additional CSS classes
@@ -18,10 +18,10 @@ type DateInputProps struct {
 	// Signal coordination
 	CalendarID string // ID of calendar to send signals to for synchronization
 
-	// Single mode props
+	// Single mode args
 	Value string // Initial value (MM/DD/YYYY format)
 
-	// Range mode props
+	// Range mode args
 	Mode             string // "single" (default) or "range"
 	StartValue       string // Initial start date value (MM/DD/YYYY format)
 	EndValue         string // Initial end date value (MM/DD/YYYY format)

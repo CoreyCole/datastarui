@@ -47,7 +47,7 @@ func SelectPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-8 space-y-12\"><div><h1 class=\"text-3xl font-bold mb-2\">Select Component</h1><p class=\"text-muted-foreground\">Displays a list of options for the user to pick from—triggered by a button.</p></div><!-- Slice-based API Examples --><section class=\"space-y-6\"><h2 class=\"text-2xl font-semibold\">Props examples</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><!-- Simple Options --><div class=\"space-y-2\"><h3 class=\"text-lg font-medium\">Simple Options</h3>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-8 space-y-12\"><div><h1 class=\"text-3xl font-bold mb-2\">Select Component</h1><p class=\"text-muted-foreground\">Displays a list of options for the user to pick from—triggered by a button.</p></div><!-- Slice-based API Examples --><section class=\"space-y-6\"><h2 class=\"text-2xl font-semibold\">Args examples</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><!-- Simple Options --><div class=\"space-y-2\"><h3 class=\"text-lg font-medium\">Simple Options</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

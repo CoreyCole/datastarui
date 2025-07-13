@@ -92,7 +92,7 @@ type DatePickerProps struct {
 
 // DatePickerCalendarProps defines properties for the calendar part of the date picker
 type DatePickerCalendarProps struct {
-	// Embed calendar props for full calendar functionality
+	// Embed calendar args for full calendar functionality
 	calendar.CalendarProps
 }
 

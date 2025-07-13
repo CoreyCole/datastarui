@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "strings"
 
-func Input(props InputProps) templ.Component {
+func Input(args InputProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -33,14 +33,14 @@ func Input(props InputProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate CSS classes
-		classes := inputVariants(props.Class)
+		classes := inputVariants(args.Class)
 
 		// Set up input attributes
 		var inputAttrs templ.Attributes
 		inputAttrs = make(templ.Attributes)
 
 		// Copy user-provided attributes first
-		for k, v := range props.Attributes {
+		for k, v := range args.Attributes {
 			inputAttrs[k] = v
 		}
 
@@ -48,33 +48,33 @@ func Input(props InputProps) templ.Component {
 		inputAttrs["data-slot"] = "input"
 		inputAttrs["class"] = classes
 
-		if props.Type != "" {
-			inputAttrs["type"] = props.Type
+		if args.Type != "" {
+			inputAttrs["type"] = args.Type
 		}
-		if props.Placeholder != "" {
-			inputAttrs["placeholder"] = props.Placeholder
+		if args.Placeholder != "" {
+			inputAttrs["placeholder"] = args.Placeholder
 		}
-		if props.Value != "" {
-			inputAttrs["value"] = props.Value
+		if args.Value != "" {
+			inputAttrs["value"] = args.Value
 		}
-		if props.Name != "" {
-			inputAttrs["name"] = props.Name
+		if args.Name != "" {
+			inputAttrs["name"] = args.Name
 		}
-		if props.ID != "" {
-			inputAttrs["id"] = props.ID
+		if args.ID != "" {
+			inputAttrs["id"] = args.ID
 		}
-		if props.Disabled {
+		if args.Disabled {
 			inputAttrs["disabled"] = true
 		}
-		if props.Required {
+		if args.Required {
 			inputAttrs["required"] = true
 		}
 
 		// Set up data-bind if FormID and Name are provided
-		if props.FormID != "" && props.Name != "" {
+		if args.FormID != "" && args.Name != "" {
 			// Convert form ID to valid signal name (replace hyphens with underscores)
-			signalName := strings.ReplaceAll(props.FormID, "-", "_")
-			dataBindValue := signalName + "." + props.Name
+			signalName := strings.ReplaceAll(args.FormID, "-", "_")
+			dataBindValue := signalName + "." + args.Name
 			inputAttrs["data-bind"] = dataBindValue
 
 			// Don't try to initialize nested signals here - let the form handle it

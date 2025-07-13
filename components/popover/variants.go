@@ -7,11 +7,11 @@ import (
 )
 
 // PopoverContentVariants generates CSS classes for popover content
-func PopoverContentVariants(props PopoverContentProps) string {
+func PopoverContentVariants(args PopoverContentProps) string {
 	// Base classes matching shadcn/ui popover with native popover API
 	base := "w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none"
 
-	return utils.TwMerge(base, props.Class)
+	return utils.TwMerge(base, args.Class)
 }
 
 // GetAnchorPosition generates CSS anchor positioning based on side and align

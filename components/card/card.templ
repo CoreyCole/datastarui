@@ -1,105 +1,105 @@
 package card
 
 // Card is the main card container component
-templ Card(props CardProps) {
+templ Card(args CardProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardVariants(props.Class)
+		classes := cardVariants(args.Class)
 	}}
 	<div
 		data-slot="card"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardHeader contains the card title, description, and optional action
-templ CardHeader(props CardHeaderProps) {
+templ CardHeader(args CardHeaderProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardHeaderVariants(props.Class)
+		classes := cardHeaderVariants(args.Class)
 	}}
 	<div
 		data-slot="card-header"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardTitle displays the main title of the card
-templ CardTitle(props CardTitleProps) {
+templ CardTitle(args CardTitleProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardTitleVariants(props.Class)
+		classes := cardTitleVariants(args.Class)
 	}}
 	<div
 		data-slot="card-title"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardDescription displays the description text of the card
-templ CardDescription(props CardDescriptionProps) {
+templ CardDescription(args CardDescriptionProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardDescriptionVariants(props.Class)
+		classes := cardDescriptionVariants(args.Class)
 	}}
 	<div
 		data-slot="card-description"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardAction displays action elements (like buttons) in the card header
-templ CardAction(props CardActionProps) {
+templ CardAction(args CardActionProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardActionVariants(props.Class)
+		classes := cardActionVariants(args.Class)
 	}}
 	<div
 		data-slot="card-action"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardContent contains the main content of the card
-templ CardContent(props CardContentProps) {
+templ CardContent(args CardContentProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardContentVariants(props.Class)
+		classes := cardContentVariants(args.Class)
 	}}
 	<div
 		data-slot="card-content"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // CardFooter contains footer content like buttons or additional info
-templ CardFooter(props CardFooterProps) {
+templ CardFooter(args CardFooterProps) {
 	{{
 		// Generate the CSS classes using our variant system
-		classes := cardFooterVariants(props.Class)
+		classes := cardFooterVariants(args.Class)
 	}}
 	<div
 		data-slot="card-footer"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>

@@ -22,7 +22,7 @@ type FormSignals struct {
 }
 
 // Form wrapper component
-func Form(props FormProps) templ.Component {
+func Form(args FormProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -45,7 +45,7 @@ func Form(props FormProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals using the new structured system
-		signals := utils.Signals(props.ID, FormSignals{
+		signals := utils.Signals(args.ID, FormSignals{
 			Submitted: false,
 			Name:      "",
 			Email:     "",
@@ -56,28 +56,28 @@ func Form(props FormProps) templ.Component {
 		formAttrs = make(templ.Attributes)
 
 		// Copy user-provided attributes first
-		for k, v := range props.Attributes {
+		for k, v := range args.Attributes {
 			formAttrs[k] = v
 		}
 
 		// Add form-specific attributes
-		if props.ID != "" {
-			formAttrs["id"] = props.ID
+		if args.ID != "" {
+			formAttrs["id"] = args.ID
 		}
 
-		if props.Action != "" {
+		if args.Action != "" {
 			// Check if there's a target specified in attributes
 			target := ""
-			if targetAttr, exists := props.Attributes["data-target"]; exists {
+			if targetAttr, exists := args.Attributes["data-target"]; exists {
 				target = fmt.Sprintf(", target: '%s'", targetAttr)
 				// Remove data-target from attributes as we've handled it
 				delete(formAttrs, "data-target")
 			}
-			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(props.Action), target)
+			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(args.Action), target)
 		}
 
-		if props.Class != "" {
-			formAttrs["class"] = props.Class
+		if args.Class != "" {
+			formAttrs["class"] = args.Class
 		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-signals=\"")
 		if templ_7745c5c3_Err != nil {
@@ -117,7 +117,7 @@ func Form(props FormProps) templ.Component {
 }
 
 // FormItem component - container for form field
-func FormItem(props FormItemProps) templ.Component {
+func FormItem(args FormItemProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -139,7 +139,7 @@ func FormItem(props FormItemProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		classes := formItemVariants(props.Class)
+		classes := formItemVariants(args.Class)
 		var templ_7745c5c3_Var4 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
 		if templ_7745c5c3_Err != nil {
@@ -162,7 +162,7 @@ func FormItem(props FormItemProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -183,7 +183,7 @@ func FormItem(props FormItemProps) templ.Component {
 }
 
 // FormLabel component - label for form field
-func FormLabel(props FormLabelProps) templ.Component {
+func FormLabel(args FormLabelProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -205,7 +205,7 @@ func FormLabel(props FormLabelProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		classes := formLabelVariants(props.Class, props.HasError)
+		classes := formLabelVariants(args.Class, args.HasError)
 		templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -226,10 +226,10 @@ func FormLabel(props FormLabelProps) templ.Component {
 		})
 		templ_7745c5c3_Err = label.Label(label.LabelProps{
 			Class: classes,
-			For:   props.For,
+			For:   args.For,
 			Attributes: templ.Attributes{
 				"data-slot":  "form-label",
-				"data-error": templ.Bool(props.HasError),
+				"data-error": templ.Bool(args.HasError),
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
@@ -240,7 +240,7 @@ func FormLabel(props FormLabelProps) templ.Component {
 }
 
 // FormDescription component - help text for form field
-func FormDescription(props FormDescriptionProps) templ.Component {
+func FormDescription(args FormDescriptionProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -262,7 +262,7 @@ func FormDescription(props FormDescriptionProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		classes := formDescriptionVariants(props.Class)
+		classes := formDescriptionVariants(args.Class)
 		var templ_7745c5c3_Var9 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
 		if templ_7745c5c3_Err != nil {
@@ -272,15 +272,15 @@ func FormDescription(props FormDescriptionProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.ID != "" {
+		if args.ID != "" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " id=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 103, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 103, Col: 15}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -308,7 +308,7 @@ func FormDescription(props FormDescriptionProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -329,7 +329,7 @@ func FormDescription(props FormDescriptionProps) templ.Component {
 }
 
 // FormMessage component - error message for form field
-func FormMessage(props FormMessageProps) templ.Component {
+func FormMessage(args FormMessageProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -350,9 +350,9 @@ func FormMessage(props FormMessageProps) templ.Component {
 			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		if props.Message != "" {
+		if args.Message != "" {
 
-			classes := formMessageVariants(props.Class)
+			classes := formMessageVariants(args.Class)
 			var templ_7745c5c3_Var13 = []any{classes}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var13...)
 			if templ_7745c5c3_Err != nil {
@@ -362,15 +362,15 @@ func FormMessage(props FormMessageProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.ID != "" {
+			if args.ID != "" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, " id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 121, Col: 17}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 121, Col: 16}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -398,7 +398,7 @@ func FormMessage(props FormMessageProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -406,11 +406,11 @@ func FormMessage(props FormMessageProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if props.Message != "" {
+			if args.Message != "" {
 				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(args.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 127, Col: 19}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form/form.templ`, Line: 127, Col: 18}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {

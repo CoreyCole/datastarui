@@ -17,10 +17,10 @@ type SelectSignals struct {
 
 // Select renders the main select wrapper with Datastar state management
 // If Options are provided, it will automatically render the complete select UI
-templ Select(props SelectProps) {
+templ Select(args SelectProps) {
 	{{
 		// Generate unique ID if not provided (following dropdown pattern exactly)
-		selectID := props.ID
+		selectID := args.ID
 		if selectID == "" {
 			// Generate a random ID
 			b := make([]byte, 4)
@@ -29,20 +29,20 @@ templ Select(props SelectProps) {
 		}
 
 		openState := false
-		if props.DefaultOpen || props.Open {
+		if args.DefaultOpen || args.Open {
 			openState = true
 		}
 
 		// Determine initial value
-		initialValue := props.Value
+		initialValue := args.Value
 		if initialValue == "" {
-			initialValue = props.DefaultValue
+			initialValue = args.DefaultValue
 		}
 
 		// Find initial label if value is set and options are provided
 		initialLabel := ""
-		if initialValue != "" && len(props.Options) > 0 {
-			for _, option := range props.Options {
+		if initialValue != "" && len(args.Options) > 0 {
+			for _, option := range args.Options {
 				if option.Value == initialValue {
 					initialLabel = option.Label
 					break
@@ -66,35 +66,35 @@ templ Select(props SelectProps) {
 		data-select-id={ selectID }
 		data-signals={ signals.DataSignals }
 		data-on-click__outside={ clickOutsideHandler }
-		class={ selectVariants(props.Class) }
-		{ props.Attributes... }
+		class={ selectVariants(args.Class) }
+		{ args.Attributes... }
 	>
-		if props.Name != "" {
+		if args.Name != "" {
 			<!-- Hidden input for form submission -->
 			<input
 				type="hidden"
-				name={ props.Name }
+				name={ args.Name }
 				data-bind={ signals.Signal("value") }
-				if props.Required {
+				if args.Required {
 					required
 				}
 			/>
 		}
-		if len(props.Options) > 0 {
+		if len(args.Options) > 0 {
 			<!-- Auto-render complete select UI when options are provided -->
 			@SelectTrigger(SelectTriggerProps{
 				ID:       selectID,
-				Disabled: props.Disabled,
+				Disabled: args.Disabled,
 			}) {
 				@SelectValue(SelectValueProps{
 					ID:          selectID,
-					Placeholder: props.Placeholder,
+					Placeholder: args.Placeholder,
 				})
 			}
 			@SelectContent(SelectContentProps{
 				ID: selectID,
 			}) {
-				@renderSelectOptions(selectID, props.Options)
+				@renderSelectOptions(selectID, args.Options)
 			}
 		} else {
 			<!-- Manual composition when no options provided -->
@@ -162,16 +162,16 @@ templ renderSelectOptions(selectID string, options []SelectOptionProps) {
 }
 
 // SelectTrigger - button that opens/closes the select dropdown
-templ SelectTrigger(props SelectTriggerProps) {
+templ SelectTrigger(args SelectTriggerProps) {
 	{{
 		// Create signals manager for this select
-		signals := utils.Signals(props.ID, SelectSignals{})
+		signals := utils.Signals(args.ID, SelectSignals{})
 
 		// Generate the CSS classes using our variant system
-		classes := selectTriggerVariants(props.Class)
+		classes := selectTriggerVariants(args.Class)
 
 		// Generate trigger handlers using expression builder
-		triggerHandler := NewSelectTriggerHandler(props.ID, signals)
+		triggerHandler := NewSelectTriggerHandler(args.ID, signals)
 		clickExpr := triggerHandler.BuildClickHandler()
 		triggerKeyHandler := triggerHandler.BuildKeyboardHandler()
 	}}
@@ -181,10 +181,10 @@ templ SelectTrigger(props SelectTriggerProps) {
 		role="combobox"
 		data-attr-aria-expanded={ signals.Signal("open") }
 		class={ classes }
-		disabled?={ props.Disabled }
+		disabled?={ args.Disabled }
 		data-on-click={ clickExpr }
 		data-on-keydown={ triggerKeyHandler }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 		<!-- ChevronDown icon -->
@@ -206,44 +206,44 @@ templ SelectTrigger(props SelectTriggerProps) {
 }
 
 // SelectValue displays the currently selected value or placeholder
-templ SelectValue(props SelectValueProps) {
+templ SelectValue(args SelectValueProps) {
 	{{
 		// Build the label signal reference manually
-		labelSignal := "$" + props.ID + ".label"
+		labelSignal := "$" + args.ID + ".label"
 
-		escapedDefault := strings.ReplaceAll(props.Placeholder, "'", "\\'")
+		escapedDefault := strings.ReplaceAll(args.Placeholder, "'", "\\'")
 		displayText := fmt.Sprintf("%s || '%s'", labelSignal, escapedDefault)
 	}}
 	<span
 		data-slot="select-value"
 		class="pointer-events-none truncate"
 		data-text={ displayText }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
-		if props.Placeholder != "" {
-			{ props.Placeholder }
+		if args.Placeholder != "" {
+			{ args.Placeholder }
 		}
 	</span>
 }
 
 // SelectContent - dropdown content container
-templ SelectContent(props SelectContentProps) {
+templ SelectContent(args SelectContentProps) {
 	{{
 		// Create signals manager for this select
-		signals := utils.Signals(props.ID, SelectSignals{})
+		signals := utils.Signals(args.ID, SelectSignals{})
 
 		// Generate the CSS classes using our variant system
-		classes := selectContentVariants(props.Position, props.Class)
+		classes := selectContentVariants(args.Position, args.Class)
 
 		// Create expressions
 		showExpr := signals.Signal("open")
 
 		// Generate content keyboard navigation using expression builder
-		contentHandler := NewSelectContentHandler(props.ID, signals)
+		contentHandler := NewSelectContentHandler(args.ID, signals)
 		keyHandler := contentHandler.BuildKeyboardHandler()
 
 		// Generate viewport classes
-		viewportClasses := selectViewportVariants(props.Position, "")
+		viewportClasses := selectViewportVariants(args.Position, "")
 	}}
 	<div
 		data-slot="select-content"
@@ -253,7 +253,7 @@ templ SelectContent(props SelectContentProps) {
 		role="listbox"
 		tabindex="-1"
 		style="position: absolute; top: 100%; left: 0; right: 0; z-index: 50; display: none;"
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		<div class={ viewportClasses }>
 			{ children... }
@@ -262,21 +262,21 @@ templ SelectContent(props SelectContentProps) {
 }
 
 // SelectItem - individual option in the select dropdown
-templ SelectItem(props SelectItemProps) {
+templ SelectItem(args SelectItemProps) {
 	{{
 		// Create signals manager for this select
-		signals := utils.Signals(props.ID, SelectSignals{})
+		signals := utils.Signals(args.ID, SelectSignals{})
 
 		// Generate the CSS classes using our variant system
-		classes := selectItemVariants(props.Class)
+		classes := selectItemVariants(args.Class)
 
 		// Generate item selection handlers using expression builder
-		itemHandler := NewSelectItemHandler(props.ID, props.Value)
+		itemHandler := NewSelectItemHandler(args.ID, args.Value)
 		selectExpr := itemHandler.BuildClickHandler()
 		itemKeyHandler := itemHandler.BuildKeyboardHandler()
 
 		// Add highlighted class conditionally using data-class helper
-		highlightedClass := highlightedItem(fmt.Sprintf("%s.highlighted", props.ID), props.Index)
+		highlightedClass := highlightedItem(fmt.Sprintf("%s.highlighted", args.ID), args.Index)
 	}}
 	<div
 		data-slot="select-item"
@@ -284,23 +284,23 @@ templ SelectItem(props SelectItemProps) {
 		class={ classes }
 		data-class={ highlightedClass }
 		role="option"
-		data-value={ props.Value }
-		data-index={ fmt.Sprintf("%d", props.Index) }
+		data-value={ args.Value }
+		data-index={ fmt.Sprintf("%d", args.Index) }
 		tabindex="0"
-		if !props.Disabled {
+		if !args.Disabled {
 			data-on-click={ selectExpr }
 			data-on-keydown={ itemKeyHandler }
 		}
-		if props.Disabled {
+		if args.Disabled {
 			data-disabled="true"
 		}
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		<span class="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
 			<!-- Check icon for selected state -->
 			<svg
 				class="h-4 w-4"
-				data-show={ signals.Equals("value", props.Value) }
+				data-show={ signals.Equals("value", args.Value) }
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"
@@ -321,38 +321,38 @@ templ SelectItem(props SelectItemProps) {
 }
 
 // SelectLabel renders a label for a group of items
-templ SelectLabel(props SelectLabelProps) {
+templ SelectLabel(args SelectLabelProps) {
 	{{
-		classes := selectLabelVariants(props.Class)
+		classes := selectLabelVariants(args.Class)
 	}}
 	<div
 		data-slot="select-label"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>
 }
 
 // SelectSeparator renders a visual separator between groups
-templ SelectSeparator(props SelectSeparatorProps) {
+templ SelectSeparator(args SelectSeparatorProps) {
 	{{
-		classes := selectSeparatorVariants(props.Class)
+		classes := selectSeparatorVariants(args.Class)
 	}}
 	<div
 		data-slot="select-separator"
 		class={ classes }
-		{ props.Attributes... }
+		{ args.Attributes... }
 	></div>
 }
 
 // SelectGroup renders a group container for items
-templ SelectGroup(props SelectGroupProps) {
+templ SelectGroup(args SelectGroupProps) {
 	<div
 		data-slot="select-group"
 		role="group"
-		class={ props.Class }
-		{ props.Attributes... }
+		class={ args.Class }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</div>

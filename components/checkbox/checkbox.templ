@@ -8,15 +8,15 @@ type CheckboxSignals struct {
 }
 
 // Checkbox renders a checkbox input with shadcn/ui styling and internal Datastar reactivity
-templ Checkbox(props CheckboxProps) {
+templ Checkbox(args CheckboxProps) {
 	{{
 		// Create signals using the new structured system
-		signals := utils.Signals(props.ID, CheckboxSignals{
-			Checked: props.Checked,
+		signals := utils.Signals(args.ID, CheckboxSignals{
+			Checked: args.Checked,
 		})
 
 		// Generate the CSS classes using the variant system
-		classes := checkboxVariants(props.ClassName)
+		classes := checkboxVariants(args.ClassName)
 
 		// Create signal expressions
 		signalRef := signals.Signal("checked")
@@ -24,20 +24,20 @@ templ Checkbox(props CheckboxProps) {
 
 		// Combine classes
 		allClasses := classes
-		if props.ClassName != "" {
-			allClasses += " " + props.ClassName
+		if args.ClassName != "" {
+			allClasses += " " + args.ClassName
 		}
 	}}
 	<div data-signals={ signals.DataSignals }>
 		<button
 			type="button"
-			id={ props.ID }
+			id={ args.ID }
 			class={ allClasses }
 			role="checkbox"
 			data-on-click={ toggleExpr }
 			data-attr-aria-checked={ signals.Conditional("checked", "'true'", "'false'") }
 			data-attr-data-state={ signals.Conditional("checked", "'checked'", "'unchecked'") }
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
 			<!-- Checkmark icon -->
 			<svg
@@ -57,7 +57,7 @@ templ Checkbox(props CheckboxProps) {
 		<!-- Hidden input for form submission -->
 		<input
 			type="checkbox"
-			name={ props.Name }
+			name={ args.Name }
 			class="sr-only"
 			data-attr-checked={ signalRef }
 			data-attr-value={ signals.Conditional("checked", "'true'", "'false'") }
@@ -67,11 +67,11 @@ templ Checkbox(props CheckboxProps) {
 }
 
 // CheckboxIndicator renders the checkbox indicator (check mark)
-templ CheckboxIndicator(props CheckboxIndicatorProps) {
+templ CheckboxIndicator(args CheckboxIndicatorProps) {
 	<span
 		data-slot="checkbox-indicator"
-		class={ checkboxIndicatorVariants(props.ClassName) }
-		{ props.Attributes... }
+		class={ checkboxIndicatorVariants(args.ClassName) }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</span>

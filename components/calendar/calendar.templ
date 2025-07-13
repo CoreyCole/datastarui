@@ -93,10 +93,10 @@ type CalendarSignals struct {
 }
 
 // Calendar renders a simple, elegant calendar
-templ Calendar(props CalendarProps) {
+templ Calendar(args CalendarProps) {
 	{{
 		// Generate unique ID
-		calendarID := props.ID
+		calendarID := args.ID
 		if calendarID == "" {
 			b := make([]byte, 4)
 			rand.Read(b)
@@ -104,12 +104,12 @@ templ Calendar(props CalendarProps) {
 		}
 
 		// Set defaults
-		mode := props.Mode
+		mode := args.Mode
 		if mode == "" {
 			mode = "single"
 		}
 
-		numberOfMonths := props.NumberOfMonths
+		numberOfMonths := args.NumberOfMonths
 		if numberOfMonths <= 0 {
 			numberOfMonths = 1
 		}
@@ -117,9 +117,9 @@ templ Calendar(props CalendarProps) {
 		// Determine the initial month to display
 		var currentDateStr string
 		now := time.Now()
-		if props.DefaultDate != "" {
+		if args.DefaultDate != "" {
 			// Use the provided DefaultDate, normalized to first day of month
-			if t, err := time.Parse("2006-01-02", props.DefaultDate); err == nil {
+			if t, err := time.Parse("2006-01-02", args.DefaultDate); err == nil {
 				currentDateStr = fmt.Sprintf("%04d-%02d-01", t.Year(), int(t.Month()))
 			} else {
 				// Fallback to current month if DefaultDate is invalid
@@ -138,19 +138,19 @@ templ Calendar(props CalendarProps) {
 			CurrentDate:  currentDateStr,
 			Mode:         mode,
 			Today:        todayStr,
-			SelectedDate: props.SelectedDate,
-			RangeStart:   props.RangeStart,
-			RangeEnd:     props.RangeEnd,
+			SelectedDate: args.SelectedDate,
+			RangeStart:   args.RangeStart,
+			RangeEnd:     args.RangeEnd,
 		})
 
-		classes := calendarVariants(props.Class)
+		classes := calendarVariants(args.Class)
 	}}
 	<div
 		class={ "p-3 " + classes }
-		if props.DatePickerInputsID == "" {
+		if args.DatePickerInputsID == "" {
 			data-signals={ signals.DataSignals }
 		}
-		{ props.Attributes... }
+		{ args.Attributes... }
 	>
 		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
 		<!-- Months container with responsive flex layout -->
@@ -159,11 +159,11 @@ templ Calendar(props CalendarProps) {
 			@CalendarGrid(CalendarGridProps{
 				ID:                 calendarID,
 				MonthOffset:        0,
-				HideOutsideDays:    props.HideOutsideDays,
+				HideOutsideDays:    args.HideOutsideDays,
 				NumberOfMonths:     numberOfMonths,
 				CurrentDateStr:     currentDateStr,
 				Mode:               mode,
-				DatePickerInputsID: props.DatePickerInputsID,
+				DatePickerInputsID: args.DatePickerInputsID,
 			})
 		} else {
 			<!-- Multi-month layout - each month looks like a single calendar -->
@@ -179,11 +179,11 @@ templ Calendar(props CalendarProps) {
 						@CalendarGrid(CalendarGridProps{
 							ID:                 calendarID,
 							MonthOffset:        monthIndex,
-							HideOutsideDays:    props.HideOutsideDays,
+							HideOutsideDays:    args.HideOutsideDays,
 							NumberOfMonths:     numberOfMonths,
 							CurrentDateStr:     currentDateStr,
 							Mode:               mode,
-							DatePickerInputsID: props.DatePickerInputsID,
+							DatePickerInputsID: args.DatePickerInputsID,
 						})
 					</div>
 				}
@@ -193,10 +193,10 @@ templ Calendar(props CalendarProps) {
 }
 
 // CalendarHeader renders the month navigation
-templ CalendarHeader(props CalendarHeaderProps) {
+templ CalendarHeader(args CalendarHeaderProps) {
 	{{
 		// Use the same signal namespace as the parent calendar - don't create new signals
-		signals := utils.Signals(props.ID, CalendarSignals{})
+		signals := utils.Signals(args.ID, CalendarSignals{})
 
 		// Signal references
 		currentDateRef := signals.Signal("currentDate")
@@ -206,7 +206,7 @@ templ CalendarHeader(props CalendarHeaderProps) {
 		nextMonthExpr := signals.Set("currentDate", "new Date(Date.UTC(new Date("+currentDateRef+").getUTCFullYear(), new Date("+currentDateRef+").getUTCMonth() + 1, 1)).toISOString().slice(0, 10)")
 
 		// Month display expressions for multiple months
-		numberOfMonths := props.NumberOfMonths
+		numberOfMonths := args.NumberOfMonths
 		if numberOfMonths <= 0 {
 			numberOfMonths = 1
 		}
@@ -273,7 +273,7 @@ templ CalendarHeader(props CalendarHeaderProps) {
 }
 
 // CalendarGrid renders the calendar days
-templ CalendarGrid(props CalendarGridProps) {
+templ CalendarGrid(args CalendarGridProps) {
 	{{
 		// Use 5 weeks (35 days) for all calendars for a cleaner, more consistent look
 		weeksNeeded := 5
@@ -295,13 +295,13 @@ templ CalendarGrid(props CalendarGridProps) {
 			<!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->
 			for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
 				@CalendarDay(CalendarDayProps{
-					ID:                 props.ID,
+					ID:                 args.ID,
 					DayIndex:           dayIndex,
-					MonthOffset:        props.MonthOffset,
-					HideOutsideDays:    props.HideOutsideDays,
-					CurrentDateStr:     props.CurrentDateStr,
-					Mode:               props.Mode,
-					DatePickerInputsID: props.DatePickerInputsID,
+					MonthOffset:        args.MonthOffset,
+					HideOutsideDays:    args.HideOutsideDays,
+					CurrentDateStr:     args.CurrentDateStr,
+					Mode:               args.Mode,
+					DatePickerInputsID: args.DatePickerInputsID,
 				})
 			}
 		</div>
@@ -309,25 +309,25 @@ templ CalendarGrid(props CalendarGridProps) {
 }
 
 // CalendarDay renders individual day button with pre-calculated data
-templ CalendarDay(props CalendarDayProps) {
+templ CalendarDay(args CalendarDayProps) {
 	{{
 		// Share the same signal namespace as the parent calendar - don't create new signals
-		signals := utils.Signals(props.ID, CalendarSignals{})
+		signals := utils.Signals(args.ID, CalendarSignals{})
 
 		// Pre-calculate day data using the static current date for now
 		// The real fix is that we need to make the grid responsive to currentDate signal changes
 		// For now, let's calculate the day correctly based on the fallback
-		currentDateForCalc := props.CurrentDateStr
+		currentDateForCalc := args.CurrentDateStr
 		if currentDateForCalc == "" {
 			// Fallback
 			now := time.Now()
 			currentDateForCalc = fmt.Sprintf("%04d-%02d-01", now.Year(), now.Month())
 		}
 
-		dayData := calculateDayData(props.DayIndex, props.MonthOffset, currentDateForCalc, signals.Signal("today"))
+		dayData := calculateDayData(args.DayIndex, args.MonthOffset, currentDateForCalc, signals.Signal("today"))
 
 		// Create calendar day handler using expression builder
-		dayHandler := newCalendarDayHandler(props.ID, signals, props.MonthOffset, props.Mode, dayData.DayNumber)
+		dayHandler := newCalendarDayHandler(args.ID, signals, args.MonthOffset, args.Mode, dayData.DayNumber)
 
 		var clickHandler string
 		// Only allow clicks on days in the current month
@@ -341,8 +341,8 @@ templ CalendarDay(props CalendarDayProps) {
 			clickHandler = dayHandler.buildClickHandler()
 
 			// Add DateInput signal coordination if needed
-			if props.DatePickerInputsID != "" {
-				dateInputSync := dayHandler.buildDateInputSync(props.DatePickerInputsID)
+			if args.DatePickerInputsID != "" {
+				dateInputSync := dayHandler.buildDateInputSync(args.DatePickerInputsID)
 				clickHandler += "; " + dateInputSync
 			}
 		}
@@ -365,7 +365,7 @@ templ CalendarDay(props CalendarDayProps) {
 		var selectionClasses string
 		if dayData.IsCurrentMonth {
 			// Create calendar selection class helper
-			selectionClassHelper := newCalendarSelectionClasses(props.ID, signals, props.MonthOffset, dayData.DayNumber, props.Mode)
+			selectionClassHelper := newCalendarSelectionClasses(args.ID, signals, args.MonthOffset, dayData.DayNumber, args.Mode)
 			selectionClasses = selectionClassHelper.build()
 		} else {
 			// For outside days, no selection styling

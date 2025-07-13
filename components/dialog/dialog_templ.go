@@ -17,7 +17,7 @@ type DialogSignals struct {
 }
 
 // Dialog container - pure Datastar signal-based modal using data-show
-func Dialog(props DialogProps) templ.Component {
+func Dialog(args DialogProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -40,8 +40,8 @@ func Dialog(props DialogProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals using the new structured system with proper initial state
-		signals := utils.Signals(props.ID, DialogSignals{
-			Open:        props.DefaultOpen,
+		signals := utils.Signals(args.ID, DialogSignals{
+			Open:        args.DefaultOpen,
 			ReturnValue: nil,
 		})
 
@@ -52,7 +52,7 @@ func Dialog(props DialogProps) templ.Component {
 		dialogClasses := "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
 
 		// Generate the CSS classes for the inner dialog content container using our variant system
-		containerClasses := DialogVariants(props)
+		containerClasses := DialogVariants(args)
 
 		// Create dialog handler for clean expressions
 		dialogHandler := NewDialogHandler(signals)
@@ -136,7 +136,7 @@ func Dialog(props DialogProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if !props.DefaultOpen {
+		if !args.DefaultOpen {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " style=\"display: none;\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -156,9 +156,9 @@ func Dialog(props DialogProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dialog/dialog.templ`, Line: 47, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dialog/dialog.templ`, Line: 47, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -216,7 +216,7 @@ func Dialog(props DialogProps) templ.Component {
 }
 
 // DialogTrigger - button or element that opens the dialog using Datastar signals
-func DialogTrigger(props DialogTriggerProps) templ.Component {
+func DialogTrigger(args DialogTriggerProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -239,14 +239,14 @@ func DialogTrigger(props DialogTriggerProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for the target dialog
-		signals := utils.Signals(props.DialogID, DialogSignals{})
+		signals := utils.Signals(args.DialogID, DialogSignals{})
 		clickHandler := signals.Set("open", "true")
-		if props.AsChild {
+		if args.AsChild {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var14 = []any{props.Class}
+			var templ_7745c5c3_Var14 = []any{args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var14...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -268,7 +268,7 @@ func DialogTrigger(props DialogTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -298,7 +298,7 @@ func DialogTrigger(props DialogTriggerProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var17 = []any{props.Class}
+			var templ_7745c5c3_Var17 = []any{args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var17...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -320,7 +320,7 @@ func DialogTrigger(props DialogTriggerProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -355,7 +355,7 @@ func DialogTrigger(props DialogTriggerProps) templ.Component {
 }
 
 // DialogContent - content section of the dialog
-func DialogContent(props DialogContentProps) templ.Component {
+func DialogContent(args DialogContentProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -378,7 +378,7 @@ func DialogContent(props DialogContentProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate the CSS classes using our variant system
-		classes := DialogContentVariants(props)
+		classes := DialogContentVariants(args)
 		var templ_7745c5c3_Var21 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var21...)
 		if templ_7745c5c3_Err != nil {
@@ -401,7 +401,7 @@ func DialogContent(props DialogContentProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -422,7 +422,7 @@ func DialogContent(props DialogContentProps) templ.Component {
 }
 
 // DialogOverlay - backdrop overlay (for styling compatibility)
-func DialogOverlay(props DialogOverlayProps) templ.Component {
+func DialogOverlay(args DialogOverlayProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -443,7 +443,7 @@ func DialogOverlay(props DialogOverlayProps) templ.Component {
 			templ_7745c5c3_Var23 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var24 = []any{DialogOverlayVariants(props)}
+		var templ_7745c5c3_Var24 = []any{DialogOverlayVariants(args)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var24...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -453,9 +453,9 @@ func DialogOverlay(props DialogOverlayProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
-		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dialog/dialog.templ`, Line: 109, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dialog/dialog.templ`, Line: 109, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
@@ -478,7 +478,7 @@ func DialogOverlay(props DialogOverlayProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -491,7 +491,7 @@ func DialogOverlay(props DialogOverlayProps) templ.Component {
 }
 
 // DialogHeader - header section of the dialog
-func DialogHeader(props DialogHeaderProps) templ.Component {
+func DialogHeader(args DialogHeaderProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -514,7 +514,7 @@ func DialogHeader(props DialogHeaderProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate the CSS classes using our variant system
-		classes := DialogHeaderVariants(props)
+		classes := DialogHeaderVariants(args)
 		var templ_7745c5c3_Var28 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var28...)
 		if templ_7745c5c3_Err != nil {
@@ -537,7 +537,7 @@ func DialogHeader(props DialogHeaderProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -558,7 +558,7 @@ func DialogHeader(props DialogHeaderProps) templ.Component {
 }
 
 // DialogFooter - footer section of the dialog
-func DialogFooter(props DialogFooterProps) templ.Component {
+func DialogFooter(args DialogFooterProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -581,7 +581,7 @@ func DialogFooter(props DialogFooterProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate the CSS classes using our variant system
-		classes := DialogFooterVariants(props)
+		classes := DialogFooterVariants(args)
 		var templ_7745c5c3_Var31 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var31...)
 		if templ_7745c5c3_Err != nil {
@@ -604,7 +604,7 @@ func DialogFooter(props DialogFooterProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -625,7 +625,7 @@ func DialogFooter(props DialogFooterProps) templ.Component {
 }
 
 // DialogTitle - title element in the dialog header
-func DialogTitle(props DialogTitleProps) templ.Component {
+func DialogTitle(args DialogTitleProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -648,7 +648,7 @@ func DialogTitle(props DialogTitleProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate the CSS classes using our variant system
-		classes := DialogTitleVariants(props)
+		classes := DialogTitleVariants(args)
 		var templ_7745c5c3_Var34 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var34...)
 		if templ_7745c5c3_Err != nil {
@@ -671,7 +671,7 @@ func DialogTitle(props DialogTitleProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -692,7 +692,7 @@ func DialogTitle(props DialogTitleProps) templ.Component {
 }
 
 // DialogDescription - description element in the dialog header
-func DialogDescription(props DialogDescriptionProps) templ.Component {
+func DialogDescription(args DialogDescriptionProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -715,7 +715,7 @@ func DialogDescription(props DialogDescriptionProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Generate the CSS classes using our variant system
-		classes := DialogDescriptionVariants(props)
+		classes := DialogDescriptionVariants(args)
 		var templ_7745c5c3_Var37 = []any{classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var37...)
 		if templ_7745c5c3_Err != nil {
@@ -738,7 +738,7 @@ func DialogDescription(props DialogDescriptionProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -759,7 +759,7 @@ func DialogDescription(props DialogDescriptionProps) templ.Component {
 }
 
 // DialogClose - button that closes the dialog using Datastar signals
-func DialogClose(props DialogCloseProps) templ.Component {
+func DialogClose(args DialogCloseProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -782,17 +782,17 @@ func DialogClose(props DialogCloseProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 
 		// Create signals manager for the target dialog
-		signals := utils.Signals(props.DialogID, DialogSignals{})
+		signals := utils.Signals(args.DialogID, DialogSignals{})
 
 		// Create dialog handler for clean expressions
 		dialogHandler := NewDialogHandler(signals)
-		clickHandler := dialogHandler.BuildCloseHandler(props.ReturnValue)
+		clickHandler := dialogHandler.BuildCloseHandler(args.ReturnValue)
 
 		// Default button classes matching the Button component design
 		baseClasses := "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
 
-		// Add variant-specific classes based on props.Variant (default to "default")
-		variant := props.Variant
+		// Add variant-specific classes based on args.Variant (default to "default")
+		variant := args.Variant
 		if variant == "" {
 			variant = "default"
 		}
@@ -814,8 +814,8 @@ func DialogClose(props DialogCloseProps) templ.Component {
 		}
 
 		buttonClasses := baseClasses + " " + variantClasses
-		if props.Class != "" {
-			buttonClasses += " " + props.Class
+		if args.Class != "" {
+			buttonClasses += " " + args.Class
 		}
 		var templ_7745c5c3_Var40 = []any{buttonClasses}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var40...)
@@ -839,7 +839,7 @@ func DialogClose(props DialogCloseProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -7,7 +7,7 @@ type MobileMenuSignals struct {
 	Open bool `json:"open"`
 }
 
-templ Sidebar(props SidebarProps) {
+templ Sidebar(args SidebarProps) {
 	{{
 		// Reference the global mobile menu signals
 		signals := utils.Signals("mobile_menu", MobileMenuSignals{})
@@ -20,11 +20,11 @@ templ Sidebar(props SidebarProps) {
 		sidebarContentClasses := "fixed inset-y-0 left-0 z-50 h-full w-full bg-background shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm"
 	}}
 	<!-- Desktop Sidebar - only hide on mobile if mobile overlay is enabled -->
-	if props.IsMobile {
-		<aside class={ desktopClasses + " hidden", props.Class } { props.Attributes... }>
+	if args.IsMobile {
+		<aside class={ desktopClasses + " hidden", args.Class } { args.Attributes... }>
 			<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
 				<div class="flex flex-col gap-6">
-					for _, section := range props.Sections {
+					for _, section := range args.Sections {
 						<div class="flex flex-col gap-1">
 							<h4 class="rounded-md px-2 py-1 text-sm font-medium">
 								{ section.Title }
@@ -34,7 +34,7 @@ templ Sidebar(props SidebarProps) {
 							</h4>
 							<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
 								for _, item := range section.Items {
-									@SidebarLink(item, props.CurrentPath)
+									@SidebarLink(item, args.CurrentPath)
 								}
 							</div>
 						</div>
@@ -43,10 +43,10 @@ templ Sidebar(props SidebarProps) {
 			</div>
 		</aside>
 	} else {
-		<aside class={ desktopClasses, props.Class } { props.Attributes... }>
+		<aside class={ desktopClasses, args.Class } { args.Attributes... }>
 			<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
 				<div class="flex flex-col gap-6">
-					for _, section := range props.Sections {
+					for _, section := range args.Sections {
 						<div class="flex flex-col gap-1">
 							<h4 class="rounded-md px-2 py-1 text-sm font-medium">
 								{ section.Title }
@@ -56,7 +56,7 @@ templ Sidebar(props SidebarProps) {
 							</h4>
 							<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
 								for _, item := range section.Items {
-									@SidebarLink(item, props.CurrentPath)
+									@SidebarLink(item, args.CurrentPath)
 								}
 							</div>
 						</div>
@@ -66,7 +66,7 @@ templ Sidebar(props SidebarProps) {
 		</aside>
 	}
 	<!-- Mobile Sidebar Overlay - only render if on mobile -->
-	if props.IsMobile {
+	if args.IsMobile {
 		<div
 			class={ mobileClasses }
 			data-show={ signals.Signal("open") }
@@ -96,7 +96,7 @@ templ Sidebar(props SidebarProps) {
 				</div>
 				<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 px-4">
 					<div class="flex flex-col gap-6">
-						for _, section := range props.Sections {
+						for _, section := range args.Sections {
 							<div class="flex flex-col gap-1">
 								<h4 class="rounded-md px-2 py-1 text-sm font-medium">
 									{ section.Title }
@@ -106,7 +106,7 @@ templ Sidebar(props SidebarProps) {
 								</h4>
 								<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
 									for _, item := range section.Items {
-										@SidebarMobileLink(item, props.CurrentPath, signals)
+										@SidebarMobileLink(item, args.CurrentPath, signals)
 									}
 								</div>
 							</div>

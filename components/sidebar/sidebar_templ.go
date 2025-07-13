@@ -15,7 +15,7 @@ type MobileMenuSignals struct {
 	Open bool `json:"open"`
 }
 
-func Sidebar(props SidebarProps) templ.Component {
+func Sidebar(args SidebarProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -50,8 +50,8 @@ func Sidebar(props SidebarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.IsMobile {
-			var templ_7745c5c3_Var2 = []any{desktopClasses + " hidden", props.Class}
+		if args.IsMobile {
+			var templ_7745c5c3_Var2 = []any{desktopClasses + " hidden", args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -73,7 +73,7 @@ func Sidebar(props SidebarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -81,7 +81,7 @@ func Sidebar(props SidebarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, section := range props.Sections {
+			for _, section := range args.Sections {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"flex flex-col gap-1\"><h4 class=\"rounded-md px-2 py-1 text-sm font-medium\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -123,7 +123,7 @@ func Sidebar(props SidebarProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				for _, item := range section.Items {
-					templ_7745c5c3_Err = SidebarLink(item, props.CurrentPath).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = SidebarLink(item, args.CurrentPath).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -138,7 +138,7 @@ func Sidebar(props SidebarProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var6 = []any{desktopClasses, props.Class}
+			var templ_7745c5c3_Var6 = []any{desktopClasses, args.Class}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var6...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -160,7 +160,7 @@ func Sidebar(props SidebarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, props.Attributes)
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, args.Attributes)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -168,7 +168,7 @@ func Sidebar(props SidebarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, section := range props.Sections {
+			for _, section := range args.Sections {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"flex flex-col gap-1\"><h4 class=\"rounded-md px-2 py-1 text-sm font-medium\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -210,7 +210,7 @@ func Sidebar(props SidebarProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				for _, item := range section.Items {
-					templ_7745c5c3_Err = SidebarLink(item, props.CurrentPath).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = SidebarLink(item, args.CurrentPath).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -229,7 +229,7 @@ func Sidebar(props SidebarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.IsMobile {
+		if args.IsMobile {
 			var templ_7745c5c3_Var10 = []any{mobileClasses}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
 			if templ_7745c5c3_Err != nil {
@@ -339,7 +339,7 @@ func Sidebar(props SidebarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, section := range props.Sections {
+			for _, section := range args.Sections {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"flex flex-col gap-1\"><h4 class=\"rounded-md px-2 py-1 text-sm font-medium\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -381,7 +381,7 @@ func Sidebar(props SidebarProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				for _, item := range section.Items {
-					templ_7745c5c3_Err = SidebarMobileLink(item, props.CurrentPath, signals).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = SidebarMobileLink(item, args.CurrentPath, signals).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

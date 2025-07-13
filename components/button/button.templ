@@ -1,24 +1,24 @@
 package button
 
-templ Button(props ButtonProps) {
+templ Button(args ButtonProps) {
 	{{
 		// Set default values
-		buttonType := props.Type
+		buttonType := args.Type
 		if buttonType == "" {
 			buttonType = "button"
 		}
 
 		// Generate the CSS classes using our variant system
-		classes := buttonVariants(props.Variant, props.Size, props.Class)
+		classes := buttonVariants(args.Variant, args.Size, args.Class)
 	}}
-	if props.AsChild {
+	if args.AsChild {
 		<!-- When AsChild is true, we render a span that can be styled as a button -->
 		<span
 			class={ classes }
-			if props.Disabled {
+			if args.Disabled {
 				aria-disabled="true"
 			}
-			{ props.Attributes... }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</span>
@@ -27,8 +27,8 @@ templ Button(props ButtonProps) {
 		<button
 			type={ buttonType }
 			class={ classes }
-			disabled?={ props.Disabled }
-			{ props.Attributes... }
+			disabled?={ args.Disabled }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</button>

@@ -1,55 +1,55 @@
 package breadcrumb
 
 // Breadcrumb renders the main navigation wrapper
-templ Breadcrumb(props BreadcrumbProps) {
+templ Breadcrumb(args BreadcrumbProps) {
 	<nav
 		aria-label="breadcrumb"
 		data-slot="breadcrumb"
-		class={ breadcrumbVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbVariants(args.Class) }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</nav>
 }
 
 // BreadcrumbList renders the ordered list container for breadcrumb items
-templ BreadcrumbList(props BreadcrumbListProps) {
+templ BreadcrumbList(args BreadcrumbListProps) {
 	<ol
 		data-slot="breadcrumb-list"
-		class={ breadcrumbListVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbListVariants(args.Class) }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</ol>
 }
 
 // BreadcrumbItem renders a list item wrapper for breadcrumb content
-templ BreadcrumbItem(props BreadcrumbItemProps) {
+templ BreadcrumbItem(args BreadcrumbItemProps) {
 	<li
 		data-slot="breadcrumb-item"
-		class={ breadcrumbItemVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbItemVariants(args.Class) }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</li>
 }
 
 // BreadcrumbLink renders a clickable breadcrumb link
-templ BreadcrumbLink(props BreadcrumbLinkProps) {
-	if props.AsChild {
+templ BreadcrumbLink(args BreadcrumbLinkProps) {
+	if args.AsChild {
 		<span
 			data-slot="breadcrumb-link"
-			class={ breadcrumbLinkVariants(props.Class) }
-			{ props.Attributes... }
+			class={ breadcrumbLinkVariants(args.Class) }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</span>
 	} else {
 		<a
 			data-slot="breadcrumb-link"
-			href={ templ.SafeURL(props.Href) }
-			class={ breadcrumbLinkVariants(props.Class) }
-			{ props.Attributes... }
+			href={ templ.SafeURL(args.Href) }
+			class={ breadcrumbLinkVariants(args.Class) }
+			{ args.Attributes... }
 		>
 			{ children... }
 		</a>
@@ -57,29 +57,29 @@ templ BreadcrumbLink(props BreadcrumbLinkProps) {
 }
 
 // BreadcrumbPage renders the current page indicator (non-clickable)
-templ BreadcrumbPage(props BreadcrumbPageProps) {
+templ BreadcrumbPage(args BreadcrumbPageProps) {
 	<span
 		data-slot="breadcrumb-page"
 		role="link"
 		aria-disabled="true"
 		aria-current="page"
-		class={ breadcrumbPageVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbPageVariants(args.Class) }
+		{ args.Attributes... }
 	>
 		{ children... }
 	</span>
 }
 
 // BreadcrumbSeparator renders the separator between breadcrumb items
-templ BreadcrumbSeparator(props BreadcrumbSeparatorProps) {
+templ BreadcrumbSeparator(args BreadcrumbSeparatorProps) {
 	<li
 		data-slot="breadcrumb-separator"
 		role="presentation"
 		aria-hidden="true"
-		class={ breadcrumbSeparatorVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbSeparatorVariants(args.Class) }
+		{ args.Attributes... }
 	>
-		if props.CustomIcon {
+		if args.CustomIcon {
 			{ children... }
 		} else {
 			<!-- ChevronRight icon (default separator) -->
@@ -97,13 +97,13 @@ templ BreadcrumbSeparator(props BreadcrumbSeparatorProps) {
 }
 
 // BreadcrumbEllipsis renders an ellipsis indicator for collapsed breadcrumbs
-templ BreadcrumbEllipsis(props BreadcrumbEllipsisProps) {
+templ BreadcrumbEllipsis(args BreadcrumbEllipsisProps) {
 	<span
 		data-slot="breadcrumb-ellipsis"
 		role="presentation"
 		aria-hidden="true"
-		class={ breadcrumbEllipsisVariants(props.Class) }
-		{ props.Attributes... }
+		class={ breadcrumbEllipsisVariants(args.Class) }
+		{ args.Attributes... }
 	>
 		<!-- MoreHorizontal icon -->
 		<svg

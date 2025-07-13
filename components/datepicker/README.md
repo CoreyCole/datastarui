@@ -55,9 +55,9 @@ As the user types, the calendar automatically:
 - 🎯 **Highlights Date**: Shows the date being entered (if valid)
 - ✨ **Live Preview**: Provides immediate visual feedback
 
-## Props Reference
+## Args Reference
 
-### Core Props
+### Core Args
 
 | Prop | Type | Default | Description |
 | ------------- | -------- | -------------- | --------------------------------------- |
@@ -66,7 +66,7 @@ As the user types, the calendar automatically:
 | `Mode` | `string` | `"single"` | Selection mode: `"single"` or `"range"` |
 | `Placeholder` | `string` | - | Placeholder text for the input field |
 
-### Date Props
+### Date Args
 
 | Prop | Type | Default | Description |
 | --------------- | -------- | ------------- | ------------------------------------- |
@@ -78,7 +78,7 @@ As the user types, the calendar automatically:
 | `MaxDate` | `string` | - | Maximum selectable date |
 | `DisabledDates` | `string` | - | Comma-separated disabled dates |
 
-### Display Props
+### Display Args
 
 | Prop | Type | Default | Description |
 | ----------------- | ------ | ------- | --------------------------------------- |
@@ -86,7 +86,7 @@ As the user types, the calendar automatically:
 | `HideOutsideDays` | `bool` | `false` | Hide dates from adjacent months |
 | `ShowIcon` | `bool` | `true` | Show calendar icon in input |
 
-### Behavior Props
+### Behavior Args
 
 | Prop | Type | Default | Description |
 | --------------- | ------ | ------- | ------------------------------------------- |
@@ -95,14 +95,14 @@ As the user types, the calendar automatically:
 | `OpenOnType` | `bool` | `true` | Open popover when user starts typing |
 | `CloseOnSelect` | `bool` | varies | Close popover after selection |
 
-### State Props
+### State Args
 
 | Prop | Type | Default | Description |
 | ---------- | ------ | ------- | ---------------------------------- |
 | `Required` | `bool` | `false` | Required field for form validation |
 | `Disabled` | `bool` | `false` | Disable the entire component |
 
-### Styling Props
+### Styling Args
 
 | Prop | Type | Default | Description |
 | --------------- | -------- | ------- | ------------------------------------ |
@@ -110,7 +110,7 @@ As the user types, the calendar automatically:
 | `InputClass` | `string` | - | Additional CSS classes for input |
 | `CalendarClass` | `string` | - | Additional CSS classes for calendar |
 
-### Form Props
+### Form Args
 
 | Prop | Type | Default | Description |
 | ------------ | ------------------ | ------- | --------------------------------- |

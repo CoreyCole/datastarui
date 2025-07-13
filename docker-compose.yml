@@ -29,21 +29,6 @@ services:
     command: sh -c "echo 'Starting Tailwind CSS watcher...' && /usr/local/bin/tailwindcss -i static/css/index.css -o static/css/build.css --watch --content './components/**/*.templ' --content './pages/**/*.templ' --content './layouts/**/*.templ'"
     networks:
       - datastarui-network
-  # Optional: Development tools container for running tests, etc.
-  tools:
-    build:
-      context: .
-      target: development
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - go-mod-cache:/go/pkg/mod
-    working_dir: /app
-    command: tail -f /dev/null # Keep container running
-    networks:
-      - datastarui-network
-    profiles:
-      - tools # Only start when explicitly requested
 volumes:
   go-mod-cache:
   air-tmp:
