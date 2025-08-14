@@ -16,7 +16,7 @@ templ DateInputPage() {
 				<div class="space-y-4">
 					<div>
 						<label class="text-sm font-medium">Basic date input</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:          "single-basic",
 							Name:        "single_date",
 							Placeholder: "Select a date",
@@ -24,7 +24,7 @@ templ DateInputPage() {
 					</div>
 					<div>
 						<label class="text-sm font-medium">With initial value</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:    "single-value",
 							Name:  "single_with_value",
 							Value: "12/25/2023",
@@ -37,7 +37,7 @@ templ DateInputPage() {
 				<div class="space-y-4">
 					<div>
 						<label class="text-sm font-medium">Basic date range</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:   "range-basic",
 							Name: "date_range",
 							Mode: "range",
@@ -45,7 +45,7 @@ templ DateInputPage() {
 					</div>
 					<div>
 						<label class="text-sm font-medium">Date range with optional end date</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:              "range-optional",
 							Name:            "optional_range",
 							Mode:            "range",
@@ -54,7 +54,7 @@ templ DateInputPage() {
 					</div>
 					<div>
 						<label class="text-sm font-medium">Vertical layout</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:          "range-vertical",
 							Name:        "vertical_range",
 							Mode:        "range",
@@ -63,7 +63,7 @@ templ DateInputPage() {
 					</div>
 					<div>
 						<label class="text-sm font-medium">With initial values</label>
-						@dateinput.DateInput(dateinput.DateInputProps{
+						@dateinput.DateInput(dateinput.DateInputArgs{
 							ID:         "range-values",
 							Name:       "range_with_values",
 							Mode:       "range",

@@ -77,7 +77,7 @@ Each component follows a consistent 3-file pattern:
 
 1. **Template** (`component.templ`) - templ markup with Datastar attributes
    - **IMPORTANT:** Always put the signal struct in the top of this file
-1. **Types** (`types.go`) - Go structs defining component args
+1. **Args** (`args.go`) - Go structs defining component args with Args suffix
 1. **Variants** (`variants.go`) - CSS class generation matching shadcn/ui exactly
 1. **Expressions** (`expressions.go`) - Datastar expression builders
 

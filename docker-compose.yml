@@ -13,7 +13,7 @@ services:
       - GOOS=linux
       - GO111MODULE=on
     working_dir: /app
-    command: sh -c "go mod download && air" # Download modules first, then start air
+    command: sh -c "just watch"
     depends_on:
       - tailwind
     networks:
@@ -22,11 +22,12 @@ services:
   tailwind:
     build:
       context: .
-      target: development
+      dockerfile: Dockerfile.tailwind
     volumes:
       - .:/app # Mount local files
     working_dir: /app
-    command: sh -c "echo 'Starting Tailwind CSS watcher...' && /usr/local/bin/tailwindcss -i static/css/index.css -o static/css/build.css --watch --content './components/**/*.templ' --content './pages/**/*.templ' --content './layouts/**/*.templ'"
+    tty: true
+    command: sh -c "echo 'Starting Tailwind CSS watcher...' && mkdir -p node_modules && ln -sf /usr/local/lib/node_modules/tailwindcss node_modules/tailwindcss && echo 'Starting watch...' && npx tailwindcss -i static/css/index.css -o static/css/build.css --watch --content './components/**/*.templ' --content './pages/**/*.templ' --content './layouts/**/*.templ'"
     networks:
       - datastarui-network
 volumes:

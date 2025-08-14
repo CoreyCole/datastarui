@@ -261,7 +261,7 @@ templ DatePicker(args DatePickerProps) {
 			>
 				<!-- DateInput without postfix -->
 				<div class="flex-1">
-					@dateinput.DateInput(dateinput.DateInputProps{
+					@dateinput.DateInput(dateinput.DateInputArgs{
 						ID:         dateInputID,
 						Name:       "", // No form submission for DateInput itself
 						Mode:       "range",
@@ -316,7 +316,7 @@ templ DatePicker(args DatePickerProps) {
 					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
-				@dateinput.DateInput(dateinput.DateInputProps{
+				@dateinput.DateInput(dateinput.DateInputArgs{
 					ID:          dateInputID,
 					Name:        "", // No form submission for DateInput itself
 					Placeholder: placeholder,

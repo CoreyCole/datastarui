@@ -2,7 +2,7 @@ package dateinput
 
 import "github.com/a-h/templ"
 
-type DateInputProps struct {
+type DateInputArgs struct {
 	// Basic args
 	ID          string           // Required for signal namespacing
 	Name        string           // For form submission (single mode) or base name (range mode)

@@ -101,7 +101,7 @@ templ DialogPage() {
 										@form.FormLabel(form.FormLabelProps{For: "form_name"}) {
 											Name
 										}
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											ID:          "form_name",
 											Name:        "name",
 											FormID:      "form_dialog",
@@ -117,7 +117,7 @@ templ DialogPage() {
 										@form.FormLabel(form.FormLabelProps{For: "form_email"}) {
 											Email
 										}
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											ID:          "form_email",
 											Name:        "email",
 											FormID:      "form_dialog",

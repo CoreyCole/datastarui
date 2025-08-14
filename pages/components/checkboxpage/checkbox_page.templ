@@ -251,7 +251,7 @@ templ CheckboxPage() {
 										@form.FormLabel(form.FormLabelProps{For: "name"}) {
 											Name
 										}
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											ID:          "name",
 											Name:        "name",
 											Placeholder: "Enter your name",
@@ -262,7 +262,7 @@ templ CheckboxPage() {
 										@form.FormLabel(form.FormLabelProps{For: "email"}) {
 											Email
 										}
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											ID:          "email",
 											Name:        "email",
 											Type:        "email",

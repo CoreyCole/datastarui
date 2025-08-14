@@ -59,7 +59,7 @@ templ TabsPage() {
 												@label.Label(label.LabelProps{}) {
 													Name
 												}
-												@input.Input(input.InputProps{
+												@input.Input(input.InputArgs{
 													ID:          "account_name",
 													Placeholder: "Pedro Duarte",
 												})
@@ -68,7 +68,7 @@ templ TabsPage() {
 												@label.Label(label.LabelProps{}) {
 													Username
 												}
-												@input.Input(input.InputProps{
+												@input.Input(input.InputArgs{
 													ID:          "account_username",
 													Placeholder: "@peduarte",
 												})
@@ -97,7 +97,7 @@ templ TabsPage() {
 											@label.Label(label.LabelProps{}) {
 												Current password
 											}
-											@input.Input(input.InputProps{
+											@input.Input(input.InputArgs{
 												ID:   "password_current",
 												Type: "password",
 											})
@@ -106,7 +106,7 @@ templ TabsPage() {
 											@label.Label(label.LabelProps{}) {
 												New password
 											}
-											@input.Input(input.InputProps{
+											@input.Input(input.InputArgs{
 												ID:   "password_new",
 												Type: "password",
 											})
@@ -184,7 +184,7 @@ templ TabsPage() {
 							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "todo"}) {
 								<div data-signals="{todos: ['Learn Datastar', 'Build components'], newTodo: ''}" class="space-y-4">
 									<div class="flex gap-2">
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											Placeholder: "Add a new todo...",
 											Attributes: templ.Attributes{
 												"data-bind":       "newTodo",
@@ -280,13 +280,13 @@ templ TabsPage() {
 									</p>
 									<div class="space-y-2">
 										<label class="text-sm font-medium">Display Name</label>
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											Placeholder: "Enter your display name",
 										})
 									</div>
 									<div class="space-y-2">
 										<label class="text-sm font-medium">Email</label>
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											Type:        "email",
 											Placeholder: "Enter your email",
 										})
@@ -301,14 +301,14 @@ templ TabsPage() {
 									</p>
 									<div class="space-y-2">
 										<label class="text-sm font-medium">Current Password</label>
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											Type:        "password",
 											Placeholder: "Enter current password",
 										})
 									</div>
 									<div class="space-y-2">
 										<label class="text-sm font-medium">New Password</label>
-										@input.Input(input.InputProps{
+										@input.Input(input.InputArgs{
 											Type:        "password",
 											Placeholder: "Enter new password",
 										})

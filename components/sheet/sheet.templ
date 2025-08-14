@@ -1,0 +1,238 @@
+package sheet
+
+import "github.com/coreycole/datastarui/utils"
+
+// SheetSignals defines the signal structure for sheet components
+type SheetSignals struct {
+	Open        bool        `json:"open"`
+	Modal       bool        `json:"modal"`  
+	ReturnValue interface{} `json:"returnValue"`
+}
+
+// Sheet container - can be modal or non-modal based on configuration
+templ Sheet(args SheetArgs) {
+	{{
+		// Create signals using the structured system with proper initial state
+		signals := utils.Signals(args.ID, SheetSignals{
+			Open:        args.DefaultOpen,
+			Modal:       args.Modal,
+			ReturnValue: nil,
+		})
+
+		// Sheet backdrop overlay - only shown for modal sheets
+		backdropClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+
+		// Sheet positioning classes based on side
+		var sheetClasses string
+		var zIndex string
+		if args.Modal {
+			zIndex = "z-50"  // Modal sheets on top
+		} else {
+			zIndex = "z-40"  // Non-modal sheets below modals
+		}
+		baseSheetClasses := "fixed gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 " + zIndex
+		
+		switch args.Side {
+		case "top":
+			sheetClasses = baseSheetClasses + " inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top"
+		case "bottom":
+			sheetClasses = baseSheetClasses + " inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom"
+		case "left":
+			sheetClasses = baseSheetClasses + " inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm"
+		default: // "right"
+			sheetClasses = baseSheetClasses + " inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm"
+		}
+
+		// Create sheet handler for clean expressions
+		sheetHandler := NewSheetHandler(signals)
+		escapeHandler := sheetHandler.BuildEscapeHandler()
+		
+		// For modal sheets, clicking backdrop closes the sheet
+		// For non-modal sheets, backdrop click is ignored
+		var backdropClickHandler string
+		if args.Modal {
+			backdropClickHandler = sheetHandler.BuildBackdropClickHandler()
+		} else {
+			backdropClickHandler = ""
+		}
+	}}
+	<div data-signals={ signals.DataSignals }>
+		if args.Modal {
+			<!-- Modal backdrop overlay -->
+			<div
+				data-show={ signals.Signal("open") }
+				class={ backdropClasses }
+				data-on-click={ backdropClickHandler }
+				if !args.DefaultOpen {
+					style="display: none;"
+				}
+			></div>
+		}
+		<!-- Sheet content container -->
+		<div
+			id={ args.ID }
+			data-show={ signals.Signal("open") }
+			class={ sheetClasses }
+			role="dialog"
+			if args.Modal {
+				aria-modal="true"
+			}
+			tabindex="-1"
+			data-on-keydown__window={ escapeHandler }
+			data-on-mount="evt.target.focus()"
+			if !args.DefaultOpen {
+				style="display: none;"
+			}
+			{ args.Attributes... }
+		>
+			{ children... }
+		</div>
+	</div>
+}
+
+// SheetTrigger - button or element that opens the sheet using Datastar signals
+templ SheetTrigger(args SheetTriggerArgs) {
+	{{
+		// Create signals manager for the target sheet
+		signals := utils.Signals(args.SheetID, SheetSignals{})
+		clickHandler := signals.Set("open", "true")
+	}}
+	if args.AsChild {
+		// When AsChild is true, we apply the click handler to the child element
+		<div
+			data-on-click={ clickHandler }
+			{ args.Attributes... }
+			class={ args.Class }
+		>
+			{ children... }
+		</div>
+	} else {
+		<button
+			type="button"
+			data-on-click={ clickHandler }
+			{ args.Attributes... }
+			class={ args.Class }
+		>
+			{ children... }
+		</button>
+	}
+}
+
+// SheetContent - content wrapper for the sheet
+templ SheetContent(args SheetContentArgs) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := SheetContentVariants(args)
+	}}
+	<div
+		data-slot="sheet-content"
+		class={ classes }
+		{ args.Attributes... }
+	>
+		<div class="flex flex-row justify-end mb-4">
+			@SheetClose(SheetCloseArgs{
+				SheetID: args.SheetID,
+				Class: "rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary w-6 h-6 flex items-center justify-center shrink-0",
+			})
+		</div>
+		{ children... }
+	</div>
+}
+
+// SheetHeader - header section of the sheet
+templ SheetHeader(args SheetHeaderArgs) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := SheetHeaderVariants(args)
+	}}
+	<div
+		data-slot="sheet-header"
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SheetFooter - footer section of the sheet
+templ SheetFooter(args SheetFooterArgs) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := SheetFooterVariants(args)
+	}}
+	<div
+		data-slot="sheet-footer"
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SheetTitle - title element in the sheet header
+templ SheetTitle(args SheetTitleArgs) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := SheetTitleVariants(args)
+	}}
+	<h2
+		data-slot="sheet-title"
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</h2>
+}
+
+// SheetDescription - description element in the sheet header
+templ SheetDescription(args SheetDescriptionArgs) {
+	{{
+		// Generate the CSS classes using our variant system
+		classes := SheetDescriptionVariants(args)
+	}}
+	<p
+		data-slot="sheet-description"
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</p>
+}
+
+// SheetClose - button that closes the sheet using Datastar signals
+templ SheetClose(args SheetCloseArgs) {
+	{{
+		// Create signals manager for the target sheet
+		signals := utils.Signals(args.SheetID, SheetSignals{})
+
+		// Create sheet handler for clean expressions
+		sheetHandler := NewSheetHandler(signals)
+		clickHandler := sheetHandler.BuildCloseHandler(args.ReturnValue)
+
+		// Use X icon for close button
+		iconClasses := "h-4 w-4"
+	}}
+	if args.AsChild {
+		<div
+			data-on-click={ clickHandler }
+			{ args.Attributes... }
+			class={ args.Class }
+		>
+			{ children... }
+		</div>
+	} else {
+		<button
+			type="button"
+			data-on-click={ clickHandler }
+			{ args.Attributes... }
+			class={ args.Class }
+		>
+			{ children... }
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={ iconClasses }>
+				<path d="M18 6 6 18"></path>
+				<path d="m6 6 12 12"></path>
+			</svg>
+			<span class="sr-only">Close</span>
+		</button>
+	}
+}
