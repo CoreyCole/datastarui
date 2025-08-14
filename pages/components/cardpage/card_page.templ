@@ -32,8 +32,8 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="flex justify-center">
-							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+						<div class="flex w-full justify-center">
+							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
 								@card.CardHeader(card.CardHeaderProps{}) {
 									@card.CardTitle(card.CardTitleProps{}) {
 										Card Title
@@ -61,8 +61,8 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="flex justify-center">
-							@card.Card(card.CardProps{Class: "w-[380px]"}) {
+						<div class="flex w-full justify-center">
+							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
 								@card.CardHeader(card.CardHeaderProps{}) {
 									@card.CardTitle(card.CardTitleProps{}) {
 										Notifications
@@ -151,8 +151,8 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="flex justify-center">
-							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+						<div class="flex w-full justify-center">
+							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
 								@card.CardHeader(card.CardHeaderProps{}) {
 									@card.CardTitle(card.CardTitleProps{}) {
 										Create project
@@ -210,8 +210,8 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="flex justify-center">
-							@card.Card(card.CardProps{Class: "w-[350px]"}) {
+						<div class="flex w-full justify-center">
+							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
 								@card.CardHeader(card.CardHeaderProps{}) {
 									@card.CardTitle(card.CardTitleProps{}) {
 										Team Settings
@@ -245,9 +245,9 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="flex justify-center">
-							<div data-signals="{likes: 0, saved: false}">
-								@card.Card(card.CardProps{Class: "w-[350px]"}) {
+						<div class="flex w-full justify-center">
+							<div data-signals="{likes: 0, saved: false}" class="w-full max-w-md">
+								@card.Card(card.CardProps{Class: "w-full"}) {
 									@card.CardHeader(card.CardHeaderProps{}) {
 										@card.CardTitle(card.CardTitleProps{}) {
 											Interactive Post
@@ -301,7 +301,7 @@ templ CardPage() {
 						</p>
 					</div>
 					<div class="rounded-lg border bg-card p-6">
-						<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+						<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							<!-- Content Only -->
 							@card.Card(card.CardProps{}) {
 								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {

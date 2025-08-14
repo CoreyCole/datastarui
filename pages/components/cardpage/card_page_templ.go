@@ -59,7 +59,7 @@ func CardPage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Card</h1><p class=\"text-lg text-muted-foreground\">Displays a card with header, content, and footer.</p></div><!-- Component Grid --><div class=\"grid gap-8\"><!-- Basic Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Basic Card</h2><p class=\"text-sm text-muted-foreground\">A simple card with header, content, and footer.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Card</h1><p class=\"text-lg text-muted-foreground\">Displays a card with header, content, and footer.</p></div><!-- Component Grid --><div class=\"grid gap-8\"><!-- Basic Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Basic Card</h2><p class=\"text-sm text-muted-foreground\">A simple card with header, content, and footer.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex w-full justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -195,11 +195,11 @@ func CardPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-[350px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-full max-w-md"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div></div><!-- Notifications Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Notifications Card</h2><p class=\"text-sm text-muted-foreground\">A card showing notifications with interactive elements.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div></div><!-- Notifications Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Notifications Card</h2><p class=\"text-sm text-muted-foreground\">A card showing notifications with interactive elements.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex w-full justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -385,11 +385,11 @@ func CardPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-[380px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-full max-w-md"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></div><!-- Form Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Form Card</h2><p class=\"text-sm text-muted-foreground\">A card containing a form with inputs and actions.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></div><!-- Form Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Form Card</h2><p class=\"text-sm text-muted-foreground\">A card containing a form with inputs and actions.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex w-full justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -599,11 +599,11 @@ func CardPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-[350px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-full max-w-md"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div></div><!-- Card with Action --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Card with Action</h2><p class=\"text-sm text-muted-foreground\">A card with an action button in the header.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div></div><!-- Card with Action --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Card with Action</h2><p class=\"text-sm text-muted-foreground\">A card with an action button in the header.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex w-full justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -757,11 +757,11 @@ func CardPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-[350px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-full max-w-md"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div></div></div><!-- Interactive Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Interactive Card</h2><p class=\"text-sm text-muted-foreground\">A card with Datastar interactivity for dynamic content.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex justify-center\"><div data-signals=\"{likes: 0, saved: false}\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div></div></div><!-- Interactive Card Example --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Interactive Card</h2><p class=\"text-sm text-muted-foreground\">A card with Datastar interactivity for dynamic content.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"flex w-full justify-center\"><div data-signals=\"{likes: 0, saved: false}\" class=\"w-full max-w-md\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -953,11 +953,11 @@ func CardPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-[350px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardProps{Class: "w-full"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div></div></div></div><!-- Component Variations --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Component Variations</h2><p class=\"text-sm text-muted-foreground\">Different combinations of card components.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"grid gap-4 md:grid-cols-2 lg:grid-cols-3\"><!-- Content Only -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div></div></div></div><!-- Component Variations --><div class=\"space-y-4\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Component Variations</h2><p class=\"text-sm text-muted-foreground\">Different combinations of card components.</p></div><div class=\"rounded-lg border bg-card p-6\"><div class=\"grid gap-4 sm:grid-cols-2 lg:grid-cols-3\"><!-- Content Only -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
