@@ -37,4 +37,3 @@ func (d *DataClass) Build() string {
 
 	return "{" + strings.Join(parts, ", ") + "}"
 }
-

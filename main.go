@@ -16,11 +16,12 @@ import (
 	"github.com/coreycole/datastarui/pages/components/datepickerpage"
 	"github.com/coreycole/datastarui/pages/components/dialogpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
-	"github.com/coreycole/datastarui/pages/components/sheetpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/selectpage"
+	"github.com/coreycole/datastarui/pages/components/sheetpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
+	"github.com/coreycole/datastarui/serviceworker"
 	"github.com/coreycole/datastarui/utils"
 )
 
@@ -34,7 +35,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
-	
+
 	// Mobile detection middleware
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -110,6 +111,32 @@ func main() {
 	formpage.RegisterFormPageHandlers(e)
 	checkboxpage.RegisterCheckboxHandlers(e)
 	dialogpage.RegisterDialogPageHandlers(e)
+
+	// Service worker endpoints
+	e.GET("/sw.js", func(c echo.Context) error {
+		c.Response().Header().Set("Content-Type", "application/javascript")
+		c.Response().Header().Set("Service-Worker-Allowed", "/")
+		js, err := serviceworker.GenerateServiceWorker(serviceworker.DefaultServiceWorker())
+		if err != nil {
+			return err
+		}
+		_, err = c.Response().Writer.Write([]byte(js))
+		return err
+	})
+
+	e.GET("/manifest.json", func(c echo.Context) error {
+		c.Response().Header().Set("Content-Type", "application/manifest+json")
+		json, err := serviceworker.GenerateManifest(serviceworker.DefaultManifest())
+		if err != nil {
+			return err
+		}
+		_, err = c.Response().Writer.Write([]byte(json))
+		return err
+	})
+
+	e.GET("/offline", func(c echo.Context) error {
+		return serviceworker.OfflineFallback().Render(c.Request().Context(), c.Response().Writer)
+	})
 
 	// Serve static files
 	e.Static("/", "static/")

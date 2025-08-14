@@ -1,0 +1,22 @@
+package serviceworker
+
+templ OfflineFallback() {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Offline - DatastarUI</title>
+		<link rel="stylesheet" href="/css/build.css">
+	</head>
+	<body class="bg-background text-foreground flex items-center justify-center min-h-screen">
+		<div class="text-center">
+			<h1 class="text-2xl font-bold mb-4">You're Offline</h1>
+			<p class="text-muted-foreground mb-4">Please check your internet connection and try again.</p>
+			<button onclick="window.location.reload()" class="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+				Retry
+			</button>
+		</div>
+	</body>
+	</html>
+}

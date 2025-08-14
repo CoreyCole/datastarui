@@ -20,6 +20,7 @@ func GetSidebarSections() []sidebar.SidebarSection {
 				{Title: "Select", Href: "/components/select"},
 				{Title: "Sheet", Href: "/components/sheet"},
 				{Title: "Tabs", Href: "/components/tabs"},
+				{Title: "Service Worker", Href: "/components/serviceworker"},
 			},
 		},
 	}

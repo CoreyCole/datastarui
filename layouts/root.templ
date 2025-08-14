@@ -4,6 +4,7 @@ import (
 	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
+	"github.com/coreycole/datastarui/serviceworker"
 	"github.com/coreycole/datastarui/utils"
 )
 
@@ -89,6 +90,10 @@ templ Root(currentPage string) {
 			</script>
 			<!-- Datastar -->
       <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
+			<!-- PWA Manifest -->
+			@serviceworker.LinkManifest(serviceworker.DefaultManifest())
+			<!-- Service Worker Registration -->
+			@serviceworker.Register(serviceworker.DefaultRegister())
 		</head>
 		{{
 			// Build data-signals based on mobile detection

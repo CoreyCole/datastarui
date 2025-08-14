@@ -9,7 +9,7 @@ import (
 // IsMobile detects if the request is from a mobile device based on User-Agent
 func IsMobile(c echo.Context) bool {
 	userAgent := strings.ToLower(c.Request().Header.Get("User-Agent"))
-	
+
 	// Common mobile device indicators
 	mobileKeywords := []string{
 		"mobile",
@@ -22,13 +22,13 @@ func IsMobile(c echo.Context) bool {
 		"opera mini",
 		"opera mobi",
 	}
-	
+
 	for _, keyword := range mobileKeywords {
 		if strings.Contains(userAgent, keyword) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -44,16 +44,16 @@ const (
 // GetDeviceType returns a more granular device type
 func GetDeviceType(c echo.Context) DeviceType {
 	userAgent := strings.ToLower(c.Request().Header.Get("User-Agent"))
-	
+
 	// Check for tablet first (iPads can contain "mobile" in UA)
 	if strings.Contains(userAgent, "ipad") || strings.Contains(userAgent, "tablet") {
 		return DeviceTablet
 	}
-	
+
 	// Then check for mobile
 	if IsMobile(c) {
 		return DeviceMobile
 	}
-	
+
 	return DeviceDesktop
 }

@@ -1,0 +1,25 @@
+package serviceworker
+
+templ Manifest(args ManifestArgs) {
+	<link rel="manifest" href="/manifest.json" />
+	<meta name="theme-color" content={ args.ThemeColor } />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-title" content={ args.ShortName } />
+}
+
+templ ManifestJSON(args ManifestArgs) {
+	{ args.Name }
+}
+
+templ LinkManifest(args ManifestArgs) {
+	<link rel="manifest" href="/manifest.json" />
+	<meta name="theme-color" content={ args.ThemeColor } />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-title" content={ args.ShortName } />
+	<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+	<link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color={ args.ThemeColor } />
+}

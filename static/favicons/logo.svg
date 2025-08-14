@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#0f172a"/>
+  <path d="M128 128h256v256h-64l-32-32-32 32-32-32-32 32-32-32-32 32-32-32V128z" fill="#10b981"/>
+  <circle cx="384" cy="128" r="32" fill="#fbbf24"/>
+  <text x="256" y="384" text-anchor="middle" font-family="Arial, sans-serif" font-size="128" font-weight="bold" fill="white">DS</text>
+</svg>

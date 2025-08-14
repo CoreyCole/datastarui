@@ -15,6 +15,27 @@ install:
 	@go mod tidy
 	@go mod download
 
+## MCP stuff so that go can be smart 
+
+mcp:
+	# make the AI smarter :) 
+	# https://github.com/go-delve/mcp-dap-server
+	go install github.com/go-delve/mcp-dap-server@latest
+mcp-start:
+	# must start the delve MCP
+	mcp-dap-server
+mcp-claude-list:
+	claude mcp list
+mcp-claude-add:
+	claude mcp add --transport sse mcp-dap-server http://localhost:8080
+mcp-claude-del:
+	claude mcp remove mcp-dap-server
+
+# Generate favicons from SVG using pure Go
+gen-favicons:
+	@cd tools/favicon-gen && go run . --svg ../../static/favicons/logo.svg --out ../../static/favicons
+
+
 # Docker development commands
 # Builds, (re)creates, and starts containers
 @up *args:

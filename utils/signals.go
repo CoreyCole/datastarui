@@ -104,7 +104,6 @@ func (sm *SignalManager) ConditionalMultiAction(condition string, actions ...str
 	return fmt.Sprintf("%s ? (%s) : void 0", condition, actionsStr)
 }
 
-
 // MultiStateConditional creates a chain of conditional expressions for handling multiple states
 //
 //	Example: signals.MultiStateConditional([]StateAction{

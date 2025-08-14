@@ -31,10 +31,10 @@ func (d *DialogHandler) BuildEscapeHandler() string {
 // BuildCloseHandler creates a close handler with optional return value
 func (d *DialogHandler) BuildCloseHandler(returnValue string) string {
 	expr := utils.NewExpression().Statement(d.signals.Set("open", "false"))
-	
+
 	if returnValue != "" {
 		expr.Statement(d.signals.SetString("returnValue", returnValue))
 	}
-	
+
 	return expr.Build()
 }

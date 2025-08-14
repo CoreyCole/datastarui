@@ -27,7 +27,7 @@ func (t *TabsHandler) BuildTriggerClickHandler(value string) string {
 // BuildTriggerDataClass creates conditional classes for tab triggers
 func (t *TabsHandler) BuildTriggerDataClass(value string) string {
 	condition := fmt.Sprintf("%s === '%s'", t.signals.Signal("active"), value)
-	
+
 	return utils.NewDataClass().
 		Add("bg-background", condition).
 		Add("text-foreground", condition).

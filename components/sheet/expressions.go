@@ -32,10 +32,10 @@ func (s *SheetHandler) BuildEscapeHandler() string {
 // BuildCloseHandler creates a close handler with optional return value
 func (s *SheetHandler) BuildCloseHandler(returnValue string) string {
 	expr := utils.NewExpression().Statement(s.signals.Set("open", "false"))
-	
+
 	if returnValue != "" {
 		expr.Statement(s.signals.SetString("returnValue", returnValue))
 	}
-	
+
 	return expr.Build()
 }

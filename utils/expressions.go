@@ -55,7 +55,6 @@ func (e *DatastarExpression) Build() string {
 	return strings.Join(e.statements, e.separator)
 }
 
-
 // BuildConditional creates a conditional expression
 func BuildConditional(condition, trueExpr, falseExpr string) string {
 	if falseExpr == "" {

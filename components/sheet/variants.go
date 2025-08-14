@@ -8,7 +8,7 @@ import (
 func SheetVariants(args SheetArgs) string {
 	// Sheet-specific styling based on side
 	baseClasses := ""
-	
+
 	switch args.Side {
 	case "top":
 		baseClasses = "inset-x-0 top-0 border-b"
