@@ -27,7 +27,7 @@ type DateInputSignals struct {
 
 // DateInput renders a smart date input with auto-formatting and validation
 // Supports both single mode and range mode with optional end dates
-templ DateInput(args DateInputProps) {
+templ DateInput(args DateInputArgs) {
 	{{
 		// Generate unique ID if not provided
 		dateInputID := args.ID
@@ -175,7 +175,7 @@ templ DateInput(args DateInputProps) {
 			}
 			<!-- Input field with optional postfix -->
 			<div class="relative">
-				@input.Input(input.InputProps{
+				@input.Input(input.InputArgs{
 					Type:        "text",
 					ID:          dateInputID,
 					Name:        args.Name + "_display",
@@ -321,7 +321,7 @@ templ DateInput(args DateInputProps) {
 							}
 						</label>
 					}
-					@input.Input(input.InputProps{
+					@input.Input(input.InputArgs{
 						Type:        "text",
 						ID:          dateInputID + "_start",
 						Placeholder: startPlaceholder,
@@ -354,7 +354,7 @@ templ DateInput(args DateInputProps) {
 						</label>
 					}
 					<!-- Single input with dynamic disabled state -->
-					@input.Input(input.InputProps{
+					@input.Input(input.InputArgs{
 						Type:        "text",
 						ID:          dateInputID + "_end",
 						Placeholder: endPlaceholder,

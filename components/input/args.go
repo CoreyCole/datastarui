@@ -2,7 +2,7 @@ package input
 
 import "github.com/a-h/templ"
 
-type InputProps struct {
+type InputArgs struct {
 	Type        string           // Input type (text, password, email, etc.)
 	Class       string           // Additional CSS classes
 	Placeholder string           // Placeholder text

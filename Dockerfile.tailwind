@@ -1,0 +1,24 @@
+# Use Node Alpine image which has proper npm setup
+FROM node:18-alpine
+
+# Install basic dependencies
+RUN apk add --no-cache git curl bash
+
+# Install additional dependencies
+RUN apk add --no-cache git curl bash
+
+# Install just command runner
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh -o /tmp/install-just.sh && \
+    bash /tmp/install-just.sh --to /usr/local/bin && \
+    rm /tmp/install-just.sh
+
+# Set working directory
+WORKDIR /app
+
+# Install Tailwind CSS v4.1.11 globally via npm
+RUN npm install -g tailwindcss @tailwindcss/cli@v4.1.11
+
+# Create node_modules directory and symlink for CSS imports
+RUN mkdir -p node_modules && \
+    ln -s /usr/local/lib/node_modules/tailwindcss node_modules/tailwindcss
+
