@@ -34,7 +34,7 @@ templ TabsPage() {
 						}
 					}
 					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-[400px]"}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-full max-w-2xl"}) {
 							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-2"}) {
 								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "basic_tabs", Value: "account"}) {
 									Account
@@ -133,7 +133,7 @@ templ TabsPage() {
 						}
 					}
 					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-[400px]"}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-full max-w-2xl"}) {
 							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
 								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "counter"}) {
 									Counter
@@ -257,7 +257,7 @@ templ TabsPage() {
 						}
 					}
 					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-[600px]"}) {
+						@tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-full max-w-4xl"}) {
 							@tabs.TabsList(tabs.TabsListProps{Class: "flex-col h-auto w-48 mr-4"}) {
 								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "general", Class: "w-full justify-start"}) {
 									General
@@ -379,7 +379,7 @@ templ TabsPage() {
 							<!-- Standard Variant -->
 							<div>
 								<h4 class="text-sm font-medium mb-3">Standard Variant (New York v4 Style)</h4>
-								@tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-[500px]"}) {
+								@tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-full max-w-2xl"}) {
 									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
 										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "overview"}) {
 											Overview
@@ -421,7 +421,7 @@ templ TabsPage() {
 							<!-- Custom Variant with Additional Classes -->
 							<div>
 								<h4 class="text-sm font-medium mb-3">Custom Variant (With Additional Classes)</h4>
-								@tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-[500px]"}) {
+								@tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-full max-w-2xl"}) {
 									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-800"}) {
 										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "design", Class: "text-blue-600 dark:text-blue-400"}) {
 											🎨 Design

@@ -797,7 +797,7 @@ func TabsPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-[400px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-full max-w-2xl"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1256,7 +1256,7 @@ func TabsPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-[400px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-full max-w-2xl"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1701,7 +1701,7 @@ func TabsPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-[600px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-full max-w-4xl"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -2003,7 +2003,7 @@ func TabsPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-[500px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var76), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-full max-w-2xl"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var76), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -2195,7 +2195,7 @@ func TabsPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-[500px]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var84), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-full max-w-2xl"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var84), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
