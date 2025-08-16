@@ -95,7 +95,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -121,13 +121,13 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -153,7 +153,7 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -191,7 +191,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseProps{
+					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseArgs{
 						DialogID: "modal_demo",
 						Variant:  "default",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
@@ -200,13 +200,13 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogProps{
+			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogArgs{
 				ID: "modal_demo",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -230,7 +230,7 @@ func DialogPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerProps{
+			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerArgs{
 				DialogID: "modal_demo",
 				Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
@@ -283,7 +283,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -309,13 +309,13 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -551,7 +551,7 @@ func DialogPage() templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseProps{
+							templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseArgs{
 								DialogID: "form_demo",
 								Variant:  "outline",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
@@ -592,7 +592,7 @@ func DialogPage() templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -612,13 +612,13 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogProps{
+			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogArgs{
 				ID: "form_demo",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -646,7 +646,7 @@ func DialogPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerProps{
+			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerArgs{
 				DialogID: "form_demo",
 				Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
@@ -699,7 +699,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -725,13 +725,13 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -757,7 +757,7 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -795,7 +795,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseProps{
+					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseArgs{
 						DialogID: "card_dialog",
 						Variant:  "default",
 						Class:    "w-full",
@@ -805,13 +805,13 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogProps{ID: "card_dialog"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogArgs{ID: "card_dialog"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -833,7 +833,7 @@ func DialogPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerProps{
+			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerArgs{
 				AsChild:  true,
 				DialogID: "card_dialog",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
@@ -886,7 +886,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogTitle(dialog.DialogTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -912,13 +912,13 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dialog.DialogDescription(dialog.DialogDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogHeader(dialog.DialogHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -944,7 +944,7 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogContent(dialog.DialogContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -982,7 +982,7 @@ func DialogPage() templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseProps{
+					templ_7745c5c3_Err = dialog.DialogClose(dialog.DialogCloseArgs{
 						DialogID: "status_dialog",
 						Variant:  "default",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
@@ -991,13 +991,13 @@ func DialogPage() templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = dialog.DialogFooter(dialog.DialogFooterArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogProps{ID: "status_dialog"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = dialog.Dialog(dialog.DialogArgs{ID: "status_dialog"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1019,7 +1019,7 @@ func DialogPage() templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerProps{
+			templ_7745c5c3_Err = dialog.DialogTrigger(dialog.DialogTriggerArgs{
 				AsChild:  true,
 				DialogID: "status_dialog",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var42), templ_7745c5c3_Buffer)

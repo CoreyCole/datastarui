@@ -2,61 +2,61 @@ package dialog
 
 import "github.com/a-h/templ"
 
-// DialogProps defines the args for the Dialog container (using Datastar signals)
-type DialogProps struct {
+// DialogArgs defines the args for the Dialog container (using Datastar signals)
+type DialogArgs struct {
 	ID          string
 	DefaultOpen bool // Whether the dialog should be open by default
 	Class       string
 	Attributes  templ.Attributes
 }
 
-// DialogTriggerProps defines the args for the DialogTrigger component
-type DialogTriggerProps struct {
+// DialogTriggerArgs defines the args for the DialogTrigger component
+type DialogTriggerArgs struct {
 	DialogID   string
 	AsChild    bool
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogContentProps defines the args for the DialogContent component (for backwards compatibility)
-type DialogContentProps struct {
+// DialogContentArgs defines the args for the DialogContent component (for backwards compatibility)
+type DialogContentArgs struct {
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogOverlayProps defines the args for the DialogOverlay component
-type DialogOverlayProps struct {
+// DialogOverlayArgs defines the args for the DialogOverlay component
+type DialogOverlayArgs struct {
 	ID         string
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogHeaderProps defines the args for the DialogHeader component
-type DialogHeaderProps struct {
+// DialogHeaderArgs defines the args for the DialogHeader component
+type DialogHeaderArgs struct {
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogFooterProps defines the args for the DialogFooter component
-type DialogFooterProps struct {
+// DialogFooterArgs defines the args for the DialogFooter component
+type DialogFooterArgs struct {
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogTitleProps defines the args for the DialogTitle component
-type DialogTitleProps struct {
+// DialogTitleArgs defines the args for the DialogTitle component
+type DialogTitleArgs struct {
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogDescriptionProps defines the args for the DialogDescription component
-type DialogDescriptionProps struct {
+// DialogDescriptionArgs defines the args for the DialogDescription component
+type DialogDescriptionArgs struct {
 	Class      string
 	Attributes templ.Attributes
 }
 
-// DialogCloseProps defines the args for the DialogClose component
-type DialogCloseProps struct {
+// DialogCloseArgs defines the args for the DialogClose component
+type DialogCloseArgs struct {
 	DialogID    string
 	ReturnValue string // Optional return value when closing the dialog
 	Variant     string // Button variant: "default", "destructive", "outline", "secondary", "ghost", "link"

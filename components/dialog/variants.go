@@ -5,7 +5,7 @@ import (
 )
 
 // DialogVariants returns the CSS classes for the main Dialog container component
-func DialogVariants(args DialogProps) string {
+func DialogVariants(args DialogArgs) string {
 	// Dialog-specific styling - optimized for modal dialogs with consistent padding
 	baseClasses := "max-w-lg w-full max-h-[90vh] overflow-auto bg-background border shadow-lg rounded-lg p-6"
 
@@ -13,7 +13,7 @@ func DialogVariants(args DialogProps) string {
 }
 
 // DialogContentVariants returns the CSS classes for the DialogContent component
-func DialogContentVariants(args DialogContentProps) string {
+func DialogContentVariants(args DialogContentArgs) string {
 	// Base classes for dialog content - no horizontal padding since container handles it
 	baseClasses := "py-4"
 
@@ -21,14 +21,14 @@ func DialogContentVariants(args DialogContentProps) string {
 }
 
 // DialogOverlayVariants returns the CSS classes for the DialogOverlay component
-func DialogOverlayVariants(args DialogOverlayProps) string {
+func DialogOverlayVariants(args DialogOverlayArgs) string {
 	baseClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
 
 	return utils.TwMerge(baseClasses, args.Class)
 }
 
 // DialogHeaderVariants returns the CSS classes for the DialogHeader component
-func DialogHeaderVariants(args DialogHeaderProps) string {
+func DialogHeaderVariants(args DialogHeaderArgs) string {
 	// Dialog header styling - no padding since container handles it, just spacing between elements
 	baseClasses := "flex flex-col gap-2 text-left"
 
@@ -36,7 +36,7 @@ func DialogHeaderVariants(args DialogHeaderProps) string {
 }
 
 // DialogFooterVariants returns the CSS classes for the DialogFooter component
-func DialogFooterVariants(args DialogFooterProps) string {
+func DialogFooterVariants(args DialogFooterArgs) string {
 	// Footer with top margin to separate from content, no horizontal padding
 	baseClasses := "flex flex-row gap-3 justify-end pt-4"
 
@@ -44,7 +44,7 @@ func DialogFooterVariants(args DialogFooterProps) string {
 }
 
 // DialogTitleVariants returns the CSS classes for the DialogTitle component
-func DialogTitleVariants(args DialogTitleProps) string {
+func DialogTitleVariants(args DialogTitleArgs) string {
 	// Dialog title styling - focused on readability and hierarchy
 	baseClasses := "text-lg leading-none font-semibold"
 
@@ -52,7 +52,7 @@ func DialogTitleVariants(args DialogTitleProps) string {
 }
 
 // DialogDescriptionVariants returns the CSS classes for the DialogDescription component
-func DialogDescriptionVariants(args DialogDescriptionProps) string {
+func DialogDescriptionVariants(args DialogDescriptionArgs) string {
 	// Dialog description styling - similar to card but optimized for dialog context
 	baseClasses := "text-sm text-muted-foreground"
 
@@ -60,7 +60,7 @@ func DialogDescriptionVariants(args DialogDescriptionProps) string {
 }
 
 // DialogCloseVariants returns the CSS classes for the DialogClose component
-func DialogCloseVariants(args DialogCloseProps) string {
+func DialogCloseVariants(args DialogCloseArgs) string {
 	baseClasses := "absolute right-4 top-4 rounded-sm transition-all hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-10 p-2 bg-white/90 border border-gray-200 shadow-sm hover:shadow-md text-gray-900 hover:text-gray-900"
 
 	return utils.TwMerge(baseClasses, args.Class)

@@ -4,17 +4,15 @@ import "github.com/coreycole/datastarui/utils"
 
 // DialogSignals defines the signal structure for dialog components
 type DialogSignals struct {
-	Open        bool        `json:"open"`
-	ReturnValue interface{} `json:"returnValue"`
+	Open bool `json:"open"`
 }
 
 // Dialog container - pure Datastar signal-based modal using data-show
-templ Dialog(args DialogProps) {
+templ Dialog(args DialogArgs) {
 	{{
 		// Create signals using the new structured system with proper initial state
 		signals := utils.Signals(args.ID, DialogSignals{
-			Open:        args.DefaultOpen,
-			ReturnValue: nil,
+			Open: args.DefaultOpen,
 		})
 
 		// Dialog backdrop overlay
@@ -61,7 +59,7 @@ templ Dialog(args DialogProps) {
 }
 
 // DialogTrigger - button or element that opens the dialog using Datastar signals
-templ DialogTrigger(args DialogTriggerProps) {
+templ DialogTrigger(args DialogTriggerArgs) {
 	{{
 		// Create signals manager for the target dialog
 		signals := utils.Signals(args.DialogID, DialogSignals{})
@@ -89,7 +87,7 @@ templ DialogTrigger(args DialogTriggerProps) {
 }
 
 // DialogContent - content section of the dialog
-templ DialogContent(args DialogContentProps) {
+templ DialogContent(args DialogContentArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := DialogContentVariants(args)
@@ -104,7 +102,7 @@ templ DialogContent(args DialogContentProps) {
 }
 
 // DialogOverlay - backdrop overlay (for styling compatibility)
-templ DialogOverlay(args DialogOverlayProps) {
+templ DialogOverlay(args DialogOverlayArgs) {
 	<div
 		id={ args.ID }
 		class={ DialogOverlayVariants(args) }
@@ -113,7 +111,7 @@ templ DialogOverlay(args DialogOverlayProps) {
 }
 
 // DialogHeader - header section of the dialog
-templ DialogHeader(args DialogHeaderProps) {
+templ DialogHeader(args DialogHeaderArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := DialogHeaderVariants(args)
@@ -128,7 +126,7 @@ templ DialogHeader(args DialogHeaderProps) {
 }
 
 // DialogFooter - footer section of the dialog
-templ DialogFooter(args DialogFooterProps) {
+templ DialogFooter(args DialogFooterArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := DialogFooterVariants(args)
@@ -143,7 +141,7 @@ templ DialogFooter(args DialogFooterProps) {
 }
 
 // DialogTitle - title element in the dialog header
-templ DialogTitle(args DialogTitleProps) {
+templ DialogTitle(args DialogTitleArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := DialogTitleVariants(args)
@@ -158,7 +156,7 @@ templ DialogTitle(args DialogTitleProps) {
 }
 
 // DialogDescription - description element in the dialog header
-templ DialogDescription(args DialogDescriptionProps) {
+templ DialogDescription(args DialogDescriptionArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := DialogDescriptionVariants(args)
@@ -173,7 +171,7 @@ templ DialogDescription(args DialogDescriptionProps) {
 }
 
 // DialogClose - button that closes the dialog using Datastar signals
-templ DialogClose(args DialogCloseProps) {
+templ DialogClose(args DialogCloseArgs) {
 	{{
 		// Create signals manager for the target dialog
 		signals := utils.Signals(args.DialogID, DialogSignals{})

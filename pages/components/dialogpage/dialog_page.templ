@@ -24,18 +24,18 @@ templ DialogPage() {
 				<p class="text-sm text-muted-foreground">
 					Uses Datastar signals - ESC key closes, backdrop click closes.
 				</p>
-				@dialog.Dialog(dialog.DialogProps{
+				@dialog.Dialog(dialog.DialogArgs{
 					ID: "modal_demo",
 				}) {
-					@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-						@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+					@dialog.DialogHeader(dialog.DialogHeaderArgs{}) {
+						@dialog.DialogTitle(dialog.DialogTitleArgs{}) {
 							Modal Dialog
 						}
-						@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+						@dialog.DialogDescription(dialog.DialogDescriptionArgs{}) {
 							This is a modal dialog that blocks interaction with the rest of the page.
 						}
 					}
-					@dialog.DialogContent(dialog.DialogContentProps{}) {
+					@dialog.DialogContent(dialog.DialogContentArgs{}) {
 						<p class="text-sm">Try pressing ESC or clicking outside to close this dialog.</p>
 						<!-- Show dialog state inside the dialog -->
 						<div class="mt-4 p-3 bg-blue-50 rounded border">
@@ -43,8 +43,8 @@ templ DialogPage() {
 							<p class="text-xs text-blue-700">Open: <span data-text="$modal_demo.open ? 'Yes' : 'No'"></span></p>
 						</div>
 					}
-					@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-						@dialog.DialogClose(dialog.DialogCloseProps{
+					@dialog.DialogFooter(dialog.DialogFooterArgs{}) {
+						@dialog.DialogClose(dialog.DialogCloseArgs{
 							DialogID: "modal_demo",
 							Variant:  "default",
 						}) {
@@ -52,7 +52,7 @@ templ DialogPage() {
 						}
 					}
 				}
-				@dialog.DialogTrigger(dialog.DialogTriggerProps{
+				@dialog.DialogTrigger(dialog.DialogTriggerArgs{
 					DialogID: "modal_demo",
 					Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 				}) {
@@ -74,18 +74,18 @@ templ DialogPage() {
 				<!-- Success message area -->
 				<div id="form_success_message"></div>
 				<div class="space-y-4 p-6 bg-muted/50 rounded-lg">
-					@dialog.Dialog(dialog.DialogProps{
+					@dialog.Dialog(dialog.DialogArgs{
 						ID: "form_demo",
 					}) {
-						@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-							@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+						@dialog.DialogHeader(dialog.DialogHeaderArgs{}) {
+							@dialog.DialogTitle(dialog.DialogTitleArgs{}) {
 								User Information Form
 							}
-							@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+							@dialog.DialogDescription(dialog.DialogDescriptionArgs{}) {
 								Fill out the form and see the values update in real-time.
 							}
 						}
-						@dialog.DialogContent(dialog.DialogContentProps{}) {
+						@dialog.DialogContent(dialog.DialogContentArgs{}) {
 							<div id="form_dialog_errors"></div>
 							@form.Form(form.FormProps{
 								ID:     "form_dialog",
@@ -130,8 +130,8 @@ templ DialogPage() {
 										}
 									}
 								</div>
-								@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-									@dialog.DialogClose(dialog.DialogCloseProps{
+								@dialog.DialogFooter(dialog.DialogFooterArgs{}) {
+									@dialog.DialogClose(dialog.DialogCloseArgs{
 										DialogID: "form_demo",
 										Variant:  "outline",
 									}) {
@@ -159,7 +159,7 @@ templ DialogPage() {
 							<div>Form Submitted: <span data-text="$form_dialog.submitted || false ? 'Yes' : 'No'"></span></div>
 						</div>
 					</div>
-					@dialog.DialogTrigger(dialog.DialogTriggerProps{
+					@dialog.DialogTrigger(dialog.DialogTriggerArgs{
 						DialogID: "form_demo",
 						Class:    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2",
 					}) {
@@ -177,16 +177,16 @@ templ DialogPage() {
 					<!-- Card Trigger -->
 					<div class="space-y-4">
 						<h3 class="text-lg font-medium">Card Trigger</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "card_dialog"}) {
-							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+						@dialog.Dialog(dialog.DialogArgs{ID: "card_dialog"}) {
+							@dialog.DialogHeader(dialog.DialogHeaderArgs{}) {
+								@dialog.DialogTitle(dialog.DialogTitleArgs{}) {
 									User Profile Details
 								}
-								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+								@dialog.DialogDescription(dialog.DialogDescriptionArgs{}) {
 									View user profile information.
 								}
 							}
-							@dialog.DialogContent(dialog.DialogContentProps{}) {
+							@dialog.DialogContent(dialog.DialogContentArgs{}) {
 								<div class="flex items-center gap-4">
 									<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
 										<svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,8 +200,8 @@ templ DialogPage() {
 									</div>
 								</div>
 							}
-							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-								@dialog.DialogClose(dialog.DialogCloseProps{
+							@dialog.DialogFooter(dialog.DialogFooterArgs{}) {
+								@dialog.DialogClose(dialog.DialogCloseArgs{
 									DialogID: "card_dialog",
 									Variant:  "default",
 									Class:    "w-full",
@@ -210,7 +210,7 @@ templ DialogPage() {
 								}
 							}
 						}
-						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+						@dialog.DialogTrigger(dialog.DialogTriggerArgs{
 							AsChild:  true,
 							DialogID: "card_dialog",
 						}) {
@@ -232,16 +232,16 @@ templ DialogPage() {
 					<!-- Badge Trigger -->
 					<div class="space-y-4">
 						<h3 class="text-lg font-medium">Status Badge</h3>
-						@dialog.Dialog(dialog.DialogProps{ID: "status_dialog"}) {
-							@dialog.DialogHeader(dialog.DialogHeaderProps{}) {
-								@dialog.DialogTitle(dialog.DialogTitleProps{}) {
+						@dialog.Dialog(dialog.DialogArgs{ID: "status_dialog"}) {
+							@dialog.DialogHeader(dialog.DialogHeaderArgs{}) {
+								@dialog.DialogTitle(dialog.DialogTitleArgs{}) {
 									System Status
 								}
-								@dialog.DialogDescription(dialog.DialogDescriptionProps{}) {
+								@dialog.DialogDescription(dialog.DialogDescriptionArgs{}) {
 									Current system status and details.
 								}
 							}
-							@dialog.DialogContent(dialog.DialogContentProps{}) {
+							@dialog.DialogContent(dialog.DialogContentArgs{}) {
 								<div class="space-y-3">
 									<div class="flex items-center justify-between">
 										<span class="text-sm font-medium">Status:</span>
@@ -260,8 +260,8 @@ templ DialogPage() {
 									</div>
 								</div>
 							}
-							@dialog.DialogFooter(dialog.DialogFooterProps{}) {
-								@dialog.DialogClose(dialog.DialogCloseProps{
+							@dialog.DialogFooter(dialog.DialogFooterArgs{}) {
+								@dialog.DialogClose(dialog.DialogCloseArgs{
 									DialogID: "status_dialog",
 									Variant:  "default",
 								}) {
@@ -269,7 +269,7 @@ templ DialogPage() {
 								}
 							}
 						}
-						@dialog.DialogTrigger(dialog.DialogTriggerProps{
+						@dialog.DialogTrigger(dialog.DialogTriggerArgs{
 							AsChild:  true,
 							DialogID: "status_dialog",
 						}) {

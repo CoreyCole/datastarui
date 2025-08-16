@@ -56,122 +56,174 @@ datastarui/
 │   ├── signals.go       # Signal management with namespacing
 │   ├── expressions.go   # Datastar expression builders
 │   └── data_class.go    # Conditional CSS class helpers
-├── docs/                # Documentation
-│   ├── guide.md         # Development patterns guide
-│   ├── debugging.md     # Testing and troubleshooting
-│   ├── playwright.md    # Browser automation testing
-│   ├── signals.md       # Signal management reference
-│   └── templ.md         # templ syntax guide
 ├── pages/               # Page templates
 │   └── components/      # Component demo pages
-├── layouts/             # Layout templates
-├── static/              # Static assets
-│   └── css/             # Tailwind CSS files
 └── main.go              # Server entry point
 ```
 
 ## 🧩 Component Architecture
 
-Each component follows a consistent 3-file pattern with utility-driven Datastar integration:
+Each component follows a pattern with utility-driven Datastar integration:
 
-### 1. Template File (`component.templ`)
+- [Template File (`component.templ`)](./components/dialog/dialog.templ)
+- [Expressions (`expressions.go`)](./components/dialog/expressions.go)
+- [Args Definition (`args.go`)](./components/dialog/args.go)
+- [CSS Variants (`variants.go`)](./components/dialog/variants.go)
+
+### Template File (`component.templ`)
 
 ```go
-package button
+package dialog
 
 import "github.com/coreycole/datastarui/utils"
 
-type ButtonSignals struct {
-    Clicked bool `json:"clicked"`
-    Loading bool `json:"loading"`
+// DialogSignals defines the signal structure for dialog components
+type DialogSignals struct {
+	Open bool `json:"open"`
 }
 
-templ Button(args ButtonProps) {
-    {{
-        // Use utilities for signal management
-        signals := utils.Signals(args.ID, ButtonSignals{
-            Clicked: false,
-            Loading: args.Loading,
-        })
-        
-        // Use expression builders for click handlers
-        clickHandler := utils.NewExpression().
-            Statement("evt.preventDefault()").
-            SetSignal("clicked", "true").
-            Build()
-    }}
-    <button
-        type={ args.Type }
-        class={ buttonVariants(args.Variant, args.Size, args.Class) }
-        disabled?={ args.Disabled }
-        data-signals={ signals.DataSignals }
-        data-on-click={ clickHandler }
-        { args.Attributes... }
-    >
-        { children... }
-    </button>
+// Dialog container - pure Datastar signal-based modal using data-show
+templ Dialog(args DialogArgs) {
+	{{
+		// Create signals using the new structured system with proper initial state
+		signals := utils.Signals(args.ID, DialogSignals{
+			Open: args.DefaultOpen,
+		})
+
+		// Dialog backdrop overlay
+		backdropClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+
+		// Dialog positioning classes - centered on screen
+		dialogClasses := "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
+
+		// Generate the CSS classes for the inner dialog content container using our variant system
+		containerClasses := DialogVariants(args)
+
+		// Create dialog handler for clean expressions
+		dialogHandler := NewDialogHandler(signals)
+		backdropClickHandler := dialogHandler.BuildBackdropClickHandler()
+		escapeHandler := dialogHandler.BuildEscapeHandler()
+	}}
+	<div data-signals={ signals.DataSignals }>
+		<!-- Dialog backdrop overlay -->
+		<div
+			data-show={ signals.Signal("open") }
+			class={ backdropClasses }
+			data-on-click={ backdropClickHandler }
+			data-on-keydown__window={ escapeHandler }
+			if !args.DefaultOpen {
+				style="display: none;"
+			}
+		>
+			<!-- Dialog content container -->
+			<div
+				id={ args.ID }
+				class={ dialogClasses }
+				role="dialog"
+				aria-modal="true"
+				tabindex="-1"
+				data-on-click="evt.stopPropagation()"
+				data-on-mount="evt.target.focus()"
+			>
+				<div class={ containerClasses }>
+					{ children... }
+				</div>
+			</div>
+		</div>
+	</div>
 }
 ```
 
-### 2. Args Definition (`types.go`)
+### Expressions (`expressions.go`)
 
 ```go
-package button
+package dialog
+
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+)
+
+// DialogHandler creates handlers for Dialog component functionality
+type DialogHandler struct {
+	signals *utils.SignalManager
+}
+
+// NewDialogHandler creates a dialog handler
+func NewDialogHandler(signals *utils.SignalManager) *DialogHandler {
+	return &DialogHandler{
+		signals: signals,
+	}
+}
+
+// BuildBackdropClickHandler creates the backdrop click handler for closing dialog
+func (d *DialogHandler) BuildBackdropClickHandler() string {
+	return d.signals.ConditionalAction("evt.target === evt.currentTarget", "open", "false")
+}
+
+// BuildEscapeHandler creates an escape key handler for closing dialog
+func (d *DialogHandler) BuildEscapeHandler() string {
+	condition := fmt.Sprintf("evt.key === 'Escape' && %s", d.signals.Signal("open"))
+	return d.signals.ConditionalAction(condition, "open", "false")
+}
+
+// BuildCloseHandler creates a close handler with optional return value
+func (d *DialogHandler) BuildCloseHandler(returnValue string) string {
+	expr := utils.NewExpression().Statement(d.signals.Set("open", "false"))
+	
+	if returnValue != "" {
+		expr.Statement(d.signals.SetString("returnValue", returnValue))
+	}
+	
+	return expr.Build()
+}
+```
+
+### Args Definition (`args.go`)
+
+```go
+package dialog
 
 import "github.com/a-h/templ"
 
-type ButtonProps struct {
-    ID         string           // Component identifier for signals
-    Variant    string           // "default", "destructive", "outline"
-    Size       string           // "default", "sm", "lg", "icon"
-    Class      string           // Additional CSS classes
-    Attributes templ.Attributes // HTML attributes
-    Disabled   bool             // Interactive state
-    Loading    bool             // Loading state
-    Type       string           // Button type
+// DialogArgs defines the args for the Dialog container (using Datastar signals)
+type DialogArgs struct {
+	ID          string
+	DefaultOpen bool // Whether the dialog should be open by default
+	Class       string
+	Attributes  templ.Attributes
+}
+
+// DialogTriggerArgs defines the args for the DialogTrigger component
+type DialogTriggerArgs struct {
+	DialogID   string
+	AsChild    bool
+	Class      string
+	Attributes templ.Attributes
 }
 ```
 
-### 3. CSS Variants (`variants.go`)
+### CSS Variants (`variants.go`)
 
 ```go
-package button
+package dialog
 
-import "github.com/coreycole/datastarui/utils"
+import (
+	"github.com/coreycole/datastarui/utils"
+)
 
-func buttonVariants(variant, size, className string) string {
-    // Exact CSS classes from shadcn/ui
-    baseClasses := "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+// DialogVariants returns the CSS classes for the main Dialog container component
+func DialogVariants(args DialogArgs) string {
+	// Dialog-specific styling - optimized for modal dialogs with consistent padding
+	baseClasses := "max-w-lg w-full max-h-[90vh] overflow-auto bg-background border shadow-lg rounded-lg p-6"
 
-    variantClasses := map[string]string{
-        "default":     "bg-primary text-primary-foreground hover:bg-primary/90",
-        "destructive": "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        "outline":     "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        "secondary":   "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        "ghost":       "hover:bg-accent hover:text-accent-foreground",
-        "link":        "text-primary underline-offset-4 hover:underline",
-    }
-
-    sizeClasses := map[string]string{
-        "default": "h-10 px-4 py-2",
-        "sm":      "h-9 rounded-md px-3",
-        "lg":      "h-11 rounded-md px-8",
-        "icon":    "h-10 w-10",
-    }
-
-    return utils.TwMerge(baseClasses, variantClasses[variant], sizeClasses[size], className)
+	return utils.TwMerge(baseClasses, args.Class)
 }
 ```
 
 ## 🎨 Design System
 
-The project uses the same design tokens as shadcn/ui:
-
-- **Colors**: CSS custom properties for theming
-- **Typography**: Tailwind's font system
-- **Spacing**: Consistent spacing scale
-- **Shadows**: Subtle elevation system
-- **Borders**: Rounded corners and borders
+The project uses tailwind classes from [shadcn/ui](https://ui.shadcn.com/) components new york v4.
 
 ## 🤝 Contributing
 
