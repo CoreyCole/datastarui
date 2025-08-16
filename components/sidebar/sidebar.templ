@@ -10,27 +10,27 @@ type SidebarSignals struct {
 // SidebarMobile - Sheet wrapper for mobile sidebar
 templ SidebarMobile(args SidebarMobileArgs) {
 	{{
-		// Use parent sidebar signals directly - don't create separate sheet signals
-		parentSignals := utils.Signals(args.ID, SidebarSignals{})
-		sidebarHandler := NewSidebarHandler(parentSignals)
-		closeHandler := sidebarHandler.BuildMobileCloseHandler()
+	// Use parent sidebar signals directly - don't create separate sheet signals
+	parentSignals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(parentSignals)
+	closeHandler := sidebarHandler.BuildMobileCloseHandler()
 
-		// Build sheet classes manually since we're not using the Sheet component
-		backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300"
-		sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
+	// Build sheet classes manually since we're not using the Sheet component
+	backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300"
+	sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
 
-		// Create data-class expressions for fade animations
-		backdropDataClass := utils.NewDataClass().
-			Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
-			Add("opacity-100", parentSignals.Signal("mobileOpen")).
-			Build()
-		sheetDataClass := utils.NewDataClass().
-			Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
-			Add("opacity-100", parentSignals.Signal("mobileOpen")).
-			Build()
+	// Create data-class expressions for fade animations
+	backdropDataClass := utils.NewDataClass().
+		Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
+		Add("opacity-100", parentSignals.Signal("mobileOpen")).
+		Build()
+	sheetDataClass := utils.NewDataClass().
+		Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
+		Add("opacity-100", parentSignals.Signal("mobileOpen")).
+		Build()
 
-		// Create escape handler
-		escapeHandler := "evt.key === 'Escape' ? (" + closeHandler + ") : null"
+	// Create escape handler
+	escapeHandler := "evt.key === 'Escape' ? (" + closeHandler + ") : null"
 	}}
 	<!-- Modal backdrop -->
 	<div
@@ -58,7 +58,7 @@ templ SidebarMobile(args SidebarMobileArgs) {
 // SidebarDesktop - Fixed desktop sidebar
 templ SidebarDesktop(args SidebarDesktopArgs) {
 	{{
-		classes := SidebarDesktopVariants(args)
+	classes := SidebarDesktopVariants(args)
 	}}
 	<aside
 		id={ args.ID + "_desktop" }
@@ -74,13 +74,10 @@ templ SidebarDesktop(args SidebarDesktopArgs) {
 // SidebarTrigger - Mobile hamburger menu button
 templ SidebarTrigger(args SidebarTriggerArgs) {
 	{{
-		// CRITICAL: Use the same ID to access shared signal state
-		signals := utils.Signals(args.ID, SidebarSignals{})
-		sidebarHandler := NewSidebarHandler(signals)
-		clickHandler := sidebarHandler.BuildMobileToggleHandler()
-
-		// Trigger can be aware of current state for styling
-		classes := SidebarTriggerVariants(args)
+	signals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
+	clickHandler := sidebarHandler.BuildMobileToggleHandler()
+	classes := SidebarTriggerVariants(args)
 	}}
 	<button
 		type="button"
@@ -102,12 +99,11 @@ templ SidebarTrigger(args SidebarTriggerArgs) {
 // SidebarCloseButton - Close button for mobile sidebar
 templ SidebarCloseButton(args SidebarCloseButtonArgs) {
 	{{
-		// CRITICAL: Use the same ID to access shared signal state
-		signals := utils.Signals(args.ID, SidebarSignals{})
-		sidebarHandler := NewSidebarHandler(signals)
-		clickHandler := sidebarHandler.BuildMobileCloseHandler()
+	signals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
+	clickHandler := sidebarHandler.BuildMobileCloseHandler()
 
-		classes := SidebarCloseButtonVariants(args)
+	classes := SidebarCloseButtonVariants(args)
 	}}
 	<button
 		type="button"
@@ -127,7 +123,7 @@ templ SidebarCloseButton(args SidebarCloseButtonArgs) {
 // SidebarContent - Shared content structure
 templ SidebarContent(args SidebarContentArgs) {
 	{{
-		classes := SidebarContentVariants(args)
+	classes := SidebarContentVariants(args)
 	}}
 	<div
 		class={ classes }
@@ -141,7 +137,7 @@ templ SidebarContent(args SidebarContentArgs) {
 // SidebarHeader - Header section of the sidebar
 templ SidebarHeader(args SidebarHeaderArgs) {
 	{{
-		classes := SidebarHeaderVariants(args)
+	classes := SidebarHeaderVariants(args)
 	}}
 	<div
 		class={ classes }
@@ -154,7 +150,7 @@ templ SidebarHeader(args SidebarHeaderArgs) {
 // SidebarFooter - Footer section of the sidebar
 templ SidebarFooter(args SidebarFooterArgs) {
 	{{
-		classes := SidebarFooterVariants(args)
+	classes := SidebarFooterVariants(args)
 	}}
 	<div
 		class={ classes }
@@ -164,51 +160,104 @@ templ SidebarFooter(args SidebarFooterArgs) {
 	</div>
 }
 
-// SidebarNav - Navigation with sections
-templ SidebarNav(args SidebarNavArgs) {
-	<nav class="flex flex-col">
+// SidebarNavMobile - Mobile navigation with sections
+templ SidebarNavMobile(args SidebarNavArgs) {
+	<nav class="flex flex-col gap-4">
 		for _, section := range args.Sections {
-			<div class="flex flex-col gap-1">
-				<h4 class="px-2 text-sm font-medium text-sidebar-foreground">
+			<div class="relative flex w-full min-w-0 flex-col p-2">
+				<div class="flex h-8 shrink-0 items-center rounded-md px-2 text-sm text-muted-foreground font-medium">
 					{ section.Title }
 					if section.Label != "" {
 						<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
 					}
-				</h4>
-				<div class="grid gap-0.5 text-sm">
-					for _, item := range section.Items {
-						@SidebarNavLink(SidebarNavLinkArgs{
-							SidebarID:   args.SidebarID,
-							Item:        item,
-							CurrentPath: args.CurrentPath,
-						})
-					}
+				</div>
+				<div class="w-full text-sm">
+					<ul class="flex w-full min-w-0 flex-col gap-0.5 cursor-pointer">
+						for _, item := range section.Items {
+							<li class="group/menu-item relative cursor-pointer">
+								@SidebarNavLinkMobile(SidebarNavLinkArgs{
+									SidebarID:   args.SidebarID,
+									Item:        item,
+									CurrentPath: args.CurrentPath,
+								})
+							</li>
+						}
+					</ul>
 				</div>
 			</div>
 		}
 	</nav>
 }
 
-// SidebarNavLink - Individual nav links that can close mobile sidebar
-templ SidebarNavLink(args SidebarNavLinkArgs) {
+// SidebarNavDesktop - Desktop navigation with sections
+templ SidebarNavDesktop(args SidebarNavArgs) {
+	<nav class="flex flex-col gap-4">
+		for _, section := range args.Sections {
+			<div class="relative flex w-full min-w-0 flex-col p-2">
+				<div class="flex h-8 shrink-0 items-center rounded-md px-2 text-xs text-muted-foreground font-medium">
+					{ section.Title }
+					if section.Label != "" {
+						<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
+					}
+				</div>
+				<div class="w-full text-sm">
+					<ul class="flex w-full min-w-0 flex-col gap-0.5">
+						for _, item := range section.Items {
+							<li class="group/menu-item relative cursor-pointer">
+								@SidebarNavLinkDesktop(SidebarNavLinkArgs{
+									SidebarID:   args.SidebarID,
+									Item:        item,
+									CurrentPath: args.CurrentPath,
+								})
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		}
+	</nav>
+}
+
+// SidebarNavLinkMobile - Mobile nav links that close sidebar when clicked
+templ SidebarNavLinkMobile(args SidebarNavLinkArgs) {
 	{{
-		// Nav links need to close mobile sidebar when clicked
-		signals := utils.Signals(args.SidebarID, SidebarSignals{})
-		sidebarHandler := NewSidebarHandler(signals)
+	// Nav links need to close mobile sidebar when clicked
+	signals := utils.Signals(args.SidebarID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
 
-		// Close mobile sidebar after navigation
-		clickHandler := sidebarHandler.BuildMobileCloseHandler()
+	// Close mobile sidebar after navigation
+	clickHandler := sidebarHandler.BuildMobileCloseHandler()
 
-		classes := SidebarNavLinkVariants(SidebarNavLinkArgs{
-			Item:        args.Item,
-			CurrentPath: args.CurrentPath,
-			SidebarID:   args.SidebarID,
-		})
+	classes := SidebarNavLinkMobileVariants(SidebarNavLinkArgs{
+		Item:        args.Item,
+		CurrentPath: args.CurrentPath,
+		SidebarID:   args.SidebarID,
+	})
 	}}
 	<a
 		class={ classes }
 		href={ templ.SafeURL(args.Item.Href) }
 		data-on-click={ clickHandler }
+	>
+		{ args.Item.Title }
+		if args.Item.Label != "" {
+			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ args.Item.Label }</span>
+		}
+	</a>
+}
+
+// SidebarNavLinkDesktop - Desktop nav links (no click handler needed)
+templ SidebarNavLinkDesktop(args SidebarNavLinkArgs) {
+	{{
+	classes := SidebarNavLinkDesktopVariants(SidebarNavLinkArgs{
+		Item:        args.Item,
+		CurrentPath: args.CurrentPath,
+		SidebarID:   args.SidebarID,
+	})
+	}}
+	<a
+		class={ classes }
+		href={ templ.SafeURL(args.Item.Href) }
 	>
 		{ args.Item.Title }
 		if args.Item.Label != "" {

@@ -6,8 +6,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ PopoverPage() {
-	@l.Root("components") {
+templ PopoverPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-10">
 			<!-- Header -->
 			<div class="space-y-2">

@@ -6,8 +6,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ SelectPage() {
-	@l.Root("components") {
+templ SelectPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="container mx-auto p-8 space-y-12">
 			<div>
 				<h1 class="text-3xl font-bold mb-2">Select Component</h1>

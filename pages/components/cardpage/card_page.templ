@@ -10,8 +10,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ CardPage() {
-	@l.Root("components") {
+templ CardPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Card")
 			<!-- Page Header -->

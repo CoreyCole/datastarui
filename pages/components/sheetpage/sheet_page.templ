@@ -9,8 +9,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ SheetPage() {
-	@l.Root("components") {
+templ SheetPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="container mx-auto p-8">
 			<div class="space-y-8">
 				<div>

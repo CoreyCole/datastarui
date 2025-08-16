@@ -51,7 +51,7 @@
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 240 4.8% 90%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 240 5% 64.9%;
@@ -90,6 +90,51 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 240 4.9% 83.9%;
+  }
+}
+
+/* Sidebar utility classes */
+.bg-sidebar-accent {
+  background-color: hsl(var(--sidebar-accent));
+}
+.text-sidebar-accent-foreground {
+  color: hsl(var(--sidebar-accent-foreground));
+}
+.bg-sidebar {
+  background-color: hsl(var(--sidebar-background));
+}
+.text-sidebar-foreground {
+  color: hsl(var(--sidebar-foreground));
+}
+.ring-sidebar-ring {
+  --tw-ring-color: hsl(var(--sidebar-ring));
+}
+
+/* Sidebar hover utilities */
+.hover\:bg-sidebar-accent {
+  &:hover {
+    @media (hover: hover) {
+      background-color: hsl(var(--sidebar-accent));
+    }
+  }
+}
+.hover\:text-sidebar-accent-foreground {
+  &:hover {
+    @media (hover: hover) {
+      color: hsl(var(--sidebar-accent-foreground));
+    }
+  }
+}
+
+/* Sidebar focus-visible utilities */
+.focus-visible\:bg-sidebar-accent {
+  &:focus-visible {
+    background-color: hsl(var(--sidebar-accent));
+  }
+}
+.focus-visible\:text-sidebar-accent-foreground {
+  &:focus-visible {
+    color: hsl(var(--sidebar-accent-foreground));
   }
 }
 

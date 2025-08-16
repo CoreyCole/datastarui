@@ -5,8 +5,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ SidebarPage() {
-	@l.Root("components") {
+templ SidebarPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Sidebar")
 			<!-- Page Header -->

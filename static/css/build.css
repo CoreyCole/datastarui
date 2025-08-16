@@ -1224,14 +1224,14 @@
   .pb-8 {
     padding-bottom: calc(var(--spacing) * 8);
   }
+  .pb-\[0\.5px\] {
+    padding-bottom: 0.5px;
+  }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
   }
   .pl-6 {
     padding-left: calc(var(--spacing) * 6);
-  }
-  .pl-14 {
-    padding-left: calc(var(--spacing) * 14);
   }
   .text-center {
     text-align: center;
@@ -1516,6 +1516,11 @@
   }
   .transition-\[color\,box-shadow\] {
     transition-property: color,box-shadow;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-\[width\,height\,padding\] {
+    transition-property: width,height,padding;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
@@ -2128,11 +2133,6 @@
       }
     }
   }
-  .sm\:inline-block {
-    @media (width >= 40rem) {
-      display: inline-block;
-    }
-  }
   .sm\:max-w-sm {
     @media (width >= 40rem) {
       max-width: var(--container-sm);
@@ -2582,7 +2582,7 @@
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 240 4.8% 90%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 240 5% 64.9%;
@@ -2620,6 +2620,45 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 240 4.9% 83.9%;
+  }
+}
+.bg-sidebar-accent {
+  background-color: hsl(var(--sidebar-accent));
+}
+.text-sidebar-accent-foreground {
+  color: hsl(var(--sidebar-accent-foreground));
+}
+.bg-sidebar {
+  background-color: hsl(var(--sidebar-background));
+}
+.text-sidebar-foreground {
+  color: hsl(var(--sidebar-foreground));
+}
+.ring-sidebar-ring {
+  --tw-ring-color: hsl(var(--sidebar-ring));
+}
+.hover\:bg-sidebar-accent {
+  &:hover {
+    @media (hover: hover) {
+      background-color: hsl(var(--sidebar-accent));
+    }
+  }
+}
+.hover\:text-sidebar-accent-foreground {
+  &:hover {
+    @media (hover: hover) {
+      color: hsl(var(--sidebar-accent-foreground));
+    }
+  }
+}
+.focus-visible\:bg-sidebar-accent {
+  &:focus-visible {
+    background-color: hsl(var(--sidebar-accent));
+  }
+}
+.focus-visible\:text-sidebar-accent-foreground {
+  &:focus-visible {
+    color: hsl(var(--sidebar-accent-foreground));
   }
 }
 @layer base {

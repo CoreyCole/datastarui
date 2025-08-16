@@ -6,8 +6,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ ButtonPage() {
-	@l.Root("components") {
+templ ButtonPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Button")
 			<!-- Page Header -->

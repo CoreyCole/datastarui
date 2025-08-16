@@ -3,7 +3,7 @@ build:
 	@go build -o datastarui main.go
 
 tailwind:
-    @tailwindcss -i static/css/index.css -o static/css/build.css --watch --content "./components/**/*.templ" --content "./pages/**/*.templ" --content "./layouts/**/*.templ"
+    @tailwindcss -i static/css/index.css -o static/css/build.css --watch --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
 
 watch:
 	air

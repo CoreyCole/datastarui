@@ -181,7 +181,7 @@ func ComponentPageBreadcrumbs(currentPage string) templ.Component {
 	})
 }
 
-func Root(currentPage string) templ.Component {
+func Root(args RootArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -202,7 +202,7 @@ func Root(currentPage string) templ.Component {
 			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!doctype html><html lang=\"en\"><head><title>DatastarUI</title><link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicons/favicon-32x32.png\"><meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS --><link rel=\"stylesheet\" href=\"/css/build.css\"><!-- Popover API Polyfill --><script type=\"module\">\n\t\t\t\tif (!('popover' in HTMLElement.prototype)) {\n\t\t\t\t\tconsole.log('Loading Popover API polyfill...');\n\t\t\t\t\timport(\"https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest\");\n\t\t\t\t}\n\t\t\t</script><!-- CSS Anchor Positioning Polyfill --><script type=\"module\">\n\t\t\t\tif (!(\"anchorName\" in document.documentElement.style)) {\n\t\t\t\t\tconsole.log('🔧 CSS Anchor Positioning is not natively supported');\n\t\t\t\t\tconsole.log('📦 Loading CSS Anchor Positioning polyfill from jsDelivr...');\n\t\t\t\t\twindow.CSS_ANCHOR_POLYFILL_LOADING = true;\n\t\t\t\t\t\n\t\t\t\t\timport(\"https://cdn.jsdelivr.net/npm/@oddbird/css-anchor-positioning@latest/dist/css-anchor-positioning.js\")\n\t\t\t\t\t\t.then(() => {\n\t\t\t\t\t\t\tconsole.log('✅ CSS Anchor Positioning polyfill loaded successfully!');\n\t\t\t\t\t\t\twindow.CSS_ANCHOR_POLYFILL_LOADED = true;\n\t\t\t\t\t\t\twindow.CSS_ANCHOR_POLYFILL_LOADING = false;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t// Dispatch custom event to notify components\n\t\t\t\t\t\t\twindow.dispatchEvent(new CustomEvent('css-anchor-polyfill-loaded'));\n\t\t\t\t\t\t})\n\t\t\t\t\t\t.catch((error) => {\n\t\t\t\t\t\t\tconsole.error('❌ Failed to load CSS Anchor Positioning polyfill:', error);\n\t\t\t\t\t\t\twindow.CSS_ANCHOR_POLYFILL_LOADING = false;\n\t\t\t\t\t\t});\n\t\t\t\t} else {\n\t\t\t\t\tconsole.log('✅ CSS Anchor Positioning is natively supported - no polyfill needed');\n\t\t\t\t\twindow.CSS_ANCHOR_POLYFILL_LOADED = false;\n\t\t\t\t}\n\t\t\t</script><!-- Theme initialization --><script>\n\t\t\t\t// Initialize theme from localStorage or system preference\n\t\t\t\tfunction initTheme() {\n\t\t\t\t\tconst theme = localStorage.getItem('theme') ||\n\t\t\t\t\t\t(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');\n\t\t\t\t\tdocument.documentElement.classList.toggle('dark', theme === 'dark');\n\t\t\t\t\treturn theme;\n\t\t\t\t}\n\n\t\t\t\t// Set initial theme before page renders\n\t\t\t\tinitTheme();\n\t\t\t</script><!-- Datastar --><script type=\"module\" src=\"https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js\"></script></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!doctype html><html lang=\"en\"><head><title>DatastarUI</title><link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicons/favicon-32x32.png\"><meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS --><link rel=\"stylesheet\" href=\"/css/build.css\"><!-- Popover API Polyfill --><script type=\"module\">\n        if (!('popover' in HTMLElement.prototype)) {\n          console.log('Loading Popover API polyfill...');\n          import(\"https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest\");\n        }\n      </script><!-- CSS Anchor Positioning Polyfill --><script type=\"module\">\n        if (!(\"anchorName\" in document.documentElement.style)) {\n          console.log('🔧 CSS Anchor Positioning is not natively supported');\n          console.log('📦 Loading CSS Anchor Positioning polyfill from jsDelivr...');\n          window.CSS_ANCHOR_POLYFILL_LOADING = true;\n          \n          import(\"https://cdn.jsdelivr.net/npm/@oddbird/css-anchor-positioning@latest/dist/css-anchor-positioning.js\")\n            .then(() => {\n              console.log('✅ CSS Anchor Positioning polyfill loaded successfully!');\n              window.CSS_ANCHOR_POLYFILL_LOADED = true;\n              window.CSS_ANCHOR_POLYFILL_LOADING = false;\n              \n              // Dispatch custom event to notify components\n              window.dispatchEvent(new CustomEvent('css-anchor-polyfill-loaded'));\n            })\n            .catch((error) => {\n              console.error('❌ Failed to load CSS Anchor Positioning polyfill:', error);\n              window.CSS_ANCHOR_POLYFILL_LOADING = false;\n            });\n        } else {\n          console.log('✅ CSS Anchor Positioning is natively supported - no polyfill needed');\n          window.CSS_ANCHOR_POLYFILL_LOADED = false;\n        }\n      </script><!-- Theme initialization --><script>\n        // Initialize theme from localStorage or system preference\n        function initTheme() {\n          const theme = localStorage.getItem('theme') ||\n            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');\n          document.documentElement.classList.toggle('dark', theme === 'dark');\n          return theme;\n        }\n\n        // Set initial theme before page renders\n        initTheme();\n      </script><!-- Datastar --><script type=\"module\" src=\"https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js\"></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -235,11 +235,11 @@ func Root(currentPage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<a class=\"flex items-center no-underline\" href=\"/\"><span class=\"font-semibold text-foreground sm:inline-block\">DatastarUI</span></a><nav class=\"hidden md:flex items-center gap-4 text-sm lg:gap-6 [&_a]:no-underline ml-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<a class=\"flex items-center no-underline pb-[0.5px]\" href=\"/\"><span class=\"font-semibold text-foreground inline-flex items-center\">DatastarUI</span></a><nav class=\"hidden md:flex items-center gap-4 text-sm lg:gap-6 [&_a]:no-underline ml-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if currentPage == "docs" {
+		if args.CurrentPage == "docs" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<a class=\"transition-colors hover:text-foreground/80 text-foreground font-medium\" href=\"/docs\">Docs</a> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -250,7 +250,7 @@ func Root(currentPage string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		if currentPage == "components" {
+		if args.CurrentPage == "components" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<a class=\"transition-colors hover:text-foreground/80 text-foreground font-medium\" href=\"/components\">Components</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -319,7 +319,7 @@ func Root(currentPage string) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<a class=\"font-semibold\" href=\"/\"><span>DatastarUI</span></a></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<a class=\"font-semibold pb-[0.5px]\" href=\"/\"><span>DatastarUI</span></a></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -329,19 +329,15 @@ func Root(currentPage string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " <div class=\"pl-14\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = sidebar.SidebarNav(sidebar.SidebarNavArgs{
+				templ_7745c5c3_Err = sidebar.SidebarNavMobile(sidebar.SidebarNavArgs{
 					SidebarID:   sidebarID,
 					Sections:    GetSidebarSections(),
-					CurrentPath: getCurrentPath(currentPage),
+					CurrentPath: args.CurrentPath,
 				}).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -361,7 +357,7 @@ func Root(currentPage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<!-- Desktop Sidebar -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Desktop Sidebar -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -389,10 +385,10 @@ func Root(currentPage string) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = sidebar.SidebarNav(sidebar.SidebarNavArgs{
+				templ_7745c5c3_Err = sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
 					SidebarID:   sidebarID,
 					Sections:    GetSidebarSections(),
-					CurrentPath: getCurrentPath(currentPage),
+					CurrentPath: args.CurrentPath,
 				}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -413,7 +409,7 @@ func Root(currentPage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<!-- Main content area --><div class=\"flex min-h-0 flex-1 flex-col\"><main class=\"flex-1 overflow-auto\"><div class=\"container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<!-- Main content area --><div class=\"flex min-h-0 flex-1 flex-col\"><main class=\"flex-1 overflow-auto\"><div class=\"container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -421,7 +417,7 @@ func Root(currentPage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div></main></div></div></div></main></div></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></main></div></div></div></main></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
