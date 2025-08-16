@@ -47,7 +47,7 @@ func SidebarHeaderVariants(args SidebarHeaderArgs) string {
 // SidebarFooterVariants returns the CSS classes for the SidebarFooter component
 func SidebarFooterVariants(args SidebarFooterArgs) string {
 	// Footer section styling - auto margin top to push to bottom
-	baseClasses := "mt-auto flex items-center px-4 py-2"
+	baseClasses := "mt-auto flex items-center px-4"
 	
 	return utils.TwMerge(baseClasses, args.Class)
 }

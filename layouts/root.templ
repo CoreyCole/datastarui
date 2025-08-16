@@ -168,20 +168,22 @@ templ Root(currentPage string) {
 										ID: sidebarID,
 									}) {
 										@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
-											<div class="flex items-center justify-between w-full">
-												<a class="flex items-center gap-2 font-semibold" href="/">
-													<span>DatastarUI</span>
-												</a>
+											<div class="flex flex-row gap-3 items-center w-full">
 												@sidebar.SidebarCloseButton(sidebar.SidebarCloseButtonArgs{
 													ID: sidebarID,
 												})
+												<a class="font-semibold" href="/">
+													<span>DatastarUI</span>
+												</a>
 											</div>
 										}
-										@sidebar.SidebarNav(sidebar.SidebarNavArgs{
-											SidebarID:   sidebarID,
-											Sections:    GetSidebarSections(),
-											CurrentPath: getCurrentPath(currentPage),
-										})
+										<div class="pl-14">
+											@sidebar.SidebarNav(sidebar.SidebarNavArgs{
+												SidebarID:   sidebarID,
+												Sections:    GetSidebarSections(),
+												CurrentPath: getCurrentPath(currentPage),
+											})
+										</div>
 									}
 								}
 								<!-- Desktop Sidebar -->
@@ -191,11 +193,6 @@ templ Root(currentPage string) {
 									@sidebar.SidebarContent(sidebar.SidebarContentArgs{
 										ID: sidebarID,
 									}) {
-										@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
-											<a class="flex items-center gap-2 font-semibold" href="/">
-												<span>DatastarUI</span>
-											</a>
-										}
 										@sidebar.SidebarNav(sidebar.SidebarNavArgs{
 											SidebarID:   sidebarID,
 											Sections:    GetSidebarSections(),

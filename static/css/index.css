@@ -196,8 +196,11 @@
   [popover] {
     opacity: 0;
     transform: scale(0.95);
-    transition: opacity 200ms ease-out, transform 200ms ease-out,
-      overlay 200ms allow-discrete, display 200ms allow-discrete;
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
   }
 
   [popover]:popover-open {
@@ -239,8 +242,9 @@
     background-color: hsl(var(--muted));
     border: 4px solid hsl(var(--background));
     border-radius: 9999px;
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
-      "Liberation Mono", Menlo, monospace;
+    font-family:
+      ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono",
+      Menlo, monospace;
     font-weight: 500;
     text-align: center;
     font-size: 1rem;
@@ -266,7 +270,8 @@
     content: "";
     position: absolute;
     inset: -1rem;
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    box-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.1),
       0 8px 10px -6px rgb(0 0 0 / 0.1);
     border-radius: 0.75rem;
     border: 1px solid hsl(var(--border));
@@ -369,19 +374,39 @@
   }
 
   /* tailwindcss-animate plugin implementation */
-  
+
   /* Core keyframes from tailwindcss-animate */
   @keyframes enter {
     from {
       opacity: var(--tw-enter-opacity, 1);
-      transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
+      transform: translate3d(
+          var(--tw-enter-translate-x, 0),
+          var(--tw-enter-translate-y, 0),
+          0
+        )
+        scale3d(
+          var(--tw-enter-scale, 1),
+          var(--tw-enter-scale, 1),
+          var(--tw-enter-scale, 1)
+        )
+        rotate(var(--tw-enter-rotate, 0));
     }
   }
 
   @keyframes exit {
     to {
       opacity: var(--tw-exit-opacity, 1);
-      transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
+      transform: translate3d(
+          var(--tw-exit-translate-x, 0),
+          var(--tw-exit-translate-y, 0),
+          0
+        )
+        scale3d(
+          var(--tw-exit-scale, 1),
+          var(--tw-exit-scale, 1),
+          var(--tw-exit-scale, 1)
+        )
+        rotate(var(--tw-exit-rotate, 0));
     }
   }
 
@@ -393,7 +418,8 @@
   }
 
   @keyframes ping {
-    75%, 100% {
+    75%,
+    100% {
       transform: scale(2);
       opacity: 0;
     }
@@ -401,18 +427,19 @@
 
   @keyframes pulse {
     50% {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 
   @keyframes bounce {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(-25%);
-      animation-timing-function: cubic-bezier(0.8,0,1,1);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
     50% {
       transform: none;
-      animation-timing-function: cubic-bezier(0,0,0.2,1);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
 

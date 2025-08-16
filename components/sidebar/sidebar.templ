@@ -1,8 +1,6 @@
 package sidebar
 
-import (
-	"github.com/coreycole/datastarui/utils"
-)
+import "github.com/coreycole/datastarui/utils"
 
 // SidebarSignals defines the signal structure for sidebar components
 type SidebarSignals struct {
@@ -16,11 +14,11 @@ templ SidebarMobile(args SidebarMobileArgs) {
 		parentSignals := utils.Signals(args.ID, SidebarSignals{})
 		sidebarHandler := NewSidebarHandler(parentSignals)
 		closeHandler := sidebarHandler.BuildMobileCloseHandler()
-		
+
 		// Build sheet classes manually since we're not using the Sheet component
 		backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300"
-		sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background p-6 shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
-		
+		sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
+
 		// Create data-class expressions for fade animations
 		backdropDataClass := utils.NewDataClass().
 			Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
@@ -30,7 +28,7 @@ templ SidebarMobile(args SidebarMobileArgs) {
 			Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
 			Add("opacity-100", parentSignals.Signal("mobileOpen")).
 			Build()
-		
+
 		// Create escape handler
 		escapeHandler := "evt.key === 'Escape' ? (" + closeHandler + ") : null"
 	}}
@@ -80,7 +78,7 @@ templ SidebarTrigger(args SidebarTriggerArgs) {
 		signals := utils.Signals(args.ID, SidebarSignals{})
 		sidebarHandler := NewSidebarHandler(signals)
 		clickHandler := sidebarHandler.BuildMobileToggleHandler()
-		
+
 		// Trigger can be aware of current state for styling
 		classes := SidebarTriggerVariants(args)
 	}}
@@ -108,7 +106,7 @@ templ SidebarCloseButton(args SidebarCloseButtonArgs) {
 		signals := utils.Signals(args.ID, SidebarSignals{})
 		sidebarHandler := NewSidebarHandler(signals)
 		clickHandler := sidebarHandler.BuildMobileCloseHandler()
-		
+
 		classes := SidebarCloseButtonVariants(args)
 	}}
 	<button
@@ -168,10 +166,10 @@ templ SidebarFooter(args SidebarFooterArgs) {
 
 // SidebarNav - Navigation with sections
 templ SidebarNav(args SidebarNavArgs) {
-	<nav class="flex flex-col gap-6 p-4">
+	<nav class="flex flex-col">
 		for _, section := range args.Sections {
 			<div class="flex flex-col gap-1">
-				<h4 class="px-2 py-1 text-sm font-medium text-sidebar-foreground">
+				<h4 class="px-2 text-sm font-medium text-sidebar-foreground">
 					{ section.Title }
 					if section.Label != "" {
 						<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
@@ -197,10 +195,10 @@ templ SidebarNavLink(args SidebarNavLinkArgs) {
 		// Nav links need to close mobile sidebar when clicked
 		signals := utils.Signals(args.SidebarID, SidebarSignals{})
 		sidebarHandler := NewSidebarHandler(signals)
-		
+
 		// Close mobile sidebar after navigation
 		clickHandler := sidebarHandler.BuildMobileCloseHandler()
-		
+
 		classes := SidebarNavLinkVariants(SidebarNavLinkArgs{
 			Item:        args.Item,
 			CurrentPath: args.CurrentPath,
