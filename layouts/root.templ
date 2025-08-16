@@ -28,10 +28,6 @@ templ ComponentPageBreadcrumbs(currentPage string) {
 }
 
 templ Root(currentPage string) {
-	{{
-		// Get mobile detection from context
-		isMobile := utils.GetMobile(ctx)
-	}}
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -88,14 +84,13 @@ templ Root(currentPage string) {
 				initTheme();
 			</script>
 			<!-- Datastar -->
-      <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
+			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
 		</head>
 		{{
-			// Build data-signals based on mobile detection
-			dataSignals := "{theme: initTheme()}"
-			if isMobile {
-				dataSignals = "{theme: initTheme(), mobile_menu: {open: false}}"
-			}
+			// Build data-signals with shared sidebar state
+			sidebarID := "main_sidebar"
+			sidebarSignals := utils.Signals(sidebarID, sidebar.SidebarSignals{MobileOpen: false}).DataSignals
+			dataSignals := "{theme: initTheme(), " + sidebarID + ": " + sidebarSignals + "}"
 		}}
 		<body class="min-h-svh bg-background font-sans antialiased" data-signals={ dataSignals }>
 			<div class="relative flex min-h-svh flex-col bg-background">
@@ -106,12 +101,17 @@ templ Root(currentPage string) {
 					>
 						<div class="container-wrapper">
 							<div class="container h-14 flex flex-row items-center justify-between">
-								<!-- Left side: Logo and Navigation (fixed width to align with sidebar) -->
-								<div class="flex flex-row items-center border-grid border-r pr-6 w-[220px] lg:w-[240px]">
-									<a class="ml-2 mr-6 flex items-center no-underline" href="/">
-										<span class="font-bold text-foreground sm:inline-block">DatastarUI</span>
+								<!-- Left side: Mobile menu + Logo and Navigation -->
+								<div class="flex flex-row items-center gap-3">
+									<!-- Mobile hamburger menu (only visible on mobile) -->
+									@sidebar.SidebarTrigger(sidebar.SidebarTriggerArgs{
+										ID:    sidebarID,
+										Class: "md:hidden",
+									})
+									<a class="flex items-center no-underline" href="/">
+										<span class="font-semibold text-foreground sm:inline-block">DatastarUI</span>
 									</a>
-									<nav class="hidden md:flex items-center gap-4 text-sm lg:gap-6 [&_a]:no-underline">
+									<nav class="hidden md:flex items-center gap-4 text-sm lg:gap-6 [&_a]:no-underline ml-6">
 										if currentPage == "docs" {
 											<a class="transition-colors hover:text-foreground/80 text-foreground font-medium" href="/docs">
 												Docs
@@ -135,8 +135,8 @@ templ Root(currentPage string) {
 										}
 									</nav>
 								</div>
-								<!-- Right side: Actions (full width, right-aligned) -->
-								<div class="flex items-center justify-end space-x-2 flex-1 pl-6">
+								<!-- Right side: Actions -->
+								<div class="flex items-center space-x-2">
 									<nav class="flex items-center space-x-1">
 										<a href="https://github.com/coreycole/datastarui" target="_blank" rel="noreferrer">
 											<div
@@ -152,7 +152,6 @@ templ Root(currentPage string) {
 											</div>
 										</a>
 										@themetoggle.ThemeToggle(themetoggle.ThemeToggleProps{})
-										@sidebar.MobileMenuToggle(isMobile)
 									</nav>
 								</div>
 							</div>
@@ -160,18 +159,58 @@ templ Root(currentPage string) {
 					</header>
 					<main class="flex flex-1 flex-col">
 						<div class="container-wrapper">
-							<div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-								@sidebar.Sidebar(sidebar.SidebarProps{
-									Sections:    GetSidebarSections(),
-									CurrentPath: getCurrentPath(currentPage),
-									IsMobile:    isMobile,
-									Class:       "",
-								})
-								<main class="relative pb-6">
-									<div class="mx-auto w-full min-w-0 pt-6">
-										{ children... }
-									</div>
-								</main>
+							<div class="flex min-h-0 flex-1">
+								<!-- Mobile Sidebar (Sheet) -->
+								@sidebar.SidebarMobile(sidebar.SidebarMobileArgs{
+									ID: sidebarID,
+								}) {
+									@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+										ID: sidebarID,
+									}) {
+										@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
+											<div class="flex items-center justify-between w-full">
+												<a class="flex items-center gap-2 font-semibold" href="/">
+													<span>DatastarUI</span>
+												</a>
+												@sidebar.SidebarCloseButton(sidebar.SidebarCloseButtonArgs{
+													ID: sidebarID,
+												})
+											</div>
+										}
+										@sidebar.SidebarNav(sidebar.SidebarNavArgs{
+											SidebarID:   sidebarID,
+											Sections:    GetSidebarSections(),
+											CurrentPath: getCurrentPath(currentPage),
+										})
+									}
+								}
+								<!-- Desktop Sidebar -->
+								@sidebar.SidebarDesktop(sidebar.SidebarDesktopArgs{
+									ID: sidebarID,
+								}) {
+									@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+										ID: sidebarID,
+									}) {
+										@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
+											<a class="flex items-center gap-2 font-semibold" href="/">
+												<span>DatastarUI</span>
+											</a>
+										}
+										@sidebar.SidebarNav(sidebar.SidebarNavArgs{
+											SidebarID:   sidebarID,
+											Sections:    GetSidebarSections(),
+											CurrentPath: getCurrentPath(currentPage),
+										})
+									}
+								}
+								<!-- Main content area -->
+								<div class="flex min-h-0 flex-1 flex-col">
+									<main class="flex-1 overflow-auto">
+										<div class="container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8">
+											{ children... }
+										</div>
+									</main>
+								</div>
 							</div>
 						</div>
 					</main>

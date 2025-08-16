@@ -1,0 +1,146 @@
+package sidebarpage
+
+import (
+	"github.com/coreycole/datastarui/components/card"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ SidebarPage() {
+	@l.Root("components") {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Sidebar")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Sidebar</h1>
+				<p class="text-lg text-muted-foreground">
+					A composable sidebar component with mobile Sheet integration and desktop fixed positioning.
+				</p>
+			</div>
+			<!-- Component Grid -->
+			<div class="grid gap-8">
+				<!-- Recommended Pattern -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Recommended Pattern</h2>
+						<p class="text-sm text-muted-foreground">
+							Use building blocks to create a responsive sidebar that shows as a Sheet on mobile and fixed sidebar on desktop.
+						</p>
+					</div>
+					@card.Card(card.CardProps{}) {
+						@card.CardHeader(card.CardHeaderProps{}) {
+							@card.CardTitle(card.CardTitleProps{}) {
+								Mobile + Desktop Sidebar
+							}
+							@card.CardDescription(card.CardDescriptionProps{}) {
+								This is the recommended pattern that combines mobile Sheet with desktop fixed sidebar.
+							}
+						}
+						@card.CardContent(card.CardContentProps{}) {
+							<div class="space-y-4">
+								<p class="text-sm text-muted-foreground">
+									<strong>Mobile:</strong> Uses Sheet component with slide-in animation from left.
+								</p>
+								<p class="text-sm text-muted-foreground">
+									<strong>Desktop:</strong> Fixed sidebar with consistent content structure.
+								</p>
+								<p class="text-sm text-muted-foreground">
+									<strong>Coordination:</strong> All components share the same signal ID for state management.
+								</p>
+							</div>
+						}
+					}
+				</div>
+				<!-- Building Blocks -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Building Blocks</h2>
+						<p class="text-sm text-muted-foreground">
+							Components that make up the sidebar system.
+						</p>
+					</div>
+					<div class="grid gap-4 md:grid-cols-2">
+						@card.Card(card.CardProps{}) {
+							@card.CardHeader(card.CardHeaderProps{}) {
+								@card.CardTitle(card.CardTitleProps{
+									Class: "text-lg",
+								}) {
+									Core Components
+								}
+							}
+							@card.CardContent(card.CardContentProps{}) {
+								<ul class="text-sm space-y-1 text-muted-foreground">
+									<li>• <code>SidebarMobile</code> - Sheet wrapper</li>
+									<li>• <code>SidebarDesktop</code> - Fixed sidebar</li>
+									<li>• <code>SidebarTrigger</code> - Mobile hamburger</li>
+									<li>• <code>SidebarContent</code> - Shared container</li>
+								</ul>
+							}
+						}
+						@card.Card(card.CardProps{}) {
+							@card.CardHeader(card.CardHeaderProps{}) {
+								@card.CardTitle(card.CardTitleProps{
+									Class: "text-lg",
+								}) {
+									Content Components
+								}
+							}
+							@card.CardContent(card.CardContentProps{}) {
+								<ul class="text-sm space-y-1 text-muted-foreground">
+									<li>• <code>SidebarHeader</code> - Top section</li>
+									<li>• <code>SidebarNav</code> - Navigation menu</li>
+									<li>• <code>SidebarNavLink</code> - Individual links</li>
+									<li>• <code>SidebarFooter</code> - Bottom section</li>
+								</ul>
+							}
+						}
+					</div>
+				</div>
+				<!-- Features -->
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<h2 class="text-2xl font-semibold tracking-tight">Key Features</h2>
+						<p class="text-sm text-muted-foreground">
+							Core capabilities of the sidebar component system.
+						</p>
+					</div>
+					<div class="grid gap-4 md:grid-cols-2">
+						@card.Card(card.CardProps{}) {
+							@card.CardHeader(card.CardHeaderProps{}) {
+								@card.CardTitle(card.CardTitleProps{
+									Class: "text-lg",
+								}) {
+									Signal Coordination
+								}
+							}
+							@card.CardContent(card.CardContentProps{}) {
+								<ul class="text-sm space-y-2 text-muted-foreground">
+									<li>• All components share the same signal ID</li>
+									<li>• Trigger knows if sidebar is open</li>
+									<li>• Nav links close mobile sidebar</li>
+									<li>• Consistent state across all building blocks</li>
+								</ul>
+							}
+						}
+						@card.Card(card.CardProps{}) {
+							@card.CardHeader(card.CardHeaderProps{}) {
+								@card.CardTitle(card.CardTitleProps{
+									Class: "text-lg",
+								}) {
+									Responsive Design
+								}
+							}
+							@card.CardContent(card.CardContentProps{}) {
+								<ul class="text-sm space-y-2 text-muted-foreground">
+									<li>• Mobile: Sheet with slide animations</li>
+									<li>• Desktop: Fixed sidebar (w-64)</li>
+									<li>• Device-aware rendering</li>
+									<li>• Shared content structure</li>
+								</ul>
+							}
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

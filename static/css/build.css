@@ -1455,11 +1455,17 @@
   .accent-foreground {
     accent-color: var(--color-foreground);
   }
+  .opacity-0 {
+    opacity: 0%;
+  }
   .opacity-50 {
     opacity: 50%;
   }
   .opacity-70 {
     opacity: 70%;
+  }
+  .opacity-100 {
+    opacity: 100%;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -1555,6 +1561,10 @@
   }
   .transition-none {
     transition-property: none;
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
   }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
@@ -2112,6 +2122,11 @@
       color: var(--color-white);
     }
   }
+  .data-\[state\=closed\]\:opacity-0 {
+    &[data-state="closed"] {
+      opacity: 0%;
+    }
+  }
   .data-\[state\=closed\]\:duration-300 {
     &[data-state="closed"] {
       --tw-duration: 300ms;
@@ -2121,6 +2136,11 @@
   .data-\[state\=open\]\:bg-secondary {
     &[data-state="open"] {
       background-color: var(--color-secondary);
+    }
+  }
+  .data-\[state\=open\]\:opacity-100 {
+    &[data-state="open"] {
+      opacity: 100%;
     }
   }
   .data-\[state\=open\]\:duration-500 {
@@ -3174,6 +3194,10 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-ease {
   syntax: "*";
   inherits: false;
@@ -3181,10 +3205,6 @@
 @property --tw-content {
   syntax: "*";
   initial-value: "";
-  inherits: false;
-}
-@property --tw-duration {
-  syntax: "*";
   inherits: false;
 }
 @layer properties {
@@ -3253,9 +3273,9 @@
       --tw-backdrop-opacity: initial;
       --tw-backdrop-saturate: initial;
       --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
       --tw-ease: initial;
       --tw-content: "";
-      --tw-duration: initial;
     }
   }
 }

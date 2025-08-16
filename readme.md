@@ -65,12 +65,12 @@ datastarui/
 
 Each component follows a pattern with utility-driven Datastar integration:
 
-- [Template File (`component.templ`)](./components/dialog/dialog.templ)
+- [Template File (`dialog.templ`)](./components/dialog/dialog.templ)
 - [Expressions (`expressions.go`)](./components/dialog/expressions.go)
 - [Args Definition (`args.go`)](./components/dialog/args.go)
 - [CSS Variants (`variants.go`)](./components/dialog/variants.go)
 
-### Template File (`component.templ`)
+### Template File (`dialog.templ`)
 
 ```go
 package dialog

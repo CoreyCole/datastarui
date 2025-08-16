@@ -179,4 +179,3 @@ datastarui/
 1. **Accessibility**: Add automated a11y testing
 1. **Performance**: Add performance testing with Lighthouse
 1. **Cross-browser**: Ensure tests pass on all browsers
-
