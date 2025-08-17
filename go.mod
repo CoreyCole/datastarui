@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/Oudwins/tailwind-merge-go v0.2.0
-	github.com/a-h/templ v0.3.924
+	github.com/a-h/templ v0.3.943
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/starfederation/datastar v1.0.0-beta.11
 )
@@ -28,15 +28,15 @@ require (
 	github.com/samber/lo v1.50.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	golang.org/x/crypto v0.38.0 // indirect
+	golang.org/x/crypto v0.40.0 // indirect
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
-	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.40.0 // indirect
-	golang.org/x/sync v0.14.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/mod v0.26.0 // indirect
+	golang.org/x/net v0.42.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/text v0.27.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
+	golang.org/x/tools v0.35.0 // indirect
 )
 
 tool github.com/a-h/templ/cmd/templ
