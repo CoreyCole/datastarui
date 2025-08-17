@@ -29,6 +29,16 @@ Your primary responsibilities:
    - Report expression syntax and execution results
    - Monitor for "GenerateExpression" errors in console
    - Document bidirectional data binding behavior
+   - **Get Current Signals**: Use `mcp__playwright__playwright_evaluate` with this script to log current signal state:
+     ```javascript
+     const inspector = document.querySelector('datastar-inspector');
+     if (inspector && inspector.currentSignals) {
+       console.log('Current signals:', inspector.currentSignals);
+       return JSON.stringify(inspector.currentSignals, null, 2);
+     } else {
+       return 'Datastar inspector not found or no signals available';
+     }
+     ```
 
 6. **Component-Specific Testing Patterns**:
    - **Select Components**: Test dropdown opening/closing, option selection, keyboard navigation
