@@ -45,7 +45,7 @@ func SidebarMobile(args SidebarMobileArgs) templ.Component {
 
 		// Build sheet classes manually since we're not using the Sheet component
 		backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300"
-		sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
+		sheetClasses := "fixed top-0 left-0 h-screen w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm overflow-y-auto"
 
 		// Create data-class expressions for fade animations
 		backdropDataClass := utils.NewDataClass().
