@@ -58,6 +58,9 @@ func main() {
 	if _, err := os.Stat("static/js/datastar.js"); err == nil {
 		datastarProAvailable = true
 	}
+	if _, err := os.Stat("static/js/datastar-inspector.js"); err == nil {
+		cfg.DatastarInspectorEnabled = false
+	}
 
 	// Create a new Echo instance
 	e := echo.New()
