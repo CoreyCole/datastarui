@@ -10,6 +10,7 @@ import (
 templ Page(rootArgs l.RootArgs) {
 	@l.Root(rootArgs) {
 		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Datepicker")
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Datepicker</h1>
 				<p class="text-muted-foreground">Test bidirectional signal coordination between date inputs and calendar components.</p>

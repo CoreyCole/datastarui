@@ -48,7 +48,15 @@ func Page(rootArgs l.RootArgs) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Datepicker</h1><p class=\"text-muted-foreground\">Test bidirectional signal coordination between date inputs and calendar components.</p></div><div class=\"space-y-12\"><!-- Combined DatePicker Testing Section --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = l.ComponentPageBreadcrumbs("Datepicker").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Datepicker</h1><p class=\"text-muted-foreground\">Test bidirectional signal coordination between date inputs and calendar components.</p></div><div class=\"space-y-12\"><!-- Combined DatePicker Testing Section --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -88,7 +96,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Single Date Picker")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Single Date Picker")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -98,7 +106,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -114,7 +122,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "Basic date picker with input field and calendar popover")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Basic date picker with input field and calendar popover")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -130,7 +138,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -146,7 +154,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"space-y-4\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"space-y-4\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -162,7 +170,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "Select Date")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "Select Date")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -182,7 +190,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -198,7 +206,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<!-- Range Date Picker -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<!-- Range Date Picker -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -238,7 +246,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Date Range Picker")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "Date Range Picker")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -248,7 +256,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -264,7 +272,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "Range picker with dual inputs and two-month calendar view")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "Range picker with dual inputs and two-month calendar view")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -280,7 +288,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -296,7 +304,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"space-y-4\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"space-y-4\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -312,7 +320,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "Select Date Range")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "Select Date Range")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -336,7 +344,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -352,7 +360,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div><!-- Comprehensive Test Cases -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></div><!-- Comprehensive Test Cases -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -392,7 +400,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "🧪 Test Cases")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "🧪 Test Cases")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -402,7 +410,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -418,7 +426,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "Comprehensive testing scenarios for DatePicker components")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Comprehensive testing scenarios for DatePicker components")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -434,7 +442,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -450,7 +458,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"space-y-6 text-sm\"><!-- General DateInput Tests --><div><h4 class=\"font-semibold mb-3\">DateInput Features (Both Single & Range)</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Auto-formatting:</strong> Type <code class=\"bg-muted px-1 rounded\">12252024</code> → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Year completion:</strong> Type <code class=\"bg-muted px-1 rounded\">12/25/24</code> then tab/blur → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Input validation:</strong> Only numbers and navigation keys allowed</p><p>• <strong>Slash insertion:</strong> Automatically adds slashes as you type</p><p>• <strong>Backspace handling:</strong> Removes slashes when deleting</p></div></div><!-- Bidirectional Signal Coordination --><div><h4 class=\"font-semibold mb-3\">Bidirectional Signal Coordination</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Calendar → Input:</strong> Click any date in calendar → input field updates immediately</p><p>• <strong>Input → Calendar:</strong> Type valid date in input → calendar highlights that date</p><p>• <strong>Clear Selection:</strong> Clear input field → calendar selection clears</p><p>• <strong>Invalid dates:</strong> Type invalid date → calendar doesn't crash, shows feedback</p></div></div><!-- Range-Specific Tests --><div><h4 class=\"font-semibold mb-3\">Range DatePicker Specific Tests</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Range Start:</strong> Click first date → start input updates, calendar shows selection</p><p>• <strong>Range End:</strong> Click second date → end input updates, calendar shows full range</p><p>• <strong>Range Reset:</strong> Click a date when range is selected → resets to new start</p><p>• <strong>Cross-month Range:</strong> Select dates across different months → both months show selection</p><p>• <strong>Tab between inputs:</strong> Tab from start to end input seamlessly</p><p>• <strong>Individual formatting:</strong> Each input formats independently as you type</p><p>• <strong>Synchronized updates:</strong> Calendar selection updates both inputs correctly</p></div></div><!-- Signal Information --><div class=\"mt-4 p-3 bg-muted/50 rounded-md\"><h4 class=\"font-semibold mb-2\">Signal IDs for Testing</h4><div class=\"text-xs font-mono text-muted-foreground space-y-1\"><p><strong>Single Date:</strong> CalendarID=\"single_date_calendar\", InputID=\"single_date_input\"</p><p><strong>Range Date:</strong> CalendarID=\"range_date_calendar\", InputsID=\"range_date_dateinput\"</p></div></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"space-y-6 text-sm\"><!-- General DateInput Tests --><div><h4 class=\"font-semibold mb-3\">DateInput Features (Both Single & Range)</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Auto-formatting:</strong> Type <code class=\"bg-muted px-1 rounded\">12252024</code> → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Year completion:</strong> Type <code class=\"bg-muted px-1 rounded\">12/25/24</code> then tab/blur → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Input validation:</strong> Only numbers and navigation keys allowed</p><p>• <strong>Slash insertion:</strong> Automatically adds slashes as you type</p><p>• <strong>Backspace handling:</strong> Removes slashes when deleting</p></div></div><!-- Bidirectional Signal Coordination --><div><h4 class=\"font-semibold mb-3\">Bidirectional Signal Coordination</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Calendar → Input:</strong> Click any date in calendar → input field updates immediately</p><p>• <strong>Input → Calendar:</strong> Type valid date in input → calendar highlights that date</p><p>• <strong>Clear Selection:</strong> Clear input field → calendar selection clears</p><p>• <strong>Invalid dates:</strong> Type invalid date → calendar doesn't crash, shows feedback</p></div></div><!-- Range-Specific Tests --><div><h4 class=\"font-semibold mb-3\">Range DatePicker Specific Tests</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Range Start:</strong> Click first date → start input updates, calendar shows selection</p><p>• <strong>Range End:</strong> Click second date → end input updates, calendar shows full range</p><p>• <strong>Range Reset:</strong> Click a date when range is selected → resets to new start</p><p>• <strong>Cross-month Range:</strong> Select dates across different months → both months show selection</p><p>• <strong>Tab between inputs:</strong> Tab from start to end input seamlessly</p><p>• <strong>Individual formatting:</strong> Each input formats independently as you type</p><p>• <strong>Synchronized updates:</strong> Calendar selection updates both inputs correctly</p></div></div><!-- Signal Information --><div class=\"mt-4 p-3 bg-muted/50 rounded-md\"><h4 class=\"font-semibold mb-2\">Signal IDs for Testing</h4><div class=\"text-xs font-mono text-muted-foreground space-y-1\"><p><strong>Single Date:</strong> CalendarID=\"single_date_calendar\", InputID=\"single_date_input\"</p><p><strong>Range Date:</strong> CalendarID=\"range_date_calendar\", InputsID=\"range_date_dateinput\"</p></div></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -466,7 +474,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
