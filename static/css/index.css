@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Enable View Transitions API for MPA navigation */
+@view-transition {
+  navigation: auto;
+}
+
 @theme {
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));

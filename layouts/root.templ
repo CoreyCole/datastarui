@@ -51,9 +51,9 @@ templ Root(args RootArgs) {
 			<!-- Theme Color -->
 			<meta name="theme-color" content="#000000"/>
 			<!-- Apple PWA Support -->
-			<meta name="apple-mobile-web-app-capable" content="yes"/>
-			<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-			<meta name="apple-mobile-web-app-title" content="DatastarUI"/>
+			<meta name="mobile-web-app-capable" content="yes"/>
+			<meta name="mobile-web-app-capable-status-bar-style" content="default"/>
+			<meta name="mobile-web-app-capable-title" content="DatastarUI"/>
 			<!-- Apple Touch Icons -->
 			<link rel="apple-touch-icon" href="/img/datastarui-icons/ios/180.png"/>
 			<link rel="apple-touch-icon" sizes="152x152" href="/img/datastarui-icons/ios/152.png"/>
@@ -91,6 +91,24 @@ templ Root(args RootArgs) {
           console.log('✅ CSS Anchor Positioning is natively supported - no polyfill needed');
           window.CSS_ANCHOR_POLYFILL_LOADED = false;
         }
+
+        // view transitions polyfill
+        if (!document.startViewTransition) {
+          console.log('🔧 View Transitions is not natively supported, loading polyfill...');
+          window.VIEW_TRANSITIONS_POLYFILL_LOADING = true;
+          import('https://cdn.jsdelivr.net/npm/view-transitions-polyfill@1.0.5')
+            .then(() => {
+              window.VIEW_TRANSITIONS_POLYFILL_LOADED = true;
+              window.VIEW_TRANSITIONS_POLYFILL_LOADING = false;
+              console.log('✅ View Transitions polyfill loaded successfully!');
+            })
+            .catch((error) => {
+              console.error('❌ Failed to load View Transitions polyfill:', error);
+              window.VIEW_TRANSITIONS_POLYFILL_LOADING = false;
+            });
+        } else {
+          console.log('✅ View Transitions is natively supported');
+        }
       </script>
 			<!-- Theme initialization -->
 			<script>
@@ -106,7 +124,11 @@ templ Root(args RootArgs) {
         initTheme();
       </script>
 			<!-- Datastar -->
-			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
+			<!-- <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script> -->
+			<!-- Datastar Pro -->
+			<script type="module" src="/js/datastar-pro.js"></script>
+			<!-- Enable View Transitions API -->
+			<meta name="view-transition" content="same-origin"/>
 		</head>
 		{{
 	// Build data-signals with shared sidebar state
