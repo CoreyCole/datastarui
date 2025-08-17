@@ -5,7 +5,7 @@ build:
 
 build-tailwind:
     @echo "🎨 Building Tailwind CSS..."
-    @pnpm tailwindcss -i static/css/index.css -o static/css/out.css --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
+    @pnpm exec tailwindcss -i static/css/index.css -o static/css/out.css --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
     @if [ -f static/css/out.css ]; then \
         echo "📝 Generating CSS hash..."; \
         HASH=$(sha256sum static/css/out.css | cut -d' ' -f1 | head -c8); \
@@ -16,7 +16,7 @@ build-tailwind:
     fi
 
 tailwind:
-  @tailwindcss -i static/css/index.css -o static/css/out.css --watch --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
+  @pnpm exec tailwindcss -i static/css/index.css -o static/css/out.css --watch --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
 
 watch:
   air
