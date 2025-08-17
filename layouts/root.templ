@@ -124,10 +124,11 @@ templ Root(args RootArgs) {
         initTheme();
       </script>
 			<!-- Datastar -->
-			<!-- <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script> -->
-			<!-- Datastar Pro -->
-			<script type="module" src="/js/datastar-pro.js"></script>
-			<script type="module" src="/js/datastar-inspector.js"></script>
+			<script type="module" src="/js/datastar.js"></script>
+			if args.InspectorEnabled {
+				<script type="module" src="/js/datastar-inspector.js"></script>
+				<script type="module" src="/js/datastar-inspector.map.js"></script>
+			}
 			<!-- Enable View Transitions API -->
 			<meta name="view-transition" content="same-origin"/>
 		</head>
@@ -138,7 +139,9 @@ templ Root(args RootArgs) {
 	dataSignals := "{theme: initTheme(), " + sidebarID + ": " + sidebarSignals + "}"
 		}}
 		<body class="min-h-screen bg-background font-sans antialiased" data-signals={ dataSignals }>
-			<datastar-inspector></datastar-inspector>
+			if args.InspectorEnabled {
+				<datastar-inspector></datastar-inspector>
+			}
 			<div class="relative flex min-h-screen flex-col bg-background">
 				<div data-wrapper="" class="border-grid flex flex-1 flex-col">
 					<!-- Header -->

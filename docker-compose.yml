@@ -13,6 +13,7 @@ services:
       - CGO_ENABLED=0
       - GOOS=linux
       - GO111MODULE=on
+      - DATASTAR_INSPECTOR_ENABLED=true
     working_dir: /app
     command: sh -c "just watch"
     networks:
