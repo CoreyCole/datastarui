@@ -5,7 +5,7 @@ import "github.com/coreycole/datastarui/utils"
 // SheetSignals defines the signal structure for sheet components
 type SheetSignals struct {
 	Open        bool        `json:"open"`
-	Modal       bool        `json:"modal"`  
+	Modal       bool        `json:"modal"`
 	ReturnValue interface{} `json:"returnValue"`
 }
 
@@ -20,33 +20,43 @@ templ Sheet(args SheetArgs) {
 		})
 
 		// Sheet backdrop overlay - only shown for modal sheets
-		backdropClasses := "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+		backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300 data-[state=closed]:opacity-0 data-[state=open]:opacity-100"
 
 		// Sheet positioning classes based on side
 		var sheetClasses string
 		var zIndex string
 		if args.Modal {
-			zIndex = "z-50"  // Modal sheets on top
+			zIndex = "z-50" // Modal sheets on top
 		} else {
-			zIndex = "z-40"  // Non-modal sheets below modals
+			zIndex = "z-40" // Non-modal sheets below modals
 		}
-		baseSheetClasses := "fixed gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 " + zIndex
-		
+		baseSheetClasses := "fixed gap-4 bg-background p-6 shadow-lg transition-opacity duration-300 " + zIndex
+
 		switch args.Side {
 		case "top":
-			sheetClasses = baseSheetClasses + " inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top"
+			sheetClasses = baseSheetClasses + " inset-x-0 top-0 border-b"
 		case "bottom":
-			sheetClasses = baseSheetClasses + " inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom"
+			sheetClasses = baseSheetClasses + " inset-x-0 bottom-0 border-t"
 		case "left":
-			sheetClasses = baseSheetClasses + " inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm"
+			sheetClasses = baseSheetClasses + " inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm"
 		default: // "right"
-			sheetClasses = baseSheetClasses + " inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm"
+			sheetClasses = baseSheetClasses + " inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm"
 		}
+		
+		// Create data-class expressions for fade animations
+		backdropDataClass := utils.NewDataClass().
+			Add("opacity-0", "!"+signals.Signal("open")).
+			Add("opacity-100", signals.Signal("open")).
+			Build()
+		sheetDataClass := utils.NewDataClass().
+			Add("opacity-0", "!"+signals.Signal("open")).
+			Add("opacity-100", signals.Signal("open")).
+			Build()
 
 		// Create sheet handler for clean expressions
 		sheetHandler := NewSheetHandler(signals)
 		escapeHandler := sheetHandler.BuildEscapeHandler()
-		
+
 		// For modal sheets, clicking backdrop closes the sheet
 		// For non-modal sheets, backdrop click is ignored
 		var backdropClickHandler string
@@ -62,6 +72,7 @@ templ Sheet(args SheetArgs) {
 			<div
 				data-show={ signals.Signal("open") }
 				class={ backdropClasses }
+				data-class={ backdropDataClass }
 				data-on-click={ backdropClickHandler }
 				if !args.DefaultOpen {
 					style="display: none;"
@@ -73,6 +84,7 @@ templ Sheet(args SheetArgs) {
 			id={ args.ID }
 			data-show={ signals.Signal("open") }
 			class={ sheetClasses }
+			data-class={ sheetDataClass }
 			role="dialog"
 			if args.Modal {
 				aria-modal="true"
@@ -132,7 +144,7 @@ templ SheetContent(args SheetContentArgs) {
 		<div class="flex flex-row justify-end mb-4">
 			@SheetClose(SheetCloseArgs{
 				SheetID: args.SheetID,
-				Class: "rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary w-6 h-6 flex items-center justify-center shrink-0",
+				Class:   "rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary w-6 h-6 flex items-center justify-center shrink-0",
 			})
 		</div>
 		{ children... }

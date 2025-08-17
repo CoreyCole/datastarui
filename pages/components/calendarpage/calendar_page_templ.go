@@ -13,7 +13,7 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-func Page() templ.Component {
+func Page(rootArgs l.RootArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -46,7 +46,15 @@ func Page() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto p-4\"><h1 class=\"text-2xl font-bold mb-4\">Calendar Component</h1><div class=\"space-y-8\"><div><h2 class=\"text-xl font-semibold mb-2\">Calendar Demo (Single Date) - Auto Current Month</h2><p class=\"text-sm text-muted-foreground mb-2\">Should show current month automatically</p><div class=\"w-fit\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = l.ComponentPageBreadcrumbs("Calendar").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Page Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Calendar</h1><p class=\"text-lg text-muted-foreground\">A date field component that allows users to enter and edit date.</p></div><div class=\"space-y-8\"><div><h2 class=\"text-xl font-semibold mb-2\">Calendar Demo (Single Date) - Auto Current Month</h2><p class=\"text-sm text-muted-foreground mb-2\">Should show current month automatically</p><div class=\"w-fit\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -57,7 +65,7 @@ func Page() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Calendar Demo (Single Date) - Explicit January 2023</h2><p class=\"text-sm text-muted-foreground mb-2\">Should show January 2023 (not current month)</p><div class=\"w-fit\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Calendar Demo (Single Date) - Explicit January 2023</h2><p class=\"text-sm text-muted-foreground mb-2\">Should show January 2023 (not current month)</p><div class=\"w-fit\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -69,7 +77,7 @@ func Page() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Double-Width Calendar (Range Selection)</h2><p class=\"text-sm text-muted-foreground mb-4\">Two months displayed side by side for better range selection. Perfect for date range pickers.</p><div class=\"w-fit\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Double-Width Calendar (Range Selection)</h2><p class=\"text-sm text-muted-foreground mb-4\">Two months displayed side by side for better range selection. Perfect for date range pickers.</p><div class=\"w-fit\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -81,7 +89,7 @@ func Page() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Double-Width Calendar (Single Selection)</h2><p class=\"text-sm text-muted-foreground mb-4\">Two months displayed side by side with single date selection and outside days visible.</p><div class=\"w-fit\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Double-Width Calendar (Single Selection)</h2><p class=\"text-sm text-muted-foreground mb-4\">Two months displayed side by side with single date selection and outside days visible.</p><div class=\"w-fit\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -93,7 +101,7 @@ func Page() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Standard Calendar (Outside Days Hidden)</h2><p class=\"text-sm text-muted-foreground mb-4\">Standard single month view with outside days hidden for a cleaner look.</p><div class=\"w-fit\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></div><div><h2 class=\"text-xl font-semibold mb-2\">Standard Calendar (Outside Days Hidden)</h2><p class=\"text-sm text-muted-foreground mb-4\">Standard single month view with outside days hidden for a cleaner look.</p><div class=\"w-fit\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -106,13 +114,13 @@ func Page() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = l.Root("components").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = l.Root(rootArgs).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

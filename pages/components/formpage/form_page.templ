@@ -8,8 +8,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ FormPage() {
-	@l.Root("components") {
+templ FormPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Form")
 			<!-- Page Header -->

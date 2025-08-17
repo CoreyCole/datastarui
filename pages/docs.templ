@@ -3,8 +3,8 @@ package pages
 import l "github.com/coreycole/datastarui/layouts"
 import b "github.com/coreycole/datastarui/components/breadcrumb"
 
-templ DocsPage() {
-	@l.Root("docs") {
+templ DocsPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8 max-w-4xl">
 			<!-- Breadcrumb Navigation -->
 			@b.Breadcrumb(b.BreadcrumbProps{}) {

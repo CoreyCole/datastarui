@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	p "github.com/coreycole/datastarui/pages"
+	l "github.com/coreycole/datastarui/layouts"
 	"github.com/coreycole/datastarui/pages/components/breadcrumbpage"
 	"github.com/coreycole/datastarui/pages/components/buttonpage"
 	"github.com/coreycole/datastarui/pages/components/calendarpage"
@@ -17,14 +18,24 @@ import (
 	"github.com/coreycole/datastarui/pages/components/dialogpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/sheetpage"
+	"github.com/coreycole/datastarui/pages/components/sidebarpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
+	"github.com/coreycole/datastarui/pages/components/componentspage"
 	"github.com/coreycole/datastarui/utils"
 )
 
 const port = "4242"
+
+// Helper function to create RootArgs for component pages
+func componentRootArgs(path string) l.RootArgs {
+	return l.RootArgs{
+		CurrentPage: "components",
+		CurrentPath: path,
+	}
+}
 
 func main() {
 	// Create a new Echo instance
@@ -48,62 +59,77 @@ func main() {
 
 	// Serve the home page at the root route
 	e.GET("/", func(c echo.Context) error {
-		component := p.HomePage()
+		rootArgs := l.RootArgs{
+			CurrentPage: "home",
+			CurrentPath: c.Request().URL.Path,
+		}
+		component := p.HomePage(rootArgs)
 		return component.Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the components page
 	e.GET("/components", func(c echo.Context) error {
-		return c.Redirect(http.StatusFound, "/components/button")
+		return componentspage.ComponentsPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/button", func(c echo.Context) error {
-		return buttonpage.ButtonPage().Render(c.Request().Context(), c.Response().Writer)
+		return buttonpage.ButtonPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/breadcrumb", func(c echo.Context) error {
-		return breadcrumbpage.BreadcrumbPage().Render(c.Request().Context(), c.Response().Writer)
+		return breadcrumbpage.BreadcrumbPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/dropdown", func(c echo.Context) error {
-		return dropdownpage.DropdownPage().Render(c.Request().Context(), c.Response().Writer)
+		return dropdownpage.DropdownPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/calendar", func(c echo.Context) error {
-		return calendarpage.Page().Render(c.Request().Context(), c.Response().Writer)
+		return calendarpage.Page(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/form", func(c echo.Context) error {
-		return formpage.FormPage().Render(c.Request().Context(), c.Response().Writer)
+		return formpage.FormPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/popover", func(c echo.Context) error {
-		return popoverpage.PopoverPage().Render(c.Request().Context(), c.Response().Writer)
+		return popoverpage.PopoverPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/tabs", func(c echo.Context) error {
-		return tabspage.TabsPage().Render(c.Request().Context(), c.Response().Writer)
+		return tabspage.TabsPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/card", func(c echo.Context) error {
-		return cardpage.CardPage().Render(c.Request().Context(), c.Response().Writer)
+		return cardpage.CardPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/checkbox", func(c echo.Context) error {
-		return checkboxpage.CheckboxPage().Render(c.Request().Context(), c.Response().Writer)
+		return checkboxpage.CheckboxPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/dialog", func(c echo.Context) error {
-		return dialogpage.DialogPage().Render(c.Request().Context(), c.Response().Writer)
+		return dialogpage.DialogPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/select", func(c echo.Context) error {
-		return selectpage.SelectPage().Render(c.Request().Context(), c.Response().Writer)
+		return selectpage.SelectPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/datepicker", func(c echo.Context) error {
-		return datepickerpage.Page().Render(c.Request().Context(), c.Response().Writer)
+		return datepickerpage.Page(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/sheet", func(c echo.Context) error {
-		return sheetpage.SheetPage().Render(c.Request().Context(), c.Response().Writer)
+		return sheetpage.SheetPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/sidebar", func(c echo.Context) error {
+		return sidebarpage.SidebarPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the docs page
 	e.GET("/docs", func(c echo.Context) error {
-		return p.DocsPage().Render(c.Request().Context(), c.Response().Writer)
+		rootArgs := l.RootArgs{
+			CurrentPage: "docs",
+			CurrentPath: c.Request().URL.Path,
+		}
+		return p.DocsPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the examples page
 	e.GET("/examples", func(c echo.Context) error {
-		return p.ExamplesPage().Render(c.Request().Context(), c.Response().Writer)
+		rootArgs := l.RootArgs{
+			CurrentPage: "examples",
+			CurrentPath: c.Request().URL.Path,
+		}
+		return p.ExamplesPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Register form demo handlers

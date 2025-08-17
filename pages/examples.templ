@@ -3,8 +3,8 @@ package pages
 import l "github.com/coreycole/datastarui/layouts"
 import b "github.com/coreycole/datastarui/components/breadcrumb"
 
-templ ExamplesPage() {
-	@l.Root("examples") {
+templ ExamplesPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="min-h-screen bg-background">
 			<div class="container mx-auto px-4 py-8">
 				<div class="flex flex-col space-y-8">

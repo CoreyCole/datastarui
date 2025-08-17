@@ -6,8 +6,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ DropdownPage() {
-	@l.Root("components") {
+templ DropdownPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Dropdown")
 			<!-- Page Header -->

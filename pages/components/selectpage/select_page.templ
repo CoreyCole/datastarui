@@ -6,12 +6,14 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ SelectPage() {
-	@l.Root("components") {
-		<div class="container mx-auto p-8 space-y-12">
-			<div>
-				<h1 class="text-3xl font-bold mb-2">Select Component</h1>
-				<p class="text-muted-foreground">
+templ SelectPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Select")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Select</h1>
+				<p class="text-lg text-muted-foreground">
 					Displays a list of options for the user to pick from—triggered by a button.
 				</p>
 			</div>

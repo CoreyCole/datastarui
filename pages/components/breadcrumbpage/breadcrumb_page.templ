@@ -7,8 +7,8 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ BreadcrumbPage() {
-	@l.Root("components") {
+templ BreadcrumbPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Breadcrumb")
 			<!-- Page Header -->

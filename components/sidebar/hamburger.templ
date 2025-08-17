@@ -1,0 +1,56 @@
+package sidebar
+
+import (
+	"github.com/coreycole/datastarui/utils"
+)
+
+// HamburgerIconArgs defines the props for the hamburger icon
+type HamburgerIconArgs struct {
+	ID         string            `json:"id"`
+	Class      string            `json:"class,omitempty"`
+	Attributes templ.Attributes  `json:"attributes,omitempty"`
+}
+
+// HamburgerIcon creates an animated hamburger menu icon that transforms into an X
+templ HamburgerIcon(args HamburgerIconArgs) {
+	{{
+		// Access the sidebar signals to determine open/closed state
+		signals := utils.Signals(args.ID, SidebarSignals{})
+		
+		// Create data-class expressions for the animated lines
+		// Top line: rotates 45deg and moves down when open
+		topLineDataClass := utils.NewDataClass().
+			Add("rotate-45 translate-y-1.5", signals.Signal("mobileOpen")).
+			Add("rotate-0 translate-y-0", "!"+signals.Signal("mobileOpen")).
+			Build()
+		
+		// Middle line: fades out when open
+		middleLineDataClass := utils.NewDataClass().
+			Add("opacity-0", signals.Signal("mobileOpen")).
+			Add("opacity-100", "!"+signals.Signal("mobileOpen")).
+			Build()
+		
+		// Bottom line: rotates -45deg and moves up when open
+		bottomLineDataClass := utils.NewDataClass().
+			Add("-rotate-45 -translate-y-1.5", signals.Signal("mobileOpen")).
+			Add("rotate-0 translate-y-0", "!"+signals.Signal("mobileOpen")).
+			Build()
+	}}
+	<div class={ "relative w-5 h-5 flex flex-col justify-center", args.Class } { args.Attributes... }>
+		<!-- Top line -->
+		<span 
+			class="block w-5 h-0.5 bg-current transition-all duration-300 ease-in-out transform origin-center"
+			data-class={ topLineDataClass }
+		></span>
+		<!-- Middle line -->
+		<span 
+			class="block w-5 h-0.5 bg-current mt-1 transition-all duration-300 ease-in-out"
+			data-class={ middleLineDataClass }
+		></span>
+		<!-- Bottom line -->
+		<span 
+			class="block w-5 h-0.5 bg-current mt-1 transition-all duration-300 ease-in-out transform origin-center"
+			data-class={ bottomLineDataClass }
+		></span>
+	</div>
+}

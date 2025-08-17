@@ -9,9 +9,9 @@ import (
 // SignalManager provides a structured way to manage Datastar signals
 // It namespaces signals by ID and provides serialization capabilities
 type SignalManager struct {
-	ID          string      `json:"-"`
-	Signals     interface{} `json:"-"`
-	DataSignals string      `json:"-"`
+	ID          string      `json:"id"`
+	Signals     any         `json:"signals"`
+	DataSignals string      `json:"dataSignals"`
 }
 
 // Signals creates a new SignalManager instance with the given ID and signals struct
@@ -26,12 +26,12 @@ type SignalManager struct {
 //	}
 //	signals := Signals("myComponent", MySignals{Open: false, Value: "", Count: 0})
 //	// Use in templ: data-signals={ signals.DataSignals }
-func Signals(id string, signalsStruct interface{}) *SignalManager {
+func Signals(id string, signalsStruct any) *SignalManager {
 	// Sanitize ID by replacing hyphens with underscores for JavaScript compatibility
 	sanitizedID := strings.ReplaceAll(id, "-", "_")
 
 	// Create the nested structure: {[sanitizedID]: signalsStruct}
-	nested := map[string]interface{}{
+	nested := map[string]any{
 		sanitizedID: signalsStruct,
 	}
 

@@ -2,186 +2,266 @@ package sidebar
 
 import "github.com/coreycole/datastarui/utils"
 
-// MobileMenuSignals defines the reactive state for mobile menu
-type MobileMenuSignals struct {
-	Open bool `json:"open"`
+// SidebarSignals defines the signal structure for sidebar components
+type SidebarSignals struct {
+	MobileOpen bool `json:"mobileOpen"`
 }
 
-templ Sidebar(args SidebarProps) {
+// SidebarMobile - Sheet wrapper for mobile sidebar
+templ SidebarMobile(args SidebarMobileArgs) {
 	{{
-		// Reference the global mobile menu signals
-		signals := utils.Signals("mobile_menu", MobileMenuSignals{})
+	// Use parent sidebar signals directly - don't create separate sheet signals
+	parentSignals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(parentSignals)
+	closeHandler := sidebarHandler.BuildMobileCloseHandler()
 
-		// Desktop classes - sticky sidebar (below non-modal sheets)
-		desktopClasses := "border-grid fixed top-0 z-20 h-screen w-full shrink-0 border-r md:sticky md:block"
+	// Build sheet classes manually since we're not using the Sheet component
+	backdropClasses := "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300"
+	sheetClasses := "fixed inset-y-0 left-0 h-full w-3/4 z-50 gap-4 bg-background shadow-lg border-r transition-opacity duration-300 sm:max-w-sm"
 
-		// Mobile classes - overlay sidebar (below modal sheets, above non-modal sheets)
-		mobileClasses := "md:hidden fixed inset-0 z-45 bg-background/80 backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
-		sidebarContentClasses := "fixed inset-y-0 left-0 z-45 h-full w-full bg-background shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm"
+	// Create data-class expressions for fade animations
+	backdropDataClass := utils.NewDataClass().
+		Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
+		Add("opacity-100", parentSignals.Signal("mobileOpen")).
+		Build()
+	sheetDataClass := utils.NewDataClass().
+		Add("opacity-0", "!"+parentSignals.Signal("mobileOpen")).
+		Add("opacity-100", parentSignals.Signal("mobileOpen")).
+		Build()
+
+	// Create escape handler
+	escapeHandler := "evt.key === 'Escape' ? (" + closeHandler + ") : null"
 	}}
-	<!-- Desktop Sidebar - only hide on mobile if mobile overlay is enabled -->
-	if args.IsMobile {
-		<aside class={ desktopClasses + " hidden", args.Class } { args.Attributes... }>
-			<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
-				<div class="flex flex-col gap-6">
-					for _, section := range args.Sections {
-						<div class="flex flex-col gap-1">
-							<h4 class="rounded-md px-2 py-1 text-sm font-medium">
-								{ section.Title }
-								if section.Label != "" {
-									<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
-								}
-							</h4>
-							<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
-								for _, item := range section.Items {
-									@SidebarLink(item, args.CurrentPath)
-								}
-							</div>
-						</div>
-					}
-				</div>
-			</div>
-		</aside>
-	} else {
-		<aside class={ desktopClasses, args.Class } { args.Attributes... }>
-			<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 pr-4">
-				<div class="flex flex-col gap-6">
-					for _, section := range args.Sections {
-						<div class="flex flex-col gap-1">
-							<h4 class="rounded-md px-2 py-1 text-sm font-medium">
-								{ section.Title }
-								if section.Label != "" {
-									<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
-								}
-							</h4>
-							<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
-								for _, item := range section.Items {
-									@SidebarLink(item, args.CurrentPath)
-								}
-							</div>
-						</div>
-					}
-				</div>
-			</div>
-		</aside>
-	}
-	<!-- Mobile Sidebar Overlay - only render if on mobile -->
-	if args.IsMobile {
+	<!-- Modal backdrop -->
+	<div
+		class={ backdropClasses }
+		data-class={ backdropDataClass }
+		data-show={ parentSignals.Signal("mobileOpen") }
+		data-on-click={ closeHandler }
+		data-on-keydown={ escapeHandler }
+		style="display: none;"
+	>
+		<!-- Sheet content -->
 		<div
-			class={ mobileClasses }
-			data-show={ signals.Signal("open") }
-			data-attr-data-state={ signals.Signal("open") + " ? 'open' : 'closed'" }
-			data-on-click={ signals.Set("open", "false") }
-			style="display: none;"
+			class={ sheetClasses + " w-72 p-0 bg-sidebar", args.Class }
+			data-class={ sheetDataClass }
+			data-on-click="evt.stopPropagation()"
+			role="dialog"
+			aria-modal="true"
+			{ args.Attributes... }
 		>
-			<nav
-				class={ sidebarContentClasses }
-				data-attr-data-state={ signals.Signal("open") + " ? 'open' : 'closed'" }
-				data-on-click="evt.stopPropagation()"
-			>
-				<div class="flex h-14 items-center border-b px-6">
-					<a class="flex items-center gap-2 font-semibold" href="/">
-						<span>DatastarUI</span>
-					</a>
-					<button
-						class="ml-auto rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
-						data-on-click={ signals.Set("open", "false") }
-					>
-						<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M18 6 6 18"></path>
-							<path d="m6 6 12 12"></path>
-						</svg>
-						<span class="sr-only">Close</span>
-					</button>
-				</div>
-				<div class="no-scrollbar h-full overflow-auto pt-6 pb-6 px-4">
-					<div class="flex flex-col gap-6">
-						for _, section := range args.Sections {
-							<div class="flex flex-col gap-1">
-								<h4 class="rounded-md px-2 py-1 text-sm font-medium">
-									{ section.Title }
-									if section.Label != "" {
-										<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
-									}
-								</h4>
-								<div class="grid grid-flow-row auto-rows-max gap-0.5 text-sm">
-									for _, item := range section.Items {
-										@SidebarMobileLink(item, args.CurrentPath, signals)
-									}
-								</div>
-							</div>
-						}
-					</div>
-				</div>
-			</nav>
+			{ children... }
 		</div>
-	}
+	</div>
 }
 
-templ SidebarLink(item SidebarItem, currentPath string) {
+// SidebarDesktop - Fixed desktop sidebar
+templ SidebarDesktop(args SidebarDesktopArgs) {
 	{{
-	isActive := item.Href == currentPath
-	linkClasses := "group relative flex h-8 w-full items-center rounded-lg px-2 after:absolute after:inset-x-0 after:inset-y-[-2px] after:rounded-lg hover:bg-accent hover:text-accent-foreground"
-	if isActive {
-		linkClasses = utils.TwMerge(linkClasses, "bg-accent font-medium text-accent-foreground")
-	} else {
-		linkClasses = utils.TwMerge(linkClasses, "font-normal text-foreground")
-	}
+	classes := SidebarDesktopVariants(args)
+	}}
+	<aside
+		id={ args.ID + "_desktop" }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		<div class="no-scrollbar h-full overflow-auto">
+			{ children... }
+		</div>
+	</aside>
+}
+
+// SidebarTrigger - Mobile hamburger menu button
+templ SidebarTrigger(args SidebarTriggerArgs) {
+	{{
+	signals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
+	clickHandler := sidebarHandler.BuildMobileToggleHandler()
+	classes := SidebarTriggerVariants(args)
+	}}
+	<button
+		type="button"
+		class={ classes }
+		data-on-click={ clickHandler }
+		aria-expanded={ signals.Signal("mobileOpen") }
+		{ args.Attributes... }
+	>
+		<!-- Hamburger icon -->
+		<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<line x1="4" x2="20" y1="12" y2="12"></line>
+			<line x1="4" x2="20" y1="6" y2="6"></line>
+			<line x1="4" x2="20" y1="18" y2="18"></line>
+		</svg>
+		<span class="sr-only">Toggle sidebar</span>
+	</button>
+}
+
+// SidebarCloseButton - Close button for mobile sidebar
+templ SidebarCloseButton(args SidebarCloseButtonArgs) {
+	{{
+	signals := utils.Signals(args.ID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
+	clickHandler := sidebarHandler.BuildMobileCloseHandler()
+
+	classes := SidebarCloseButtonVariants(args)
+	}}
+	<button
+		type="button"
+		class={ classes }
+		data-on-click={ clickHandler }
+		{ args.Attributes... }
+	>
+		<!-- X icon -->
+		<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="m18 6-12 12"></path>
+			<path d="m6 6 12 12"></path>
+		</svg>
+		<span class="sr-only">Close sidebar</span>
+	</button>
+}
+
+// SidebarContent - Shared content structure
+templ SidebarContent(args SidebarContentArgs) {
+	{{
+	classes := SidebarContentVariants(args)
+	}}
+	<div
+		class={ classes }
+		data-sidebar-id={ args.ID }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SidebarHeader - Header section of the sidebar
+templ SidebarHeader(args SidebarHeaderArgs) {
+	{{
+	classes := SidebarHeaderVariants(args)
+	}}
+	<div
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SidebarFooter - Footer section of the sidebar
+templ SidebarFooter(args SidebarFooterArgs) {
+	{{
+	classes := SidebarFooterVariants(args)
+	}}
+	<div
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// SidebarNavMobile - Mobile navigation with sections
+templ SidebarNavMobile(args SidebarNavArgs) {
+	<nav class="flex flex-col gap-4">
+		for _, section := range args.Sections {
+			<div class="relative flex w-full min-w-0 flex-col p-2">
+				<div class="flex h-8 shrink-0 items-center rounded-md px-2 text-sm text-muted-foreground font-medium">
+					{ section.Title }
+					if section.Label != "" {
+						<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
+					}
+				</div>
+				<div class="w-full text-sm">
+					<ul class="flex w-full min-w-0 flex-col gap-0.5 cursor-pointer">
+						for _, item := range section.Items {
+							<li class="group/menu-item relative cursor-pointer">
+								@SidebarNavLinkMobile(SidebarNavLinkArgs{
+									SidebarID:   args.SidebarID,
+									Item:        item,
+									CurrentPath: args.CurrentPath,
+								})
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		}
+	</nav>
+}
+
+// SidebarNavDesktop - Desktop navigation with sections
+templ SidebarNavDesktop(args SidebarNavArgs) {
+	<nav class="flex flex-col gap-4">
+		for _, section := range args.Sections {
+			<div class="relative flex w-full min-w-0 flex-col p-2">
+				<div class="flex h-8 shrink-0 items-center rounded-md px-2 text-xs text-muted-foreground font-medium">
+					{ section.Title }
+					if section.Label != "" {
+						<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ section.Label }</span>
+					}
+				</div>
+				<div class="w-full text-sm">
+					<ul class="flex w-full min-w-0 flex-col gap-0.5">
+						for _, item := range section.Items {
+							<li class="group/menu-item relative cursor-pointer">
+								@SidebarNavLinkDesktop(SidebarNavLinkArgs{
+									SidebarID:   args.SidebarID,
+									Item:        item,
+									CurrentPath: args.CurrentPath,
+								})
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		}
+	</nav>
+}
+
+// SidebarNavLinkMobile - Mobile nav links that close sidebar when clicked
+templ SidebarNavLinkMobile(args SidebarNavLinkArgs) {
+	{{
+	// Nav links need to close mobile sidebar when clicked
+	signals := utils.Signals(args.SidebarID, SidebarSignals{})
+	sidebarHandler := NewSidebarHandler(signals)
+
+	// Close mobile sidebar after navigation
+	clickHandler := sidebarHandler.BuildMobileCloseHandler()
+
+	classes := SidebarNavLinkMobileVariants(SidebarNavLinkArgs{
+		Item:        args.Item,
+		CurrentPath: args.CurrentPath,
+		SidebarID:   args.SidebarID,
+	})
 	}}
 	<a
-		class={ linkClasses }
-		href={ templ.SafeURL(item.Href) }
-		target=""
-		rel=""
+		class={ classes }
+		href={ templ.SafeURL(args.Item.Href) }
+		data-on-click={ clickHandler }
 	>
-		{ item.Title }
-		if item.Label != "" {
-			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ item.Label }</span>
+		{ args.Item.Title }
+		if args.Item.Label != "" {
+			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ args.Item.Label }</span>
 		}
 	</a>
 }
 
-templ SidebarMobileLink(item SidebarItem, currentPath string, signals *utils.SignalManager) {
+// SidebarNavLinkDesktop - Desktop nav links (no click handler needed)
+templ SidebarNavLinkDesktop(args SidebarNavLinkArgs) {
 	{{
-	isActive := item.Href == currentPath
-	linkClasses := "group relative flex h-8 w-full items-center rounded-lg px-2 after:absolute after:inset-x-0 after:inset-y-[-2px] after:rounded-lg hover:bg-accent hover:text-accent-foreground"
-	if isActive {
-		linkClasses = utils.TwMerge(linkClasses, "bg-accent font-medium text-accent-foreground")
-	} else {
-		linkClasses = utils.TwMerge(linkClasses, "font-normal text-foreground")
-	}
+	classes := SidebarNavLinkDesktopVariants(SidebarNavLinkArgs{
+		Item:        args.Item,
+		CurrentPath: args.CurrentPath,
+		SidebarID:   args.SidebarID,
+	})
 	}}
 	<a
-		class={ linkClasses }
-		href={ templ.SafeURL(item.Href) }
-		target=""
-		rel=""
-		data-on-click={ signals.Set("open", "false") }
+		class={ classes }
+		href={ templ.SafeURL(args.Item.Href) }
 	>
-		{ item.Title }
-		if item.Label != "" {
-			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ item.Label }</span>
+		{ args.Item.Title }
+		if args.Item.Label != "" {
+			<span class="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">{ args.Item.Label }</span>
 		}
 	</a>
-}
-
-// MobileMenuToggle renders the hamburger menu button
-templ MobileMenuToggle(isMobile bool) {
-	if isMobile {
-		{{
-			// Reference the same mobile menu signals
-			signals := utils.Signals("mobile_menu", MobileMenuSignals{})
-		}}
-		<button
-			class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0"
-			data-on-click={ signals.Set("open", "true") }
-		>
-			<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<line x1="4" x2="20" y1="12" y2="12"></line>
-				<line x1="4" x2="20" y1="6" y2="6"></line>
-				<line x1="4" x2="20" y1="18" y2="18"></line>
-			</svg>
-			<span class="sr-only">Toggle menu</span>
-		</button>
-	}
 }

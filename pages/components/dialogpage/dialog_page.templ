@@ -8,9 +8,9 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ DialogPage() {
-	@l.Root("components") {
-		<div class="space-y-10">
+templ DialogPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
 			<!-- Header -->
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Dialog</h1>

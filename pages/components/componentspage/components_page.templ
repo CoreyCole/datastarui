@@ -1,0 +1,51 @@
+package componentspage
+
+import (
+	b "github.com/coreycole/datastarui/components/breadcrumb"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ ComponentsPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
+			<!-- Breadcrumb Navigation -->
+			@b.Breadcrumb(b.BreadcrumbProps{}) {
+				@b.BreadcrumbList(b.BreadcrumbListProps{}) {
+					@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+						@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+							Home
+						}
+					}
+					@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
+					@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
+						@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+							Components
+						}
+					}
+				}
+			}
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Available Components</h1>
+			</div>
+			<!-- Components List Section -->
+			<section class="space-y-4">
+				{{
+	// Get the component list from the sidebar
+	sections := l.GetSidebarSections()
+				}}
+				<div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+					for _, section := range sections {
+						if section.Title == "Components" {
+							for _, item := range section.Items {
+								<a href={ templ.SafeURL(item.Href) } class="block rounded-lg border p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
+									<h3 class="font-semibold">{ item.Title }</h3>
+								</a>
+							}
+						}
+					}
+				</div>
+			</section>
+		</div>
+	}
+}

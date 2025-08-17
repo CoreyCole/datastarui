@@ -5,10 +5,17 @@ import (
 	l "github.com/coreycole/datastarui/layouts"
 )
 
-templ Page() {
-	@l.Root("components") {
-		<div class="container mx-auto p-4">
-			<h1 class="text-2xl font-bold mb-4">Calendar Component</h1>
+templ Page(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Calendar")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Calendar</h1>
+				<p class="text-lg text-muted-foreground">
+					A date field component that allows users to enter and edit date.
+				</p>
+			</div>
 			<div class="space-y-8">
 				<div>
 					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Auto Current Month</h2>

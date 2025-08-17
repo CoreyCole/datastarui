@@ -2,8 +2,8 @@ package pages
 
 import l "github.com/coreycole/datastarui/layouts"
 
-templ HomePage() {
-	@l.Root("home") {
+templ HomePage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
 		<div class="min-h-screen bg-background">
 			<!-- Hero Section -->
 			<section class="container flex flex-col items-center justify-center gap-4 pb-8 pt-6 md:py-10">
