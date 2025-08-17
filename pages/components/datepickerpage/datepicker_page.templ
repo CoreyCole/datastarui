@@ -36,11 +36,9 @@ templ Page(rootArgs l.RootArgs) {
 										Select Date
 									}
 									@datepicker.DatePicker(datepicker.DatePickerProps{
-										ID:                 "single_date",
-										Name:               "singleDate",
-										Mode:               "single",
-										CalendarID:         "single_date_calendar",
-										DatePickerInputsID: "single_date_input",
+										ID:   "single_date",
+										Name: "singleDate",
+										Mode: "single",
 									})
 								</div>
 							}
@@ -61,15 +59,13 @@ templ Page(rootArgs l.RootArgs) {
 										Select Date Range
 									}
 									@datepicker.DatePicker(datepicker.DatePickerProps{
-										ID:                 "range_date",
-										Name:               "dateRange",
-										Mode:               "range",
-										OpenOnFocus:        true,
-										PopoverPosition:    "top",
-										Placeholder:        "Select date range...",
-										NumberOfMonths:     2,
-										CalendarID:         "range_date_calendar",
-										DatePickerInputsID: "range_date_dateinput",
+										ID:              "range_date",
+										Name:            "dateRange",
+										Mode:            "range",
+										OpenOnFocus:     true,
+										PopoverPosition: "top",
+										Placeholder:     "Select date range...",
+										NumberOfMonths:  2,
 									})
 								</div>
 							}
@@ -126,8 +122,9 @@ templ Page(rootArgs l.RootArgs) {
 							<div class="mt-4 p-3 bg-muted/50 rounded-md">
 								<h4 class="font-semibold mb-2">Signal IDs for Testing</h4>
 								<div class="text-xs font-mono text-muted-foreground space-y-1">
-									<p><strong>Single Date:</strong> CalendarID="single_date_calendar", InputID="single_date_input"</p>
-									<p><strong>Range Date:</strong> CalendarID="range_date_calendar", InputsID="range_date_dateinput"</p>
+									<p><strong>Single Date:</strong> ID="single_date" (all signals auto-generated)</p>
+									<p><strong>Range Date:</strong> ID="range_date" (all signals auto-generated)</p>
+									<p><em>Note: Calendar and input signal coordination is now handled automatically using the main DatePicker ID.</em></p>
 								</div>
 							</div>
 						</div>

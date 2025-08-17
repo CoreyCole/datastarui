@@ -181,11 +181,9 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					templ_7745c5c3_Err = datepicker.DatePicker(datepicker.DatePickerProps{
-						ID:                 "single_date",
-						Name:               "singleDate",
-						Mode:               "single",
-						CalendarID:         "single_date_calendar",
-						DatePickerInputsID: "single_date_input",
+						ID:   "single_date",
+						Name: "singleDate",
+						Mode: "single",
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -331,15 +329,13 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					templ_7745c5c3_Err = datepicker.DatePicker(datepicker.DatePickerProps{
-						ID:                 "range_date",
-						Name:               "dateRange",
-						Mode:               "range",
-						OpenOnFocus:        true,
-						PopoverPosition:    "top",
-						Placeholder:        "Select date range...",
-						NumberOfMonths:     2,
-						CalendarID:         "range_date_calendar",
-						DatePickerInputsID: "range_date_dateinput",
+						ID:              "range_date",
+						Name:            "dateRange",
+						Mode:            "range",
+						OpenOnFocus:     true,
+						PopoverPosition: "top",
+						Placeholder:     "Select date range...",
+						NumberOfMonths:  2,
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -458,7 +454,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"space-y-6 text-sm\"><!-- General DateInput Tests --><div><h4 class=\"font-semibold mb-3\">DateInput Features (Both Single & Range)</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Auto-formatting:</strong> Type <code class=\"bg-muted px-1 rounded\">12252024</code> → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Year completion:</strong> Type <code class=\"bg-muted px-1 rounded\">12/25/24</code> then tab/blur → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Input validation:</strong> Only numbers and navigation keys allowed</p><p>• <strong>Slash insertion:</strong> Automatically adds slashes as you type</p><p>• <strong>Backspace handling:</strong> Removes slashes when deleting</p></div></div><!-- Bidirectional Signal Coordination --><div><h4 class=\"font-semibold mb-3\">Bidirectional Signal Coordination</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Calendar → Input:</strong> Click any date in calendar → input field updates immediately</p><p>• <strong>Input → Calendar:</strong> Type valid date in input → calendar highlights that date</p><p>• <strong>Clear Selection:</strong> Clear input field → calendar selection clears</p><p>• <strong>Invalid dates:</strong> Type invalid date → calendar doesn't crash, shows feedback</p></div></div><!-- Range-Specific Tests --><div><h4 class=\"font-semibold mb-3\">Range DatePicker Specific Tests</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Range Start:</strong> Click first date → start input updates, calendar shows selection</p><p>• <strong>Range End:</strong> Click second date → end input updates, calendar shows full range</p><p>• <strong>Range Reset:</strong> Click a date when range is selected → resets to new start</p><p>• <strong>Cross-month Range:</strong> Select dates across different months → both months show selection</p><p>• <strong>Tab between inputs:</strong> Tab from start to end input seamlessly</p><p>• <strong>Individual formatting:</strong> Each input formats independently as you type</p><p>• <strong>Synchronized updates:</strong> Calendar selection updates both inputs correctly</p></div></div><!-- Signal Information --><div class=\"mt-4 p-3 bg-muted/50 rounded-md\"><h4 class=\"font-semibold mb-2\">Signal IDs for Testing</h4><div class=\"text-xs font-mono text-muted-foreground space-y-1\"><p><strong>Single Date:</strong> CalendarID=\"single_date_calendar\", InputID=\"single_date_input\"</p><p><strong>Range Date:</strong> CalendarID=\"range_date_calendar\", InputsID=\"range_date_dateinput\"</p></div></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"space-y-6 text-sm\"><!-- General DateInput Tests --><div><h4 class=\"font-semibold mb-3\">DateInput Features (Both Single & Range)</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Auto-formatting:</strong> Type <code class=\"bg-muted px-1 rounded\">12252024</code> → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Year completion:</strong> Type <code class=\"bg-muted px-1 rounded\">12/25/24</code> then tab/blur → becomes <code class=\"bg-muted px-1 rounded\">12/25/2024</code></p><p>• <strong>Input validation:</strong> Only numbers and navigation keys allowed</p><p>• <strong>Slash insertion:</strong> Automatically adds slashes as you type</p><p>• <strong>Backspace handling:</strong> Removes slashes when deleting</p></div></div><!-- Bidirectional Signal Coordination --><div><h4 class=\"font-semibold mb-3\">Bidirectional Signal Coordination</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Calendar → Input:</strong> Click any date in calendar → input field updates immediately</p><p>• <strong>Input → Calendar:</strong> Type valid date in input → calendar highlights that date</p><p>• <strong>Clear Selection:</strong> Clear input field → calendar selection clears</p><p>• <strong>Invalid dates:</strong> Type invalid date → calendar doesn't crash, shows feedback</p></div></div><!-- Range-Specific Tests --><div><h4 class=\"font-semibold mb-3\">Range DatePicker Specific Tests</h4><div class=\"space-y-2 text-muted-foreground\"><p>• <strong>Range Start:</strong> Click first date → start input updates, calendar shows selection</p><p>• <strong>Range End:</strong> Click second date → end input updates, calendar shows full range</p><p>• <strong>Range Reset:</strong> Click a date when range is selected → resets to new start</p><p>• <strong>Cross-month Range:</strong> Select dates across different months → both months show selection</p><p>• <strong>Tab between inputs:</strong> Tab from start to end input seamlessly</p><p>• <strong>Individual formatting:</strong> Each input formats independently as you type</p><p>• <strong>Synchronized updates:</strong> Calendar selection updates both inputs correctly</p></div></div><!-- Signal Information --><div class=\"mt-4 p-3 bg-muted/50 rounded-md\"><h4 class=\"font-semibold mb-2\">Signal IDs for Testing</h4><div class=\"text-xs font-mono text-muted-foreground space-y-1\"><p><strong>Single Date:</strong> ID=\"single_date\" (all signals auto-generated)</p><p><strong>Range Date:</strong> ID=\"range_date\" (all signals auto-generated)</p><p><em>Note: Calendar and input signal coordination is now handled automatically using the main DatePicker ID.</em></p></div></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

@@ -49,6 +49,9 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						
 						// Listen for polyfill load completion
 						window.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);
+						
+						// Call immediately to handle native support case
+						updatePolyfillStatus();
 					</script>
 				</div>
 			</div>

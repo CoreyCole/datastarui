@@ -84,12 +84,13 @@ func daysInMonth(year, month int) int {
 
 // CalendarSignals defines the signal structure for calendar components
 type CalendarSignals struct {
-	CurrentDate  string `json:"currentDate"`
-	Mode         string `json:"mode"`
-	Today        string `json:"today"`
-	SelectedDate string `json:"selectedDate"`
-	RangeStart   string `json:"rangeStart"`
-	RangeEnd     string `json:"rangeEnd"`
+	CurrentDate string `json:"currentDate"`
+	Mode        string `json:"mode"`
+	Today       string `json:"today"`
+	DateValue   string `json:"dateValue"`   // ISO date value for single mode
+	InputValue  string `json:"inputValue"` // Formatted input display value
+	RangeStart  string `json:"rangeStart"`
+	RangeEnd    string `json:"rangeEnd"`
 }
 
 // Calendar renders a simple, elegant calendar
@@ -133,15 +134,23 @@ templ Calendar(args CalendarProps) {
 		// Today string for highlighting
 		todayStr := now.Format("2006-01-02")
 
-		// Create signals using the structured system
-		signals := utils.Signals(calendarID, CalendarSignals{
-			CurrentDate:  currentDateStr,
-			Mode:         mode,
-			Today:        todayStr,
-			SelectedDate: args.SelectedDate,
-			RangeStart:   args.RangeStart,
-			RangeEnd:     args.RangeEnd,
-		})
+		// Create signals only when not coordinated with DatePicker
+		var signals *utils.SignalManager
+		if args.DatePickerInputsID == "" {
+			// Create our own signals when standalone
+			signals = utils.Signals(calendarID, CalendarSignals{
+				CurrentDate: currentDateStr,
+				Mode:        mode,
+				Today:       todayStr,
+				DateValue:   args.SelectedDate, // Use selectedDate prop for dateValue
+				InputValue:  "",                // Will be calculated from dateValue
+				RangeStart:  args.RangeStart,
+				RangeEnd:    args.RangeEnd,
+			})
+		} else {
+			// When coordinated with DatePicker, reference existing signals
+			signals = &utils.SignalManager{ID: calendarID}
+		}
 
 		classes := calendarVariants(args.Class)
 	}}
