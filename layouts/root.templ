@@ -1,11 +1,11 @@
 package layouts
 
 import (
-	"path/filepath"
 	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
 	"github.com/coreycole/datastarui/utils"
+	"path/filepath"
 )
 
 templ ComponentPageBreadcrumbs(currentPage string) {
@@ -46,6 +46,18 @@ templ Root(args RootArgs) {
 			<meta charset="UTF-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<!-- PWA Manifest -->
+			<link rel="manifest" href="/manifest.json"/>
+			<!-- Theme Color -->
+			<meta name="theme-color" content="#000000"/>
+			<!-- Apple PWA Support -->
+			<meta name="apple-mobile-web-app-capable" content="yes"/>
+			<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+			<meta name="apple-mobile-web-app-title" content="DatastarUI"/>
+			<!-- Apple Touch Icons -->
+			<link rel="apple-touch-icon" href="/img/datastarui-icons/ios/180.png"/>
+			<link rel="apple-touch-icon" sizes="152x152" href="/img/datastarui-icons/ios/152.png"/>
+			<link rel="apple-touch-icon" sizes="120x120" href="/img/datastarui-icons/ios/120.png"/>
 			<!-- Tailwind CSS -->
 			<link rel="stylesheet" href={ cssFile }/>
 			<!-- Popover API Polyfill -->
