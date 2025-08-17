@@ -228,12 +228,14 @@ func Root(args RootArgs) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = sidebar.SidebarTrigger(sidebar.SidebarTriggerArgs{
-			ID:    sidebarID,
-			Class: "md:hidden",
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if args.CurrentPage != "home" {
+			templ_7745c5c3_Err = sidebar.SidebarTrigger(sidebar.SidebarTriggerArgs{
+				ID:    sidebarID,
+				Class: "md:hidden",
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<a class=\"flex items-center no-underline pb-[0.5px]\" href=\"/\"><span class=\"font-semibold text-foreground inline-flex items-center\">DatastarUI</span></a><nav class=\"hidden md:flex items-center gap-4 text-sm lg:gap-6 [&_a]:no-underline ml-6\">")
 		if templ_7745c5c3_Err != nil {
