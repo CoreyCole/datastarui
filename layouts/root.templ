@@ -91,24 +91,6 @@ templ Root(args RootArgs) {
           console.log('✅ CSS Anchor Positioning is natively supported - no polyfill needed');
           window.CSS_ANCHOR_POLYFILL_LOADED = false;
         }
-
-        // view transitions polyfill
-        if (!document.startViewTransition) {
-          console.log('🔧 View Transitions is not natively supported, loading polyfill...');
-          window.VIEW_TRANSITIONS_POLYFILL_LOADING = true;
-          import('https://cdn.jsdelivr.net/npm/view-transitions-polyfill@1.0.5')
-            .then(() => {
-              window.VIEW_TRANSITIONS_POLYFILL_LOADED = true;
-              window.VIEW_TRANSITIONS_POLYFILL_LOADING = false;
-              console.log('✅ View Transitions polyfill loaded successfully!');
-            })
-            .catch((error) => {
-              console.error('❌ Failed to load View Transitions polyfill:', error);
-              window.VIEW_TRANSITIONS_POLYFILL_LOADING = false;
-            });
-        } else {
-          console.log('✅ View Transitions is natively supported');
-        }
       </script>
 			<!-- Theme initialization -->
 			<script>
