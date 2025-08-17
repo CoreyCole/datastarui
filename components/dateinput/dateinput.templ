@@ -46,8 +46,8 @@ templ DateInput(args DateInputArgs) {
 		// Declare signals variable at top level
 		var signals *utils.SignalManager
 
-		// Initialize based on mode
-		if mode == "single" {
+		// Initialize based on mode - when CalendarID is provided, don't create own signals
+		if mode == "single" && args.CalendarID == "" {
 			// Single mode initialization (existing logic)
 			placeholder := args.Placeholder
 			if placeholder == "" {
@@ -80,8 +80,8 @@ templ DateInput(args DateInputArgs) {
 				IsValid:      true,
 				ErrorMessage: "",
 			})
-		} else {
-			// Range mode initialization
+		} else if args.CalendarID == "" {
+			// Range mode initialization when no CalendarID is provided
 			initialStartInput := args.StartValue
 			initialEndInput := args.EndValue
 			initialStartDate := ""
@@ -135,12 +135,24 @@ templ DateInput(args DateInputArgs) {
 				IsValid:         true,
 				ErrorMessage:    "",
 			})
+		} else {
+			// When CalendarID is provided, reference existing calendar signals instead of creating new ones
+			// Don't create any DateInput-specific signals - use the calendar's signals directly
+			signals = &utils.SignalManager{ID: args.CalendarID}
 		}
 
 		// Input classes will be handled by the Input component
 
 		// Create DateInput handler using expression builder
 		dateInputHandler := newDateInputHandler(dateInputID, signals, args.CalendarID)
+		
+		// Determine signal names based on coordination mode
+		var inputSignalName, dateSignalName string
+		if mode == "single" {
+			// Use consistent signal names for both calendar and standalone modes
+			inputSignalName = "inputValue"
+			dateSignalName = "dateValue"
+		}
 
 		// Handler for allowed keys including slash and digits
 		keyHandler := "['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape', '/'].includes(evt.key) || (evt.key >= '0' && evt.key <= '9') ? null : evt.preventDefault()"
@@ -167,7 +179,13 @@ templ DateInput(args DateInputArgs) {
 				<input
 					type="hidden"
 					name={ args.Name }
-					data-bind={ signals.Signal("dateValue") }
+					data-bind={ func() string {
+						if args.CalendarID != "" {
+							// When coordinating with calendar, use direct signal reference without $ prefix
+							return args.CalendarID + "." + dateSignalName
+						}
+						return signals.Signal(dateSignalName)
+					}() }
 					if args.Required {
 						required
 					}
@@ -184,9 +202,15 @@ templ DateInput(args DateInputArgs) {
 					Disabled:    args.Disabled,
 					Attributes: templ.Attributes{
 						"maxlength":                     "12",
-						"data-bind":                     signals.Signal("inputValue"),
-						"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("inputValue", "dateValue"),
-						"data-on-blur":                  dateInputHandler.buildBlurHandler("inputValue", "dateValue"),
+						"data-bind":                     func() string {
+							if args.CalendarID != "" {
+								// When coordinating with calendar, use direct signal reference without $ prefix
+								return args.CalendarID + "." + inputSignalName
+							}
+							return signals.Signal(inputSignalName)
+						}(),
+						"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler(inputSignalName, dateSignalName),
+						"data-on-blur":                  dateInputHandler.buildBlurHandler(inputSignalName, dateSignalName),
 						"data-on-keydown":               keyHandler,
 					},
 				})
@@ -260,7 +284,13 @@ templ DateInput(args DateInputArgs) {
 				<input
 					type="hidden"
 					name={ startFieldName }
-					data-bind={ signals.Signal("startDateValue") }
+					data-bind={ func() string {
+						if args.CalendarID != "" {
+							// When coordinating with calendar, use direct signal reference without $ prefix
+							return args.CalendarID + ".startDateValue"
+						}
+						return signals.Signal("startDateValue")
+					}() }
 					if args.Required {
 						required
 					}
@@ -269,8 +299,22 @@ templ DateInput(args DateInputArgs) {
 				<input
 					type="hidden"
 					name={ endFieldName }
-					data-bind={ signals.Signal("endDateEnabled") + " ? " + signals.Signal("endDateValue") + " : ''" }
-					data-required={ signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", args.Required) }
+					data-bind={ func() string {
+						if args.CalendarID != "" {
+							// Use calendar signals SignalManager for proper signal reference
+							calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+							return calendarSignals.Signal("endDateEnabled") + " ? " + calendarSignals.Signal("endDateValue") + " : ''"
+						}
+						return signals.Signal("endDateEnabled") + " ? " + signals.Signal("endDateValue") + " : ''"
+					}() }
+					data-required={ func() string {
+						if args.CalendarID != "" {
+							// Use calendar signals SignalManager for proper signal reference
+							calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+							return calendarSignals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", args.Required)
+						}
+						return signals.Signal("endDateEnabled") + " && " + fmt.Sprintf("%t", args.Required)
+					}() }
 				/>
 			}
 			<!-- Optional end date checkbox -->
@@ -282,9 +326,30 @@ templ DateInput(args DateInputArgs) {
 						id={ dateInputID + "_checkbox" }
 						role="checkbox"
 						class="peer border-input data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
-						data-on-click={ signals.Toggle("endDateEnabled") + "; " + checkboxChangeHandler }
-						data-attr-aria-checked={ signals.Signal("endDateEnabled") + " ? 'true' : 'false'" }
-						data-attr-data-state={ signals.Signal("endDateEnabled") + " ? 'checked' : 'unchecked'" }
+						data-on-click={ func() string {
+							if args.CalendarID != "" {
+								// Use calendar signals SignalManager for proper signal reference
+								calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+								return calendarSignals.Toggle("endDateEnabled") + "; " + checkboxChangeHandler
+							}
+							return signals.Toggle("endDateEnabled") + "; " + checkboxChangeHandler
+						}() }
+						data-attr-aria-checked={ func() string {
+							if args.CalendarID != "" {
+								// Use calendar signals SignalManager for proper signal reference
+								calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+								return calendarSignals.Signal("endDateEnabled") + " ? 'true' : 'false'"
+							}
+							return signals.Signal("endDateEnabled") + " ? 'true' : 'false'"
+						}() }
+						data-attr-data-state={ func() string {
+							if args.CalendarID != "" {
+								// Use calendar signals SignalManager for proper signal reference
+								calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+								return calendarSignals.Signal("endDateEnabled") + " ? 'checked' : 'unchecked'"
+							}
+							return signals.Signal("endDateEnabled") + " ? 'checked' : 'unchecked'"
+						}() }
 					>
 						<!-- Checkmark icon -->
 						<svg
@@ -296,7 +361,14 @@ templ DateInput(args DateInputArgs) {
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							class="h-3.5 w-3.5"
-							data-attr-style={ signals.Signal("endDateEnabled") + " ? 'opacity: 1' : 'opacity: 0'" }
+							data-attr-style={ func() string {
+								if args.CalendarID != "" {
+									// Use calendar signals SignalManager for proper signal reference
+									calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+									return calendarSignals.Signal("endDateEnabled") + " ? 'opacity: 1' : 'opacity: 0'"
+								}
+								return signals.Signal("endDateEnabled") + " ? 'opacity: 1' : 'opacity: 0'"
+							}() }
 						>
 							<path d="M20 6 9 17l-5-5"></path>
 						</svg>
@@ -329,7 +401,13 @@ templ DateInput(args DateInputArgs) {
 						Disabled:    args.Disabled,
 						Attributes: templ.Attributes{
 							"maxlength":                     "12",
-							"data-bind":                     signals.Signal("startInputValue"),
+							"data-bind":                     func() string {
+								if args.CalendarID != "" {
+									// When coordinating with calendar, use direct signal reference without $ prefix
+									return args.CalendarID + ".startInputValue"
+								}
+								return signals.Signal("startInputValue")
+							}(),
 							"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("startInputValue", "startDateValue"),
 							"data-on-blur":                  dateInputHandler.buildBlurHandler("startInputValue", "startDateValue"),
 							"data-on-keydown":               keyHandler + "; " + startTabHandler,
@@ -342,10 +420,20 @@ templ DateInput(args DateInputArgs) {
 						<label
 							for={ dateInputID + "_end" }
 							class="text-sm font-medium"
-							data-class={ utils.NewDataClass().
-								Add("text-foreground", signals.Signal("endDateEnabled")).
-								Add("text-muted-foreground", "!"+signals.Signal("endDateEnabled")).
-								Build() }
+							data-class={ func() string {
+								if args.CalendarID != "" {
+									// Use calendar signals SignalManager for proper signal reference
+									calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+									return utils.NewDataClass().
+										Add("text-foreground", calendarSignals.Signal("endDateEnabled")).
+										Add("text-muted-foreground", "!"+calendarSignals.Signal("endDateEnabled")).
+										Build()
+								}
+								return utils.NewDataClass().
+									Add("text-foreground", signals.Signal("endDateEnabled")).
+									Add("text-muted-foreground", "!"+signals.Signal("endDateEnabled")).
+									Build()
+							}() }
 						>
 							End Date
 							if args.Required && !args.EndDateOptional {
@@ -362,12 +450,32 @@ templ DateInput(args DateInputArgs) {
 						Disabled:    args.Disabled,
 						Attributes: templ.Attributes{
 							"maxlength":                     "12",
-							"data-bind":                     signals.Signal("endInputValue"),
+							"data-bind":                     func() string {
+								if args.CalendarID != "" {
+									// When coordinating with calendar, use direct signal reference without $ prefix
+									return args.CalendarID + ".endInputValue"
+								}
+								return signals.Signal("endInputValue")
+							}(),
 							"data-on-input__debounce_300ms": dateInputHandler.buildInputHandler("endInputValue", "endDateValue"),
 							"data-on-blur":                  dateInputHandler.buildBlurHandler("endInputValue", "endDateValue"),
 							"data-on-keydown":               keyHandler,
-							"data-attr-disabled":            "!" + signals.Signal("endDateEnabled"),
-							"data-attr-tabindex":            signals.Signal("endDateEnabled") + " ? '0' : '-1'",
+							"data-attr-disabled":            func() string {
+								if args.CalendarID != "" {
+									// Use calendar signals SignalManager for proper signal reference
+									calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+									return "!" + calendarSignals.Signal("endDateEnabled")
+								}
+								return "!" + signals.Signal("endDateEnabled")
+							}(),
+							"data-attr-tabindex":            func() string {
+								if args.CalendarID != "" {
+									// Use calendar signals SignalManager for proper signal reference
+									calendarSignals := &utils.SignalManager{ID: args.CalendarID}
+									return calendarSignals.Signal("endDateEnabled") + " ? '0' : '-1'"
+								}
+								return signals.Signal("endDateEnabled") + " ? '0' : '-1'"
+							}(),
 						},
 					})
 				</div>

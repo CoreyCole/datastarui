@@ -102,12 +102,12 @@ func (d *datePickerPopoverHandler) buildDateSelectHandler(closeOnSelect bool, da
 		}
 	} else {
 		// Single mode: simpler date selection
-		singleDateCondition := "evt.detail.selectedDate"
+		singleDateCondition := "evt.detail.dateValue"
 		singleDateActions := fmt.Sprintf(
-			"((displayDate) => (%s, %s, %s))(evt.detail.selectedDate.replace(/-/g, '/'))",
+			"((displayDate) => (%s, %s, %s))(evt.detail.dateValue.replace(/-/g, '/'))",
 			dateInputSignals.Set("inputValue", "displayDate"),
-			dateInputSignals.Set("dateValue", "evt.detail.selectedDate"),
-			d.signals.Set("selectedDate", "evt.detail.selectedDate"),
+			dateInputSignals.Set("dateValue", "evt.detail.dateValue"),
+			d.signals.Set("dateValue", "evt.detail.dateValue"),
 		)
 
 		selectAction := fmt.Sprintf("%s ? %s : null", singleDateCondition, singleDateActions)

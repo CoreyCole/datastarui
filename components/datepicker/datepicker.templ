@@ -18,9 +18,6 @@ type DatePickerSignals struct {
 	// Input value (what user sees in the input field - YYYY/MM/DD format)
 	InputValue string `json:"inputValue"`
 
-	// Selected date in internal format (YYYY-MM-DD)
-	SelectedDate string `json:"selectedDate"`
-
 	// Range start date (YYYY-MM-DD format)
 	RangeStart string `json:"rangeStart"`
 
@@ -160,7 +157,6 @@ templ DatePicker(args DatePickerProps) {
 		signals := utils.Signals(datePickerID, DatePickerSignals{
 			Open:            false,
 			InputValue:      initialInputValue,
-			SelectedDate:    initialSelectedDate,
 			RangeStart:      initialRangeStart,
 			RangeEnd:        initialRangeEnd,
 			DisplayMonth:    initialDisplayMonth,
@@ -176,7 +172,7 @@ templ DatePicker(args DatePickerProps) {
 			Today:       todayStr,
 
 			// DateInput-specific signals
-			DateValue:       initialSelectedDate,
+			DateValue:       initialSelectedDate, // Set DateValue here in the correct section
 			StartInputValue: "",
 			StartDateValue:  initialRangeStart,
 			EndInputValue:   "",
@@ -192,8 +188,9 @@ templ DatePicker(args DatePickerProps) {
 		clickOutsideHandler := popoverHandler.buildClickOutsideHandler()
 		calendarIconClickHandler := popoverHandler.buildOpenTriggerHandler()
 
-		// DateInput ID - use SAME ID for shared signal namespace
+		// Auto-generate internal IDs for signal coordination
 		dateInputID := datePickerID
+		calendarID := datePickerID // Use same ID for unified signal namespace
 	}}
 	<div
 		data-slot="datepicker"
@@ -225,7 +222,7 @@ templ DatePicker(args DatePickerProps) {
 				<input
 					type="hidden"
 					name={ args.Name }
-					data-bind={ signals.Signal("selectedDate") }
+					data-bind={ signals.Signal("dateValue") }
 					if args.Required {
 						required
 					}
@@ -267,9 +264,9 @@ templ DatePicker(args DatePickerProps) {
 						Mode:       "range",
 						StartValue: initialStartValue,
 						EndValue:   initialEndValue,
-						StartName:  "",           // Handled by DatePicker's hidden inputs
-						EndName:    "",           // Handled by DatePicker's hidden inputs
-						CalendarID: datePickerID, // Coordinate with calendar using same namespace
+						StartName:  "",         // Handled by DatePicker's hidden inputs
+						EndName:    "",         // Handled by DatePicker's hidden inputs
+						CalendarID: calendarID, // Coordinate with calendar using unified namespace
 						Disabled:   args.Disabled,
 						Required:   args.Required,
 						Class:      args.InputClass,
@@ -321,7 +318,7 @@ templ DatePicker(args DatePickerProps) {
 					Name:        "", // No form submission for DateInput itself
 					Placeholder: placeholder,
 					Value:       initialInputValue,
-					CalendarID:  datePickerID, // Coordinate with calendar using same namespace
+					CalendarID:  calendarID, // Coordinate with calendar using unified namespace
 					Disabled:    args.Disabled,
 					Required:    args.Required,
 					Class:       args.InputClass,
@@ -373,7 +370,7 @@ templ DatePicker(args DatePickerProps) {
 			InitialDisplayMonth: initialDisplayMonth,
 			InitialRangeStart:   initialRangeStart,
 			InitialRangeEnd:     initialRangeEnd,
-			DatePickerInputsID:  args.DatePickerInputsID,
+			DatePickerInputsID:  dateInputID,
 		})
 	</div>
 }
@@ -448,12 +445,12 @@ templ DatePickerPopover(args DatePickerPopoverProps) {
 		} else {
 			// Single date mode handler - update both DateInput and DatePicker signals
 			dateInputSignals := utils.Signals(args.DateInputID, dateinput.DateInputSignals{})
-			dateSelectHandler = "evt.detail.selectedDate ? (" +
+			dateSelectHandler = "evt.detail.dateValue ? (" +
 				"(displayDate => (" +
 				dateInputSignals.Set("inputValue", "displayDate") + ", " +
-				dateInputSignals.Set("dateValue", "evt.detail.selectedDate") + ", " +
-				signals.Set("selectedDate", "evt.detail.selectedDate") +
-				"))(evt.detail.selectedDate.replace(/-/g, '/'))" +
+				dateInputSignals.Set("dateValue", "evt.detail.dateValue") + ", " +
+				signals.Set("dateValue", "evt.detail.dateValue") +
+				"))(evt.detail.dateValue.replace(/-/g, '/'))" +
 				") : null"
 
 			// Add close logic if needed for single mode
@@ -482,7 +479,7 @@ templ DatePickerPopover(args DatePickerPopoverProps) {
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + args.Class }>
 			@calendar.Calendar(calendar.CalendarProps{
-				ID:                 args.ID,
+				ID:                 args.ID, // Use same ID as DatePicker for unified namespace
 				Mode:               args.Mode,
 				SelectedDate:       args.InitialSelectedDate,
 				DefaultDate:        args.InitialDisplayMonth,
@@ -491,7 +488,7 @@ templ DatePickerPopover(args DatePickerPopoverProps) {
 				NumberOfMonths:     numMonths,
 				Disabled:           args.DisabledDates,
 				HideOutsideDays:    args.HideOutsideDays,
-				DatePickerInputsID: args.DatePickerInputsID, // Pass DatePickerInputsID for signal coordination
+				DatePickerInputsID: args.DatePickerInputsID, // Use DateInputID for signal coordination
 				MinDate:            args.MinDate,
 				MaxDate:            args.MaxDate,
 				Attributes: map[string]any{

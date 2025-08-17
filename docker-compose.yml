@@ -7,11 +7,13 @@ services:
     ports:
       - "4242:4242"
     volumes:
-      - .:/app # Mount local files
+      - .:/app:cached # Mount local files
+      - /app/node_modules # Anonymous volume preserves container's node_modules
     environment:
       - CGO_ENABLED=0
       - GOOS=linux
       - GO111MODULE=on
+      - DATASTAR_INSPECTOR_ENABLED=true
     working_dir: /app
     command: sh -c "just watch"
     networks:

@@ -51,9 +51,9 @@ templ Root(args RootArgs) {
 			<!-- Theme Color -->
 			<meta name="theme-color" content="#000000"/>
 			<!-- Apple PWA Support -->
-			<meta name="apple-mobile-web-app-capable" content="yes"/>
-			<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-			<meta name="apple-mobile-web-app-title" content="DatastarUI"/>
+			<meta name="mobile-web-app-capable" content="yes"/>
+			<meta name="mobile-web-app-capable-status-bar-style" content="default"/>
+			<meta name="mobile-web-app-capable-title" content="DatastarUI"/>
 			<!-- Apple Touch Icons -->
 			<link rel="apple-touch-icon" href="/img/datastarui-icons/ios/180.png"/>
 			<link rel="apple-touch-icon" sizes="152x152" href="/img/datastarui-icons/ios/152.png"/>
@@ -106,7 +106,18 @@ templ Root(args RootArgs) {
         initTheme();
       </script>
 			<!-- Datastar -->
-			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
+			if args.DatastarProAvailable {
+				<!-- Datastar Pro (local) -->
+				<script type="module" src="/js/datastar.js"></script>
+			} else {
+				<!-- Datastar from CDN (fallback) -->
+				<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
+			}
+			if args.InspectorEnabled {
+				<script type="module" src="/js/datastar-inspector.js"></script>
+			}
+			<!-- Enable View Transitions API -->
+			<meta name="view-transition" content="same-origin"/>
 		</head>
 		{{
 	// Build data-signals with shared sidebar state
@@ -115,6 +126,9 @@ templ Root(args RootArgs) {
 	dataSignals := "{theme: initTheme(), " + sidebarID + ": " + sidebarSignals + "}"
 		}}
 		<body class="min-h-screen bg-background font-sans antialiased" data-signals={ dataSignals }>
+			if args.InspectorEnabled {
+				<datastar-inspector></datastar-inspector>
+			}
 			<div class="relative flex min-h-screen flex-col bg-background">
 				<div data-wrapper="" class="border-grid flex flex-1 flex-col">
 					<!-- Header -->

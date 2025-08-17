@@ -66,7 +66,8 @@ func (c *calendarDayHandler) buildClickHandler() string {
 		expr.Statement("const month = targetDate.getMonth()")
 		expr.Statement("const buttonDay = parseInt(evt.target.textContent)")
 		expr.Statement("const clickedDate = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + buttonDay.toString().padStart(2, '0')")
-		expr.Statement(c.signals.Set("selectedDate", "clickedDate"))
+		expr.Statement(c.signals.Set("dateValue", "clickedDate"))
+		expr.Statement(c.signals.Set("inputValue", c.signals.Signal("dateValue")+" ? new Date("+c.signals.Signal("dateValue")+" + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 	}
 
 	return expr.Build()
@@ -83,9 +84,8 @@ func (c *calendarDayHandler) buildDateInputSync(datePickerInputsID string) strin
 		expr.Statement(c.signals.Set("startInputValue", c.signals.Signal("rangeStart")+" ? new Date("+c.signals.Signal("rangeStart")+" + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 		expr.Statement(c.signals.Set("endInputValue", c.signals.Signal("rangeEnd")+" ? new Date("+c.signals.Signal("rangeEnd")+" + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
 	} else {
-		// Sync single date signals for DateInput - use the same namespace since datePickerInputsID === calendarID
-		expr.Statement(c.signals.Set("dateValue", c.signals.Signal("selectedDate")))
-		expr.Statement(c.signals.Set("inputValue", c.signals.Signal("selectedDate")+" ? new Date("+c.signals.Signal("selectedDate")+" + 'T12:00:00Z').toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}) : ''"))
+		// Single date mode already has dateValue and inputValue set by the click handler
+		// No additional sync needed since calendar and DateInput use the same signals
 	}
 
 	return expr.Build()
@@ -144,7 +144,7 @@ func (c *calendarSelectionClasses) build() string {
 	} else {
 		// Single mode: highlight selected date
 		dataClass.Add("bg-primary text-primary-foreground",
-			fmt.Sprintf("%s === (%s)", c.signals.Signal("selectedDate"), expectedDateExpr))
+			fmt.Sprintf("%s === (%s)", c.signals.Signal("dateValue"), expectedDateExpr))
 	}
 
 	return dataClass.Build()

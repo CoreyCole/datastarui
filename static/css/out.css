@@ -2529,6 +2529,9 @@
     }
   }
 }
+@view-transition {
+  navigation: auto;
+}
 @layer base {
   html {
     scrollbar-gutter: stable;

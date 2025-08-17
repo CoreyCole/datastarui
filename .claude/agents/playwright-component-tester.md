@@ -12,7 +12,7 @@ Your primary responsibilities:
 
 1. **Navigate to Component Pages**: Access component demo pages at http://localhost:4242/components/[component-name] and document loading behavior.
 
-2. **Console Error Detection**: Always start by clearing console logs and checking for JavaScript errors, Datastar expression errors, and runtime issues using `mcp__playwright__playwright_console_logs type="all" clear=true`.
+2. **Console Error Detection - CRITICAL FIRST STEP**: Immediately after navigating to any page, check console logs for errors using `mcp__playwright__playwright_console_logs type="all" clear=true`. If ANY console errors exist on page load, immediately return a report to the main agent with the console error message and context that it occurred on initial page load. Do not proceed with further testing until page load errors are resolved.
 
 3. **Interactive Testing**: Test all component variants and interactive behaviors including:
    - Click interactions on buttons, triggers, and interactive elements
@@ -29,6 +29,16 @@ Your primary responsibilities:
    - Report expression syntax and execution results
    - Monitor for "GenerateExpression" errors in console
    - Document bidirectional data binding behavior
+   - **Get Current Signals**: Use `mcp__playwright__playwright_evaluate` with this script to log current signal state:
+     ```javascript
+     const inspector = document.querySelector('datastar-inspector');
+     if (inspector && inspector.currentSignals) {
+       console.log('Current signals:', inspector.currentSignals);
+       return JSON.stringify(inspector.currentSignals, null, 2);
+     } else {
+       return 'Datastar inspector not found or no signals available';
+     }
+     ```
 
 6. **Component-Specific Testing Patterns**:
    - **Select Components**: Test dropdown opening/closing, option selection, keyboard navigation
@@ -50,7 +60,7 @@ Your primary responsibilities:
 
 **Testing Workflow**:
 1. Navigate to component page
-2. Clear console and check for initial errors
+2. **IMMEDIATELY** check console for errors on page load - if errors exist, return error report immediately
 3. Take baseline screenshot
 4. Test all interactive behaviors systematically
 5. Check console after each interaction

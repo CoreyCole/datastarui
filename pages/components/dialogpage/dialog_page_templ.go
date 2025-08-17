@@ -49,7 +49,15 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals - ESC key closes, backdrop click closes.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = l.ComponentPageBreadcrumbs("Dialog").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals - ESC key closes, backdrop click closes.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -89,7 +97,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Modal Dialog")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Modal Dialog")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -99,7 +107,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -115,7 +123,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "This is a modal dialog that blocks interaction with the rest of the page.")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "This is a modal dialog that blocks interaction with the rest of the page.")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -131,7 +139,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -147,7 +155,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p class=\"text-sm\">Try pressing ESC or clicking outside to close this dialog.</p><!-- Show dialog state inside the dialog --> <div class=\"mt-4 p-3 bg-blue-50 rounded border\"><p class=\"text-sm font-medium text-blue-900\">Dialog State (from inside):</p><p class=\"text-xs text-blue-700\">Open: <span data-text=\"$modal_demo.open ? 'Yes' : 'No'\"></span></p></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p class=\"text-sm\">Try pressing ESC or clicking outside to close this dialog.</p><!-- Show dialog state inside the dialog --> <div class=\"mt-4 p-3 bg-blue-50 rounded border\"><p class=\"text-sm font-medium text-blue-900\">Dialog State (from inside):</p><p class=\"text-xs text-blue-700\">Open: <span data-text=\"$modal_demo.open ? 'Yes' : 'No'\"></span></p></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -157,7 +165,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -185,7 +193,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "Close")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "Close")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -224,7 +232,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "Open Modal Dialog")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Open Modal Dialog")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -237,7 +245,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<!-- Show dialog state outside the dialog --><div class=\"text-xs text-muted-foreground mt-2\"><div>Dialog Status: <span data-text=\"$modal_demo.open ? 'Open' : 'Closed'\" class=\"font-medium\"></span></div><div data-show=\"$modal_demo.open\" class=\"text-green-600\">✓ Dialog is currently open</div><div data-show=\"!$modal_demo.open\" class=\"text-gray-500\">○ Dialog is currently closed</div></div></div><!-- Form with Datastar State Management --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Form Dialog with Datastar State</h2><p class=\"text-sm text-muted-foreground\">Demonstrates form state management using Datastar signals, showing real-time form values.</p><!-- Success message area --><div id=\"form_success_message\"></div><div class=\"space-y-4 p-6 bg-muted/50 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<!-- Show dialog state outside the dialog --><div class=\"text-xs text-muted-foreground mt-2\"><div>Dialog Status: <span data-text=\"$modal_demo.open ? 'Open' : 'Closed'\" class=\"font-medium\"></span></div><div data-show=\"$modal_demo.open\" class=\"text-green-600\">✓ Dialog is currently open</div><div data-show=\"!$modal_demo.open\" class=\"text-gray-500\">○ Dialog is currently closed</div></div></div><!-- Form with Datastar State Management --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Form Dialog with Datastar State</h2><p class=\"text-sm text-muted-foreground\">Demonstrates form state management using Datastar signals, showing real-time form values.</p><!-- Success message area --><div id=\"form_success_message\"></div><div class=\"space-y-4 p-6 bg-muted/50 rounded-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -277,7 +285,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "User Information Form")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "User Information Form")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -287,7 +295,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -303,7 +311,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "Fill out the form and see the values update in real-time.")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "Fill out the form and see the values update in real-time.")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -319,7 +327,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -335,7 +343,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div id=\"form_dialog_errors\"></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div id=\"form_dialog_errors\"></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -351,7 +359,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"grid gap-4\">")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"grid gap-4\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -379,7 +387,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Name")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "Name")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -389,7 +397,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " ")
+							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -404,7 +412,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " ")
+							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -420,7 +428,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "Your full name for the form submission.")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Your full name for the form submission.")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -460,7 +468,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Email")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "Email")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -470,7 +478,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, " ")
+							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, " ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -485,7 +493,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, " ")
+							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, " ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -501,7 +509,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "We'll use this to send you a confirmation.")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "We'll use this to send you a confirmation.")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -517,7 +525,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -545,7 +553,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "Cancel")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "Cancel")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -558,7 +566,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, " ")
+							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, " ")
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -574,7 +582,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "Submit Form")
+								templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "Submit Form")
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -624,7 +632,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<!-- Display current form values --><div class=\"space-y-2\"><h3 class=\"font-medium\">Current Form Values:</h3><div class=\"text-sm bg-background p-3 rounded border space-y-1\"><div>Name: <span data-text=\"$form_dialog.name || 'Not entered'\"></span></div><div>Email: <span data-text=\"$form_dialog.email || 'Not entered'\"></span></div><div>Form Submitted: <span data-text=\"$form_dialog.submitted || false ? 'Yes' : 'No'\"></span></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Display current form values --><div class=\"space-y-2\"><h3 class=\"font-medium\">Current Form Values:</h3><div class=\"text-sm bg-background p-3 rounded border space-y-1\"><div>Name: <span data-text=\"$form_dialog.name || 'Not entered'\"></span></div><div>Email: <span data-text=\"$form_dialog.email || 'Not entered'\"></span></div><div>Form Submitted: <span data-text=\"$form_dialog.submitted || false ? 'Yes' : 'No'\"></span></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -640,7 +648,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "Open Form Dialog")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "Open Form Dialog")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -653,7 +661,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div><!-- Custom Triggers with AsChild --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div><!-- Custom Triggers with AsChild --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -693,7 +701,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "User Profile Details")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "User Profile Details")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -703,7 +711,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -719,7 +727,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "View user profile information.")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "View user profile information.")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -735,7 +743,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -751,7 +759,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<div class=\"flex items-center gap-4\"><div class=\"w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-8 h-8 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><h3 class=\"font-semibold\">John Doe</h3><p class=\"text-sm text-muted-foreground\">Software Engineer</p><p class=\"text-sm text-muted-foreground\">john@example.com</p></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<div class=\"flex items-center gap-4\"><div class=\"w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-8 h-8 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><h3 class=\"font-semibold\">John Doe</h3><p class=\"text-sm text-muted-foreground\">Software Engineer</p><p class=\"text-sm text-muted-foreground\">john@example.com</p></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -761,7 +769,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -789,7 +797,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "Close")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "Close")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -827,7 +835,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"text-gray-500 font-medium text-sm\">User Profile</p><p class=\"text-xs text-muted-foreground\">Click for details</p></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"text-gray-500 font-medium text-sm\">User Profile</p><p class=\"text-xs text-muted-foreground\">Click for details</p></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -840,7 +848,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div><!-- Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Status Badge</h3>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><!-- Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Status Badge</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -880,7 +888,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "System Status")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "System Status")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -890,7 +898,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -906,7 +914,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "Current system status and details.")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "Current system status and details.")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -922,7 +930,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -938,7 +946,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<div class=\"space-y-3\"><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Status:</span><div class=\"flex items-center gap-2\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div><span class=\"text-sm text-green-600\">Active</span></div></div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Uptime:</span> <span class=\"text-sm text-muted-foreground\">99.9%</span></div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Last Check:</span> <span class=\"text-sm text-muted-foreground\">2 minutes ago</span></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<div class=\"space-y-3\"><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Status:</span><div class=\"flex items-center gap-2\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div><span class=\"text-sm text-green-600\">Active</span></div></div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Uptime:</span> <span class=\"text-sm text-muted-foreground\">99.9%</span></div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-medium\">Last Check:</span> <span class=\"text-sm text-muted-foreground\">2 minutes ago</span></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -948,7 +956,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -976,7 +984,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "Close")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "Close")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -1013,7 +1021,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Status: Active <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Status: Active <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1026,7 +1034,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "</div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
