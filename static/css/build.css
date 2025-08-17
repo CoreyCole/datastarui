@@ -565,6 +565,9 @@
   .h-px {
     height: 1px;
   }
+  .h-screen {
+    height: 100vh;
+  }
   .max-h-96 {
     max-height: calc(var(--spacing) * 96);
   }
@@ -576,9 +579,6 @@
   }
   .min-h-\[300px\] {
     min-height: 300px;
-  }
-  .min-h-\[calc\(100dvh\+600px\)\] {
-    min-height: calc(100dvh + 600px);
   }
   .min-h-screen {
     min-height: 100vh;
@@ -930,6 +930,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
   }
   .rounded {
     border-radius: 0.25rem;
