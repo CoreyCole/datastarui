@@ -83,40 +83,56 @@ func (d *dateInputHandler) buildInputHandler(inputSignal, dateSignal string) str
 		fourDigitYear, twoDigitYear, d.signals.Set(dateSignal, "''")),
 	)
 
-	// Add calendar coordination if provided
+	// Add calendar coordination if provided - reference existing calendar signals without creating new ones
 	if d.calendarID != "" {
+		// Create a signal manager that references the existing calendar signals (without creating new ones)
+		calendarSignals := &utils.SignalManager{ID: d.calendarID}
+		
 		expr.Statement(fmt.Sprintf(
-			"formattedValue.split('/').length === 3 && (formattedValue.split('/')[2].length === 4 || formattedValue.split('/')[2].length === 2) ? (fullYear => (%s, %s))(formattedValue.split('/')[2].length === 4 ? formattedValue.split('/')[2] : '20' + formattedValue.split('/')[2]) : %s",
-			d.signals.Set("selectedDate", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-' + formattedValue.split('/')[1].padStart(2, '0')"),
-			d.signals.Set("currentDate", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-01'"),
-			d.signals.Set("selectedDate", "''"),
+			"formattedValue.split('/').length === 3 && (formattedValue.split('/')[2].length === 4 || formattedValue.split('/')[2].length === 2) ? (fullYear => (%s, %s, %s))(formattedValue.split('/')[2].length === 4 ? formattedValue.split('/')[2] : '20' + formattedValue.split('/')[2]) : %s",
+			calendarSignals.Set("dateValue", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-' + formattedValue.split('/')[1].padStart(2, '0')"),
+			calendarSignals.Set("inputValue", "formattedValue"),
+			calendarSignals.Set("currentDate", "fullYear + '-' + formattedValue.split('/')[0].padStart(2, '0') + '-01'"),
+			calendarSignals.Set("dateValue", "''"),
 		))
 	}
 
 	return expr.Build()
 }
 
-// addCalendarCoordination adds calendar synchronization logic
+// addCalendarCoordination adds calendar synchronization logic using signal utilities
 func (d *dateInputHandler) addCalendarCoordination(expr *utils.DatastarExpression, dateSignal string) {
+	if d.calendarID == "" {
+		return
+	}
+	
+	// Create a signal manager that references the existing calendar signals
+	calendarSignals := &utils.SignalManager{ID: d.calendarID}
+	
 	if strings.Contains(dateSignal, "startDateValue") {
 		// Start date coordination
 		expr.Statement(fmt.Sprintf(
-			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => ($%s.rangeStart = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $%s.currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : ($%s.rangeStart = '')",
-			d.calendarID, d.calendarID, d.calendarID,
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => (%s, %s))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : %s",
+			calendarSignals.Set("rangeStart", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')"),
+			calendarSignals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'"),
+			calendarSignals.Set("rangeStart", "''"),
 		))
 	} else if strings.Contains(dateSignal, "endDateValue") {
 		// End date coordination
 		expr.Statement(fmt.Sprintf(
-			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => ($%s.rangeEnd = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0'), $%s.currentDate = fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : ($%s.rangeEnd = '')",
-			d.calendarID, d.calendarID, d.calendarID,
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => (%s, %s))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : %s",
+			calendarSignals.Set("rangeEnd", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')"),
+			calendarSignals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'"),
+			calendarSignals.Set("rangeEnd", "''"),
 		))
 	} else if strings.Contains(dateSignal, "dateValue") {
 		// Single date coordination
 		expr.Statement(fmt.Sprintf(
-			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => (%s, %s))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : %s",
-			d.signals.Set("selectedDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')"),
-			d.signals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'"),
-			d.signals.Set("selectedDate", "''"),
+			"evt.target.value.split('/').length === 3 && (evt.target.value.split('/')[2].length === 4 || evt.target.value.split('/')[2].length === 2) ? (fullYear => (%s, %s, %s))(evt.target.value.split('/')[2].length === 4 ? evt.target.value.split('/')[2] : '20' + evt.target.value.split('/')[2]) : %s",
+			calendarSignals.Set("dateValue", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-' + evt.target.value.split('/')[1].padStart(2, '0')"),
+			calendarSignals.Set("inputValue", "evt.target.value"),
+			calendarSignals.Set("currentDate", "fullYear + '-' + evt.target.value.split('/')[0].padStart(2, '0') + '-01'"),
+			calendarSignals.Set("dateValue", "''"),
 		))
 	}
 }
@@ -139,22 +155,26 @@ func (d *dateInputHandler) buildBlurHandler(inputSignal, dateSignal string) stri
 	isoDateExpr := "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"
 	dateConversionActions = append(dateConversionActions, d.signals.Set(dateSignal, isoDateExpr))
 
-	// Add calendar coordination if needed
+	// Add calendar coordination if needed - use signal utilities
 	if d.calendarID != "" {
+		// Create a signal manager that references the existing calendar signals
+		calendarSignals := &utils.SignalManager{ID: d.calendarID}
+		
 		if strings.Contains(dateSignal, "startDateValue") {
 			dateConversionActions = append(dateConversionActions,
-				fmt.Sprintf("$%s.rangeStart = %s", d.calendarID, isoDateExpr),
-				fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID),
+				calendarSignals.Set("rangeStart", isoDateExpr),
+				calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"),
 			)
 		} else if strings.Contains(dateSignal, "endDateValue") {
 			dateConversionActions = append(dateConversionActions,
-				fmt.Sprintf("$%s.rangeEnd = %s", d.calendarID, isoDateExpr),
-				fmt.Sprintf("$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'", d.calendarID),
+				calendarSignals.Set("rangeEnd", isoDateExpr),
+				calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"),
 			)
 		} else if strings.Contains(dateSignal, "dateValue") {
 			dateConversionActions = append(dateConversionActions,
-				d.signals.Set("selectedDate", isoDateExpr),
-				d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"),
+				calendarSignals.Set("dateValue", isoDateExpr),
+				calendarSignals.Set("inputValue", "evt.target.value"),
+				calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"),
 			)
 		}
 	}
@@ -173,27 +193,40 @@ func (d *dateInputHandler) buildBlurHandler(inputSignal, dateSignal string) stri
 	).Build()
 }
 
-// addCalendarBlurCoordination adds calendar coordination for blur events
+// addCalendarBlurCoordination adds calendar coordination for blur events using signal utilities
 func (d *dateInputHandler) addCalendarBlurCoordination(expr *utils.DatastarExpression, dateSignal string) {
+	if d.calendarID == "" {
+		return
+	}
+	
+	// Create a signal manager that references the existing calendar signals
+	calendarSignals := &utils.SignalManager{ID: d.calendarID}
+	
 	if strings.Contains(dateSignal, "startDateValue") {
 		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
-			$%s.rangeStart = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1];
-			$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01';
-		}`, d.calendarID, d.calendarID)
+			%s;
+			%s;
+		}`,
+			calendarSignals.Set("rangeStart", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+			calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
 		expr.Statement(calendarSync)
 	} else if strings.Contains(dateSignal, "endDateValue") {
 		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
-			$%s.rangeEnd = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1];
-			$%s.currentDate = evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01';
-		}`, d.calendarID, d.calendarID)
+			%s;
+			%s;
+		}`,
+			calendarSignals.Set("rangeEnd", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+			calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
 		expr.Statement(calendarSync)
 	} else if strings.Contains(dateSignal, "dateValue") {
 		calendarSync := fmt.Sprintf(`if (evt.target.value.split('/').length === 3 && evt.target.value.split('/')[2]) {
 			%s;
 			%s;
+			%s;
 		}`,
-			d.signals.Set("selectedDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
-			d.signals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
+			calendarSignals.Set("dateValue", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-' + evt.target.value.split('/')[1]"),
+			calendarSignals.Set("inputValue", "evt.target.value"),
+			calendarSignals.Set("currentDate", "evt.target.value.split('/')[2] + '-' + evt.target.value.split('/')[0] + '-01'"))
 		expr.Statement(calendarSync)
 	}
 }
@@ -211,6 +244,24 @@ func (d *dateInputHandler) buildTabHandler(inputSignal, dateSignal string) strin
 
 // BuildCheckboxChangeHandler creates the checkbox change handler for range mode
 func (d *dateInputHandler) buildCheckboxChangeHandler(endInputID string) string {
+	// When coordinating with calendar, use direct signal references without creating new ones
+	if d.calendarID != "" {
+		// Create a signal manager that references the existing calendar signals
+		calendarSignals := &utils.SignalManager{ID: d.calendarID}
+		return utils.NewExpression().
+			Conditional(
+				calendarSignals.Signal("endDateEnabled"),
+				fmt.Sprintf("document.getElementById('%s').focus()", endInputID),
+				fmt.Sprintf("(%s, %s, document.getElementById('%s').value = '')",
+					calendarSignals.Set("endInputValue", "''"),
+					calendarSignals.Set("endDateValue", "''"),
+					endInputID,
+				),
+			).
+			Build()
+	}
+	
+	// Standalone mode - create own signals
 	return utils.NewExpression().
 		Conditional(
 			d.signals.Signal("endDateEnabled"),
