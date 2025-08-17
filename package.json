@@ -5,6 +5,8 @@
     "build:css": "just build-tailwind"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.0"
+    "@playwright/test": "^1.41.0",
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
   }
 }

@@ -2,7 +2,8 @@
 FROM golang:1.24-alpine AS development
 
 # Install dependencies
-RUN apk add --no-cache git curl nodejs npm bash
+RUN apk update && apk add --no-cache git curl nodejs npm bash coreutils && \
+    rm -rf /var/cache/apk/*
 
 # Install templ
 RUN go install github.com/a-h/templ/cmd/templ@latest
@@ -15,8 +16,17 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh -o /tmp
     bash /tmp/install-just.sh --to /usr/local/bin && \
     rm /tmp/install-just.sh
 
+# Install pnpm
+ENV SHELL=/bin/bash
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+ENV PATH="/root/.local/share/pnpm:$PATH"
+
 # Set working directory
 WORKDIR /app
+
+# Install Tailwind CSS v4.1.11 globally via npm
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
 
 # Expose port
 EXPOSE 4242

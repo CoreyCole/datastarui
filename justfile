@@ -5,10 +5,10 @@ build:
 
 build-tailwind:
     @echo "🎨 Building Tailwind CSS..."
-    @tailwindcss -i static/css/index.css -o static/css/out.css --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
+    @pnpm tailwindcss -i static/css/index.css -o static/css/out.css --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
     @if [ -f static/css/out.css ]; then \
         echo "📝 Generating CSS hash..."; \
-        HASH=$(shasum -a 256 static/css/out.css | cut -d' ' -f1 | head -c8); \
+        HASH=$(sha256sum static/css/out.css | cut -d' ' -f1 | head -c8); \
         echo "🔖 Hash: $HASH"; \
         rm -f static/css/out.*.css; \
         cp static/css/out.css static/css/out.$HASH.css; \
@@ -22,6 +22,7 @@ watch:
   air
 
 install:
+  @pnpm install
   @go install github.com/air-verse/air@latest
   @go install github.com/a-h/templ/cmd/templ@latest
   @go get ./...

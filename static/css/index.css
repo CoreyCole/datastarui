@@ -25,25 +25,25 @@
   html {
     scrollbar-gutter: stable;
   }
-  
+
   /* Webkit scrollbar styling */
   ::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.3);
   }
-  
+
   /* Firefox scrollbar styling */
   * {
     scrollbar-width: thin;
