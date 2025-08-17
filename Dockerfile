@@ -24,9 +24,9 @@ ENV PATH="/root/.local/share/pnpm:$PATH"
 # Set working directory
 WORKDIR /app
 
-# Install Tailwind CSS v4.1.11 globally via npm
+# Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install
+RUN pnpm install && pnpm store prune
 
 # Expose port
 EXPOSE 4242
