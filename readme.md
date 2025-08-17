@@ -13,6 +13,7 @@ See [datastar-ui.com](https://datastar-ui.com) for component demos.
 - 🔧 **Type-safe** component args with Go structs
 - 🌙 **Dark mode** support built-in
 - ♿ **Accessible** with proper ARIA attributes
+- ⌨️ **Keyboard support** tab through forms, arrow keys, enter to select, esc to close, etc.
 
 ## 🚀 Quick Start
 
