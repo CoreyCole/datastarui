@@ -216,11 +216,13 @@ templ Root(args RootArgs) {
 										@sidebar.SidebarContent(sidebar.SidebarContentArgs{
 											ID: sidebarID,
 										}) {
-											@sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
-												SidebarID:   sidebarID,
-												Sections:    GetSidebarSections(),
-												CurrentPath: args.CurrentPath,
-											})
+											<div class="pl-2">
+												@sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
+													SidebarID:   sidebarID,
+													Sections:    GetSidebarSections(),
+													CurrentPath: args.CurrentPath,
+												})
+											</div>
 										}
 									}
 								}

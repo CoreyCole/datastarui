@@ -414,11 +414,19 @@ func Root(args RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"pl-2\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 					templ_7745c5c3_Err = sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
 						SidebarID:   sidebarID,
 						Sections:    GetSidebarSections(),
 						CurrentPath: args.CurrentPath,
 					}).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -439,7 +447,7 @@ func Root(args RootArgs) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<!-- Main content area --><div class=\"flex flex-1 flex-col\"><main class=\"flex-1 overflow-auto\"><div class=\"container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Main content area --><div class=\"flex flex-1 flex-col\"><main class=\"flex-1 overflow-auto\"><div class=\"container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -447,7 +455,7 @@ func Root(args RootArgs) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></main></div></div></div></main></div></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div></main></div></div></div></main></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
