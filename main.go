@@ -132,11 +132,6 @@ func main() {
 		return p.ExamplesPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
 	})
 
-	// Register form demo handlers
-	formpage.RegisterFormPageHandlers(e)
-	checkboxpage.RegisterCheckboxHandlers(e)
-	dialogpage.RegisterDialogPageHandlers(e)
-
 	// Serve static files
 	e.Static("/", "static/")
 
