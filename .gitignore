@@ -1,7 +1,9 @@
 datastarui
 datastarui~
+datastarui-linux
 datastarui.exe
 datastarui.exe~
+static/css/out.*.css
 .tmp/
 log/
 node_modules/

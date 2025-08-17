@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"path/filepath"
 	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
@@ -28,6 +29,15 @@ templ ComponentPageBreadcrumbs(currentPage string) {
 }
 
 templ Root(args RootArgs) {
+	{{
+		// Find the hashed CSS file
+		cssFile := "/css/out.css" // fallback
+		if files, err := filepath.Glob("static/css/out.*.css"); err == nil && len(files) > 0 {
+			// Extract just the filename from the full path
+			fileName := filepath.Base(files[0])
+			cssFile = "/css/" + fileName
+		}
+	}}
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -37,7 +47,7 @@ templ Root(args RootArgs) {
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<!-- Tailwind CSS -->
-			<link rel="stylesheet" href="/css/out.css"/>
+			<link rel="stylesheet" href={ cssFile }/>
 			<!-- Popover API Polyfill -->
 			<script type="module">
         if (!('popover' in HTMLElement.prototype)) {
