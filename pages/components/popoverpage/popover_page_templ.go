@@ -47,7 +47,15 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- CSS Anchor Positioning Polyfill Status --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">CSS Anchor Positioning Status</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"anchor_support_status\" class=\"text-sm mb-2\"></div><div id=\"polyfill_status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check CSS Anchor Positioning support\n\t\t\t\t\t\tconst anchorSupportDiv = document.getElementById('anchor_support_status');\n\t\t\t\t\t\tconst polyfillDiv = document.getElementById('polyfill_status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst hasNativeSupport = \"anchorName\" in document.documentElement.style;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfunction updatePolyfillStatus() {\n\t\t\t\t\t\t\tif (hasNativeSupport) {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '✅ Native CSS Anchor Positioning is supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-green-600 mb-2';\n\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '📘 Polyfill not needed - using native implementation.';\n\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-blue-600';\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-red-600 mb-2';\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tif (window.CSS_ANCHOR_POLYFILL_LOADED) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active!';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Listen for polyfill load completion\n\t\t\t\t\t\twindow.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);\n\t\t\t\t\t</script></div></div><!-- Anchor Positioning API Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Anchor Positioning API</h2><p class=\"text-sm text-muted-foreground\">Using positioning args to simplify anchor positioning without manual style attributes. </p><p class=\"text-sm text-muted-foreground\">The <span class=\"text-md font-bold font-mono\">Side</span> prop specifies where the popover appears relative to the trigger:</p><ul class=\"text-sm text-muted-foreground ml-6 list-disc space-y-1\"><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"top\"</span> <span class=\"ml-4\">popover appears above the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"bottom\"</span> <span class=\"ml-4\">popover appears below the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"left\"</span> <span class=\"ml-4\">popover appears left of the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"right\"</span> <span class=\"ml-4\">popover appears right of the trigger</span></li></ul><div class=\"flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative\"><div class=\"grid grid-cols-3 gap-8 items-center\"><!-- Top Side --><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = l.ComponentPageBreadcrumbs("Popover").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Popover</h1><p class=\"text-muted-foreground\">Displays rich content in a portal, triggered by a button using the native Popover API.</p></div><!-- CSS Anchor Positioning Polyfill Status --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">CSS Anchor Positioning Status</h2><div class=\"p-4 bg-muted/50 rounded-lg\"><div id=\"anchor_support_status\" class=\"text-sm mb-2\"></div><div id=\"polyfill_status\" class=\"text-sm\"></div><script>\n\t\t\t\t\t\t// Check CSS Anchor Positioning support\n\t\t\t\t\t\tconst anchorSupportDiv = document.getElementById('anchor_support_status');\n\t\t\t\t\t\tconst polyfillDiv = document.getElementById('polyfill_status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst hasNativeSupport = \"anchorName\" in document.documentElement.style;\n\t\t\t\t\t\t\n\t\t\t\t\t\tfunction updatePolyfillStatus() {\n\t\t\t\t\t\t\tif (hasNativeSupport) {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '✅ Native CSS Anchor Positioning is supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-green-600 mb-2';\n\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '📘 Polyfill not needed - using native implementation.';\n\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-blue-600';\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tanchorSupportDiv.innerHTML = '❌ Native CSS Anchor Positioning is NOT supported in this browser.';\n\t\t\t\t\t\t\t\tanchorSupportDiv.className = 'text-sm text-red-600 mb-2';\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tif (window.CSS_ANCHOR_POLYFILL_LOADED) {\n\t\t\t\t\t\t\t\t\tpolyfillDiv.innerHTML = '✅ CSS Anchor Positioning polyfill is active!';\n\t\t\t\t\t\t\t\t\tpolyfillDiv.className = 'text-sm text-green-600';\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Listen for polyfill load completion\n\t\t\t\t\t\twindow.addEventListener('css-anchor-polyfill-loaded', updatePolyfillStatus);\n\t\t\t\t\t</script></div></div><!-- Anchor Positioning API Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Anchor Positioning API</h2><p class=\"text-sm text-muted-foreground\">Using positioning args to simplify anchor positioning without manual style attributes. </p><p class=\"text-sm text-muted-foreground\">The <span class=\"text-md font-bold font-mono\">Side</span> prop specifies where the popover appears relative to the trigger:</p><ul class=\"text-sm text-muted-foreground ml-6 list-disc space-y-1\"><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"top\"</span> <span class=\"ml-4\">popover appears above the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"bottom\"</span> <span class=\"ml-4\">popover appears below the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"left\"</span> <span class=\"ml-4\">popover appears left of the trigger</span></li><li class=\"flex items-start\"><span class=\"text-md font-bold font-mono w-32\">Side: \"right\"</span> <span class=\"ml-4\">popover appears right of the trigger</span></li></ul><div class=\"flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative\"><div class=\"grid grid-cols-3 gap-8 items-center\"><!-- Top Side --><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -63,7 +71,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Top Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Top Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -78,7 +86,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -94,7 +102,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Top Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears above the trigger using Side=\"top\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Top Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears above the trigger using Side=\"top\".</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -111,7 +119,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Right Side -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Right Side -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -127,7 +135,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Right Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "Right Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -154,7 +162,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Right Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the right of the trigger using Side=\"right\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Right Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the right of the trigger using Side=\"right\".</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -171,7 +179,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div></div><!-- Left Side -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div></div><!-- Left Side -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -187,7 +195,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "Left Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Left Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -214,7 +222,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Left Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the left of the trigger using Side=\"left\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Left Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears to the left of the trigger using Side=\"left\".</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -231,7 +239,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<!-- Bottom Side --><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<!-- Bottom Side --><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -247,7 +255,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "Bottom Side")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "Bottom Side")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -262,7 +270,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -278,7 +286,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Bottom Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears below the trigger using Side=\"bottom\".</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"p-2\"><h4 class=\"font-medium mb-2\">Bottom Side Popover</h4><p class=\"text-sm text-muted-foreground\">This popover appears below the trigger using Side=\"bottom\".</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -295,7 +303,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div></div><!-- Custom Trigger with AsChild Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div></div><!-- Custom Trigger with AsChild Example --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Custom Triggers with AsChild</h2><p class=\"text-sm text-muted-foreground\">Using the AsChild prop to create custom trigger elements instead of standard buttons.</p><div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\"><!-- Card Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Card Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -311,7 +319,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"font-medium text-sm\">User Profile</p><p class=\"text-xs text-gray-500\">Click for details</p></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center\"><svg class=\"w-5 h-5 text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg></div><div><p class=\"font-medium text-sm\">User Profile</p><p class=\"text-xs text-gray-500\">Click for details</p></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -337,7 +345,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">John Doe</h4><p class=\"text-sm text-muted-foreground\">Software Engineer at Acme Corp</p></div><div class=\"flex items-center gap-4 text-sm\"><div class=\"flex items-center gap-1\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> john@example.com</div></div><div class=\"flex gap-2\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">John Doe</h4><p class=\"text-sm text-muted-foreground\">Software Engineer at Acme Corp</p></div><div class=\"flex items-center gap-4 text-sm\"><div class=\"flex items-center gap-1\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> john@example.com</div></div><div class=\"flex gap-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -353,7 +361,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "Message")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "Message")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -378,7 +386,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "View Profile")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "View Profile")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -391,7 +399,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -408,7 +416,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></div><!-- Image Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Image Trigger</h3><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div></div><!-- Image Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Image Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -424,7 +432,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<img class=\"w-32\" src=\"/img/datastar-rocket.webp\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<img class=\"w-32\" src=\"/img/datastar-rocket.webp\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -450,7 +458,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Datastar Rocket</h4><p class=\"text-sm text-muted-foreground\">The Datastar logo representing a lightweight, fast hypermedia framework.</p></div><div class=\"flex flex-col gap-4 text-xs text-muted-foreground\"><div><span class=\"font-medium\">15KB</span> Hypermedia Framework</div><div><span class=\"font-medium block\">Dependencies:</span> CSS Anchor Polyfil for Firefox</div></div><div class=\"pt-2\"><p class=\"text-xs text-muted-foreground\">🚀 Fast, lightweight, and powerful for building reactive UIs without the complexity of traditional JavaScript frameworks.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Datastar Rocket</h4><p class=\"text-sm text-muted-foreground\">The Datastar logo representing a lightweight, fast hypermedia framework.</p></div><div class=\"flex flex-col gap-4 text-xs text-muted-foreground\"><div><span class=\"font-medium\">15KB</span> Hypermedia Framework</div><div><span class=\"font-medium block\">Dependencies:</span> CSS Anchor Polyfil for Firefox</div></div><div class=\"pt-2\"><p class=\"text-xs text-muted-foreground\">🚀 Fast, lightweight, and powerful for building reactive UIs without the complexity of traditional JavaScript frameworks.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -467,7 +475,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Custom Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Badge Trigger</h3><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div></div><!-- Custom Badge Trigger --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Badge Trigger</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -483,7 +491,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Online Status <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors\"><div class=\"w-2 h-2 bg-green-600 rounded-full\"></div>Online Status <svg class=\"w-3 h-3 ml-1\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -509,7 +517,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Status Details</h4><p class=\"text-sm text-muted-foreground\">User is currently online and available for collaboration.</p></div><div class=\"space-y-2 text-sm\"><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Last seen:</span> <span>Now</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Timezone:</span> <span>PST (UTC-8)</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Available until:</span> <span>6:00 PM</span></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Status Details</h4><p class=\"text-sm text-muted-foreground\">User is currently online and available for collaboration.</p></div><div class=\"space-y-2 text-sm\"><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Last seen:</span> <span>Now</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Timezone:</span> <span>PST (UTC-8)</span></div><div class=\"flex justify-between\"><span class=\"text-muted-foreground\">Available until:</span> <span>6:00 PM</span></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -526,7 +534,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div></div><!-- Custom Interactive Element --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Interactive Element</h3><div class=\"flex justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div><!-- Custom Interactive Element --><div class=\"space-y-4\"><h3 class=\"text-lg font-medium\">Interactive Element</h3><div class=\"flex justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -542,7 +550,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group\"><div class=\"flex flex-col items-center gap-2\"><div class=\"w-8 h-8 bg-gray-100 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors\"><svg class=\"w-4 h-4 text-gray-600 group-hover:text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6v6m0 0v6m0-6h6m-6 0H6\"></path></svg></div><span class=\"text-sm font-medium text-gray-700 group-hover:text-blue-700\">Add Item</span> <span class=\"text-xs text-gray-500\">Click to see options</span></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group\"><div class=\"flex flex-col items-center gap-2\"><div class=\"w-8 h-8 bg-gray-100 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors\"><svg class=\"w-4 h-4 text-gray-600 group-hover:text-blue-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6v6m0 0v6m0-6h6m-6 0H6\"></path></svg></div><span class=\"text-sm font-medium text-gray-700 group-hover:text-blue-700\">Add Item</span> <span class=\"text-xs text-gray-500\">Click to see options</span></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -568,7 +576,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Add New Item</h4><p class=\"text-sm text-muted-foreground\">Choose what type of item you'd like to create.</p></div><div class=\"grid gap-2\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"grid gap-3\"><div class=\"space-y-2\"><h4 class=\"font-medium leading-none\">Add New Item</h4><p class=\"text-sm text-muted-foreground\">Choose what type of item you'd like to create.</p></div><div class=\"grid gap-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -584,7 +592,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "📄 Document")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "📄 Document")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -609,7 +617,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "📁 Folder")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "📁 Folder")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -634,7 +642,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "🖼️ Image")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "🖼️ Image")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -659,7 +667,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "🔗 Link")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "🔗 Link")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -672,7 +680,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -689,7 +697,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
