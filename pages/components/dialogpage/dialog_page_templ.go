@@ -49,7 +49,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-10\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals - ESC key closes, backdrop click closes.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-8\"><!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals - ESC key closes, backdrop click closes.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

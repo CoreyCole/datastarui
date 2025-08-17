@@ -23,6 +23,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
+	"github.com/coreycole/datastarui/pages/components/componentspage"
 	"github.com/coreycole/datastarui/utils"
 )
 
@@ -68,7 +69,7 @@ func main() {
 
 	// Serve the components page
 	e.GET("/components", func(c echo.Context) error {
-		return c.Redirect(http.StatusFound, "/components/button")
+		return componentspage.ComponentsPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/button", func(c echo.Context) error {
 		return buttonpage.ButtonPage(componentRootArgs(c.Request().URL.Path)).Render(c.Request().Context(), c.Response().Writer)

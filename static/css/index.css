@@ -21,6 +21,35 @@
 }
 
 @layer base {
+  /* Custom scrollbar that doesn't take up horizontal space */
+  html {
+    scrollbar-gutter: stable;
+  }
+  
+  /* Webkit scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.3);
+  }
+  
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -151,6 +180,10 @@
     overscroll-behavior: none;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+  }
+
+  a {
+    cursor: pointer;
   }
 
   /* Custom scrollbar styling */

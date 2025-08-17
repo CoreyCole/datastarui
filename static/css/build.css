@@ -449,9 +449,6 @@
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
   }
-  .mb-8 {
-    margin-bottom: calc(var(--spacing) * 8);
-  }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
@@ -574,9 +571,6 @@
   .max-h-\[90vh\] {
     max-height: 90vh;
   }
-  .min-h-0 {
-    min-height: calc(var(--spacing) * 0);
-  }
   .min-h-\[80px\] {
     min-height: 80px;
   }
@@ -585,9 +579,6 @@
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .min-h-svh {
-    min-height: 100svh;
   }
   .w-2 {
     width: calc(var(--spacing) * 2);
@@ -927,6 +918,9 @@
       margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
+  .gap-y-4 {
+    row-gap: calc(var(--spacing) * 4);
+  }
   .self-start {
     align-self: flex-start;
   }
@@ -992,6 +986,9 @@
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
+  }
+  .border-accent {
+    border-color: var(--color-accent);
   }
   .border-blue-500 {
     border-color: var(--color-blue-500);
@@ -2552,6 +2549,26 @@
   }
 }
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.3);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -2674,6 +2691,9 @@
     overscroll-behavior: none;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+  }
+  a {
+    cursor: pointer;
   }
   ::-webkit-scrollbar {
     width: 5px;

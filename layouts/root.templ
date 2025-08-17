@@ -92,8 +92,8 @@ templ Root(args RootArgs) {
 	sidebarSignals := utils.Signals(sidebarID, sidebar.SidebarSignals{MobileOpen: false}).DataSignals
 	dataSignals := "{theme: initTheme(), " + sidebarID + ": " + sidebarSignals + "}"
 		}}
-		<body class="min-h-svh bg-background font-sans antialiased" data-signals={ dataSignals }>
-			<div class="relative flex min-h-svh flex-col bg-background">
+		<body class="min-h-screen bg-background font-sans antialiased" data-signals={ dataSignals }>
+			<div class="relative flex min-h-screen flex-col bg-background">
 				<div data-wrapper="" class="border-grid flex flex-1 flex-col">
 					<!-- Header -->
 					<header
@@ -158,48 +158,50 @@ templ Root(args RootArgs) {
 						</div>
 					</header>
 					<main class="flex flex-1 flex-col">
-						<div class="container-wrapper">
-							<div class="flex min-h-0 flex-1">
-								<!-- Mobile Sidebar (Sheet) -->
-								@sidebar.SidebarMobile(sidebar.SidebarMobileArgs{
-									ID: sidebarID,
-								}) {
-									@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+						<div class="container-wrapper flex flex-1">
+							<div class="flex flex-1">
+								if args.CurrentPage != "home" {
+									<!-- Mobile Sidebar (Sheet) -->
+									@sidebar.SidebarMobile(sidebar.SidebarMobileArgs{
 										ID: sidebarID,
 									}) {
-										@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
-											<div class="flex flex-row gap-3 items-center w-full">
-												@sidebar.SidebarCloseButton(sidebar.SidebarCloseButtonArgs{
-													ID: sidebarID,
-												})
-												<a class="font-semibold pb-[0.5px]" href="/">
-													<span>DatastarUI</span>
-												</a>
-											</div>
+										@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+											ID: sidebarID,
+										}) {
+											@sidebar.SidebarHeader(sidebar.SidebarHeaderArgs{}) {
+												<div class="flex flex-row gap-3 items-center w-full">
+													@sidebar.SidebarCloseButton(sidebar.SidebarCloseButtonArgs{
+														ID: sidebarID,
+													})
+													<a class="font-semibold pb-[0.5px]" href="/">
+														<span>DatastarUI</span>
+													</a>
+												</div>
+											}
+											@sidebar.SidebarNavMobile(sidebar.SidebarNavArgs{
+												SidebarID:   sidebarID,
+												Sections:    GetSidebarSections(),
+												CurrentPath: args.CurrentPath,
+											})
 										}
-										@sidebar.SidebarNavMobile(sidebar.SidebarNavArgs{
-											SidebarID:   sidebarID,
-											Sections:    GetSidebarSections(),
-											CurrentPath: args.CurrentPath,
-										})
 									}
-								}
-								<!-- Desktop Sidebar -->
-								@sidebar.SidebarDesktop(sidebar.SidebarDesktopArgs{
-									ID: sidebarID,
-								}) {
-									@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+									<!-- Desktop Sidebar -->
+									@sidebar.SidebarDesktop(sidebar.SidebarDesktopArgs{
 										ID: sidebarID,
 									}) {
-										@sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
-											SidebarID:   sidebarID,
-											Sections:    GetSidebarSections(),
-											CurrentPath: args.CurrentPath,
-										})
+										@sidebar.SidebarContent(sidebar.SidebarContentArgs{
+											ID: sidebarID,
+										}) {
+											@sidebar.SidebarNavDesktop(sidebar.SidebarNavArgs{
+												SidebarID:   sidebarID,
+												Sections:    GetSidebarSections(),
+												CurrentPath: args.CurrentPath,
+											})
+										}
 									}
 								}
 								<!-- Main content area -->
-								<div class="flex min-h-0 flex-1 flex-col">
+								<div class="flex flex-1 flex-col">
 									<main class="flex-1 overflow-auto">
 										<div class="container mx-auto max-w-none px-4 py-6 md:ml-0 md:max-w-none md:px-8">
 											{ children... }

@@ -60,8 +60,8 @@ func SidebarNavLinkMobileVariants(args SidebarNavLinkArgs) string {
 	baseClasses := "group relative flex w-full items-center rounded-md p-2 text-2xl font-medium transition-colors cursor-pointer"
 	
 	if isActive {
-		// Active state: use accent background and foreground
-		baseClasses = utils.TwMerge(baseClasses, "bg-accent text-accent-foreground font-medium")
+		// Active state: use accent background and foreground (not sidebar-accent)
+		baseClasses = utils.TwMerge(baseClasses, "bg-accent text-accent-foreground font-medium border border-accent")
 	} else {
 		// Inactive state: default text color with hover effect
 		baseClasses = utils.TwMerge(baseClasses, "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground")
@@ -78,8 +78,8 @@ func SidebarNavLinkDesktopVariants(args SidebarNavLinkArgs) string {
 	baseClasses := "group relative flex w-full items-center rounded-md p-2 text-[0.8rem] font-medium outline-hidden transition-[width,height,padding] focus-visible:ring-2 focus-visible:ring-sidebar-ring cursor-pointer"
 	
 	if isActive {
-		// Active state: use accent background and foreground
-		baseClasses = utils.TwMerge(baseClasses, "bg-accent text-accent-foreground font-medium")
+		// Active state: use accent background and foreground (not sidebar-accent)
+		baseClasses = utils.TwMerge(baseClasses, "bg-accent text-accent-foreground font-medium border border-accent")
 	} else {
 		// Inactive state: default text color with hover effect
 		baseClasses = utils.TwMerge(baseClasses, "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground")
