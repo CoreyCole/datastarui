@@ -2,10 +2,9 @@
   "name": "datastarui",
   "version": "1.0.0",
   "scripts": {
-    "build:css": "tailwindcss -i static/css/index.css -o static/css/build.css --content './components/**/*' --content './pages/**/*' --content './layouts/**/*'"
+    "build:css": "tailwindcss -i static/css/index.css -o static/css/out.css --content './components/**/*' --content './pages/**/*' --content './layouts/**/*'"
   },
   "devDependencies": {
     "@playwright/test": "^1.41.0"
   }
 }
-

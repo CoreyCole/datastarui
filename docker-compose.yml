@@ -27,7 +27,7 @@ services:
       - .:/app # Mount local files
     working_dir: /app
     tty: true
-    command: sh -c "echo 'Starting Tailwind CSS watcher...' && mkdir -p node_modules && ln -sf /usr/local/lib/node_modules/tailwindcss node_modules/tailwindcss && echo 'Starting watch...' && npx tailwindcss -i static/css/index.css -o static/css/build.css --watch --content './components/**/*' --content './pages/**/*' --content './layouts/**/*'"
+    command: sh -c "echo 'Starting Tailwind CSS watcher...' && mkdir -p node_modules && ln -sf /usr/local/lib/node_modules/tailwindcss node_modules/tailwindcss && echo 'Starting watch...' && npx tailwindcss -i static/css/index.css -o static/css/out.css --watch --content './components/**/*' --content './pages/**/*' --content './layouts/**/*'"
     networks:
       - datastarui-network
 volumes:
