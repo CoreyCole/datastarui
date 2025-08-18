@@ -92,6 +92,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 					Variant: "outline",
+					Class:   "w-32",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -137,6 +138,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 					Variant: "outline",
+					Class:   "w-32",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -186,6 +188,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 					Variant: "outline",
+					Class:   "w-32",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -231,6 +234,7 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				})
 				templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 					Variant: "outline",
+					Class:   "w-32",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
