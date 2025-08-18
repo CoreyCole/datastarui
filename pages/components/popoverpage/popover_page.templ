@@ -172,7 +172,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								ID:         "bottom_side_trigger",
 								PopoverID:  "bottom_side_content",
 								AnchorName: "bottom_side_anchor",
-								}) {
+							}) {
 								@button.Button(button.ButtonArgs{
 									Variant: "outline",
 									Class:   "w-32",
@@ -209,7 +209,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<h3 class="text-lg font-medium">Card Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-																PopoverID:  "card_popover",
+								PopoverID:  "card_popover",
 								AnchorName: "card_anchor",
 							}) {
 								<div class="bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow">
@@ -228,7 +228,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
 								ID:         "card_popover",
-								Class:      "w-72",
 								UseAnchor:  true,
 								AnchorName: "card_anchor",
 								Side:       utils.AnchorSideBottom,
@@ -272,14 +271,13 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<h3 class="text-lg font-medium">Image Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-																PopoverID:  "image_popover",
+								PopoverID:  "image_popover",
 								AnchorName: "image_anchor",
 							}) {
 								<img class="w-32" src="/img/datastar-rocket.webp"/>
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
 								ID:         "image_popover",
-								Class:      "w-64",
 								UseAnchor:  true,
 								AnchorName: "image_anchor",
 								Side:       utils.AnchorSideTop,
@@ -314,7 +312,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<h3 class="text-lg font-medium">Badge Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-																PopoverID:  "badge_popover",
+								PopoverID:  "badge_popover",
 								AnchorName: "badge_anchor",
 							}) {
 								<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
@@ -327,7 +325,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
 								ID:         "badge_popover",
-								Class:      "w-56",
 								UseAnchor:  true,
 								AnchorName: "badge_anchor",
 								Side:       utils.AnchorSideBottom,
@@ -363,7 +360,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<h3 class="text-lg font-medium">Interactive Element</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-																PopoverID:  "interactive_popover",
+								PopoverID:  "interactive_popover",
 								AnchorName: "interactive_anchor",
 							}) {
 								<div class="bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group">
@@ -380,7 +377,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
 								ID:         "interactive_popover",
-								Class:      "w-64",
 								UseAnchor:  true,
 								AnchorName: "interactive_anchor",
 								Side:       utils.AnchorSideTop,

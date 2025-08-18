@@ -14,13 +14,13 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 	{{
 		// Create tooltip handler for clean expressions
 		tooltipHandler := NewTooltipHandler(args.TooltipID)
-		
+
 		// Get delay from args or use default
 		delayDuration := args.DelayDuration
 		if delayDuration == 0 {
 			delayDuration = 700 // Default delay
 		}
-		
+
 		// Build handlers
 		showHandler := tooltipHandler.BuildShowHandler(delayDuration)
 		hideHandler := tooltipHandler.BuildHideHandler()
@@ -49,22 +49,15 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 	</div>
 }
 
-// TooltipContent creates the tooltip content panel (matching PopoverContent pattern)
+// TooltipContent creates the tooltip content panel (exactly like PopoverContent)
 templ TooltipContent(args TooltipContentArgs) {
 	{{
-		// Initialize tooltip signals
-		signals := utils.Signals(args.ID, TooltipSignals{
-			Open:        false,
-			ShowTimeout: "",
-			HideTimeout: "",
-		})
-
 		contentClasses := TooltipContentVariants(args)
 
 		// Create tooltip handler for clean expressions
 		tooltipHandler := NewTooltipHandler(args.ID)
 
-		// Generate positioning styles
+		// Generate positioning styles (same as popover)
 		positioningStyle := ""
 
 		if args.UseAnchor && args.AnchorName != "" {
@@ -88,21 +81,12 @@ templ TooltipContent(args TooltipContentArgs) {
 		if args.UseAnchor && args.AnchorName != "" {
 			contentClasses += " anchor-positioned"
 		}
-
-		// Build animation classes for smooth transitions
-		animationClasses := utils.NewDataClass().
-			Add("opacity-0 scale-95", "!"+signals.Signal("open")).
-			Add("opacity-100 scale-100", signals.Signal("open")).
-			Build()
 	}}
 	<div
 		id={ args.ID }
-		data-signals={ signals.DataSignals }
+		popover="auto"
 		class={ contentClasses }
 		style={ positioningStyle }
-		data-show={ signals.Signal("open") }
-		data-class={ animationClasses }
-		role="tooltip"
 		{ args.Attributes... }
 	>
 		{ children... }

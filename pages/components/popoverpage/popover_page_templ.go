@@ -487,7 +487,6 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
 				ID:         "card_popover",
-				Class:      "w-72",
 				UseAnchor:  true,
 				AnchorName: "card_anchor",
 				Side:       utils.AnchorSideBottom,
@@ -545,7 +544,6 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
 				ID:         "image_popover",
-				Class:      "w-64",
 				UseAnchor:  true,
 				AnchorName: "image_anchor",
 				Side:       utils.AnchorSideTop,
@@ -603,7 +601,6 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
 				ID:         "badge_popover",
-				Class:      "w-56",
 				UseAnchor:  true,
 				AnchorName: "badge_anchor",
 				Side:       utils.AnchorSideBottom,
@@ -765,7 +762,6 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
 				ID:         "interactive_popover",
-				Class:      "w-64",
 				UseAnchor:  true,
 				AnchorName: "interactive_anchor",
 				Side:       utils.AnchorSideTop,

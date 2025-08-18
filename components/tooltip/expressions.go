@@ -21,24 +21,12 @@ func NewTooltipHandler(tooltipID string) *TooltipHandler {
 
 // BuildShowHandler creates the hover/focus handler to show tooltip
 func (h *TooltipHandler) BuildShowHandler(delayMs int) string {
-	// Clear any existing hide timeout and set show timeout
-	return utils.NewExpression().
-		Statement("clearTimeout($" + h.tooltipID + ".hideTimeout)").
-		Statement("$" + h.tooltipID + ".hideTimeout = null").
-		Statement("$" + h.tooltipID + ".showTimeout = setTimeout(() => { $" + h.tooltipID + ".open = true; }, " + fmt.Sprintf("%d", delayMs) + ")").
-		Build()
+	return fmt.Sprintf("setTimeout(() => { document.getElementById('%s').showPopover(); }, %d)", h.tooltipID, delayMs)
 }
 
 // BuildHideHandler creates the handler to hide tooltip
 func (h *TooltipHandler) BuildHideHandler() string {
-	signals := utils.Signals(h.tooltipID, TooltipSignals{})
-	
-	// Clear any existing show timeout and hide immediately
-	return utils.NewExpression().
-		Statement("clearTimeout($" + h.tooltipID + ".showTimeout)").
-		Statement("$" + h.tooltipID + ".showTimeout = null").
-		Statement(signals.Set("open", "false")).
-		Build()
+	return fmt.Sprintf("document.getElementById('%s').hidePopover()", h.tooltipID)
 }
 
 // BuildInstantShowHandler creates handler to show tooltip without delay
