@@ -84,21 +84,50 @@ templ PopoverPage(rootArgs l.RootArgs) {
 					</li>
 				</ul>
 				<div class="flex items-center justify-center min-h-[300px] bg-muted/50 rounded-lg relative">
-					<div class="grid grid-cols-3 gap-8 items-center">
-						<!-- Top Side -->
-						<div class="flex justify-center">
-							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-								ID:        "top_side_trigger",
-								PopoverID: "top_side_content",
+					<div class="grid grid-cols-2 gap-8 items-center">
+						<!-- Top Row: Top Side and Left Side -->
+						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
+							ID:        "top_side_trigger",
+							PopoverID: "top_side_content",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
 							}) {
-								@button.Button(button.ButtonArgs{
-									Variant: "outline",
-									Class:   "w-32",
-								}) {
-									Top Side
-								}
+								Top Side
 							}
-						</div>
+						}
+						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
+							ID:        "left_side_trigger",
+							PopoverID: "left_side_content",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+							}) {
+								Left Side
+							}
+						}
+						<!-- Bottom Row: Right Side and Bottom Side -->
+						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
+							ID:        "right_side_trigger",
+							PopoverID: "right_side_content",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+							}) {
+								Right Side
+							}
+						}
+						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
+							ID:        "bottom_side_trigger",
+							PopoverID: "bottom_side_content",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+							}) {
+								Bottom Side
+							}
+						}
+						<!-- Popover Content -->
 						@popover.PopoverContent(popover.PopoverContentArgs{
 							ID:        "top_side_content",
 							Class:     "w-64",
@@ -110,18 +139,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								<h4 class="font-medium mb-2">Top Side Popover</h4>
 								<p class="text-sm text-muted-foreground">This popover appears above the trigger using Side="top".</p>
 							</div>
-						}
-						<!-- Right Side -->
-						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-							ID:        "right_side_trigger",
-							PopoverID: "right_side_content",
-						}) {
-							@button.Button(button.ButtonArgs{
-								Variant: "outline",
-								Class:   "w-32",
-							}) {
-								Right Side
-							}
 						}
 						@popover.PopoverContent(popover.PopoverContentArgs{
 							ID:        "right_side_content",
@@ -135,19 +152,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								<p class="text-sm text-muted-foreground">This popover appears to the right of the trigger using Side="right".</p>
 							</div>
 						}
-						<div></div>
-						<!-- Left Side -->
-						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-							ID:        "left_side_trigger",
-							PopoverID: "left_side_content",
-						}) {
-							@button.Button(button.ButtonArgs{
-								Variant: "outline",
-								Class:   "w-32",
-							}) {
-								Left Side
-							}
-						}
 						@popover.PopoverContent(popover.PopoverContentArgs{
 							ID:        "left_side_content",
 							Class:     "w-64",
@@ -160,20 +164,6 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								<p class="text-sm text-muted-foreground">This popover appears to the left of the trigger using Side="left".</p>
 							</div>
 						}
-						<!-- Bottom Side -->
-						<div class="flex justify-center">
-							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-								ID:        "bottom_side_trigger",
-								PopoverID: "bottom_side_content",
-							}) {
-								@button.Button(button.ButtonArgs{
-									Variant: "outline",
-									Class:   "w-32",
-								}) {
-									Bottom Side
-								}
-							}
-						</div>
 						@popover.PopoverContent(popover.PopoverContentArgs{
 							ID:        "bottom_side_content",
 							Class:     "w-64",
