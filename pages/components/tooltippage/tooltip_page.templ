@@ -9,176 +9,174 @@ import (
 
 templ TooltipPage(rootArgs l.RootArgs) {
 	@l.Root(rootArgs) {
-		<div class="container mx-auto py-10">
-			<div class="space-y-8">
-				<div>
-					<h1 class="text-3xl font-bold mb-2">Tooltip</h1>
-					<p class="text-muted-foreground">
-						A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
-					</p>
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Tooltip")
+			<!-- Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Tooltip</h1>
+				<p class="text-muted-foreground">
+					A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+				</p>
+			</div>
+			<!-- Simple Default Tooltip -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Default</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+						ID:        "simple_tooltip_trigger",
+						TooltipID: "simple_tooltip",
+					}) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Hover me
+						}
+					}
+					@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+						ID:        "simple_tooltip",
+						UseAnchor: true,
+						Side:      utils.AnchorSideTop,
+						Align:     utils.AnchorAlignCenter,
+					}) {
+						<p>Add to library</p>
+					}
 				</div>
-				<div class="space-y-8">
-					<!-- Simple Default Tooltip -->
-					<div>
-						<h2 class="text-2xl font-semibold mb-4">Default</h2>
-						<div class="flex items-center justify-center p-10 border rounded-lg">
-							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-								ID:        "simple_tooltip_trigger",
-								TooltipID:  "simple_tooltip",
+			</div>
+			<!-- Positioned Tooltips -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Positioning</h2>
+				<div class="grid grid-cols-2 gap-4">
+					<!-- Top -->
+					<div class="flex items-center justify-center p-10 border rounded-lg">
+						@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+							ID:        "top_tooltip_trigger",
+							TooltipID: "top_tooltip",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
 							}) {
-								@button.Button(button.ButtonArgs{
-									Variant: "outline",
-								}) {
-									Hover me
-								}
+								Top
 							}
-							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-								ID:         "simple_tooltip",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideTop,
-								Align:      utils.AnchorAlignCenter,
-							}) {
-								<p>Add to library</p>
-							}
-						</div>
+						}
+						@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+							ID:        "top_tooltip",
+							UseAnchor: true,
+							Side:      utils.AnchorSideTop,
+							Align:     utils.AnchorAlignCenter,
+						}) {
+							<p>Tooltip on top</p>
+						}
 					</div>
-					<!-- Positioned Tooltips -->
-					<div>
-						<h2 class="text-2xl font-semibold mb-4">Positioning</h2>
-						<div class="grid grid-cols-2 gap-4">
-							<!-- Top -->
-							<div class="flex items-center justify-center p-10 border rounded-lg">
-								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-									ID:        "top_tooltip_trigger",
-									TooltipID:  "top_tooltip",
-								}) {
-									@button.Button(button.ButtonArgs{
-										Variant: "outline",
-									}) {
-										Top
-									}
-								}
-								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-									ID:         "top_tooltip",
-									UseAnchor:  true,
-									Side:       utils.AnchorSideTop,
-									Align:      utils.AnchorAlignCenter,
-								}) {
-									<p>Tooltip on top</p>
-								}
-							</div>
-							<!-- Bottom -->
-							<div class="flex items-center justify-center p-10 border rounded-lg">
-								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-									ID:        "bottom_tooltip_trigger",
-									TooltipID:  "bottom_tooltip",
-								}) {
-									@button.Button(button.ButtonArgs{
-										Variant: "outline",
-									}) {
-										Bottom
-									}
-								}
-								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-									ID:         "bottom_tooltip",
-									UseAnchor:  true,
-									Side:       utils.AnchorSideBottom,
-									Align:      utils.AnchorAlignCenter,
-								}) {
-									<p>Tooltip on bottom</p>
-								}
-							</div>
-							<!-- Left -->
-							<div class="flex items-center justify-center p-10 border rounded-lg">
-								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-									ID:        "left_tooltip_trigger",
-									TooltipID:  "left_tooltip",
-								}) {
-									@button.Button(button.ButtonArgs{
-										Variant: "outline",
-									}) {
-										Left
-									}
-								}
-								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-									ID:         "left_tooltip",
-									UseAnchor:  true,
-									Side:       utils.AnchorSideLeft,
-									Align:      utils.AnchorAlignCenter,
-								}) {
-									<p>Tooltip on left</p>
-								}
-							</div>
-							<!-- Right -->
-							<div class="flex items-center justify-center p-10 border rounded-lg">
-								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-									ID:        "right_tooltip_trigger",
-									TooltipID:  "right_tooltip",
-								}) {
-									@button.Button(button.ButtonArgs{
-										Variant: "outline",
-									}) {
-										Right
-									}
-								}
-								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-									ID:         "right_tooltip",
-									UseAnchor:  true,
-									Side:       utils.AnchorSideRight,
-									Align:      utils.AnchorAlignCenter,
-								}) {
-									<p>Tooltip on right</p>
-								}
-							</div>
-						</div>
+					<!-- Bottom -->
+					<div class="flex items-center justify-center p-10 border rounded-lg">
+						@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+							ID:        "bottom_tooltip_trigger",
+							TooltipID: "bottom_tooltip",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+							}) {
+								Bottom
+							}
+						}
+						@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+							ID:        "bottom_tooltip",
+							UseAnchor: true,
+							Side:      utils.AnchorSideBottom,
+							Align:     utils.AnchorAlignCenter,
+						}) {
+							<p>Tooltip on bottom</p>
+						}
 					</div>
-					<!-- Custom Delay -->
-					<div>
-						<h2 class="text-2xl font-semibold mb-4">Custom Delay</h2>
-						<div class="flex items-center justify-center p-10 border rounded-lg">
-							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-								ID:            "fast_tooltip_trigger",
-								TooltipID:     "fast_tooltip",
-								DelayDuration: 100,
+					<!-- Left -->
+					<div class="flex items-center justify-center p-10 border rounded-lg">
+						@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+							ID:        "left_tooltip_trigger",
+							TooltipID: "left_tooltip",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
 							}) {
-								@button.Button(button.ButtonArgs{
-									Variant: "outline",
-								}) {
-									Fast (100ms)
-								}
+								Left
 							}
-							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-								ID:         "fast_tooltip",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideTop,
-								Align:      utils.AnchorAlignCenter,
-							}) {
-								<p>Shows quickly!</p>
-							}
-						</div>
+						}
+						@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+							ID:        "left_tooltip",
+							UseAnchor: true,
+							Side:      utils.AnchorSideLeft,
+							Align:     utils.AnchorAlignCenter,
+						}) {
+							<p>Tooltip on left</p>
+						}
 					</div>
-					<!-- Text Trigger -->
-					<div>
-						<h2 class="text-2xl font-semibold mb-4">Text Trigger</h2>
-						<div class="flex items-center justify-center p-10 border rounded-lg">
-							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-								ID:        "text_tooltip_trigger",
-								TooltipID:  "text_tooltip",
+					<!-- Right -->
+					<div class="flex items-center justify-center p-10 border rounded-lg">
+						@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+							ID:        "right_tooltip_trigger",
+							TooltipID: "right_tooltip",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
 							}) {
-								<p class="text-sm text-muted-foreground underline decoration-dotted cursor-help">
-									Hover over this text
-								</p>
+								Right
 							}
-							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
-								ID:         "text_tooltip",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideTop,
-								Align:      utils.AnchorAlignCenter,
-							}) {
-								<p>This is helpful information!</p>
-							}
-						</div>
+						}
+						@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+							ID:        "right_tooltip",
+							UseAnchor: true,
+							Side:      utils.AnchorSideRight,
+							Align:     utils.AnchorAlignCenter,
+						}) {
+							<p>Tooltip on right</p>
+						}
 					</div>
+				</div>
+			</div>
+			<!-- Custom Delay -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Custom Delay</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+						ID:            "fast_tooltip_trigger",
+						TooltipID:     "fast_tooltip",
+						DelayDuration: 100,
+					}) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Fast (100ms)
+						}
+					}
+					@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+						ID:        "fast_tooltip",
+						UseAnchor: true,
+						Side:      utils.AnchorSideTop,
+						Align:     utils.AnchorAlignCenter,
+					}) {
+						<p>Shows quickly!</p>
+					}
+				</div>
+			</div>
+			<!-- Text Trigger -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Text Trigger</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+						ID:        "text_tooltip_trigger",
+						TooltipID: "text_tooltip",
+					}) {
+						<p class="text-sm text-muted-foreground underline decoration-dotted cursor-help">
+							Hover over this text
+						</p>
+					}
+					@tooltip.TooltipContent(tooltip.TooltipContentArgs{
+						ID:        "text_tooltip",
+						UseAnchor: true,
+						Side:      utils.AnchorSideTop,
+						Align:     utils.AnchorAlignCenter,
+					}) {
+						<p>This is helpful information!</p>
+					}
 				</div>
 			</div>
 		</div>

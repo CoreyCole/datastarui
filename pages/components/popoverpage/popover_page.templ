@@ -88,8 +88,8 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<!-- Top Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-								ID:         "top_side_trigger",
-								PopoverID:  "top_side_content",
+								ID:        "top_side_trigger",
+								PopoverID: "top_side_content",
 							}) {
 								@button.Button(button.ButtonArgs{
 									Variant: "outline",
@@ -100,11 +100,11 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 						</div>
 						@popover.PopoverContent(popover.PopoverContentArgs{
-							ID:         "top_side_content",
-							Class:      "w-64",
-							UseAnchor:  true,
-							Side:       utils.AnchorSideTop,
-							Align:      utils.AnchorAlignCenter,
+							ID:        "top_side_content",
+							Class:     "w-64",
+							UseAnchor: true,
+							Side:      utils.AnchorSideTop,
+							Align:     utils.AnchorAlignCenter,
 						}) {
 							<div class="p-2">
 								<h4 class="font-medium mb-2">Top Side Popover</h4>
@@ -113,8 +113,8 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						}
 						<!-- Right Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-							ID:         "right_side_trigger",
-							PopoverID:  "right_side_content",
+							ID:        "right_side_trigger",
+							PopoverID: "right_side_content",
 						}) {
 							@button.Button(button.ButtonArgs{
 								Variant: "outline",
@@ -124,11 +124,11 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 						}
 						@popover.PopoverContent(popover.PopoverContentArgs{
-							ID:         "right_side_content",
-							Class:      "w-64",
-							UseAnchor:  true,
-							Side:       utils.AnchorSideRight,
-							Align:      utils.AnchorAlignCenter,
+							ID:        "right_side_content",
+							Class:     "w-64",
+							UseAnchor: true,
+							Side:      utils.AnchorSideRight,
+							Align:     utils.AnchorAlignCenter,
 						}) {
 							<div class="p-2">
 								<h4 class="font-medium mb-2">Right Side Popover</h4>
@@ -138,8 +138,8 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<div></div>
 						<!-- Left Side -->
 						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-							ID:         "left_side_trigger",
-							PopoverID:  "left_side_content",
+							ID:        "left_side_trigger",
+							PopoverID: "left_side_content",
 						}) {
 							@button.Button(button.ButtonArgs{
 								Variant: "outline",
@@ -149,11 +149,11 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 						}
 						@popover.PopoverContent(popover.PopoverContentArgs{
-							ID:         "left_side_content",
-							Class:      "w-64",
-							UseAnchor:  true,
-							Side:       utils.AnchorSideLeft,
-							Align:      utils.AnchorAlignCenter,
+							ID:        "left_side_content",
+							Class:     "w-64",
+							UseAnchor: true,
+							Side:      utils.AnchorSideLeft,
+							Align:     utils.AnchorAlignCenter,
 						}) {
 							<div class="p-2">
 								<h4 class="font-medium mb-2">Left Side Popover</h4>
@@ -163,9 +163,9 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<!-- Bottom Side -->
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-								ID:         "bottom_side_trigger",
-								PopoverID:  "bottom_side_content",
-								}) {
+								ID:        "bottom_side_trigger",
+								PopoverID: "bottom_side_content",
+							}) {
 								@button.Button(button.ButtonArgs{
 									Variant: "outline",
 									Class:   "w-32",
@@ -175,11 +175,11 @@ templ PopoverPage(rootArgs l.RootArgs) {
 							}
 						</div>
 						@popover.PopoverContent(popover.PopoverContentArgs{
-							ID:         "bottom_side_content",
-							Class:      "w-64",
-							UseAnchor:  true,
-							Side:       utils.AnchorSideBottom,
-							Align:      utils.AnchorAlignCenter,
+							ID:        "bottom_side_content",
+							Class:     "w-64",
+							UseAnchor: true,
+							Side:      utils.AnchorSideBottom,
+							Align:     utils.AnchorAlignCenter,
 						}) {
 							<div class="p-2">
 								<h4 class="font-medium mb-2">Bottom Side Popover</h4>
@@ -202,7 +202,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
 								ID:        "card_trigger",
-								PopoverID:  "card_popover",
+								PopoverID: "card_popover",
 							}) {
 								<div class="bg-white border border-gray-200 rounded-lg p-4 w-48 cursor-pointer hover:shadow-md transition-shadow">
 									<div class="flex items-center gap-3">
@@ -219,10 +219,10 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
-								ID:         "card_popover",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideBottom,
-								Align:      utils.AnchorAlignCenter,
+								ID:        "card_popover",
+								UseAnchor: true,
+								Side:      utils.AnchorSideBottom,
+								Align:     utils.AnchorAlignCenter,
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -262,16 +262,16 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<h3 class="text-lg font-medium">Image Trigger</h3>
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
-								ID:        "image_trigger", 
-								PopoverID:  "image_popover",
+								ID:        "image_trigger",
+								PopoverID: "image_popover",
 							}) {
 								<img class="w-32" src="/img/datastar-rocket.webp"/>
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
-								ID:         "image_popover",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideTop,
-								Align:      utils.AnchorAlignCenter,
+								ID:        "image_popover",
+								UseAnchor: true,
+								Side:      utils.AnchorSideTop,
+								Align:     utils.AnchorAlignCenter,
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -303,7 +303,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
 								ID:        "badge_trigger",
-								PopoverID:  "badge_popover",
+								PopoverID: "badge_popover",
 							}) {
 								<div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors">
 									<div class="w-2 h-2 bg-green-600 rounded-full"></div>
@@ -314,10 +314,10 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
-								ID:         "badge_popover",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideBottom,
-								Align:      utils.AnchorAlignCenter,
+								ID:        "badge_popover",
+								UseAnchor: true,
+								Side:      utils.AnchorSideBottom,
+								Align:     utils.AnchorAlignCenter,
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
@@ -350,7 +350,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 						<div class="flex justify-center">
 							@popover.PopoverTrigger(popover.PopoverTriggerArgs{
 								ID:        "interactive_trigger",
-								PopoverID:  "interactive_popover",
+								PopoverID: "interactive_popover",
 							}) {
 								<div class="bg-white border border-dashed border-gray-300 rounded-lg p-6 w-48 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group">
 									<div class="flex flex-col items-center gap-2">
@@ -365,10 +365,10 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								</div>
 							}
 							@popover.PopoverContent(popover.PopoverContentArgs{
-								ID:         "interactive_popover",
-								UseAnchor:  true,
-								Side:       utils.AnchorSideTop,
-								Align:      utils.AnchorAlignCenter,
+								ID:        "interactive_popover",
+								UseAnchor: true,
+								Side:      utils.AnchorSideTop,
+								Align:     utils.AnchorAlignCenter,
 							}) {
 								<div class="grid gap-3">
 									<div class="space-y-2">
