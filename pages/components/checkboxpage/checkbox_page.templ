@@ -65,7 +65,8 @@ templ CheckboxPage(rootArgs l.RootArgs) {
 					@card.CardContent(card.CardContentProps{}) {
 						<div class="flex flex-row items-start gap-3">
 							@checkbox.Checkbox(checkbox.CheckboxProps{
-								ID: "terms_2",
+								ID:      "terms_2",
+								Checked: true,
 							}) {
 								<div class="grid gap-2">
 									@label.Label(label.LabelProps{

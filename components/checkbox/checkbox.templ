@@ -4,7 +4,8 @@ import "github.com/coreycole/datastarui/utils"
 
 // CheckboxSignals defines the signal structure for checkbox components
 type CheckboxSignals struct {
-	Checked bool `json:"checked"`
+	Checked  bool `json:"checked"`
+	Disabled bool `json:"disabled"`
 }
 
 // Checkbox renders a checkbox input with shadcn/ui styling and internal Datastar reactivity
@@ -12,7 +13,8 @@ templ Checkbox(args CheckboxProps) {
 	{{
 		// Create signals using the new structured system
 		signals := utils.Signals(args.ID, CheckboxSignals{
-			Checked: args.Checked,
+			Checked:  args.Checked,
+			Disabled: args.Disabled,
 		})
 
 		// Generate the CSS classes using the variant system
@@ -20,7 +22,17 @@ templ Checkbox(args CheckboxProps) {
 
 		// Create signal expressions
 		signalRef := signals.Signal("checked")
-		toggleExpr := signals.Toggle("checked")
+		// Only toggle if not disabled
+		toggleExpr := utils.BuildConditional(
+			"!" + signals.Signal("disabled"),
+			signals.Toggle("checked"),
+			"null",
+		)
+
+		// Create data-class for disabled styling
+		dataClass := utils.NewDataClass().
+			Add("cursor-not-allowed opacity-50", signals.Signal("disabled")).
+			Build()
 
 		// Combine classes
 		allClasses := classes
@@ -33,10 +45,13 @@ templ Checkbox(args CheckboxProps) {
 			type="button"
 			id={ args.ID }
 			class={ allClasses }
+			data-class={ dataClass }
 			role="checkbox"
 			data-on-click={ toggleExpr }
 			data-attr-aria-checked={ signals.Conditional("checked", "'true'", "'false'") }
 			data-attr-data-state={ signals.Conditional("checked", "'checked'", "'unchecked'") }
+			data-attr-disabled={ signals.Signal("disabled") }
+			data-attr-aria-disabled={ signals.Signal("disabled") }
 			{ args.Attributes... }
 		>
 			<!-- Checkmark icon -->
@@ -61,6 +76,7 @@ templ Checkbox(args CheckboxProps) {
 			class="sr-only"
 			data-attr-checked={ signalRef }
 			data-attr-value={ signals.Conditional("checked", "'true'", "'false'") }
+			data-attr-disabled={ signals.Signal("disabled") }
 			tabindex="-1"
 		/>
 	</div>
