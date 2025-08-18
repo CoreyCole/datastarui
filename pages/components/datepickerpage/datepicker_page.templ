@@ -21,21 +21,21 @@ templ Page(rootArgs l.RootArgs) {
 					<h2 class="text-2xl font-semibold mb-4">DatePicker Components</h2>
 					<div class="space-y-8">
 						<!-- Single Date Picker -->
-						@card.Card(card.CardProps{Class: "w-fit mb-6"}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{}) {
+						@card.Card(card.CardArgs{Class: "w-fit mb-6"}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{}) {
 									Single Date Picker
 								}
-								@card.CardDescription(card.CardDescriptionProps{}) {
+								@card.CardDescription(card.CardDescriptionArgs{}) {
 									Basic date picker with input field and calendar popover
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<div class="space-y-4">
-									@label.Label(label.LabelProps{For: "single_date"}) {
+									@label.Label(label.LabelArgs{For: "single_date"}) {
 										Select Date
 									}
-									@datepicker.DatePicker(datepicker.DatePickerProps{
+									@datepicker.DatePicker(datepicker.DatePickerArgs{
 										ID:   "single_date",
 										Name: "singleDate",
 										Mode: "single",
@@ -44,21 +44,21 @@ templ Page(rootArgs l.RootArgs) {
 							}
 						}
 						<!-- Range Date Picker -->
-						@card.Card(card.CardProps{Class: "w-fit"}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{}) {
+						@card.Card(card.CardArgs{Class: "w-fit"}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{}) {
 									Date Range Picker
 								}
-								@card.CardDescription(card.CardDescriptionProps{}) {
+								@card.CardDescription(card.CardDescriptionArgs{}) {
 									Range picker with dual inputs and two-month calendar view
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<div class="space-y-4">
-									@label.Label(label.LabelProps{For: "range_date"}) {
+									@label.Label(label.LabelArgs{For: "range_date"}) {
 										Select Date Range
 									}
-									@datepicker.DatePicker(datepicker.DatePickerProps{
+									@datepicker.DatePicker(datepicker.DatePickerArgs{
 										ID:              "range_date",
 										Name:            "dateRange",
 										Mode:            "range",
@@ -73,16 +73,16 @@ templ Page(rootArgs l.RootArgs) {
 					</div>
 				</div>
 				<!-- Comprehensive Test Cases -->
-				@card.Card(card.CardProps{Class: "mt-12"}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{Class: "mt-12"}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							🧪 Test Cases
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Comprehensive testing scenarios for DatePicker components
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div class="space-y-6 text-sm">
 							<!-- General DateInput Tests -->
 							<div>

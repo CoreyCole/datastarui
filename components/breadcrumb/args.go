@@ -2,8 +2,8 @@ package breadcrumb
 
 import "github.com/a-h/templ"
 
-// BreadcrumbProps defines the properties for the Breadcrumb nav component
-type BreadcrumbProps struct {
+// BreadcrumbArgs defines the properties for the Breadcrumb nav component
+type BreadcrumbArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -11,8 +11,8 @@ type BreadcrumbProps struct {
 	Attributes templ.Attributes
 }
 
-// BreadcrumbListProps defines the properties for the BreadcrumbList ol component
-type BreadcrumbListProps struct {
+// BreadcrumbListArgs defines the properties for the BreadcrumbList ol component
+type BreadcrumbListArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -20,8 +20,8 @@ type BreadcrumbListProps struct {
 	Attributes templ.Attributes
 }
 
-// BreadcrumbItemProps defines the properties for the BreadcrumbItem li component
-type BreadcrumbItemProps struct {
+// BreadcrumbItemArgs defines the properties for the BreadcrumbItem li component
+type BreadcrumbItemArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -29,8 +29,8 @@ type BreadcrumbItemProps struct {
 	Attributes templ.Attributes
 }
 
-// BreadcrumbLinkProps defines the properties for the BreadcrumbLink a component
-type BreadcrumbLinkProps struct {
+// BreadcrumbLinkArgs defines the properties for the BreadcrumbLink a component
+type BreadcrumbLinkArgs struct {
 	// AsChild renders the link as a child element (for composition)
 	AsChild bool
 
@@ -44,8 +44,8 @@ type BreadcrumbLinkProps struct {
 	Href string
 }
 
-// BreadcrumbPageProps defines the properties for the BreadcrumbPage span component
-type BreadcrumbPageProps struct {
+// BreadcrumbPageArgs defines the properties for the BreadcrumbPage span component
+type BreadcrumbPageArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -53,8 +53,8 @@ type BreadcrumbPageProps struct {
 	Attributes templ.Attributes
 }
 
-// BreadcrumbSeparatorProps defines the properties for the BreadcrumbSeparator li component
-type BreadcrumbSeparatorProps struct {
+// BreadcrumbSeparatorArgs defines the properties for the BreadcrumbSeparator li component
+type BreadcrumbSeparatorArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -65,8 +65,8 @@ type BreadcrumbSeparatorProps struct {
 	CustomIcon bool
 }
 
-// BreadcrumbEllipsisProps defines the properties for the BreadcrumbEllipsis span component
-type BreadcrumbEllipsisProps struct {
+// BreadcrumbEllipsisArgs defines the properties for the BreadcrumbEllipsis span component
+type BreadcrumbEllipsisArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 

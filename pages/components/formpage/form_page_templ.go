@@ -103,7 +103,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -129,13 +129,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -201,7 +201,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "username"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "username"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -239,7 +239,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -247,13 +247,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = form.FormMessage(form.FormMessageProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormMessage(form.FormMessageArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -279,7 +279,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = button.Button(button.ButtonProps{
+						templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 							Type: "submit",
 							Attributes: templ.Attributes{
 								"data-attr-disabled": "$fetching",
@@ -295,7 +295,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.Form(form.FormProps{
+					templ_7745c5c3_Err = form.Form(form.FormArgs{
 						ID:     "basic_form",
 						Action: "/components/form/basic",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
@@ -304,13 +304,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -360,7 +360,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -386,13 +386,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -458,7 +458,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -500,7 +500,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{ID: "email_description"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{ID: "email_description"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -522,13 +522,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								ctx = templ.InitializeContext(ctx)
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormMessage(form.FormMessageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormMessage(form.FormMessageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -566,7 +566,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "password"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "password"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -608,7 +608,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{ID: "password_description"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{ID: "password_description"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -630,13 +630,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								ctx = templ.InitializeContext(ctx)
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormMessage(form.FormMessageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormMessage(form.FormMessageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -662,7 +662,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = button.Button(button.ButtonProps{
+						templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 							Type: "submit",
 							Attributes: templ.Attributes{
 								"data-indicator-fetching": "",
@@ -679,7 +679,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.Form(form.FormProps{
+					templ_7745c5c3_Err = form.Form(form.FormArgs{
 						ID:     "validation_form",
 						Action: "/components/form/validation",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
@@ -692,13 +692,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -748,7 +748,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -774,13 +774,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -850,7 +850,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "name"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "name"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -872,7 +872,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -906,7 +906,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "contact_email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "contact_email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -929,7 +929,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -967,7 +967,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "subject"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "subject"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -989,7 +989,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -1027,7 +1027,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "message"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "message"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1053,13 +1053,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var42), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var42), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -1085,7 +1085,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = button.Button(button.ButtonProps{
+						templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 							Type:    "submit",
 							Variant: "default",
 							Attributes: templ.Attributes{
@@ -1114,7 +1114,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = button.Button(button.ButtonProps{
+						templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 							Type:    "button",
 							Variant: "outline",
 							Attributes: templ.Attributes{
@@ -1131,7 +1131,7 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.Form(form.FormProps{
+					templ_7745c5c3_Err = form.Form(form.FormArgs{
 						ID:     "contact_form",
 						Action: "/components/form/contact",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
@@ -1144,13 +1144,13 @@ func FormPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -12,7 +12,7 @@ type TabsSignals struct {
 }
 
 // Tabs is the root container component that manages tab state
-templ Tabs(args TabsProps) {
+templ Tabs(args TabsArgs) {
 	{{
 		// Generate unique ID if not provided
 		tabsID := args.ID
@@ -54,7 +54,7 @@ templ Tabs(args TabsProps) {
 }
 
 // TabsList contains the tab triggers
-templ TabsList(args TabsListProps) {
+templ TabsList(args TabsListArgs) {
 	{{
 		// Generate CSS classes
 		classes := tabsListVariants(args.Class)
@@ -69,7 +69,7 @@ templ TabsList(args TabsListProps) {
 }
 
 // TabsTrigger is a clickable tab button
-templ TabsTrigger(args TabsTriggerProps) {
+templ TabsTrigger(args TabsTriggerArgs) {
 	{{
 		// Create signals manager for this tabs component
 		signals := utils.Signals(args.ID, TabsSignals{})
@@ -106,7 +106,7 @@ templ TabsTrigger(args TabsTriggerProps) {
 }
 
 // TabsContent displays the content for the active tab
-templ TabsContent(args TabsContentProps) {
+templ TabsContent(args TabsContentArgs) {
 	{{
 		// Create signals manager for this tabs component
 		signals := utils.Signals(args.ID, TabsSignals{})

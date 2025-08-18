@@ -393,7 +393,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "form_name"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "form_name"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -434,13 +434,13 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -474,7 +474,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{For: "form_email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{For: "form_email"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -515,13 +515,13 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -588,7 +588,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = button.Button(button.ButtonProps{
+							templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 								Type: "submit",
 								Attributes: templ.Attributes{
 									"data-attr-disabled": "$fetching",
@@ -606,7 +606,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.Form(form.FormProps{
+					templ_7745c5c3_Err = form.Form(form.FormArgs{
 						ID:     "form_dialog",
 						Action: "/dialog/dialog-page/form-submit",
 						Class:  "space-y-6",

@@ -19,7 +19,7 @@ A comprehensive date picker component that combines an input field with an auto-
 ### Single Date Selection
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     ID:          "single-date",
     Name:        "selectedDate",
     Mode:        "single",
@@ -30,7 +30,7 @@ A comprehensive date picker component that combines an input field with an auto-
 ### Date Range Selection
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     ID:             "date-range",
     Name:           "dateRange",
     Mode:           "range",
@@ -122,8 +122,8 @@ As the user types, the calendar automatically:
 ### Form Integration
 
 ```go
-@form.Form(form.FormProps{ID: "booking-form"}) {
-    @datepicker.DatePicker(datepicker.DatePickerProps{
+@form.Form(form.FormArgs{ID: "booking-form"}) {
+    @datepicker.DatePicker(datepicker.DatePickerArgs{
         ID:          "checkin-date",
         Name:        "checkinDate",
         FormID:      "booking-form",
@@ -137,7 +137,7 @@ As the user types, the calendar automatically:
 ### Custom Styling
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     ID:         "styled-date",
     InputClass: "h-12 text-lg border-2 border-blue-500",
     CalendarClass: "shadow-2xl",
@@ -147,7 +147,7 @@ As the user types, the calendar automatically:
 ### Range with Validation
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     Mode:           "range",
     NumberOfMonths: 2,
     MinDate:       "2024-01-01",
@@ -159,7 +159,7 @@ As the user types, the calendar automatically:
 ### Customized Popover Behavior
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     ID:            "custom-behavior",
     OpenOnFocus:   false,  // Only open on typing or icon click
     OpenOnType:    true,   // Open when user starts typing
@@ -170,7 +170,7 @@ As the user types, the calendar automatically:
 ### Auto-Slash Input Demo
 
 ```go
-@datepicker.DatePicker(datepicker.DatePickerProps{
+@datepicker.DatePicker(datepicker.DatePickerArgs{
     ID:          "auto-slash-demo",
     Placeholder: "Type: 20241225 → 2024/12/25",
     AutoSlash:   true, // Default behavior

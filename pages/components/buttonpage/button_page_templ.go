@@ -101,7 +101,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -127,13 +127,13 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -175,7 +175,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "default"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "default"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -197,7 +197,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "destructive"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "destructive"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -219,7 +219,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "outline"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "outline"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -241,7 +241,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "secondary"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "secondary"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -263,7 +263,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "ghost"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "ghost"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -285,7 +285,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Variant: "link"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Variant: "link"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -311,7 +311,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Size: "sm"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Size: "sm"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -333,7 +333,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Size: "default"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Size: "default"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -355,7 +355,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Size: "lg"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Size: "lg"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -377,7 +377,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{Size: "icon", Variant: "outline"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{Size: "icon", Variant: "outline"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -403,7 +403,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 						Attributes: templ.Attributes{
 							"data-on-click": "$count++",
 						},
@@ -433,7 +433,7 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = button.Button(button.ButtonProps{
+					templ_7745c5c3_Err = button.Button(button.ButtonArgs{
 						Variant: "outline",
 						Attributes: templ.Attributes{
 							"data-on-click": "alert('Hello from DatastarUI!')",
@@ -448,13 +448,13 @@ func ButtonPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{Class: "space-y-4"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{Class: "space-y-4"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

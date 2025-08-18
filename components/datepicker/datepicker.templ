@@ -85,7 +85,7 @@ templ calendarIconButton(onClickHandler string) {
 }
 
 // DatePicker renders a date picker with input field and calendar popover
-templ DatePicker(args DatePickerProps) {
+templ DatePicker(args DatePickerArgs) {
 	{{
 		// Generate unique ID if not provided
 		datePickerID := args.ID
@@ -354,7 +354,7 @@ templ DatePicker(args DatePickerProps) {
 			</div>
 		}
 		<!-- Calendar popover -->
-		@DatePickerPopover(DatePickerPopoverProps{
+		@DatePickerPopover(DatePickerPopoverArgs{
 			ID:                  datePickerID,
 			DateInputID:         dateInputID,
 			Mode:                args.Mode,
@@ -376,7 +376,7 @@ templ DatePicker(args DatePickerProps) {
 }
 
 // DatePickerPopover renders the calendar popover with keyboard navigation
-templ DatePickerPopover(args DatePickerPopoverProps) {
+templ DatePickerPopover(args DatePickerPopoverArgs) {
 	{{
 		// IMPORTANT: We need to use the same signal namespace as the parent DatePicker
 		// Don't create new signals here - reference the existing ones
@@ -478,7 +478,7 @@ templ DatePickerPopover(args DatePickerPopoverProps) {
 		style="width: max-content; display: none;"
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + args.Class }>
-			@calendar.Calendar(calendar.CalendarProps{
+			@calendar.Calendar(calendar.CalendarArgs{
 				ID:                 args.ID, // Use same ID as DatePicker for unified namespace
 				Mode:               args.Mode,
 				SelectedDate:       args.InitialSelectedDate,

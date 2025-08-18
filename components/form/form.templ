@@ -14,7 +14,7 @@ type FormSignals struct {
 }
 
 // Form wrapper component
-templ Form(args FormProps) {
+templ Form(args FormArgs) {
 	{{
 		// Create signals using the new structured system
 		signals := utils.Signals(args.ID, FormSignals{
@@ -62,7 +62,7 @@ templ Form(args FormProps) {
 }
 
 // FormItem component - container for form field
-templ FormItem(args FormItemProps) {
+templ FormItem(args FormItemArgs) {
 	{{
 		classes := formItemVariants(args.Class)
 	}}
@@ -76,11 +76,11 @@ templ FormItem(args FormItemProps) {
 }
 
 // FormLabel component - label for form field
-templ FormLabel(args FormLabelProps) {
+templ FormLabel(args FormLabelArgs) {
 	{{
 		classes := formLabelVariants(args.Class, args.HasError)
 	}}
-	@label.Label(label.LabelProps{
+	@label.Label(label.LabelArgs{
 		Class: classes,
 		For:   args.For,
 		Attributes: templ.Attributes{
@@ -93,7 +93,7 @@ templ FormLabel(args FormLabelProps) {
 }
 
 // FormDescription component - help text for form field
-templ FormDescription(args FormDescriptionProps) {
+templ FormDescription(args FormDescriptionArgs) {
 	{{
 		classes := formDescriptionVariants(args.Class)
 	}}
@@ -110,7 +110,7 @@ templ FormDescription(args FormDescriptionProps) {
 }
 
 // FormMessage component - error message for form field
-templ FormMessage(args FormMessageProps) {
+templ FormMessage(args FormMessageArgs) {
 	if args.Message != "" {
 		{{
 			classes := formMessageVariants(args.Class)

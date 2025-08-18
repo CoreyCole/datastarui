@@ -102,7 +102,7 @@ type CalendarSignals struct {
 }
 
 // Calendar renders a simple, elegant calendar
-func Calendar(args CalendarProps) templ.Component {
+func Calendar(args CalendarArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -230,7 +230,7 @@ func Calendar(args CalendarProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = CalendarHeader(CalendarHeaderArgs{ID: calendarID, NumberOfMonths: numberOfMonths}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -243,7 +243,7 @@ func Calendar(args CalendarProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
+			templ_7745c5c3_Err = CalendarGrid(CalendarGridArgs{
 				ID:                 calendarID,
 				MonthOffset:        0,
 				HideOutsideDays:    args.HideOutsideDays,
@@ -278,7 +278,7 @@ func Calendar(args CalendarProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = CalendarGrid(CalendarGridProps{
+				templ_7745c5c3_Err = CalendarGrid(CalendarGridArgs{
 					ID:                 calendarID,
 					MonthOffset:        monthIndex,
 					HideOutsideDays:    args.HideOutsideDays,
@@ -309,7 +309,7 @@ func Calendar(args CalendarProps) templ.Component {
 }
 
 // CalendarHeader renders the month navigation
-func CalendarHeader(args CalendarHeaderProps) templ.Component {
+func CalendarHeader(args CalendarHeaderArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -453,7 +453,7 @@ func CalendarHeader(args CalendarHeaderProps) templ.Component {
 }
 
 // CalendarGrid renders the calendar days
-func CalendarGrid(args CalendarGridProps) templ.Component {
+func CalendarGrid(args CalendarGridArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -483,7 +483,7 @@ func CalendarGrid(args CalendarGridProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
-			templ_7745c5c3_Err = CalendarDay(CalendarDayProps{
+			templ_7745c5c3_Err = CalendarDay(CalendarDayArgs{
 				ID:                 args.ID,
 				DayIndex:           dayIndex,
 				MonthOffset:        args.MonthOffset,
@@ -505,7 +505,7 @@ func CalendarGrid(args CalendarGridProps) templ.Component {
 }
 
 // CalendarDay renders individual day button with pre-calculated data
-func CalendarDay(args CalendarDayProps) templ.Component {
+func CalendarDay(args CalendarDayArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

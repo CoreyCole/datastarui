@@ -20,52 +20,52 @@ templ DropdownPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Dropdown -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Basic Dropdown
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							A simple dropdown menu with various menu items.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div class="inline-block">
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "basic-dropdown"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "basic-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "basic-dropdown",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Open Menu
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "basic-dropdown",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 										ID: "basic-dropdown",
 									}) {
 										My Account
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "basic-dropdown",
 									})
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "basic-dropdown",
 									}) {
 										Profile
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "basic-dropdown",
 									}) {
 										Billing
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "basic-dropdown",
 									}) {
 										Team
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "basic-dropdown",
 									}) {
 										Subscription
@@ -76,55 +76,55 @@ templ DropdownPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Dropdown with Icons and Shortcuts -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							With Icons and Shortcuts
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Dropdown menu items with icons and keyboard shortcuts.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div class="inline-block">
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "icons-dropdown"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "icons-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "icons-dropdown",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Open Menu
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "icons-dropdown",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "icons-dropdown",
 									}) {
 										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
 										</svg>
 										Profile
-										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 											ID: "icons-dropdown",
 										}) {
 											⇧⌘P
 										}
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "icons-dropdown",
 									}) {
 										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
 										</svg>
 										Billing
-										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 											ID: "icons-dropdown",
 										}) {
 											⌘B
 										}
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "icons-dropdown",
 									}) {
 										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,16 +132,16 @@ templ DropdownPage(rootArgs l.RootArgs) {
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
 										</svg>
 										Settings
-										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 											ID: "icons-dropdown",
 										}) {
 											⌘S
 										}
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "icons-dropdown",
 									})
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID:      "icons-dropdown",
 										Variant: "destructive",
 									}) {
@@ -149,7 +149,7 @@ templ DropdownPage(rootArgs l.RootArgs) {
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
 										</svg>
 										Log out
-										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+										@dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 											ID: "icons-dropdown",
 										}) {
 											⇧⌘Q
@@ -161,64 +161,64 @@ templ DropdownPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Grouped Dropdown -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Grouped Items
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Dropdown menu with grouped items and labels.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div class="inline-block">
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "grouped-dropdown"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "grouped-dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "grouped-dropdown",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Open Menu
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "grouped-dropdown",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupArgs{
 										ID: "grouped-dropdown",
 									}) {
-										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Personal
 										}
-										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Profile
 										}
-										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Settings
 										}
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "grouped-dropdown",
 									})
-									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+									@dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupArgs{
 										ID: "grouped-dropdown",
 									}) {
-										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+										@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Team
 										}
-										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Team Settings
 										}
-										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: "grouped-dropdown",
 										}) {
 											Invite Users
@@ -230,119 +230,119 @@ templ DropdownPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Multiple Dropdowns Test -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Multiple Dropdowns
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Test that multiple dropdowns work independently with namespaced signals.
 						}
 					}
-					@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
+					@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
 						<div class="flex gap-4">
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-1"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-1"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "test-dropdown-1",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Dropdown 1
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "test-dropdown-1",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 										ID: "test-dropdown-1",
 									}) {
 										First Menu
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "test-dropdown-1",
 									})
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-1",
 									}) {
 										Option 1A
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-1",
 									}) {
 										Option 1B
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-1",
 									}) {
 										Option 1C
 									}
 								}
 							}
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-2"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-2"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "test-dropdown-2",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Dropdown 2
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "test-dropdown-2",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 										ID: "test-dropdown-2",
 									}) {
 										Second Menu
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "test-dropdown-2",
 									})
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-2",
 									}) {
 										Option 2A
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-2",
 									}) {
 										Option 2B
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-2",
 									}) {
 										Option 2C
 									}
 								}
 							}
-							@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-3"}) {
-								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-3"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 									ID:    "test-dropdown-3",
 									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 								}) {
 									Dropdown 3
 								}
-								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 									ID:    "test-dropdown-3",
 									Align: "start",
 								}) {
-									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 										ID: "test-dropdown-3",
 									}) {
 										Third Menu
 									}
-									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 										ID: "test-dropdown-3",
 									})
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-3",
 									}) {
 										Option 3A
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-3",
 									}) {
 										Option 3B
 									}
-									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 										ID: "test-dropdown-3",
 									}) {
 										Option 3C

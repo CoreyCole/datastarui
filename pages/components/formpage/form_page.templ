@@ -22,24 +22,24 @@ templ FormPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Form Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Basic Form
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							A simple form with input validation and descriptions.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<!-- Error/Success message placeholder -->
 						<div id="basic_form_errors"></div>
-						@form.Form(form.FormProps{
+						@form.Form(form.FormArgs{
 							ID:     "basic_form",
 							Action: "/components/form/basic",
 						}) {
-							@form.FormItem(form.FormItemProps{}) {
-								@form.FormLabel(form.FormLabelProps{For: "username"}) {
+							@form.FormItem(form.FormItemArgs{}) {
+								@form.FormLabel(form.FormLabelArgs{For: "username"}) {
 									Username
 								}
 								@input.Input(input.InputArgs{
@@ -47,13 +47,13 @@ templ FormPage(rootArgs l.RootArgs) {
 									Name:        "username",
 									Placeholder: "shadcn",
 								})
-								@form.FormDescription(form.FormDescriptionProps{}) {
+								@form.FormDescription(form.FormDescriptionArgs{}) {
 									This is your public display name.
 								}
-								@form.FormMessage(form.FormMessageProps{})
+								@form.FormMessage(form.FormMessageArgs{})
 							}
 							<div class="flex items-center gap-2">
-								@button.Button(button.ButtonProps{
+								@button.Button(button.ButtonArgs{
 									Type: "submit",
 									Attributes: templ.Attributes{
 										"data-attr-disabled": "$fetching",
@@ -68,25 +68,25 @@ templ FormPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Form with Validation Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Form with Validation
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Demonstrates form validation with error states and messages.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div>
 							<!-- Error/Success message placeholder -->
 							<div id="validation_form_errors"></div>
-							@form.Form(form.FormProps{
+							@form.Form(form.FormArgs{
 								ID:     "validation_form",
 								Action: "/components/form/validation",
 							}) {
-								@form.FormItem(form.FormItemProps{}) {
-									@form.FormLabel(form.FormLabelProps{For: "email"}) {
+								@form.FormItem(form.FormItemArgs{}) {
+									@form.FormLabel(form.FormLabelArgs{For: "email"}) {
 										Email
 									}
 									@input.Input(input.InputArgs{
@@ -98,14 +98,14 @@ templ FormPage(rootArgs l.RootArgs) {
 											"aria-describedby": "email_description",
 										},
 									})
-									@form.FormDescription(form.FormDescriptionProps{ID: "email_description"}) {
+									@form.FormDescription(form.FormDescriptionArgs{ID: "email_description"}) {
 										We'll never share your email with anyone else.
 									}
-									@form.FormMessage(form.FormMessageProps{}) {
+									@form.FormMessage(form.FormMessageArgs{}) {
 									}
 								}
-								@form.FormItem(form.FormItemProps{}) {
-									@form.FormLabel(form.FormLabelProps{For: "password"}) {
+								@form.FormItem(form.FormItemArgs{}) {
+									@form.FormLabel(form.FormLabelArgs{For: "password"}) {
 										Password
 									}
 									@input.Input(input.InputArgs{
@@ -117,14 +117,14 @@ templ FormPage(rootArgs l.RootArgs) {
 											"aria-describedby": "password_description",
 										},
 									})
-									@form.FormDescription(form.FormDescriptionProps{ID: "password_description"}) {
+									@form.FormDescription(form.FormDescriptionArgs{ID: "password_description"}) {
 										Must be at least 8 characters long.
 									}
-									@form.FormMessage(form.FormMessageProps{}) {
+									@form.FormMessage(form.FormMessageArgs{}) {
 									}
 								}
 								<div class="flex items-center gap-2">
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Type: "submit",
 										Attributes: templ.Attributes{
 											"data-indicator-fetching": "",
@@ -141,26 +141,26 @@ templ FormPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Contact Form Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Contact Form
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							A more complex form with multiple field types and reactive validation.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div data-signals="{contact: {name: '', email: '', subject: '', message: ''}}">
 							<!-- Error/Success message placeholder -->
 							<div id="contact_form_errors"></div>
-							@form.Form(form.FormProps{
+							@form.Form(form.FormArgs{
 								ID:     "contact_form",
 								Action: "/components/form/contact",
 							}) {
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "name"}) {
+									@form.FormItem(form.FormItemArgs{}) {
+										@form.FormLabel(form.FormLabelArgs{For: "name"}) {
 											Name
 										}
 										@input.Input(input.InputArgs{
@@ -173,8 +173,8 @@ templ FormPage(rootArgs l.RootArgs) {
 											},
 										})
 									}
-									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "contact_email"}) {
+									@form.FormItem(form.FormItemArgs{}) {
+										@form.FormLabel(form.FormLabelArgs{For: "contact_email"}) {
 											Email
 										}
 										@input.Input(input.InputArgs{
@@ -189,8 +189,8 @@ templ FormPage(rootArgs l.RootArgs) {
 										})
 									}
 								</div>
-								@form.FormItem(form.FormItemProps{}) {
-									@form.FormLabel(form.FormLabelProps{For: "subject"}) {
+								@form.FormItem(form.FormItemArgs{}) {
+									@form.FormLabel(form.FormLabelArgs{For: "subject"}) {
 										Subject
 									}
 									@input.Input(input.InputArgs{
@@ -203,8 +203,8 @@ templ FormPage(rootArgs l.RootArgs) {
 										},
 									})
 								}
-								@form.FormItem(form.FormItemProps{}) {
-									@form.FormLabel(form.FormLabelProps{For: "message"}) {
+								@form.FormItem(form.FormItemArgs{}) {
+									@form.FormLabel(form.FormLabelArgs{For: "message"}) {
 										Message
 									}
 									<textarea
@@ -216,12 +216,12 @@ templ FormPage(rootArgs l.RootArgs) {
 										class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 										data-bind="$contact.message"
 									></textarea>
-									@form.FormDescription(form.FormDescriptionProps{}) {
+									@form.FormDescription(form.FormDescriptionArgs{}) {
 										Please provide as much detail as possible.
 									}
 								}
 								<div class="flex gap-2 items-center">
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Type:    "submit",
 										Variant: "default",
 										Attributes: templ.Attributes{
@@ -231,7 +231,7 @@ templ FormPage(rootArgs l.RootArgs) {
 									}) {
 										Send Message
 									}
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Type:    "button",
 										Variant: "outline",
 										Attributes: templ.Attributes{

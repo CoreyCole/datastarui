@@ -108,7 +108,7 @@ func calendarIconButton(onClickHandler string) templ.Component {
 }
 
 // DatePicker renders a date picker with input field and calendar popover
-func DatePicker(args DatePickerProps) templ.Component {
+func DatePicker(args DatePickerArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -575,7 +575,7 @@ func DatePicker(args DatePickerProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = DatePickerPopover(DatePickerPopoverProps{
+		templ_7745c5c3_Err = DatePickerPopover(DatePickerPopoverArgs{
 			ID:                  datePickerID,
 			DateInputID:         dateInputID,
 			Mode:                args.Mode,
@@ -605,7 +605,7 @@ func DatePicker(args DatePickerProps) templ.Component {
 }
 
 // DatePickerPopover renders the calendar popover with keyboard navigation
-func DatePickerPopover(args DatePickerPopoverProps) templ.Component {
+func DatePickerPopover(args DatePickerPopoverArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -788,7 +788,7 @@ func DatePickerPopover(args DatePickerPopoverProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+		templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 			ID:                 args.ID, // Use same ID as DatePicker for unified namespace
 			Mode:               args.Mode,
 			SelectedDate:       args.InitialSelectedDate,

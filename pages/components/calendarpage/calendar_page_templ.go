@@ -58,7 +58,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 				ID:   "calendar_demo",
 				Mode: "single",
 			}).Render(ctx, templ_7745c5c3_Buffer)
@@ -69,7 +69,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 				ID:          "calendar_demo_explicit",
 				Mode:        "single",
 				DefaultDate: "2023-01-01",
@@ -81,7 +81,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 				ID:             "double-calendar-range",
 				Mode:           "range",
 				NumberOfMonths: 2,
@@ -93,7 +93,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 				ID:             "double-calendar-single",
 				Mode:           "single",
 				NumberOfMonths: 2,
@@ -105,7 +105,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarProps{
+			templ_7745c5c3_Err = calendar.Calendar(calendar.CalendarArgs{
 				ID:              "standard-calendar",
 				Mode:            "single",
 				NumberOfMonths:  1,

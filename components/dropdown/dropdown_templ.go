@@ -20,7 +20,7 @@ type DropdownSignals struct {
 }
 
 // DropdownMenu renders the main dropdown wrapper with Datastar state management
-func DropdownMenu(args DropdownMenuProps) templ.Component {
+func DropdownMenu(args DropdownMenuArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -133,7 +133,7 @@ func DropdownMenu(args DropdownMenuProps) templ.Component {
 }
 
 // DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
-func DropdownMenuTrigger(args DropdownMenuTriggerProps) templ.Component {
+func DropdownMenuTrigger(args DropdownMenuTriggerArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -280,7 +280,7 @@ func DropdownMenuTrigger(args DropdownMenuTriggerProps) templ.Component {
 }
 
 // DropdownMenuContent renders the dropdown content panel
-func DropdownMenuContent(args DropdownMenuContentProps) templ.Component {
+func DropdownMenuContent(args DropdownMenuContentArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -393,7 +393,7 @@ func DropdownMenuContent(args DropdownMenuContentProps) templ.Component {
 }
 
 // DropdownMenuItem renders a clickable menu item
-func DropdownMenuItem(args DropdownMenuItemProps) templ.Component {
+func DropdownMenuItem(args DropdownMenuItemArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -543,7 +543,7 @@ func DropdownMenuItem(args DropdownMenuItemProps) templ.Component {
 }
 
 // DropdownMenuLabel renders a non-interactive label
-func DropdownMenuLabel(args DropdownMenuLabelProps) templ.Component {
+func DropdownMenuLabel(args DropdownMenuLabelArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -613,7 +613,7 @@ func DropdownMenuLabel(args DropdownMenuLabelProps) templ.Component {
 }
 
 // DropdownMenuSeparator renders a visual separator
-func DropdownMenuSeparator(args DropdownMenuSeparatorProps) templ.Component {
+func DropdownMenuSeparator(args DropdownMenuSeparatorArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -669,7 +669,7 @@ func DropdownMenuSeparator(args DropdownMenuSeparatorProps) templ.Component {
 }
 
 // DropdownMenuShortcut renders keyboard shortcut text
-func DropdownMenuShortcut(args DropdownMenuShortcutProps) templ.Component {
+func DropdownMenuShortcut(args DropdownMenuShortcutArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -733,7 +733,7 @@ func DropdownMenuShortcut(args DropdownMenuShortcutProps) templ.Component {
 }
 
 // DropdownMenuGroup renders a logical grouping of menu items
-func DropdownMenuGroup(args DropdownMenuGroupProps) templ.Component {
+func DropdownMenuGroup(args DropdownMenuGroupArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

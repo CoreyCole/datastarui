@@ -22,7 +22,7 @@ type FormSignals struct {
 }
 
 // Form wrapper component
-func Form(args FormProps) templ.Component {
+func Form(args FormArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -117,7 +117,7 @@ func Form(args FormProps) templ.Component {
 }
 
 // FormItem component - container for form field
-func FormItem(args FormItemProps) templ.Component {
+func FormItem(args FormItemArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -183,7 +183,7 @@ func FormItem(args FormItemProps) templ.Component {
 }
 
 // FormLabel component - label for form field
-func FormLabel(args FormLabelProps) templ.Component {
+func FormLabel(args FormLabelArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -224,7 +224,7 @@ func FormLabel(args FormLabelProps) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = label.Label(label.LabelProps{
+		templ_7745c5c3_Err = label.Label(label.LabelArgs{
 			Class: classes,
 			For:   args.For,
 			Attributes: templ.Attributes{
@@ -240,7 +240,7 @@ func FormLabel(args FormLabelProps) templ.Component {
 }
 
 // FormDescription component - help text for form field
-func FormDescription(args FormDescriptionProps) templ.Component {
+func FormDescription(args FormDescriptionArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -329,7 +329,7 @@ func FormDescription(args FormDescriptionProps) templ.Component {
 }
 
 // FormMessage component - error message for form field
-func FormMessage(args FormMessageProps) templ.Component {
+func FormMessage(args FormMessageArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

@@ -2,17 +2,8 @@ package popover
 
 import "github.com/coreycole/datastarui/utils"
 
-// Popover creates a popover container component
-templ Popover(args PopoverProps) {
-	<div
-		class={ utils.TwMerge("relative", args.Class) }
-	>
-		{ children... }
-	</div>
-}
-
-// PopoverTrigger creates a trigger button for the popover
-templ PopoverTrigger(args PopoverTriggerProps) {
+// PopoverTrigger creates a trigger for the popover that wraps any element
+templ PopoverTrigger(args PopoverTriggerArgs) {
 	{{
 		// Create popover handler for clean expressions
 		popoverHandler := NewPopoverHandler(args.PopoverID)
@@ -20,47 +11,26 @@ templ PopoverTrigger(args PopoverTriggerProps) {
 		anchorStyle := popoverHandler.BuildAnchorStyle(args.AnchorName)
 
 		// Build style attribute
-		style := ""
-		if args.AsChild {
-			style = "cursor: pointer;"
-			if anchorStyle != "" {
-				style += " " + anchorStyle
-			}
-		} else if anchorStyle != "" {
-			style = anchorStyle
+		style := "cursor: pointer;"
+		if anchorStyle != "" {
+			style += " " + anchorStyle
 		}
 	}}
-	if args.AsChild {
-		// When AsChild is true, make the wrapper behave like the child
-		<div
-			data-on-click={ toggleHandler }
-			if style != "" {
-				style={ style }
-			}
-			class={ args.Class }
-			{ args.Attributes... }
-		>
-			{ children... }
-		</div>
-	} else {
-		// Default button trigger
-		<button
-			id={ args.ID }
-			popovertarget={ args.PopoverID }
-			popovertargetaction="toggle"
-			if style != "" {
-				style={ style }
-			}
-			class={ args.Class }
-			{ args.Attributes... }
-		>
-			{ children... }
-		</button>
-	}
+	<div
+		id={ args.ID }
+		data-on-click={ toggleHandler }
+		if style != "" {
+			style={ style }
+		}
+		class={ args.Class }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
 }
 
 // PopoverContent creates the popover content panel
-templ PopoverContent(args PopoverContentProps) {
+templ PopoverContent(args PopoverContentArgs) {
 	{{
 		contentClasses := PopoverContentVariants(args)
 
@@ -79,7 +49,7 @@ templ PopoverContent(args PopoverContentProps) {
 				if sideOffset == 0 {
 					sideOffset = 8 // default offset
 				}
-				anchorCSS := GetAnchorPosition(args.Side, args.Align, sideOffset)
+				anchorCSS := utils.GetAnchorPosition(args.Side, args.Align, sideOffset)
 				positioningStyle += anchorCSS + ";"
 			}
 		} else {

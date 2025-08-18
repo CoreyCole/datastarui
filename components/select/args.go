@@ -2,8 +2,8 @@ package selectcomponent
 
 import "github.com/a-h/templ"
 
-// SelectOptionProps represents a single option in the select dropdown
-type SelectOptionProps struct {
+// SelectOptionArgs represents a single option in the select dropdown
+type SelectOptionArgs struct {
 	// Value is the value of this option
 	Value string `json:"value"`
 
@@ -17,8 +17,8 @@ type SelectOptionProps struct {
 	Group string `json:"group,omitempty"`
 }
 
-// SelectProps defines the properties for the main Select component
-type SelectProps struct {
+// SelectArgs defines the properties for the main Select component
+type SelectArgs struct {
 	// ID is used for scoping datastar signals
 	ID string
 
@@ -35,7 +35,7 @@ type SelectProps struct {
 	DefaultValue string
 
 	// Options is a slice of options to render automatically
-	Options []SelectOptionProps
+	Options []SelectOptionArgs
 
 	// Name for form submission
 	Name string
@@ -56,8 +56,8 @@ type SelectProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectTriggerProps defines the properties for the SelectTrigger component
-type SelectTriggerProps struct {
+// SelectTriggerArgs defines the properties for the SelectTrigger component
+type SelectTriggerArgs struct {
 	// ID must match the parent Select ID for signal scoping
 	ID string
 
@@ -71,8 +71,8 @@ type SelectTriggerProps struct {
 	Disabled bool
 }
 
-// SelectValueProps defines the properties for the SelectValue component
-type SelectValueProps struct {
+// SelectValueArgs defines the properties for the SelectValue component
+type SelectValueArgs struct {
 	// ID must match the parent Select ID for signal scoping
 	ID string
 
@@ -86,8 +86,8 @@ type SelectValueProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectContentProps defines the properties for the SelectContent component
-type SelectContentProps struct {
+// SelectContentArgs defines the properties for the SelectContent component
+type SelectContentArgs struct {
 	// ID must match the parent Select ID for signal scoping
 	ID string
 
@@ -102,8 +102,8 @@ type SelectContentProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectItemProps defines the properties for the SelectItem component
-type SelectItemProps struct {
+// SelectItemArgs defines the properties for the SelectItem component
+type SelectItemArgs struct {
 	// ID must match the parent Select ID for signal scoping
 	ID string
 
@@ -123,8 +123,8 @@ type SelectItemProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectLabelProps defines the properties for the SelectLabel component
-type SelectLabelProps struct {
+// SelectLabelArgs defines the properties for the SelectLabel component
+type SelectLabelArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -132,8 +132,8 @@ type SelectLabelProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectSeparatorProps defines the properties for the SelectSeparator component
-type SelectSeparatorProps struct {
+// SelectSeparatorArgs defines the properties for the SelectSeparator component
+type SelectSeparatorArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -141,8 +141,8 @@ type SelectSeparatorProps struct {
 	Attributes templ.Attributes
 }
 
-// SelectGroupProps defines the properties for the SelectGroup component
-type SelectGroupProps struct {
+// SelectGroupArgs defines the properties for the SelectGroup component
+type SelectGroupArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 

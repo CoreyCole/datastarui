@@ -101,7 +101,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -127,13 +127,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -187,7 +187,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "basic-dropdown",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
@@ -228,7 +228,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 								ID: "basic-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -238,7 +238,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "basic-dropdown",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -266,7 +266,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "basic-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -294,7 +294,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "basic-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -322,7 +322,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "basic-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -350,7 +350,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "basic-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -358,7 +358,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "basic-dropdown",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
@@ -367,7 +367,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "basic-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "basic-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -377,13 +377,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -433,7 +433,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -459,13 +459,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -519,7 +519,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "icons-dropdown",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
@@ -576,7 +576,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 									ID: "icons-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -584,7 +584,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "icons-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -628,7 +628,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 									ID: "icons-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -636,7 +636,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "icons-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -680,7 +680,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 									ID: "icons-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -688,7 +688,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "icons-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -698,7 +698,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "icons-dropdown",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -742,7 +742,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuShortcut(dropdown.DropdownMenuShortcutArgs{
 									ID: "icons-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -750,7 +750,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID:      "icons-dropdown",
 								Variant: "destructive",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
@@ -759,7 +759,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "icons-dropdown",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
@@ -768,7 +768,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "icons-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "icons-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -778,13 +778,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -834,7 +834,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -860,13 +860,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -920,7 +920,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "grouped-dropdown",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
@@ -973,7 +973,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1001,7 +1001,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var42), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1029,7 +1029,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var43), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1037,7 +1037,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupArgs{
 								ID: "grouped-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1047,7 +1047,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "grouped-dropdown",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1087,7 +1087,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var45), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1115,7 +1115,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var46), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1143,7 +1143,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+								templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 									ID: "grouped-dropdown",
 								}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var47), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
@@ -1151,7 +1151,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuGroup(dropdown.DropdownMenuGroupArgs{
 								ID: "grouped-dropdown",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var44), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1159,7 +1159,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "grouped-dropdown",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
@@ -1168,7 +1168,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "grouped-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "grouped-dropdown"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1178,13 +1178,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1234,7 +1234,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var50), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var50), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1260,13 +1260,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var51), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var51), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var49), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var49), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1320,7 +1320,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "test-dropdown-1",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var54), templ_7745c5c3_Buffer)
@@ -1361,7 +1361,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 								ID: "test-dropdown-1",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var56), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1371,7 +1371,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "test-dropdown-1",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1399,7 +1399,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-1",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var57), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1427,7 +1427,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-1",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var58), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1455,7 +1455,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-1",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1463,7 +1463,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "test-dropdown-1",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var55), templ_7745c5c3_Buffer)
@@ -1472,7 +1472,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-1"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-1"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1506,7 +1506,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "test-dropdown-2",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var61), templ_7745c5c3_Buffer)
@@ -1547,7 +1547,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 								ID: "test-dropdown-2",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var63), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1557,7 +1557,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "test-dropdown-2",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1585,7 +1585,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-2",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var64), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1613,7 +1613,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-2",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var65), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1641,7 +1641,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-2",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var66), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1649,7 +1649,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "test-dropdown-2",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var62), templ_7745c5c3_Buffer)
@@ -1658,7 +1658,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var60), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var60), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1692,7 +1692,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 							ID:    "test-dropdown-3",
 							Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var68), templ_7745c5c3_Buffer)
@@ -1733,7 +1733,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 								ID: "test-dropdown-3",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var70), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1743,7 +1743,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
 								ID: "test-dropdown-3",
 							}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1771,7 +1771,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-3",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var71), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1799,7 +1799,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-3",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var72), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1827,7 +1827,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+							templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 								ID: "test-dropdown-3",
 							}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var73), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
@@ -1835,7 +1835,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+						templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 							ID:    "test-dropdown-3",
 							Align: "start",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var69), templ_7745c5c3_Buffer)
@@ -1844,7 +1844,7 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: "test-dropdown-3"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var67), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "test-dropdown-3"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var67), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1854,13 +1854,13 @@ func DropdownPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{Class: "space-y-4"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var52), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{Class: "space-y-4"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var52), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var48), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var48), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

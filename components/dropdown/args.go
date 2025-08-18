@@ -2,8 +2,8 @@ package dropdown
 
 import "github.com/a-h/templ"
 
-// DropdownMenuProps defines the properties for the DropdownMenu root component
-type DropdownMenuProps struct {
+// DropdownMenuArgs defines the properties for the DropdownMenu root component
+type DropdownMenuArgs struct {
 	// ID provides a unique identifier for the dropdown (auto-generated if not provided)
 	ID string
 
@@ -20,8 +20,8 @@ type DropdownMenuProps struct {
 	DefaultOpen bool
 }
 
-// DropdownMenuTriggerProps defines the properties for the DropdownMenuTrigger component
-type DropdownMenuTriggerProps struct {
+// DropdownMenuTriggerArgs defines the properties for the DropdownMenuTrigger component
+type DropdownMenuTriggerArgs struct {
 	// ID is the dropdown identifier (required to link to the correct dropdown)
 	ID string
 
@@ -38,8 +38,8 @@ type DropdownMenuTriggerProps struct {
 	Disabled bool
 }
 
-// DropdownMenuContentProps defines the properties for the DropdownMenuContent component
-type DropdownMenuContentProps struct {
+// DropdownMenuContentArgs defines the properties for the DropdownMenuContent component
+type DropdownMenuContentArgs struct {
 	// ID is the dropdown identifier (required to link to the correct dropdown)
 	ID string
 
@@ -61,8 +61,8 @@ type DropdownMenuContentProps struct {
 	SideOffset int
 }
 
-// DropdownMenuItemProps defines the properties for the DropdownMenuItem component
-type DropdownMenuItemProps struct {
+// DropdownMenuItemArgs defines the properties for the DropdownMenuItem component
+type DropdownMenuItemArgs struct {
 	// ID is the dropdown identifier (required to link to the correct dropdown)
 	ID string
 
@@ -86,8 +86,8 @@ type DropdownMenuItemProps struct {
 	AsChild bool
 }
 
-// DropdownMenuLabelProps defines the properties for the DropdownMenuLabel component
-type DropdownMenuLabelProps struct {
+// DropdownMenuLabelArgs defines the properties for the DropdownMenuLabel component
+type DropdownMenuLabelArgs struct {
 	// ID is the dropdown identifier (optional for labels)
 	ID string
 
@@ -101,8 +101,8 @@ type DropdownMenuLabelProps struct {
 	Inset bool
 }
 
-// DropdownMenuSeparatorProps defines the properties for the DropdownMenuSeparator component
-type DropdownMenuSeparatorProps struct {
+// DropdownMenuSeparatorArgs defines the properties for the DropdownMenuSeparator component
+type DropdownMenuSeparatorArgs struct {
 	// ID is the dropdown identifier (optional for separators)
 	ID string
 
@@ -113,8 +113,8 @@ type DropdownMenuSeparatorProps struct {
 	Attributes templ.Attributes
 }
 
-// DropdownMenuShortcutProps defines the properties for the DropdownMenuShortcut component
-type DropdownMenuShortcutProps struct {
+// DropdownMenuShortcutArgs defines the properties for the DropdownMenuShortcut component
+type DropdownMenuShortcutArgs struct {
 	// ID is the dropdown identifier (optional for shortcuts)
 	ID string
 
@@ -125,8 +125,8 @@ type DropdownMenuShortcutProps struct {
 	Attributes templ.Attributes
 }
 
-// DropdownMenuGroupProps defines the properties for the DropdownMenuGroup component
-type DropdownMenuGroupProps struct {
+// DropdownMenuGroupArgs defines the properties for the DropdownMenuGroup component
+type DropdownMenuGroupArgs struct {
 	// ID is the dropdown identifier (optional for groups)
 	ID string
 

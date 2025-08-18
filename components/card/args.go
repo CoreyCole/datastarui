@@ -2,8 +2,8 @@ package card
 
 import "github.com/a-h/templ"
 
-// CardProps defines the properties for the main Card component
-type CardProps struct {
+// CardArgs defines the properties for the main Card component
+type CardArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -11,8 +11,8 @@ type CardProps struct {
 	Attributes templ.Attributes
 }
 
-// CardHeaderProps defines the properties for the CardHeader component
-type CardHeaderProps struct {
+// CardHeaderArgs defines the properties for the CardHeader component
+type CardHeaderArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -20,8 +20,8 @@ type CardHeaderProps struct {
 	Attributes templ.Attributes
 }
 
-// CardTitleProps defines the properties for the CardTitle component
-type CardTitleProps struct {
+// CardTitleArgs defines the properties for the CardTitle component
+type CardTitleArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -29,8 +29,8 @@ type CardTitleProps struct {
 	Attributes templ.Attributes
 }
 
-// CardDescriptionProps defines the properties for the CardDescription component
-type CardDescriptionProps struct {
+// CardDescriptionArgs defines the properties for the CardDescription component
+type CardDescriptionArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -38,8 +38,8 @@ type CardDescriptionProps struct {
 	Attributes templ.Attributes
 }
 
-// CardActionProps defines the properties for the CardAction component
-type CardActionProps struct {
+// CardActionArgs defines the properties for the CardAction component
+type CardActionArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -47,8 +47,8 @@ type CardActionProps struct {
 	Attributes templ.Attributes
 }
 
-// CardContentProps defines the properties for the CardContent component
-type CardContentProps struct {
+// CardContentArgs defines the properties for the CardContent component
+type CardContentArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -56,8 +56,8 @@ type CardContentProps struct {
 	Attributes templ.Attributes
 }
 
-// CardFooterProps defines the properties for the CardFooter component
-type CardFooterProps struct {
+// CardFooterArgs defines the properties for the CardFooter component
+type CardFooterArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 

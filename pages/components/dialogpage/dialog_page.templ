@@ -88,7 +88,7 @@ templ DialogPage(rootArgs l.RootArgs) {
 						}
 						@dialog.DialogContent(dialog.DialogContentArgs{}) {
 							<div id="form_dialog_errors"></div>
-							@form.Form(form.FormProps{
+							@form.Form(form.FormArgs{
 								ID:     "form_dialog",
 								Action: "/dialog/dialog-page/form-submit",
 								Class:  "space-y-6",
@@ -98,8 +98,8 @@ templ DialogPage(rootArgs l.RootArgs) {
 								},
 							}) {
 								<div class="grid gap-4">
-									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "form_name"}) {
+									@form.FormItem(form.FormItemArgs{}) {
+										@form.FormLabel(form.FormLabelArgs{For: "form_name"}) {
 											Name
 										}
 										@input.Input(input.InputArgs{
@@ -110,12 +110,12 @@ templ DialogPage(rootArgs l.RootArgs) {
 											Required:    true,
 											Type:        "text",
 										})
-										@form.FormDescription(form.FormDescriptionProps{}) {
+										@form.FormDescription(form.FormDescriptionArgs{}) {
 											Your full name for the form submission.
 										}
 									}
-									@form.FormItem(form.FormItemProps{}) {
-										@form.FormLabel(form.FormLabelProps{For: "form_email"}) {
+									@form.FormItem(form.FormItemArgs{}) {
+										@form.FormLabel(form.FormLabelArgs{For: "form_email"}) {
 											Email
 										}
 										@input.Input(input.InputArgs{
@@ -126,7 +126,7 @@ templ DialogPage(rootArgs l.RootArgs) {
 											Placeholder: "Enter your email",
 											Required:    true,
 										})
-										@form.FormDescription(form.FormDescriptionProps{}) {
+										@form.FormDescription(form.FormDescriptionArgs{}) {
 											We'll use this to send you a confirmation.
 										}
 									}
@@ -138,7 +138,7 @@ templ DialogPage(rootArgs l.RootArgs) {
 									}) {
 										Cancel
 									}
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Type: "submit",
 										Attributes: templ.Attributes{
 											"data-attr-disabled": "$fetching",

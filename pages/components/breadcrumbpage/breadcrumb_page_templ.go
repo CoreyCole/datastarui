@@ -102,7 +102,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -128,13 +128,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -208,13 +208,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -222,7 +222,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -260,13 +260,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -274,7 +274,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -312,37 +312,37 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -392,7 +392,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -418,13 +418,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -498,13 +498,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -512,7 +512,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -532,13 +532,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}()
 								}
 								ctx = templ.InitializeContext(ctx)
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisProps{}).Render(ctx, templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -546,7 +546,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -584,13 +584,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -598,7 +598,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -636,37 +636,37 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -716,7 +716,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -742,13 +742,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var31), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -824,13 +824,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var38), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -838,7 +838,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -886,7 +886,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 											}()
 										}
 										ctx = templ.InitializeContext(ctx)
-										templ_7745c5c3_Err = breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisProps{
+										templ_7745c5c3_Err = breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisArgs{
 											Class: "h-4 w-4",
 										}).Render(ctx, templ_7745c5c3_Buffer)
 										if templ_7745c5c3_Err != nil {
@@ -898,7 +898,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 										}
 										return nil
 									})
-									templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+									templ_7745c5c3_Err = dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 										ID:    dropdownID,
 										Class: "flex items-center gap-1",
 									}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
@@ -939,7 +939,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 											}
 											return nil
 										})
-										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: dropdownID,
 										}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var43), templ_7745c5c3_Buffer)
 										if templ_7745c5c3_Err != nil {
@@ -967,7 +967,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 											}
 											return nil
 										})
-										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: dropdownID,
 										}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var44), templ_7745c5c3_Buffer)
 										if templ_7745c5c3_Err != nil {
@@ -995,7 +995,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 											}
 											return nil
 										})
-										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+										templ_7745c5c3_Err = dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 											ID: dropdownID,
 										}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var45), templ_7745c5c3_Buffer)
 										if templ_7745c5c3_Err != nil {
@@ -1003,7 +1003,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 										}
 										return nil
 									})
-									templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+									templ_7745c5c3_Err = dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 										ID:    dropdownID,
 										Align: "start",
 									}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var42), templ_7745c5c3_Buffer)
@@ -1012,7 +1012,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: dropdownID}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: dropdownID}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -1022,7 +1022,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var39), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1030,7 +1030,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1068,13 +1068,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var47), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var47), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var46), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var46), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1082,7 +1082,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1120,37 +1120,37 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var49), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var49), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var48), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var48), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var36), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1200,7 +1200,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var52), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var52), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -1226,13 +1226,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var51), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var51), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1306,13 +1306,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var58), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var58), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var57), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var57), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1338,7 +1338,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{CustomIcon: true}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1376,13 +1376,13 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var61), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var61), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var60), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var60), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1408,7 +1408,7 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var62), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{CustomIcon: true}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var62), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1446,37 +1446,37 @@ func BreadcrumbPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var64), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var64), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var63), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var63), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var56), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var56), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var55), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var55), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var54), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var54), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var50), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var50), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -2,8 +2,8 @@ package calendar
 
 import "github.com/a-h/templ"
 
-// CalendarProps defines the properties for the Calendar component
-type CalendarProps struct {
+// CalendarArgs defines the properties for the Calendar component
+type CalendarArgs struct {
 	// ID for the calendar (auto-generated if not provided)
 	ID string
 
@@ -51,8 +51,8 @@ type CalendarProps struct {
 	MaxDate string
 }
 
-// CalendarGridProps defines the properties for the calendar day grid
-type CalendarGridProps struct {
+// CalendarGridArgs defines the properties for the calendar day grid
+type CalendarGridArgs struct {
 	// ID of the parent calendar
 	ID string
 
@@ -75,8 +75,8 @@ type CalendarGridProps struct {
 	DatePickerInputsID string // ID of date picker inputs to send signals to for synchronization
 }
 
-// CalendarHeaderProps defines the properties for the calendar header
-type CalendarHeaderProps struct {
+// CalendarHeaderArgs defines the properties for the calendar header
+type CalendarHeaderArgs struct {
 	// ID of the parent calendar
 	ID string
 
@@ -84,8 +84,8 @@ type CalendarHeaderProps struct {
 	NumberOfMonths int
 }
 
-// CalendarDayProps defines the properties for individual calendar day buttons
-type CalendarDayProps struct {
+// CalendarDayArgs defines the properties for individual calendar day buttons
+type CalendarDayArgs struct {
 	// ID of the parent calendar
 	ID string
 

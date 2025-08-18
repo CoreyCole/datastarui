@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 // Breadcrumb renders the main navigation wrapper
-func Breadcrumb(args BreadcrumbProps) templ.Component {
+func Breadcrumb(args BreadcrumbArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -73,7 +73,7 @@ func Breadcrumb(args BreadcrumbProps) templ.Component {
 }
 
 // BreadcrumbList renders the ordered list container for breadcrumb items
-func BreadcrumbList(args BreadcrumbListProps) templ.Component {
+func BreadcrumbList(args BreadcrumbListArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -137,7 +137,7 @@ func BreadcrumbList(args BreadcrumbListProps) templ.Component {
 }
 
 // BreadcrumbItem renders a list item wrapper for breadcrumb content
-func BreadcrumbItem(args BreadcrumbItemProps) templ.Component {
+func BreadcrumbItem(args BreadcrumbItemArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -201,7 +201,7 @@ func BreadcrumbItem(args BreadcrumbItemProps) templ.Component {
 }
 
 // BreadcrumbLink renders a clickable breadcrumb link
-func BreadcrumbLink(args BreadcrumbLinkProps) templ.Component {
+func BreadcrumbLink(args BreadcrumbLinkArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -319,7 +319,7 @@ func BreadcrumbLink(args BreadcrumbLinkProps) templ.Component {
 }
 
 // BreadcrumbPage renders the current page indicator (non-clickable)
-func BreadcrumbPage(args BreadcrumbPageProps) templ.Component {
+func BreadcrumbPage(args BreadcrumbPageArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -383,7 +383,7 @@ func BreadcrumbPage(args BreadcrumbPageProps) templ.Component {
 }
 
 // BreadcrumbSeparator renders the separator between breadcrumb items
-func BreadcrumbSeparator(args BreadcrumbSeparatorProps) templ.Component {
+func BreadcrumbSeparator(args BreadcrumbSeparatorArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -454,7 +454,7 @@ func BreadcrumbSeparator(args BreadcrumbSeparatorProps) templ.Component {
 }
 
 // BreadcrumbEllipsis renders an ellipsis indicator for collapsed breadcrumbs
-func BreadcrumbEllipsis(args BreadcrumbEllipsisProps) templ.Component {
+func BreadcrumbEllipsis(args BreadcrumbEllipsisArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

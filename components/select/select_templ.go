@@ -25,7 +25,7 @@ type SelectSignals struct {
 
 // Select renders the main select wrapper with Datastar state management
 // If Options are provided, it will automatically render the complete select UI
-func Select(args SelectProps) templ.Component {
+func Select(args SelectArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -216,7 +216,7 @@ func Select(args SelectProps) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = SelectValue(SelectValueProps{
+				templ_7745c5c3_Err = SelectValue(SelectValueArgs{
 					ID:          selectID,
 					Placeholder: args.Placeholder,
 				}).Render(ctx, templ_7745c5c3_Buffer)
@@ -225,7 +225,7 @@ func Select(args SelectProps) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = SelectTrigger(SelectTriggerProps{
+			templ_7745c5c3_Err = SelectTrigger(SelectTriggerArgs{
 				ID:       selectID,
 				Disabled: args.Disabled,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
@@ -254,7 +254,7 @@ func Select(args SelectProps) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = SelectContent(SelectContentProps{
+			templ_7745c5c3_Err = SelectContent(SelectContentArgs{
 				ID: selectID,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -279,7 +279,7 @@ func Select(args SelectProps) templ.Component {
 }
 
 // renderSelectOptions renders a slice of SelectOptions with proper grouping
-func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Component {
+func renderSelectOptions(selectID string, options []SelectOptionArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -302,8 +302,8 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 		ctx = templ.ClearChildren(ctx)
 
 		// Group options by their Group field
-		groupedOptions := make(map[string][]SelectOptionProps)
-		ungroupedOptions := []SelectOptionProps{}
+		groupedOptions := make(map[string][]SelectOptionArgs)
+		ungroupedOptions := []SelectOptionArgs{}
 
 		for _, option := range options {
 			if option.Group != "" {
@@ -344,7 +344,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = SelectItem(SelectItemProps{
+				templ_7745c5c3_Err = SelectItem(SelectItemArgs{
 					ID:       selectID,
 					Value:    option.Value,
 					Index:    globalIndex,
@@ -366,7 +366,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 		}
 		for groupName, groupOptions := range groupedOptions {
 			if len(ungroupedOptions) > 0 || groupName != "" {
-				templ_7745c5c3_Err = SelectSeparator(SelectSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = SelectSeparator(SelectSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -411,7 +411,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = SelectLabel(SelectLabelProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = SelectLabel(SelectLabelArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -440,7 +440,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = SelectItem(SelectItemProps{
+					templ_7745c5c3_Err = SelectItem(SelectItemArgs{
 						ID:       selectID,
 						Value:    option.Value,
 						Index:    globalIndex,
@@ -457,7 +457,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = SelectGroup(SelectGroupProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SelectGroup(SelectGroupArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -467,7 +467,7 @@ func renderSelectOptions(selectID string, options []SelectOptionProps) templ.Com
 }
 
 // SelectTrigger - button that opens/closes the select dropdown
-func SelectTrigger(args SelectTriggerProps) templ.Component {
+func SelectTrigger(args SelectTriggerArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -591,7 +591,7 @@ func SelectTrigger(args SelectTriggerProps) templ.Component {
 }
 
 // SelectValue displays the currently selected value or placeholder
-func SelectValue(args SelectValueProps) templ.Component {
+func SelectValue(args SelectValueArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -663,7 +663,7 @@ func SelectValue(args SelectValueProps) templ.Component {
 }
 
 // SelectContent - dropdown content container
-func SelectContent(args SelectContentProps) templ.Component {
+func SelectContent(args SelectContentArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -791,7 +791,7 @@ func SelectContent(args SelectContentProps) templ.Component {
 }
 
 // SelectItem - individual option in the select dropdown
-func SelectItem(args SelectItemProps) templ.Component {
+func SelectItem(args SelectItemArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -959,7 +959,7 @@ func SelectItem(args SelectItemProps) templ.Component {
 }
 
 // SelectLabel renders a label for a group of items
-func SelectLabel(args SelectLabelProps) templ.Component {
+func SelectLabel(args SelectLabelArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -1025,7 +1025,7 @@ func SelectLabel(args SelectLabelProps) templ.Component {
 }
 
 // SelectSeparator renders a visual separator between groups
-func SelectSeparator(args SelectSeparatorProps) templ.Component {
+func SelectSeparator(args SelectSeparatorArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -1083,7 +1083,7 @@ func SelectSeparator(args SelectSeparatorProps) templ.Component {
 }
 
 // SelectGroup renders a group container for items
-func SelectGroup(args SelectGroupProps) templ.Component {
+func SelectGroup(args SelectGroupArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
