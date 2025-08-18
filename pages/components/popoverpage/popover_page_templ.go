@@ -100,9 +100,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				ID:         "top_side_trigger",
-				PopoverID:  "top_side_content",
-				AnchorName: "top_side_anchor",
+				ID:        "top_side_trigger",
+				PopoverID: "top_side_content",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -130,12 +129,11 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "top_side_content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "top_side_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "top_side_content",
+				Class:     "w-64",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -184,9 +182,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				ID:         "right_side_trigger",
-				PopoverID:  "right_side_content",
-				AnchorName: "right_side_anchor",
+				ID:        "right_side_trigger",
+				PopoverID: "right_side_content",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -210,12 +207,11 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "right_side_content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "right_side_anchor",
-				Side:       utils.AnchorSideRight,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "right_side_content",
+				Class:     "w-64",
+				UseAnchor: true,
+				Side:      utils.AnchorSideRight,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -264,9 +260,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				ID:         "left_side_trigger",
-				PopoverID:  "left_side_content",
-				AnchorName: "left_side_anchor",
+				ID:        "left_side_trigger",
+				PopoverID: "left_side_content",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -290,12 +285,11 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "left_side_content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "left_side_anchor",
-				Side:       utils.AnchorSideLeft,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "left_side_content",
+				Class:     "w-64",
+				UseAnchor: true,
+				Side:      utils.AnchorSideLeft,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -344,9 +338,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				ID:         "bottom_side_trigger",
-				PopoverID:  "bottom_side_content",
-				AnchorName: "bottom_side_anchor",
+				ID:        "bottom_side_trigger",
+				PopoverID: "bottom_side_content",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -374,12 +367,11 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "bottom_side_content",
-				Class:      "w-64",
-				UseAnchor:  true,
-				AnchorName: "bottom_side_anchor",
-				Side:       utils.AnchorSideBottom,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "bottom_side_content",
+				Class:     "w-64",
+				UseAnchor: true,
+				Side:      utils.AnchorSideBottom,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -407,8 +399,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				PopoverID:  "card_popover",
-				AnchorName: "card_anchor",
+				ID:        "card_trigger",
+				PopoverID: "card_popover",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -486,11 +478,10 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "card_popover",
-				UseAnchor:  true,
-				AnchorName: "card_anchor",
-				Side:       utils.AnchorSideBottom,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "card_popover",
+				UseAnchor: true,
+				Side:      utils.AnchorSideBottom,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -518,8 +509,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				PopoverID:  "image_popover",
-				AnchorName: "image_anchor",
+				ID:        "image_trigger",
+				PopoverID: "image_popover",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -543,11 +534,10 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "image_popover",
-				UseAnchor:  true,
-				AnchorName: "image_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "image_popover",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -575,8 +565,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				PopoverID:  "badge_popover",
-				AnchorName: "badge_anchor",
+				ID:        "badge_trigger",
+				PopoverID: "badge_popover",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -600,11 +590,10 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "badge_popover",
-				UseAnchor:  true,
-				AnchorName: "badge_anchor",
-				Side:       utils.AnchorSideBottom,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "badge_popover",
+				UseAnchor: true,
+				Side:      utils.AnchorSideBottom,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -632,8 +621,8 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverTrigger(popover.PopoverTriggerArgs{
-				PopoverID:  "interactive_popover",
-				AnchorName: "interactive_anchor",
+				ID:        "interactive_trigger",
+				PopoverID: "interactive_popover",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -761,11 +750,10 @@ func PopoverPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = popover.PopoverContent(popover.PopoverContentArgs{
-				ID:         "interactive_popover",
-				UseAnchor:  true,
-				AnchorName: "interactive_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "interactive_popover",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

@@ -24,7 +24,9 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 		// Build handlers
 		showHandler := tooltipHandler.BuildShowHandler(delayDuration)
 		hideHandler := tooltipHandler.BuildHideHandler()
-		anchorStyle := tooltipHandler.BuildAnchorStyle(args.AnchorName)
+		
+		// Use TooltipID as anchor name (shared with content)
+		anchorStyle := tooltipHandler.BuildAnchorStyle(args.TooltipID)
 
 		// Build style attribute
 		style := "cursor: pointer;"
@@ -60,9 +62,9 @@ templ TooltipContent(args TooltipContentArgs) {
 		// Generate positioning styles (same as popover)
 		positioningStyle := ""
 
-		if args.UseAnchor && args.AnchorName != "" {
-			// Simplified positioning API
-			positioningStyle = "position: absolute; " + tooltipHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
+		if args.UseAnchor {
+			// Use content ID as position anchor (matches trigger's TooltipID)
+			positioningStyle = "position: absolute; " + tooltipHandler.BuildPositionAnchorStyle(args.ID) + "; z-index: 50; "
 
 			if args.Side != "" || args.Align != "" {
 				sideOffset := args.SideOffset
@@ -78,7 +80,7 @@ templ TooltipContent(args TooltipContentArgs) {
 		}
 
 		// Add anchor-positioned class if using anchor positioning
-		if args.UseAnchor && args.AnchorName != "" {
+		if args.UseAnchor {
 			contentClasses += " anchor-positioned"
 		}
 	}}

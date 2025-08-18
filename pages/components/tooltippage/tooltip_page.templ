@@ -23,8 +23,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 						<h2 class="text-2xl font-semibold mb-4">Default</h2>
 						<div class="flex items-center justify-center p-10 border rounded-lg">
 							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+								ID:        "simple_tooltip_trigger",
 								TooltipID:  "simple_tooltip",
-								AnchorName: "simple_tooltip_anchor",
 							}) {
 								@button.Button(button.ButtonArgs{
 									Variant: "outline",
@@ -35,7 +35,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 								ID:         "simple_tooltip",
 								UseAnchor:  true,
-								AnchorName: "simple_tooltip_anchor",
 								Side:       utils.AnchorSideTop,
 								Align:      utils.AnchorAlignCenter,
 							}) {
@@ -50,8 +49,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							<!-- Top -->
 							<div class="flex items-center justify-center p-10 border rounded-lg">
 								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+									ID:        "top_tooltip_trigger",
 									TooltipID:  "top_tooltip",
-									AnchorName: "top_tooltip_anchor",
 								}) {
 									@button.Button(button.ButtonArgs{
 										Variant: "outline",
@@ -62,7 +61,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 									ID:         "top_tooltip",
 									UseAnchor:  true,
-									AnchorName: "top_tooltip_anchor",
 									Side:       utils.AnchorSideTop,
 									Align:      utils.AnchorAlignCenter,
 								}) {
@@ -72,8 +70,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							<!-- Bottom -->
 							<div class="flex items-center justify-center p-10 border rounded-lg">
 								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+									ID:        "bottom_tooltip_trigger",
 									TooltipID:  "bottom_tooltip",
-									AnchorName: "bottom_tooltip_anchor",
 								}) {
 									@button.Button(button.ButtonArgs{
 										Variant: "outline",
@@ -84,7 +82,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 									ID:         "bottom_tooltip",
 									UseAnchor:  true,
-									AnchorName: "bottom_tooltip_anchor",
 									Side:       utils.AnchorSideBottom,
 									Align:      utils.AnchorAlignCenter,
 								}) {
@@ -94,8 +91,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							<!-- Left -->
 							<div class="flex items-center justify-center p-10 border rounded-lg">
 								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+									ID:        "left_tooltip_trigger",
 									TooltipID:  "left_tooltip",
-									AnchorName: "left_tooltip_anchor",
 								}) {
 									@button.Button(button.ButtonArgs{
 										Variant: "outline",
@@ -106,7 +103,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 									ID:         "left_tooltip",
 									UseAnchor:  true,
-									AnchorName: "left_tooltip_anchor",
 									Side:       utils.AnchorSideLeft,
 									Align:      utils.AnchorAlignCenter,
 								}) {
@@ -116,8 +112,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							<!-- Right -->
 							<div class="flex items-center justify-center p-10 border rounded-lg">
 								@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+									ID:        "right_tooltip_trigger",
 									TooltipID:  "right_tooltip",
-									AnchorName: "right_tooltip_anchor",
 								}) {
 									@button.Button(button.ButtonArgs{
 										Variant: "outline",
@@ -128,7 +124,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 								@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 									ID:         "right_tooltip",
 									UseAnchor:  true,
-									AnchorName: "right_tooltip_anchor",
 									Side:       utils.AnchorSideRight,
 									Align:      utils.AnchorAlignCenter,
 								}) {
@@ -142,8 +137,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 						<h2 class="text-2xl font-semibold mb-4">Custom Delay</h2>
 						<div class="flex items-center justify-center p-10 border rounded-lg">
 							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+								ID:            "fast_tooltip_trigger",
 								TooltipID:     "fast_tooltip",
-								AnchorName:    "fast_tooltip_anchor",
 								DelayDuration: 100,
 							}) {
 								@button.Button(button.ButtonArgs{
@@ -155,7 +150,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 								ID:         "fast_tooltip",
 								UseAnchor:  true,
-								AnchorName: "fast_tooltip_anchor",
 								Side:       utils.AnchorSideTop,
 								Align:      utils.AnchorAlignCenter,
 							}) {
@@ -168,8 +162,8 @@ templ TooltipPage(rootArgs l.RootArgs) {
 						<h2 class="text-2xl font-semibold mb-4">Text Trigger</h2>
 						<div class="flex items-center justify-center p-10 border rounded-lg">
 							@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+								ID:        "text_tooltip_trigger",
 								TooltipID:  "text_tooltip",
-								AnchorName: "text_tooltip_anchor",
 							}) {
 								<p class="text-sm text-muted-foreground underline decoration-dotted cursor-help">
 									Hover over this text
@@ -178,7 +172,6 @@ templ TooltipPage(rootArgs l.RootArgs) {
 							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 								ID:         "text_tooltip",
 								UseAnchor:  true,
-								AnchorName: "text_tooltip_anchor",
 								Side:       utils.AnchorSideTop,
 								Align:      utils.AnchorAlignCenter,
 							}) {

@@ -102,8 +102,8 @@ templ CheckboxPage(rootArgs l.RootArgs) {
 					}
 					@card.CardContent(card.CardContentArgs{}) {
 						@tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+								ID:         "premium_tooltip_trigger",
 								TooltipID:  "premium_tooltip",
-								AnchorName: "premium_tooltip_anchor",
 								Class:      "cursor-not-allowed",
 							}) {
 								<div class="flex items-start gap-3">
@@ -121,7 +121,6 @@ templ CheckboxPage(rootArgs l.RootArgs) {
 							@tooltip.TooltipContent(tooltip.TooltipContentArgs{
 								ID:         "premium_tooltip",
 								UseAnchor:  true,
-								AnchorName: "premium_tooltip_anchor",
 								Side:       utils.AnchorSideTop,
 								Align:      utils.AnchorAlignCenter,
 						}) {
