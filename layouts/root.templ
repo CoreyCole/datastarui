@@ -10,16 +10,16 @@ import (
 
 templ ComponentPageBreadcrumbs(currentPage string) {
 	<div>
-		@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-			@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-					@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/docs"}) {
+		@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}) {
+			@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}) {
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+					@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/docs"}) {
 						Docs
 					}
 				}
-				@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-					@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+				@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+				@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+					@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}) {
 						{ currentPage }
 					}
 				}
@@ -189,7 +189,7 @@ templ Root(args RootArgs) {
 												<span class="sr-only">GitHub</span>
 											</div>
 										</a>
-										@themetoggle.ThemeToggle(themetoggle.ThemeToggleProps{})
+										@themetoggle.ThemeToggle(themetoggle.ThemeToggleArgs{})
 									</nav>
 								</div>
 							</div>

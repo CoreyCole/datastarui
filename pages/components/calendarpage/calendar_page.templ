@@ -21,7 +21,7 @@ templ Page(rootArgs l.RootArgs) {
 					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Auto Current Month</h2>
 					<p class="text-sm text-muted-foreground mb-2">Should show current month automatically</p>
 					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
+						@calendar.Calendar(calendar.CalendarArgs{
 							ID:   "calendar_demo",
 							Mode: "single",
 						})
@@ -31,7 +31,7 @@ templ Page(rootArgs l.RootArgs) {
 					<h2 class="text-xl font-semibold mb-2">Calendar Demo (Single Date) - Explicit January 2023</h2>
 					<p class="text-sm text-muted-foreground mb-2">Should show January 2023 (not current month)</p>
 					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
+						@calendar.Calendar(calendar.CalendarArgs{
 							ID:          "calendar_demo_explicit",
 							Mode:        "single",
 							DefaultDate: "2023-01-01",
@@ -44,7 +44,7 @@ templ Page(rootArgs l.RootArgs) {
 						Two months displayed side by side for better range selection. Perfect for date range pickers.
 					</p>
 					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
+						@calendar.Calendar(calendar.CalendarArgs{
 							ID:             "double-calendar-range",
 							Mode:           "range",
 							NumberOfMonths: 2,
@@ -57,7 +57,7 @@ templ Page(rootArgs l.RootArgs) {
 						Two months displayed side by side with single date selection and outside days visible.
 					</p>
 					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
+						@calendar.Calendar(calendar.CalendarArgs{
 							ID:             "double-calendar-single",
 							Mode:           "single",
 							NumberOfMonths: 2,
@@ -70,7 +70,7 @@ templ Page(rootArgs l.RootArgs) {
 						Standard single month view with outside days hidden for a cleaner look.
 					</p>
 					<div class="w-fit">
-						@calendar.Calendar(calendar.CalendarProps{
+						@calendar.Calendar(calendar.CalendarArgs{
 							ID:              "standard-calendar",
 							Mode:            "single",
 							NumberOfMonths:  1,

@@ -21,32 +21,32 @@ templ BreadcrumbPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Breadcrumb -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Basic Breadcrumb
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							A simple breadcrumb with navigation links and current page.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}) {
 										Home
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}) {
 										Components
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}) {
 										Breadcrumb
 									}
 								}
@@ -55,36 +55,36 @@ templ BreadcrumbPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Breadcrumb with Ellipsis -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							With Ellipsis
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Use ellipsis to indicate collapsed breadcrumb items.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}) {
 										Home
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisProps{})
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisArgs{})
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}) {
 										Components
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}) {
 										Breadcrumb
 									}
 								}
@@ -93,54 +93,54 @@ templ BreadcrumbPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Breadcrumb with Dropdown -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							With Dropdown
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Breadcrumb ellipsis that opens a dropdown menu with hidden items.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						{{
 							dropdownID := "breadcrumb-dropdown"
 						}}
-						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}) {
 										Home
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
 									<div class="relative">
-										@dropdown.DropdownMenu(dropdown.DropdownMenuProps{ID: dropdownID}) {
-											@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerProps{
+										@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: dropdownID}) {
+											@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
 												ID:    dropdownID,
 												Class: "flex items-center gap-1",
 											}) {
-												@breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisProps{
+												@breadcrumb.BreadcrumbEllipsis(breadcrumb.BreadcrumbEllipsisArgs{
 													Class: "h-4 w-4",
 												})
 												<span class="sr-only">Toggle menu</span>
 											}
-											@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentProps{
+											@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
 												ID:    dropdownID,
 												Align: "start",
 											}) {
-												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 													ID: dropdownID,
 												}) {
 													Documentation
 												}
-												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 													ID: dropdownID,
 												}) {
 													Themes
 												}
-												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemProps{
+												@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
 													ID: dropdownID,
 												}) {
 													GitHub
@@ -149,15 +149,15 @@ templ BreadcrumbPage(rootArgs l.RootArgs) {
 										}
 									</div>
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}) {
 										Components
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{})
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{})
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}) {
 										Breadcrumb
 									}
 								}
@@ -166,36 +166,36 @@ templ BreadcrumbPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Custom Separator -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Custom Separator
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Override the default chevron separator with custom content.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbProps{}) {
-							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListProps{}) {
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@breadcrumb.Breadcrumb(breadcrumb.BreadcrumbArgs{}) {
+							@breadcrumb.BreadcrumbList(breadcrumb.BreadcrumbListArgs{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/"}) {
 										Home
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{CustomIcon: true}) {
 									<span class="text-muted-foreground">/</span>
 								}
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkProps{Href: "/components"}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbLink(breadcrumb.BreadcrumbLinkArgs{Href: "/components"}) {
 										Components
 									}
 								}
-								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorProps{CustomIcon: true}) {
+								@breadcrumb.BreadcrumbSeparator(breadcrumb.BreadcrumbSeparatorArgs{CustomIcon: true}) {
 									<span class="text-muted-foreground">/</span>
 								}
-								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemProps{}) {
-									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageProps{}) {
+								@breadcrumb.BreadcrumbItem(breadcrumb.BreadcrumbItemArgs{}) {
+									@breadcrumb.BreadcrumbPage(breadcrumb.BreadcrumbPageArgs{}) {
 										Breadcrumb
 									}
 								}

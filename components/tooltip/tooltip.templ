@@ -1,0 +1,110 @@
+package tooltip
+
+import "github.com/coreycole/datastarui/utils"
+
+// TooltipSignals defines the state for a tooltip
+type TooltipSignals struct {
+	Open        bool   `json:"open"`
+	ShowTimeout string `json:"showTimeout"` // Timeout ID for showing
+	HideTimeout string `json:"hideTimeout"` // Timeout ID for hiding
+}
+
+// TooltipTrigger creates a trigger for the tooltip that wraps any element
+templ TooltipTrigger(args TooltipTriggerArgs) {
+	{{
+		// Create tooltip handler for clean expressions
+		tooltipHandler := NewTooltipHandler(args.TooltipID)
+		
+		// Get delay from args or use default
+		delayDuration := args.DelayDuration
+		if delayDuration == 0 {
+			delayDuration = 700 // Default delay
+		}
+		
+		// Build handlers
+		showHandler := tooltipHandler.BuildShowHandler(delayDuration)
+		hideHandler := tooltipHandler.BuildHideHandler()
+		anchorStyle := tooltipHandler.BuildAnchorStyle(args.AnchorName)
+
+		// Build style attribute
+		style := "cursor: pointer;"
+		if anchorStyle != "" {
+			style += " " + anchorStyle
+		}
+	}}
+	<div
+		id={ args.ID }
+		data-on-mouseenter={ showHandler }
+		data-on-mouseleave={ hideHandler }
+		data-on-focus={ showHandler }
+		data-on-blur={ hideHandler }
+		tabindex="0"
+		if style != "" {
+			style={ style }
+		}
+		class={ args.Class }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// TooltipContent creates the tooltip content panel (matching PopoverContent pattern)
+templ TooltipContent(args TooltipContentArgs) {
+	{{
+		// Initialize tooltip signals
+		signals := utils.Signals(args.ID, TooltipSignals{
+			Open:        false,
+			ShowTimeout: "",
+			HideTimeout: "",
+		})
+
+		contentClasses := TooltipContentVariants(args)
+
+		// Create tooltip handler for clean expressions
+		tooltipHandler := NewTooltipHandler(args.ID)
+
+		// Generate positioning styles
+		positioningStyle := ""
+
+		if args.UseAnchor && args.AnchorName != "" {
+			// Simplified positioning API
+			positioningStyle = "position: absolute; " + tooltipHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
+
+			if args.Side != "" || args.Align != "" {
+				sideOffset := args.SideOffset
+				if sideOffset == 0 {
+					sideOffset = 4 // default offset for tooltips (smaller than popover)
+				}
+				anchorCSS := utils.GetAnchorPosition(args.Side, args.Align, sideOffset)
+				positioningStyle += anchorCSS + ";"
+			}
+		} else {
+			// Default positioning without anchor
+			positioningStyle = "position: absolute; z-index: 50;"
+		}
+
+		// Add anchor-positioned class if using anchor positioning
+		if args.UseAnchor && args.AnchorName != "" {
+			contentClasses += " anchor-positioned"
+		}
+
+		// Build animation classes for smooth transitions
+		animationClasses := utils.NewDataClass().
+			Add("opacity-0 scale-95", "!"+signals.Signal("open")).
+			Add("opacity-100 scale-100", signals.Signal("open")).
+			Build()
+	}}
+	<div
+		id={ args.ID }
+		data-signals={ signals.DataSignals }
+		class={ contentClasses }
+		style={ positioningStyle }
+		data-show={ signals.Signal("open") }
+		data-class={ animationClasses }
+		role="tooltip"
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}

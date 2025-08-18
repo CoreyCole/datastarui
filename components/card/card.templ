@@ -1,7 +1,7 @@
 package card
 
 // Card is the main card container component
-templ Card(args CardProps) {
+templ Card(args CardArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardVariants(args.Class)
@@ -16,7 +16,7 @@ templ Card(args CardProps) {
 }
 
 // CardHeader contains the card title, description, and optional action
-templ CardHeader(args CardHeaderProps) {
+templ CardHeader(args CardHeaderArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardHeaderVariants(args.Class)
@@ -31,7 +31,7 @@ templ CardHeader(args CardHeaderProps) {
 }
 
 // CardTitle displays the main title of the card
-templ CardTitle(args CardTitleProps) {
+templ CardTitle(args CardTitleArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardTitleVariants(args.Class)
@@ -46,7 +46,7 @@ templ CardTitle(args CardTitleProps) {
 }
 
 // CardDescription displays the description text of the card
-templ CardDescription(args CardDescriptionProps) {
+templ CardDescription(args CardDescriptionArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardDescriptionVariants(args.Class)
@@ -61,7 +61,7 @@ templ CardDescription(args CardDescriptionProps) {
 }
 
 // CardAction displays action elements (like buttons) in the card header
-templ CardAction(args CardActionProps) {
+templ CardAction(args CardActionArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardActionVariants(args.Class)
@@ -76,7 +76,7 @@ templ CardAction(args CardActionProps) {
 }
 
 // CardContent contains the main content of the card
-templ CardContent(args CardContentProps) {
+templ CardContent(args CardContentArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardContentVariants(args.Class)
@@ -91,7 +91,7 @@ templ CardContent(args CardContentProps) {
 }
 
 // CardFooter contains footer content like buttons or additional info
-templ CardFooter(args CardFooterProps) {
+templ CardFooter(args CardFooterArgs) {
 	{{
 		// Generate the CSS classes using our variant system
 		classes := cardFooterVariants(args.Class)

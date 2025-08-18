@@ -6,7 +6,7 @@ type ThemeToggleSignals struct {
 	Theme string `json:"theme"`
 }
 
-templ ThemeToggle(args ThemeToggleProps) {
+templ ThemeToggle(args ThemeToggleArgs) {
 	{{
 		// Use the global theme signal instead of creating a local one
 		// The global theme is initialized at the body level as $theme

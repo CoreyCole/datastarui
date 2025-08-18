@@ -24,39 +24,39 @@ templ TabsPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Basic Tabs Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Basic Tabs
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							A simple tabs component with account and password sections.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "basic_tabs", DefaultValue: "account", Class: "w-full max-w-2xl"}) {
-							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-2"}) {
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "basic_tabs", Value: "account"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@tabs.Tabs(tabs.TabsArgs{ID: "basic_tabs", DefaultValue: "account", Class: "w-full max-w-2xl"}) {
+							@tabs.TabsList(tabs.TabsListArgs{Class: "grid w-full grid-cols-2"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "basic_tabs", Value: "account"}) {
 									Account
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "basic_tabs", Value: "password"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "basic_tabs", Value: "password"}) {
 									Password
 								}
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "basic_tabs", Value: "account"}) {
-								@card.Card(card.CardProps{}) {
-									@card.CardHeader(card.CardHeaderProps{}) {
-										@card.CardTitle(card.CardTitleProps{}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "basic_tabs", Value: "account"}) {
+								@card.Card(card.CardArgs{}) {
+									@card.CardHeader(card.CardHeaderArgs{}) {
+										@card.CardTitle(card.CardTitleArgs{}) {
 											Account
 										}
-										@card.CardDescription(card.CardDescriptionProps{}) {
+										@card.CardDescription(card.CardDescriptionArgs{}) {
 											Make changes to your account here. Click save when you're done.
 										}
 									}
-									@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
+									@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
 										<div>
-											@form.FormItem(form.FormItemProps{}) {
-												@label.Label(label.LabelProps{}) {
+											@form.FormItem(form.FormItemArgs{}) {
+												@label.Label(label.LabelArgs{}) {
 													Name
 												}
 												@input.Input(input.InputArgs{
@@ -64,8 +64,8 @@ templ TabsPage(rootArgs l.RootArgs) {
 													Placeholder: "Pedro Duarte",
 												})
 											}
-											@form.FormItem(form.FormItemProps{}) {
-												@label.Label(label.LabelProps{}) {
+											@form.FormItem(form.FormItemArgs{}) {
+												@label.Label(label.LabelArgs{}) {
 													Username
 												}
 												@input.Input(input.InputArgs{
@@ -75,26 +75,26 @@ templ TabsPage(rootArgs l.RootArgs) {
 											}
 										</div>
 									}
-									@card.CardFooter(card.CardFooterProps{}) {
-										@button.Button(button.ButtonProps{Type: "submit"}) {
+									@card.CardFooter(card.CardFooterArgs{}) {
+										@button.Button(button.ButtonArgs{Type: "submit"}) {
 											Save changes
 										}
 									}
 								}
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "basic_tabs", Value: "password"}) {
-								@card.Card(card.CardProps{}) {
-									@card.CardHeader(card.CardHeaderProps{}) {
-										@card.CardTitle(card.CardTitleProps{}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "basic_tabs", Value: "password"}) {
+								@card.Card(card.CardArgs{}) {
+									@card.CardHeader(card.CardHeaderArgs{}) {
+										@card.CardTitle(card.CardTitleArgs{}) {
 											Password
 										}
-										@card.CardDescription(card.CardDescriptionProps{}) {
+										@card.CardDescription(card.CardDescriptionArgs{}) {
 											Change your password here. After saving, you'll be logged out.
 										}
 									}
-									@card.CardContent(card.CardContentProps{Class: "space-y-2"}) {
-										@form.FormItem(form.FormItemProps{}) {
-											@label.Label(label.LabelProps{}) {
+									@card.CardContent(card.CardContentArgs{Class: "space-y-2"}) {
+										@form.FormItem(form.FormItemArgs{}) {
+											@label.Label(label.LabelArgs{}) {
 												Current password
 											}
 											@input.Input(input.InputArgs{
@@ -102,8 +102,8 @@ templ TabsPage(rootArgs l.RootArgs) {
 												Type: "password",
 											})
 										}
-										@form.FormItem(form.FormItemProps{}) {
-											@label.Label(label.LabelProps{}) {
+										@form.FormItem(form.FormItemArgs{}) {
+											@label.Label(label.LabelArgs{}) {
 												New password
 											}
 											@input.Input(input.InputArgs{
@@ -112,8 +112,8 @@ templ TabsPage(rootArgs l.RootArgs) {
 											})
 										}
 									}
-									@card.CardFooter(card.CardFooterProps{}) {
-										@button.Button(button.ButtonProps{Type: "submit"}) {
+									@card.CardFooter(card.CardFooterArgs{}) {
+										@button.Button(button.ButtonArgs{Type: "submit"}) {
 											Save password
 										}
 									}
@@ -123,36 +123,36 @@ templ TabsPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Interactive Counter Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Interactive Tabs with Datastar
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Demonstrates Datastar reactivity within tab content.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-full max-w-2xl"}) {
-							@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "counter"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@tabs.Tabs(tabs.TabsArgs{ID: "interactive_tabs", DefaultValue: "counter", Class: "w-full max-w-2xl"}) {
+							@tabs.TabsList(tabs.TabsListArgs{Class: "grid w-full grid-cols-3"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "interactive_tabs", Value: "counter"}) {
 									Counter
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "todo"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "interactive_tabs", Value: "todo"}) {
 									Todo
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "interactive_tabs", Value: "settings"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "interactive_tabs", Value: "settings"}) {
 									Settings
 								}
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "counter"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "interactive_tabs", Value: "counter"}) {
 								<div data-signals="{count: 0}" class="space-y-4">
 									<div class="text-center">
 										<p class="text-2xl font-bold" data-text="$count"></p>
 										<p class="text-sm text-muted-foreground">Current count</p>
 									</div>
 									<div class="flex gap-2 justify-center">
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "outline",
 											Attributes: templ.Attributes{
 												"data-on-click": "$count--",
@@ -160,7 +160,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 										}) {
 											Decrement
 										}
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Attributes: templ.Attributes{
 												"data-on-click": "$count++",
 											},
@@ -169,7 +169,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 										}
 									</div>
 									<div class="text-center">
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "secondary",
 											Size:    "sm",
 											Attributes: templ.Attributes{
@@ -181,7 +181,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 									</div>
 								</div>
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "todo"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "interactive_tabs", Value: "todo"}) {
 								<div data-signals="{todos: ['Learn Datastar', 'Build components'], newTodo: ''}" class="space-y-4">
 									<div class="flex gap-2">
 										@input.Input(input.InputArgs{
@@ -191,7 +191,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 												"data-on-keydown": "evt.key === 'Enter' && $newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
 											},
 										})
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Attributes: templ.Attributes{
 												"data-on-click": "$newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
 											},
@@ -203,7 +203,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 										<template data-for="(todo, index) in $todos">
 											<div class="flex items-center justify-between p-2 border rounded">
 												<span data-text="todo"></span>
-												@button.Button(button.ButtonProps{
+												@button.Button(button.ButtonArgs{
 													Variant: "ghost",
 													Size:    "sm",
 													Attributes: templ.Attributes{
@@ -217,7 +217,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 									</div>
 								</div>
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "interactive_tabs", Value: "settings"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "interactive_tabs", Value: "settings"}) {
 								<div data-signals="{theme: 'light', notifications: true, autoSave: false}" class="space-y-4">
 									<div class="space-y-2">
 										<label class="text-sm font-medium">Theme</label>
@@ -247,32 +247,32 @@ templ TabsPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Vertical Tabs Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Vertical Tabs
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Tabs can also be arranged vertically.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
-						@tabs.Tabs(tabs.TabsProps{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-full max-w-4xl"}) {
-							@tabs.TabsList(tabs.TabsListProps{Class: "flex-col h-auto w-48 mr-4"}) {
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "general", Class: "w-full justify-start"}) {
+					@card.CardContent(card.CardContentArgs{}) {
+						@tabs.Tabs(tabs.TabsArgs{ID: "vertical_tabs", DefaultValue: "general", Class: "flex w-full max-w-4xl"}) {
+							@tabs.TabsList(tabs.TabsListArgs{Class: "flex-col h-auto w-48 mr-4"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "vertical_tabs", Value: "general", Class: "w-full justify-start"}) {
 									General
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "security", Class: "w-full justify-start"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "vertical_tabs", Value: "security", Class: "w-full justify-start"}) {
 									Security
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "integrations", Class: "w-full justify-start"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "vertical_tabs", Value: "integrations", Class: "w-full justify-start"}) {
 									Integrations
 								}
-								@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "vertical_tabs", Value: "support", Class: "w-full justify-start"}) {
+								@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "vertical_tabs", Value: "support", Class: "w-full justify-start"}) {
 									Support
 								}
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "general", Class: "flex-1"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "vertical_tabs", Value: "general", Class: "flex-1"}) {
 								<div class="space-y-4">
 									<h3 class="text-lg font-semibold">General Settings</h3>
 									<p class="text-muted-foreground">
@@ -293,7 +293,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 									</div>
 								</div>
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "security", Class: "flex-1"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "vertical_tabs", Value: "security", Class: "flex-1"}) {
 								<div class="space-y-4">
 									<h3 class="text-lg font-semibold">Security Settings</h3>
 									<p class="text-muted-foreground">
@@ -315,7 +315,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 									</div>
 								</div>
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "integrations", Class: "flex-1"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "vertical_tabs", Value: "integrations", Class: "flex-1"}) {
 								<div class="space-y-4">
 									<h3 class="text-lg font-semibold">Integrations</h3>
 									<p class="text-muted-foreground">
@@ -327,7 +327,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 												<p class="font-medium">GitHub</p>
 												<p class="text-sm text-muted-foreground">Connect your GitHub account</p>
 											</div>
-											@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+											@button.Button(button.ButtonArgs{Variant: "outline", Size: "sm"}) {
 												Connect
 											}
 										</div>
@@ -336,14 +336,14 @@ templ TabsPage(rootArgs l.RootArgs) {
 												<p class="font-medium">Slack</p>
 												<p class="text-sm text-muted-foreground">Get notifications in Slack</p>
 											</div>
-											@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+											@button.Button(button.ButtonArgs{Variant: "outline", Size: "sm"}) {
 												Connect
 											}
 										</div>
 									</div>
 								</div>
 							}
-							@tabs.TabsContent(tabs.TabsContentProps{ID: "vertical_tabs", Value: "support", Class: "flex-1"}) {
+							@tabs.TabsContent(tabs.TabsContentArgs{ID: "vertical_tabs", Value: "support", Class: "flex-1"}) {
 								<div class="space-y-4">
 									<h3 class="text-lg font-semibold">Support</h3>
 									<p class="text-muted-foreground">
@@ -365,33 +365,33 @@ templ TabsPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Variant System Example -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Variant System Demo
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Demonstrates the shadcn-like variant pattern with base classes and conditional styling using Datastar.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						<div class="space-y-6">
 							<!-- Standard Variant -->
 							<div>
 								<h4 class="text-sm font-medium mb-3">Standard Variant (New York v4 Style)</h4>
-								@tabs.Tabs(tabs.TabsProps{ID: "variant_standard", DefaultValue: "overview", Class: "w-full max-w-2xl"}) {
-									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3"}) {
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "overview"}) {
+								@tabs.Tabs(tabs.TabsArgs{ID: "variant_standard", DefaultValue: "overview", Class: "w-full max-w-2xl"}) {
+									@tabs.TabsList(tabs.TabsListArgs{Class: "grid w-full grid-cols-3"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_standard", Value: "overview"}) {
 											Overview
 										}
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "analytics"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_standard", Value: "analytics"}) {
 											Analytics
 										}
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_standard", Value: "reports"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_standard", Value: "reports"}) {
 											Reports
 										}
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "overview"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_standard", Value: "overview"}) {
 										<div class="p-4 border rounded-md">
 											<h5 class="font-medium">Overview Content</h5>
 											<p class="text-sm text-muted-foreground mt-1">
@@ -400,7 +400,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 											</p>
 										</div>
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "analytics"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_standard", Value: "analytics"}) {
 										<div class="p-4 border rounded-md">
 											<h5 class="font-medium">Analytics Content</h5>
 											<p class="text-sm text-muted-foreground mt-1">
@@ -408,7 +408,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 											</p>
 										</div>
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_standard", Value: "reports"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_standard", Value: "reports"}) {
 										<div class="p-4 border rounded-md">
 											<h5 class="font-medium">Reports Content</h5>
 											<p class="text-sm text-muted-foreground mt-1">
@@ -421,19 +421,19 @@ templ TabsPage(rootArgs l.RootArgs) {
 							<!-- Custom Variant with Additional Classes -->
 							<div>
 								<h4 class="text-sm font-medium mb-3">Custom Variant (With Additional Classes)</h4>
-								@tabs.Tabs(tabs.TabsProps{ID: "variant_custom", DefaultValue: "design", Class: "w-full max-w-2xl"}) {
-									@tabs.TabsList(tabs.TabsListProps{Class: "grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-800"}) {
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "design", Class: "text-blue-600 dark:text-blue-400"}) {
+								@tabs.Tabs(tabs.TabsArgs{ID: "variant_custom", DefaultValue: "design", Class: "w-full max-w-2xl"}) {
+									@tabs.TabsList(tabs.TabsListArgs{Class: "grid w-full grid-cols-3 bg-slate-100 dark:bg-slate-800"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_custom", Value: "design", Class: "text-blue-600 dark:text-blue-400"}) {
 											🎨 Design
 										}
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "develop", Class: "text-green-600 dark:text-green-400"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_custom", Value: "develop", Class: "text-green-600 dark:text-green-400"}) {
 											⚡ Develop
 										}
-										@tabs.TabsTrigger(tabs.TabsTriggerProps{ID: "variant_custom", Value: "deploy", Class: "text-purple-600 dark:text-purple-400"}) {
+										@tabs.TabsTrigger(tabs.TabsTriggerArgs{ID: "variant_custom", Value: "deploy", Class: "text-purple-600 dark:text-purple-400"}) {
 											🚀 Deploy
 										}
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "design"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_custom", Value: "design"}) {
 										<div class="p-4 border rounded-md bg-blue-50 dark:bg-blue-950/20">
 											<h5 class="font-medium text-blue-900 dark:text-blue-100">Design Phase</h5>
 											<p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
@@ -441,7 +441,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 											</p>
 										</div>
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "develop"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_custom", Value: "develop"}) {
 										<div class="p-4 border rounded-md bg-green-50 dark:bg-green-950/20">
 											<h5 class="font-medium text-green-900 dark:text-green-100">Development Phase</h5>
 											<p class="text-sm text-green-700 dark:text-green-300 mt-1">
@@ -449,7 +449,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 											</p>
 										</div>
 									}
-									@tabs.TabsContent(tabs.TabsContentProps{ID: "variant_custom", Value: "deploy"}) {
+									@tabs.TabsContent(tabs.TabsContentArgs{ID: "variant_custom", Value: "deploy"}) {
 										<div class="p-4 border rounded-md bg-purple-50 dark:bg-purple-950/20">
 											<h5 class="font-medium text-purple-900 dark:text-purple-100">Deployment Phase</h5>
 											<p class="text-sm text-purple-700 dark:text-purple-300 mt-1">

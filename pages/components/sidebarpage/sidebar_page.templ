@@ -26,16 +26,16 @@ templ SidebarPage(rootArgs l.RootArgs) {
 							Use building blocks to create a responsive sidebar that shows as a Sheet on mobile and fixed sidebar on desktop.
 						</p>
 					</div>
-					@card.Card(card.CardProps{}) {
-						@card.CardHeader(card.CardHeaderProps{}) {
-							@card.CardTitle(card.CardTitleProps{}) {
+					@card.Card(card.CardArgs{}) {
+						@card.CardHeader(card.CardHeaderArgs{}) {
+							@card.CardTitle(card.CardTitleArgs{}) {
 								Mobile + Desktop Sidebar
 							}
-							@card.CardDescription(card.CardDescriptionProps{}) {
+							@card.CardDescription(card.CardDescriptionArgs{}) {
 								This is the recommended pattern that combines mobile Sheet with desktop fixed sidebar.
 							}
 						}
-						@card.CardContent(card.CardContentProps{}) {
+						@card.CardContent(card.CardContentArgs{}) {
 							<div class="space-y-4">
 								<p class="text-sm text-muted-foreground">
 									<strong>Mobile:</strong> Uses Sheet component with slide-in animation from left.
@@ -59,15 +59,15 @@ templ SidebarPage(rootArgs l.RootArgs) {
 						</p>
 					</div>
 					<div class="grid gap-4 md:grid-cols-2">
-						@card.Card(card.CardProps{}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{
+						@card.Card(card.CardArgs{}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{
 									Class: "text-lg",
 								}) {
 									Core Components
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<ul class="text-sm space-y-1 text-muted-foreground">
 									<li>• <code>SidebarMobile</code> - Sheet wrapper</li>
 									<li>• <code>SidebarDesktop</code> - Fixed sidebar</li>
@@ -76,15 +76,15 @@ templ SidebarPage(rootArgs l.RootArgs) {
 								</ul>
 							}
 						}
-						@card.Card(card.CardProps{}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{
+						@card.Card(card.CardArgs{}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{
 									Class: "text-lg",
 								}) {
 									Content Components
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<ul class="text-sm space-y-1 text-muted-foreground">
 									<li>• <code>SidebarHeader</code> - Top section</li>
 									<li>• <code>SidebarNav</code> - Navigation menu</li>
@@ -104,15 +104,15 @@ templ SidebarPage(rootArgs l.RootArgs) {
 						</p>
 					</div>
 					<div class="grid gap-4 md:grid-cols-2">
-						@card.Card(card.CardProps{}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{
+						@card.Card(card.CardArgs{}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{
 									Class: "text-lg",
 								}) {
 									Signal Coordination
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<ul class="text-sm space-y-2 text-muted-foreground">
 									<li>• All components share the same signal ID</li>
 									<li>• Trigger knows if sidebar is open</li>
@@ -121,15 +121,15 @@ templ SidebarPage(rootArgs l.RootArgs) {
 								</ul>
 							}
 						}
-						@card.Card(card.CardProps{}) {
-							@card.CardHeader(card.CardHeaderProps{}) {
-								@card.CardTitle(card.CardTitleProps{
+						@card.Card(card.CardArgs{}) {
+							@card.CardHeader(card.CardHeaderArgs{}) {
+								@card.CardTitle(card.CardTitleArgs{
 									Class: "text-lg",
 								}) {
 									Responsive Design
 								}
 							}
-							@card.CardContent(card.CardContentProps{}) {
+							@card.CardContent(card.CardContentArgs{}) {
 								<ul class="text-sm space-y-2 text-muted-foreground">
 									<li>• Mobile: Sheet with slide animations</li>
 									<li>• Desktop: Fixed sidebar (w-64)</li>

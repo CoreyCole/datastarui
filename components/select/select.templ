@@ -17,7 +17,7 @@ type SelectSignals struct {
 
 // Select renders the main select wrapper with Datastar state management
 // If Options are provided, it will automatically render the complete select UI
-templ Select(args SelectProps) {
+templ Select(args SelectArgs) {
 	{{
 		// Generate unique ID if not provided (following dropdown pattern exactly)
 		selectID := args.ID
@@ -82,16 +82,16 @@ templ Select(args SelectProps) {
 		}
 		if len(args.Options) > 0 {
 			<!-- Auto-render complete select UI when options are provided -->
-			@SelectTrigger(SelectTriggerProps{
+			@SelectTrigger(SelectTriggerArgs{
 				ID:       selectID,
 				Disabled: args.Disabled,
 			}) {
-				@SelectValue(SelectValueProps{
+				@SelectValue(SelectValueArgs{
 					ID:          selectID,
 					Placeholder: args.Placeholder,
 				})
 			}
-			@SelectContent(SelectContentProps{
+			@SelectContent(SelectContentArgs{
 				ID: selectID,
 			}) {
 				@renderSelectOptions(selectID, args.Options)
@@ -104,11 +104,11 @@ templ Select(args SelectProps) {
 }
 
 // renderSelectOptions renders a slice of SelectOptions with proper grouping
-templ renderSelectOptions(selectID string, options []SelectOptionProps) {
+templ renderSelectOptions(selectID string, options []SelectOptionArgs) {
 	{{
 		// Group options by their Group field
-		groupedOptions := make(map[string][]SelectOptionProps)
-		ungroupedOptions := []SelectOptionProps{}
+		groupedOptions := make(map[string][]SelectOptionArgs)
+		ungroupedOptions := []SelectOptionArgs{}
 
 		for _, option := range options {
 			if option.Group != "" {
@@ -124,7 +124,7 @@ templ renderSelectOptions(selectID string, options []SelectOptionProps) {
 	<!-- Render ungrouped options first -->
 	if len(ungroupedOptions) > 0 {
 		for _, option := range ungroupedOptions {
-			@SelectItem(SelectItemProps{
+			@SelectItem(SelectItemArgs{
 				ID:       selectID,
 				Value:    option.Value,
 				Index:    globalIndex,
@@ -138,16 +138,16 @@ templ renderSelectOptions(selectID string, options []SelectOptionProps) {
 	<!-- Render grouped options -->
 	for groupName, groupOptions := range groupedOptions {
 		if len(ungroupedOptions) > 0 || groupName != "" {
-			@SelectSeparator(SelectSeparatorProps{})
+			@SelectSeparator(SelectSeparatorArgs{})
 		}
-		@SelectGroup(SelectGroupProps{}) {
+		@SelectGroup(SelectGroupArgs{}) {
 			if groupName != "" {
-				@SelectLabel(SelectLabelProps{}) {
+				@SelectLabel(SelectLabelArgs{}) {
 					{ groupName }
 				}
 			}
 			for _, option := range groupOptions {
-				@SelectItem(SelectItemProps{
+				@SelectItem(SelectItemArgs{
 					ID:       selectID,
 					Value:    option.Value,
 					Index:    globalIndex,
@@ -162,7 +162,7 @@ templ renderSelectOptions(selectID string, options []SelectOptionProps) {
 }
 
 // SelectTrigger - button that opens/closes the select dropdown
-templ SelectTrigger(args SelectTriggerProps) {
+templ SelectTrigger(args SelectTriggerArgs) {
 	{{
 		// Create signals manager for this select
 		signals := utils.Signals(args.ID, SelectSignals{})
@@ -206,7 +206,7 @@ templ SelectTrigger(args SelectTriggerProps) {
 }
 
 // SelectValue displays the currently selected value or placeholder
-templ SelectValue(args SelectValueProps) {
+templ SelectValue(args SelectValueArgs) {
 	{{
 		// Build the label signal reference manually
 		labelSignal := "$" + args.ID + ".label"
@@ -227,7 +227,7 @@ templ SelectValue(args SelectValueProps) {
 }
 
 // SelectContent - dropdown content container
-templ SelectContent(args SelectContentProps) {
+templ SelectContent(args SelectContentArgs) {
 	{{
 		// Create signals manager for this select
 		signals := utils.Signals(args.ID, SelectSignals{})
@@ -262,7 +262,7 @@ templ SelectContent(args SelectContentProps) {
 }
 
 // SelectItem - individual option in the select dropdown
-templ SelectItem(args SelectItemProps) {
+templ SelectItem(args SelectItemArgs) {
 	{{
 		// Create signals manager for this select
 		signals := utils.Signals(args.ID, SelectSignals{})
@@ -321,7 +321,7 @@ templ SelectItem(args SelectItemProps) {
 }
 
 // SelectLabel renders a label for a group of items
-templ SelectLabel(args SelectLabelProps) {
+templ SelectLabel(args SelectLabelArgs) {
 	{{
 		classes := selectLabelVariants(args.Class)
 	}}
@@ -335,7 +335,7 @@ templ SelectLabel(args SelectLabelProps) {
 }
 
 // SelectSeparator renders a visual separator between groups
-templ SelectSeparator(args SelectSeparatorProps) {
+templ SelectSeparator(args SelectSeparatorArgs) {
 	{{
 		classes := selectSeparatorVariants(args.Class)
 	}}
@@ -347,7 +347,7 @@ templ SelectSeparator(args SelectSeparatorProps) {
 }
 
 // SelectGroup renders a group container for items
-templ SelectGroup(args SelectGroupProps) {
+templ SelectGroup(args SelectGroupArgs) {
 	<div
 		data-slot="select-group"
 		role="group"

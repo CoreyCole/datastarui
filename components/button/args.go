@@ -2,8 +2,8 @@ package button
 
 import "github.com/a-h/templ"
 
-// ButtonProps defines the properties for the Button component
-type ButtonProps struct {
+// ButtonArgs defines the properties for the Button component
+type ButtonArgs struct {
 	// Variant defines the visual style of the button
 	// Options: "default", "destructive", "outline", "secondary", "ghost", "link"
 	Variant string

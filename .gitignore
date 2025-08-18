@@ -8,5 +8,5 @@ static/css/out*
 log/
 node_modules/
 static/js/datastar.js
-static/js/datastar-inspector.js
-static/js/datastar-inspector.map.js 
+static/js/datastar-inspector
+static/js/datastar-inspector*

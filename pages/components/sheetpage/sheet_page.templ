@@ -23,16 +23,16 @@ templ SheetPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				<!-- Right Side Modal Sheet -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Right Side Modal
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Opens from the right side. Click outside or press Escape to close.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						@sheet.Sheet(sheet.SheetArgs{
 							ID:    "right_modal_sheet",
 							Modal: true,
@@ -51,7 +51,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 								}
 								<div class="grid gap-4 py-4">
 									<div class="grid grid-cols-4 items-center gap-4">
-										@label.Label(label.LabelProps{
+										@label.Label(label.LabelArgs{
 											For:   "name",
 											Class: "text-right",
 										}) {
@@ -64,7 +64,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 										})
 									</div>
 									<div class="grid grid-cols-4 items-center gap-4">
-										@label.Label(label.LabelProps{
+										@label.Label(label.LabelArgs{
 											For:   "username",
 											Class: "text-right",
 										}) {
@@ -78,7 +78,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 									</div>
 								</div>
 								@sheet.SheetFooter(sheet.SheetFooterArgs{}) {
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Type: "submit",
 									}) {
 										Save changes
@@ -90,23 +90,23 @@ templ SheetPage(rootArgs l.RootArgs) {
 							SheetID: "right_modal_sheet",
 							AsChild: true,
 						}) {
-							@button.Button(button.ButtonProps{}) {
+							@button.Button(button.ButtonArgs{}) {
 								Open Right Sheet
 							}
 						}
 					}
 				}
 				<!-- Left Side Menu Sheet -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Left Side Menu
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Navigation menu that slides from the left.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						@sheet.Sheet(sheet.SheetArgs{
 							ID:    "left_sheet",
 							Modal: true,
@@ -137,7 +137,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 							SheetID: "left_sheet",
 							AsChild: true,
 						}) {
-							@button.Button(button.ButtonProps{
+							@button.Button(button.ButtonArgs{
 								Variant: "outline",
 							}) {
 								Open Left Menu
@@ -146,16 +146,16 @@ templ SheetPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Top Notifications Sheet -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Top Notifications
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Notification panel that slides from the top.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						@sheet.Sheet(sheet.SheetArgs{
 							ID:    "top_sheet",
 							Modal: true,
@@ -192,7 +192,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 							SheetID: "top_sheet",
 							AsChild: true,
 						}) {
-							@button.Button(button.ButtonProps{
+							@button.Button(button.ButtonArgs{
 								Variant: "secondary",
 							}) {
 								Show Notifications
@@ -201,16 +201,16 @@ templ SheetPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Bottom Share Sheet -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Bottom Share Sheet
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Mobile-style bottom sheet for sharing options.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						@sheet.Sheet(sheet.SheetArgs{
 							ID:    "bottom_sheet",
 							Modal: true,
@@ -229,7 +229,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 								}
 								<div class="py-4">
 									<div class="grid grid-cols-3 gap-4">
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "ghost",
 											Class:   "flex flex-col items-center gap-2 h-auto p-4",
 										}) {
@@ -238,7 +238,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 											</svg>
 											<span class="text-sm">Copy Link</span>
 										}
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "ghost",
 											Class:   "flex flex-col items-center gap-2 h-auto p-4",
 										}) {
@@ -247,7 +247,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 											</svg>
 											<span class="text-sm">Email</span>
 										}
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "ghost",
 											Class:   "flex flex-col items-center gap-2 h-auto p-4",
 										}) {
@@ -264,7 +264,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 							SheetID: "bottom_sheet",
 							AsChild: true,
 						}) {
-							@button.Button(button.ButtonProps{
+							@button.Button(button.ButtonArgs{
 								Variant: "destructive",
 							}) {
 								Share Content
@@ -273,16 +273,16 @@ templ SheetPage(rootArgs l.RootArgs) {
 					}
 				}
 				<!-- Non-Modal Format Sheet -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Non-Modal Bottom Sheet
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Format panel that slides from bottom and doesn't block interaction.
 						}
 					}
-					@card.CardContent(card.CardContentProps{}) {
+					@card.CardContent(card.CardContentArgs{}) {
 						@sheet.Sheet(sheet.SheetArgs{
 							ID:    "non_modal_sheet",
 							Modal: false,
@@ -316,19 +316,19 @@ templ SheetPage(rootArgs l.RootArgs) {
 									<div class="space-y-2">
 										<label class="text-sm font-medium">Font Weight</label>
 										<div class="flex gap-2">
-											@button.Button(button.ButtonProps{
+											@button.Button(button.ButtonArgs{
 												Variant: "outline",
 												Size:    "sm",
 											}) {
 												Light
 											}
-											@button.Button(button.ButtonProps{
+											@button.Button(button.ButtonArgs{
 												Variant: "outline",
 												Size:    "sm",
 											}) {
 												Regular
 											}
-											@button.Button(button.ButtonProps{
+											@button.Button(button.ButtonArgs{
 												Variant: "outline",
 												Size:    "sm",
 											}) {
@@ -354,7 +354,7 @@ templ SheetPage(rootArgs l.RootArgs) {
 							SheetID: "non_modal_sheet",
 							AsChild: true,
 						}) {
-							@button.Button(button.ButtonProps{
+							@button.Button(button.ButtonArgs{
 								Variant: "ghost",
 							}) {
 								Open Format Panel
@@ -367,15 +367,15 @@ templ SheetPage(rootArgs l.RootArgs) {
 			<div class="space-y-4">
 				<h2 class="text-2xl font-bold">Sheet Features</h2>
 				<div class="grid gap-4 md:grid-cols-2">
-					@card.Card(card.CardProps{}) {
-						@card.CardHeader(card.CardHeaderProps{}) {
-							@card.CardTitle(card.CardTitleProps{
+					@card.Card(card.CardArgs{}) {
+						@card.CardHeader(card.CardHeaderArgs{}) {
+							@card.CardTitle(card.CardTitleArgs{
 								Class: "text-lg",
 							}) {
 								Modal vs Non-Modal
 							}
 						}
-						@card.CardContent(card.CardContentProps{}) {
+						@card.CardContent(card.CardContentArgs{}) {
 							<ul class="text-sm space-y-2 text-muted-foreground">
 								<li>• <strong>Modal sheets</strong> block interaction with main content</li>
 								<li>• <strong>Non-modal sheets</strong> allow continued interaction</li>
@@ -384,15 +384,15 @@ templ SheetPage(rootArgs l.RootArgs) {
 							</ul>
 						}
 					}
-					@card.Card(card.CardProps{}) {
-						@card.CardHeader(card.CardHeaderProps{}) {
-							@card.CardTitle(card.CardTitleProps{
+					@card.Card(card.CardArgs{}) {
+						@card.CardHeader(card.CardHeaderArgs{}) {
+							@card.CardTitle(card.CardTitleArgs{
 								Class: "text-lg",
 							}) {
 								Position Options
 							}
 						}
-						@card.CardContent(card.CardContentProps{}) {
+						@card.CardContent(card.CardContentArgs{}) {
 							<ul class="text-sm space-y-2 text-muted-foreground">
 								<li>• <strong>Right:</strong> Default position, great for forms and details</li>
 								<li>• <strong>Left:</strong> Perfect for navigation menus</li>

@@ -9,16 +9,16 @@ templ ExamplesPage(rootArgs l.RootArgs) {
 			<div class="container mx-auto px-4 py-8">
 				<div class="flex flex-col space-y-8">
 					<!-- Breadcrumb Navigation -->
-					@b.Breadcrumb(b.BreadcrumbProps{}) {
-						@b.BreadcrumbList(b.BreadcrumbListProps{}) {
-							@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-								@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+					@b.Breadcrumb(b.BreadcrumbArgs{}) {
+						@b.BreadcrumbList(b.BreadcrumbListArgs{}) {
+							@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+								@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/"}) {
 									Home
 								}
 							}
-							@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-							@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-								@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+							@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+							@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+								@b.BreadcrumbPage(b.BreadcrumbPageArgs{}) {
 									Examples
 								}
 							}
@@ -43,22 +43,22 @@ templ ExamplesPage(rootArgs l.RootArgs) {
 						<div class="space-y-4">
 							<h3 class="text-xl font-semibold">Basic Breadcrumb</h3>
 							<div class="p-4 border rounded-lg">
-								@b.Breadcrumb(b.BreadcrumbProps{}) {
-									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+								@b.Breadcrumb(b.BreadcrumbArgs{}) {
+									@b.BreadcrumbList(b.BreadcrumbListArgs{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/"}) {
 												Home
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/components"}) {
 												Components
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageArgs{}) {
 												Breadcrumb
 											}
 										}
@@ -70,26 +70,26 @@ templ ExamplesPage(rootArgs l.RootArgs) {
 						<div class="space-y-4">
 							<h3 class="text-xl font-semibold">Breadcrumb with Ellipsis</h3>
 							<div class="p-4 border rounded-lg">
-								@b.Breadcrumb(b.BreadcrumbProps{}) {
-									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+								@b.Breadcrumb(b.BreadcrumbArgs{}) {
+									@b.BreadcrumbList(b.BreadcrumbListArgs{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/"}) {
 												Home
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbEllipsis(b.BreadcrumbEllipsisProps{})
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbEllipsis(b.BreadcrumbEllipsisArgs{})
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/components"}) {
 												Components
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{})
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{})
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageArgs{}) {
 												Breadcrumb
 											}
 										}
@@ -101,26 +101,26 @@ templ ExamplesPage(rootArgs l.RootArgs) {
 						<div class="space-y-4">
 							<h3 class="text-xl font-semibold">Custom Separator</h3>
 							<div class="p-4 border rounded-lg">
-								@b.Breadcrumb(b.BreadcrumbProps{}) {
-									@b.BreadcrumbList(b.BreadcrumbListProps{}) {
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/"}) {
+								@b.Breadcrumb(b.BreadcrumbArgs{}) {
+									@b.BreadcrumbList(b.BreadcrumbListArgs{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/"}) {
 												Home
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{CustomIcon: true}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{CustomIcon: true}) {
 											<span class="text-muted-foreground">/</span>
 										}
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbLink(b.BreadcrumbLinkProps{Href: "/components"}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbLink(b.BreadcrumbLinkArgs{Href: "/components"}) {
 												Components
 											}
 										}
-										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorProps{CustomIcon: true}) {
+										@b.BreadcrumbSeparator(b.BreadcrumbSeparatorArgs{CustomIcon: true}) {
 											<span class="text-muted-foreground">/</span>
 										}
-										@b.BreadcrumbItem(b.BreadcrumbItemProps{}) {
-											@b.BreadcrumbPage(b.BreadcrumbPageProps{}) {
+										@b.BreadcrumbItem(b.BreadcrumbItemArgs{}) {
+											@b.BreadcrumbPage(b.BreadcrumbPageArgs{}) {
 												Breadcrumb
 											}
 										}

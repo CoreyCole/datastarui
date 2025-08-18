@@ -2,8 +2,8 @@ package tabs
 
 import "github.com/a-h/templ"
 
-// TabsProps defines the properties for the Tabs root component
-type TabsProps struct {
+// TabsArgs defines the properties for the Tabs root component
+type TabsArgs struct {
 	// ID is a unique identifier for this tabs instance (required for signal management)
 	ID string
 
@@ -20,8 +20,8 @@ type TabsProps struct {
 	Attributes templ.Attributes
 }
 
-// TabsListProps defines the properties for the TabsList component
-type TabsListProps struct {
+// TabsListArgs defines the properties for the TabsList component
+type TabsListArgs struct {
 	// Class allows additional CSS classes to be added
 	Class string
 
@@ -29,8 +29,8 @@ type TabsListProps struct {
 	Attributes templ.Attributes
 }
 
-// TabsTriggerProps defines the properties for the TabsTrigger component
-type TabsTriggerProps struct {
+// TabsTriggerArgs defines the properties for the TabsTrigger component
+type TabsTriggerArgs struct {
 	// ID is the tabs instance ID (must match the parent Tabs ID)
 	ID string
 
@@ -47,8 +47,8 @@ type TabsTriggerProps struct {
 	Attributes templ.Attributes
 }
 
-// TabsContentProps defines the properties for the TabsContent component
-type TabsContentProps struct {
+// TabsContentArgs defines the properties for the TabsContent component
+type TabsContentArgs struct {
 	// ID is the tabs instance ID (must match the parent Tabs ID)
 	ID string
 

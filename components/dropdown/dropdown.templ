@@ -12,7 +12,7 @@ type DropdownSignals struct {
 }
 
 // DropdownMenu renders the main dropdown wrapper with Datastar state management
-templ DropdownMenu(args DropdownMenuProps) {
+templ DropdownMenu(args DropdownMenuArgs) {
 	{{
 		// Generate unique ID if not provided
 		dropdownID := args.ID
@@ -49,7 +49,7 @@ templ DropdownMenu(args DropdownMenuProps) {
 }
 
 // DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
-templ DropdownMenuTrigger(args DropdownMenuTriggerProps) {
+templ DropdownMenuTrigger(args DropdownMenuTriggerArgs) {
 	{{
 		// Create signals manager for this dropdown
 		signals := utils.Signals(args.ID, DropdownSignals{})
@@ -82,7 +82,7 @@ templ DropdownMenuTrigger(args DropdownMenuTriggerProps) {
 }
 
 // DropdownMenuContent renders the dropdown content panel
-templ DropdownMenuContent(args DropdownMenuContentProps) {
+templ DropdownMenuContent(args DropdownMenuContentArgs) {
 	{{
 		// Calculate positioning classes based on args
 		alignClass := ""
@@ -121,7 +121,7 @@ templ DropdownMenuContent(args DropdownMenuContentProps) {
 }
 
 // DropdownMenuItem renders a clickable menu item
-templ DropdownMenuItem(args DropdownMenuItemProps) {
+templ DropdownMenuItem(args DropdownMenuItemArgs) {
 	{{
 		// Create signals manager for this dropdown
 		signals := utils.Signals(args.ID, DropdownSignals{})
@@ -167,7 +167,7 @@ templ DropdownMenuItem(args DropdownMenuItemProps) {
 }
 
 // DropdownMenuLabel renders a non-interactive label
-templ DropdownMenuLabel(args DropdownMenuLabelProps) {
+templ DropdownMenuLabel(args DropdownMenuLabelArgs) {
 	<div
 		data-slot="dropdown-menu-label"
 		class={ dropdownMenuLabelVariants(args.Class, args.Inset) }
@@ -182,7 +182,7 @@ templ DropdownMenuLabel(args DropdownMenuLabelProps) {
 }
 
 // DropdownMenuSeparator renders a visual separator
-templ DropdownMenuSeparator(args DropdownMenuSeparatorProps) {
+templ DropdownMenuSeparator(args DropdownMenuSeparatorArgs) {
 	<div
 		data-slot="dropdown-menu-separator"
 		class={ dropdownMenuSeparatorVariants(args.Class) }
@@ -192,7 +192,7 @@ templ DropdownMenuSeparator(args DropdownMenuSeparatorProps) {
 }
 
 // DropdownMenuShortcut renders keyboard shortcut text
-templ DropdownMenuShortcut(args DropdownMenuShortcutProps) {
+templ DropdownMenuShortcut(args DropdownMenuShortcutArgs) {
 	<span
 		data-slot="dropdown-menu-shortcut"
 		class={ dropdownMenuShortcutVariants(args.Class) }
@@ -203,7 +203,7 @@ templ DropdownMenuShortcut(args DropdownMenuShortcutProps) {
 }
 
 // DropdownMenuGroup renders a logical grouping of menu items
-templ DropdownMenuGroup(args DropdownMenuGroupProps) {
+templ DropdownMenuGroup(args DropdownMenuGroupArgs) {
 	<div
 		data-slot="dropdown-menu-group"
 		class={ dropdownMenuGroupVariants(args.Class) }

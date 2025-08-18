@@ -20,36 +20,36 @@ templ ButtonPage(rootArgs l.RootArgs) {
 			<!-- Component Grid -->
 			<div class="grid gap-8">
 				<!-- Button Component -->
-				@card.Card(card.CardProps{}) {
-					@card.CardHeader(card.CardHeaderProps{}) {
-						@card.CardTitle(card.CardTitleProps{}) {
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
 							Button
 						}
-						@card.CardDescription(card.CardDescriptionProps{}) {
+						@card.CardDescription(card.CardDescriptionArgs{}) {
 							Displays a button or a component that looks like a button.
 						}
 					}
-					@card.CardContent(card.CardContentProps{Class: "space-y-4"}) {
+					@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
 						<!-- Default Variants -->
 						<div class="space-y-2">
 							<h3 class="text-sm font-medium">Variants</h3>
 							<div class="flex flex-wrap gap-2">
-								@button.Button(button.ButtonProps{Variant: "default"}) {
+								@button.Button(button.ButtonArgs{Variant: "default"}) {
 									Default
 								}
-								@button.Button(button.ButtonProps{Variant: "destructive"}) {
+								@button.Button(button.ButtonArgs{Variant: "destructive"}) {
 									Destructive
 								}
-								@button.Button(button.ButtonProps{Variant: "outline"}) {
+								@button.Button(button.ButtonArgs{Variant: "outline"}) {
 									Outline
 								}
-								@button.Button(button.ButtonProps{Variant: "secondary"}) {
+								@button.Button(button.ButtonArgs{Variant: "secondary"}) {
 									Secondary
 								}
-								@button.Button(button.ButtonProps{Variant: "ghost"}) {
+								@button.Button(button.ButtonArgs{Variant: "ghost"}) {
 									Ghost
 								}
-								@button.Button(button.ButtonProps{Variant: "link"}) {
+								@button.Button(button.ButtonArgs{Variant: "link"}) {
 									Link
 								}
 							</div>
@@ -58,16 +58,16 @@ templ ButtonPage(rootArgs l.RootArgs) {
 						<div class="space-y-2">
 							<h3 class="text-sm font-medium">Sizes</h3>
 							<div class="flex flex-wrap items-center gap-2">
-								@button.Button(button.ButtonProps{Size: "sm"}) {
+								@button.Button(button.ButtonArgs{Size: "sm"}) {
 									Small
 								}
-								@button.Button(button.ButtonProps{Size: "default"}) {
+								@button.Button(button.ButtonArgs{Size: "default"}) {
 									Default
 								}
-								@button.Button(button.ButtonProps{Size: "lg"}) {
+								@button.Button(button.ButtonArgs{Size: "lg"}) {
 									Large
 								}
-								@button.Button(button.ButtonProps{Size: "icon", Variant: "outline"}) {
+								@button.Button(button.ButtonArgs{Size: "icon", Variant: "outline"}) {
 									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
 									</svg>
@@ -79,7 +79,7 @@ templ ButtonPage(rootArgs l.RootArgs) {
 							<h3 class="text-sm font-medium">Interactive Examples</h3>
 							<div class="flex flex-wrap gap-2">
 								<div data-signals="{count: 0}">
-									@button.Button(button.ButtonProps{
+									@button.Button(button.ButtonArgs{
 										Attributes: templ.Attributes{
 											"data-on-click": "$count++",
 										},
@@ -87,7 +87,7 @@ templ ButtonPage(rootArgs l.RootArgs) {
 										Clicked <span data-text="$count">0</span> times
 									}
 								</div>
-								@button.Button(button.ButtonProps{
+								@button.Button(button.ButtonArgs{
 									Variant: "outline",
 									Attributes: templ.Attributes{
 										"data-on-click": "alert('Hello from DatastarUI!')",

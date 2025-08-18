@@ -4,8 +4,8 @@ import (
 	"github.com/a-h/templ"
 )
 
-// CheckboxProps defines the properties for the Checkbox component
-type CheckboxProps struct {
+// CheckboxArgs defines the properties for the Checkbox component
+type CheckboxArgs struct {
 	// Core HTML attributes
 	ID       string
 	Name     string
@@ -27,8 +27,8 @@ type CheckboxProps struct {
 	Attributes templ.Attributes
 }
 
-// CheckboxIndicatorProps defines the properties for the CheckboxIndicator component
-type CheckboxIndicatorProps struct {
+// CheckboxIndicatorArgs defines the properties for the CheckboxIndicator component
+type CheckboxIndicatorArgs struct {
 	// Styling
 	ClassName string
 

@@ -26,6 +26,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
 	"github.com/coreycole/datastarui/pages/components/componentspage"
+	"github.com/coreycole/datastarui/pages/components/tooltippage"
 	"github.com/coreycole/datastarui/utils"
 )
 
@@ -138,6 +139,9 @@ func main() {
 	})
 	e.GET("/components/sidebar", func(c echo.Context) error {
 		return sidebarpage.SidebarPage(componentRootArgs(c.Request().URL.Path, cfg, datastarProAvailable)).Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/tooltip", func(c echo.Context) error {
+		return tooltippage.TooltipPage(componentRootArgs(c.Request().URL.Path, cfg, datastarProAvailable)).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the docs page

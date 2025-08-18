@@ -59,11 +59,11 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+			templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 				ID:          "slice_theme_select",
 				Name:        "theme",
 				Placeholder: "Select a theme...",
-				Options: []selectui.SelectOptionProps{
+				Options: []selectui.SelectOptionArgs{
 					{Value: "light", Label: "Light"},
 					{Value: "dark", Label: "Dark"},
 					{Value: "system", Label: "System"},
@@ -76,11 +76,11 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+			templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 				ID:          "slice_language_select",
 				Name:        "language",
 				Placeholder: "Select a language...",
-				Options: []selectui.SelectOptionProps{
+				Options: []selectui.SelectOptionArgs{
 					{Value: "en", Label: "English", Group: "Popular"},
 					{Value: "es", Label: "Spanish", Group: "Popular"},
 					{Value: "fr", Label: "French", Group: "Popular"},
@@ -96,11 +96,11 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+			templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 				ID:          "slice_account_select",
 				Name:        "account",
 				Placeholder: "Choose account type...",
-				Options: []selectui.SelectOptionProps{
+				Options: []selectui.SelectOptionArgs{
 					{Value: "free", Label: "Free"},
 					{Value: "pro", Label: "Pro"},
 					{Value: "enterprise", Label: "Enterprise (Contact Sales)", Disabled: true},
@@ -113,12 +113,12 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+			templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 				ID:          "slice_priority_select",
 				Name:        "priority",
 				Value:       "medium", // Pre-selected
 				Placeholder: "Select priority...",
-				Options: []selectui.SelectOptionProps{
+				Options: []selectui.SelectOptionArgs{
 					{Value: "low", Label: "Low Priority"},
 					{Value: "medium", Label: "Medium Priority"},
 					{Value: "high", Label: "High Priority"},
@@ -177,7 +177,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "form_theme_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -211,7 +211,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "form_theme_select",
 								Placeholder: "Choose your preferred theme",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -220,7 +220,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "form_theme_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -260,7 +260,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "form_theme_select",
 								Value: "light",
 								Index: 0,
@@ -290,7 +290,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "form_theme_select",
 								Value: "dark",
 								Index: 1,
@@ -320,7 +320,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "form_theme_select",
 								Value: "system",
 								Index: 2,
@@ -330,7 +330,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "form_theme_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -338,7 +338,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:       "form_theme_select",
 						Name:     "theme",
 						Required: true,
@@ -368,13 +368,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -412,7 +412,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "form_language_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -446,7 +446,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "form_language_select",
 								Placeholder: "Select a language",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -455,7 +455,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "form_language_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -507,7 +507,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var19), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -533,7 +533,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "en",
 									Index: 0,
@@ -563,7 +563,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "es",
 									Index: 1,
@@ -593,7 +593,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "fr",
 									Index: 2,
@@ -603,7 +603,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -611,7 +611,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = selectui.SelectSeparator(selectui.SelectSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectSeparator(selectui.SelectSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -649,7 +649,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -675,7 +675,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "de",
 									Index: 3,
@@ -705,7 +705,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "it",
 									Index: 4,
@@ -735,7 +735,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_language_select",
 									Value: "pt",
 									Index: 5,
@@ -745,13 +745,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "form_language_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -759,7 +759,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:   "form_language_select",
 						Name: "language",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
@@ -788,13 +788,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -832,7 +832,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "form_timezone_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var30), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -866,7 +866,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "form_timezone_select",
 								Placeholder: "Select timezone",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -875,7 +875,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "form_timezone_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var32), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -927,7 +927,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -953,7 +953,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "est",
 									Index: 0,
@@ -983,7 +983,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "cst",
 									Index: 1,
@@ -1013,7 +1013,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "mst",
 									Index: 2,
@@ -1043,7 +1043,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "pst",
 									Index: 3,
@@ -1053,7 +1053,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var34), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1061,7 +1061,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							templ_7745c5c3_Err = selectui.SelectSeparator(selectui.SelectSeparatorProps{}).Render(ctx, templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectSeparator(selectui.SelectSeparatorArgs{}).Render(ctx, templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -1099,7 +1099,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
+								templ_7745c5c3_Err = selectui.SelectLabel(selectui.SelectLabelArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var41), templ_7745c5c3_Buffer)
 								if templ_7745c5c3_Err != nil {
 									return templ_7745c5c3_Err
 								}
@@ -1125,7 +1125,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "gmt",
 									Index: 4,
@@ -1155,7 +1155,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 									}
 									return nil
 								})
-								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+								templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 									ID:    "form_timezone_select",
 									Value: "cet",
 									Index: 5,
@@ -1165,13 +1165,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
+							templ_7745c5c3_Err = selectui.SelectGroup(selectui.SelectGroupArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var40), templ_7745c5c3_Buffer)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "form_timezone_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var33), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1179,7 +1179,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:       "form_timezone_select",
 						Name:     "timezone",
 						Required: true,
@@ -1209,13 +1209,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var44), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var44), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1253,7 +1253,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "form_account_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var46), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -1287,7 +1287,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "form_account_select",
 								Placeholder: "Choose account type",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -1296,7 +1296,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "form_account_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var48), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1336,7 +1336,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "form_account_select",
 								Value: "free",
 								Index: 0,
@@ -1366,7 +1366,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "form_account_select",
 								Value: "pro",
 								Index: 1,
@@ -1396,7 +1396,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:       "form_account_select",
 								Value:    "enterprise",
 								Index:    2,
@@ -1407,7 +1407,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "form_account_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var49), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1415,7 +1415,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:       "form_account_select",
 						Name:     "account_type",
 						Required: true,
@@ -1445,13 +1445,13 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = form.FormDescription(form.FormDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var53), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var45), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var45), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1461,7 +1461,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = form.Form(form.FormProps{
+			templ_7745c5c3_Err = form.Form(form.FormArgs{
 				ID:     "user_profile_form",
 				Action: "/api/profile",
 				Class:  "space-y-6 max-w-lg",
@@ -1519,7 +1519,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "name_input",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var56), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -1531,7 +1531,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var55), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var55), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1569,7 +1569,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "tab_category_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var58), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -1603,7 +1603,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "tab_category_select",
 								Placeholder: "Select category",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -1612,7 +1612,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "tab_category_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var60), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1652,7 +1652,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_category_select",
 								Value: "work",
 								Index: 0,
@@ -1682,7 +1682,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_category_select",
 								Value: "personal",
 								Index: 1,
@@ -1712,7 +1712,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_category_select",
 								Value: "other",
 								Index: 2,
@@ -1722,7 +1722,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "tab_category_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var61), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1730,7 +1730,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:   "tab_category_select",
 						Name: "category",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var59), templ_7745c5c3_Buffer)
@@ -1739,7 +1739,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var57), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var57), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1777,7 +1777,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "tab_priority_select",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var66), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -1811,7 +1811,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueProps{
+							templ_7745c5c3_Err = selectui.SelectValue(selectui.SelectValueArgs{
 								ID:          "tab_priority_select",
 								Placeholder: "Select priority",
 							}).Render(ctx, templ_7745c5c3_Buffer)
@@ -1820,7 +1820,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerProps{
+						templ_7745c5c3_Err = selectui.SelectTrigger(selectui.SelectTriggerArgs{
 							ID: "tab_priority_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var68), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1860,7 +1860,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_priority_select",
 								Value: "low",
 								Index: 0,
@@ -1890,7 +1890,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_priority_select",
 								Value: "medium",
 								Index: 1,
@@ -1920,7 +1920,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 								}
 								return nil
 							})
-							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemProps{
+							templ_7745c5c3_Err = selectui.SelectItem(selectui.SelectItemArgs{
 								ID:    "tab_priority_select",
 								Value: "high",
 								Index: 2,
@@ -1930,7 +1930,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentProps{
+						templ_7745c5c3_Err = selectui.SelectContent(selectui.SelectContentArgs{
 							ID: "tab_priority_select",
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var69), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
@@ -1938,7 +1938,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = selectui.Select(selectui.SelectProps{
+					templ_7745c5c3_Err = selectui.Select(selectui.SelectArgs{
 						ID:   "tab_priority_select",
 						Name: "priority",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var67), templ_7745c5c3_Buffer)
@@ -1947,7 +1947,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var65), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var65), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1985,7 +1985,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = form.FormLabel(form.FormLabelProps{
+					templ_7745c5c3_Err = form.FormLabel(form.FormLabelArgs{
 						For: "email_input",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var74), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
@@ -1997,7 +1997,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = form.FormItem(form.FormItemProps{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var73), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = form.FormItem(form.FormItemArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var73), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -2007,7 +2007,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = form.Form(form.FormProps{
+			templ_7745c5c3_Err = form.Form(form.FormArgs{
 				ID:    "tab_test_form",
 				Class: "space-y-4 max-w-md",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var54), templ_7745c5c3_Buffer)

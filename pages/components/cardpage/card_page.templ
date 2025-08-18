@@ -33,19 +33,19 @@ templ CardPage(rootArgs l.RootArgs) {
 					</div>
 					<div class="rounded-lg border bg-card p-6">
 						<div class="flex w-full justify-center">
-							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "w-full max-w-md"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Card Title
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										Card Description
 									}
 								}
-								@card.CardContent(card.CardContentProps{}) {
+								@card.CardContent(card.CardContentArgs{}) {
 									<p>Card Content</p>
 								}
-								@card.CardFooter(card.CardFooterProps{}) {
+								@card.CardFooter(card.CardFooterArgs{}) {
 									<p>Card Footer</p>
 								}
 							}
@@ -62,16 +62,16 @@ templ CardPage(rootArgs l.RootArgs) {
 					</div>
 					<div class="rounded-lg border bg-card p-6">
 						<div class="flex w-full justify-center">
-							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "w-full max-w-md"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Notifications
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										You have 3 unread messages.
 									}
 								}
-								@card.CardContent(card.CardContentProps{Class: "grid gap-4"}) {
+								@card.CardContent(card.CardContentArgs{Class: "grid gap-4"}) {
 									<div class="flex items-center space-x-4 rounded-md border p-4">
 										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
@@ -86,10 +86,10 @@ templ CardPage(rootArgs l.RootArgs) {
 											</p>
 										</div>
 										<div class="flex items-center space-x-2">
-											@checkbox.Checkbox(checkbox.CheckboxProps{
+											@checkbox.Checkbox(checkbox.CheckboxArgs{
 												ID: "push_notifications",
 											})
-											@label.Label(label.LabelProps{}) {
+											@label.Label(label.LabelArgs{}) {
 												Push Notifications
 											}
 										</div>
@@ -130,8 +130,8 @@ templ CardPage(rootArgs l.RootArgs) {
 										</div>
 									</div>
 								}
-								@card.CardFooter(card.CardFooterProps{}) {
-									@button.Button(button.ButtonProps{Class: "w-full"}) {
+								@card.CardFooter(card.CardFooterArgs{}) {
+									@button.Button(button.ButtonArgs{Class: "w-full"}) {
 										<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 										</svg>
@@ -152,16 +152,16 @@ templ CardPage(rootArgs l.RootArgs) {
 					</div>
 					<div class="rounded-lg border bg-card p-6">
 						<div class="flex w-full justify-center">
-							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "w-full max-w-md"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Create project
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										Deploy your new project in one-click.
 									}
 								}
-								@card.CardContent(card.CardContentProps{}) {
+								@card.CardContent(card.CardContentArgs{}) {
 									<form>
 										<div class="grid w-full items-center gap-4">
 											<div class="flex flex-col space-y-1.5">
@@ -174,11 +174,11 @@ templ CardPage(rootArgs l.RootArgs) {
 											</div>
 											<div class="flex flex-col space-y-1.5">
 												<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="framework">Framework</label>
-												@selectui.Select(selectui.SelectProps{
+												@selectui.Select(selectui.SelectArgs{
 													ID:          "framework",
 													Name:        "framework",
 													Placeholder: "Select",
-													Options: []selectui.SelectOptionProps{
+													Options: []selectui.SelectOptionArgs{
 														{Value: "next", Label: "Next.js"},
 														{Value: "sveltekit", Label: "SvelteKit"},
 														{Value: "astro", Label: "Astro"},
@@ -189,11 +189,11 @@ templ CardPage(rootArgs l.RootArgs) {
 										</div>
 									</form>
 								}
-								@card.CardFooter(card.CardFooterProps{Class: "flex justify-between"}) {
-									@button.Button(button.ButtonProps{Variant: "outline"}) {
+								@card.CardFooter(card.CardFooterArgs{Class: "flex justify-between"}) {
+									@button.Button(button.ButtonArgs{Variant: "outline"}) {
 										Cancel
 									}
-									@button.Button(button.ButtonProps{}) {
+									@button.Button(button.ButtonArgs{}) {
 										Deploy
 									}
 								}
@@ -211,21 +211,21 @@ templ CardPage(rootArgs l.RootArgs) {
 					</div>
 					<div class="rounded-lg border bg-card p-6">
 						<div class="flex w-full justify-center">
-							@card.Card(card.CardProps{Class: "w-full max-w-md"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "w-full max-w-md"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Team Settings
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										Manage your team settings and preferences.
 									}
-									@card.CardAction(card.CardActionProps{}) {
-										@button.Button(button.ButtonProps{Variant: "outline", Size: "sm"}) {
+									@card.CardAction(card.CardActionArgs{}) {
+										@button.Button(button.ButtonArgs{Variant: "outline", Size: "sm"}) {
 											Edit
 										}
 									}
 								}
-								@card.CardContent(card.CardContentProps{}) {
+								@card.CardContent(card.CardContentArgs{}) {
 									<div class="space-y-2">
 										<p class="text-sm">Team members: 12</p>
 										<p class="text-sm">Active projects: 8</p>
@@ -247,22 +247,22 @@ templ CardPage(rootArgs l.RootArgs) {
 					<div class="rounded-lg border bg-card p-6">
 						<div class="flex w-full justify-center">
 							<div data-signals="{likes: 0, saved: false}" class="w-full max-w-md">
-								@card.Card(card.CardProps{Class: "w-full"}) {
-									@card.CardHeader(card.CardHeaderProps{}) {
-										@card.CardTitle(card.CardTitleProps{}) {
+								@card.Card(card.CardArgs{Class: "w-full"}) {
+									@card.CardHeader(card.CardHeaderArgs{}) {
+										@card.CardTitle(card.CardTitleArgs{}) {
 											Interactive Post
 										}
-										@card.CardDescription(card.CardDescriptionProps{}) {
+										@card.CardDescription(card.CardDescriptionArgs{}) {
 											This card demonstrates Datastar reactivity.
 										}
 									}
-									@card.CardContent(card.CardContentProps{}) {
+									@card.CardContent(card.CardContentArgs{}) {
 										<p class="text-sm">
 											This is a sample post that you can interact with using the buttons below.
 										</p>
 									}
-									@card.CardFooter(card.CardFooterProps{Class: "flex justify-between"}) {
-										@button.Button(button.ButtonProps{
+									@card.CardFooter(card.CardFooterArgs{Class: "flex justify-between"}) {
+										@button.Button(button.ButtonArgs{
 											Variant: "outline",
 											Size:    "sm",
 											Attributes: templ.Attributes{
@@ -274,7 +274,7 @@ templ CardPage(rootArgs l.RootArgs) {
 											</svg>
 											<span data-text="$likes">0</span> Likes
 										}
-										@button.Button(button.ButtonProps{
+										@button.Button(button.ButtonArgs{
 											Variant: "outline",
 											Size:    "sm",
 											Attributes: templ.Attributes{
@@ -303,72 +303,72 @@ templ CardPage(rootArgs l.RootArgs) {
 					<div class="rounded-lg border bg-card p-6">
 						<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							<!-- Content Only -->
-							@card.Card(card.CardProps{}) {
-								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+							@card.Card(card.CardArgs{}) {
+								@card.CardContent(card.CardContentArgs{Class: "text-sm"}) {
 									Content Only
 								}
 							}
 							<!-- Header Only -->
-							@card.Card(card.CardProps{}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Header Only
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										This is a card with a header and a description.
 									}
 								}
 							}
 							<!-- Header and Content -->
-							@card.Card(card.CardProps{}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Header + Content
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										This is a card with a header and content.
 									}
 								}
-								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+								@card.CardContent(card.CardContentArgs{Class: "text-sm"}) {
 									Content
 								}
 							}
 							<!-- Footer Only -->
-							@card.Card(card.CardProps{}) {
-								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+							@card.Card(card.CardArgs{}) {
+								@card.CardFooter(card.CardFooterArgs{Class: "text-sm"}) {
 									Footer Only
 								}
 							}
 							<!-- Header + Footer -->
-							@card.Card(card.CardProps{Class: "flex flex-col"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "flex flex-col"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Header + Footer
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										This is a card with a header and a footer.
 									}
 								}
 								<div class="flex-grow"></div>
-								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+								@card.CardFooter(card.CardFooterArgs{Class: "text-sm"}) {
 									Footer
 								}
 							}
 							<!-- Complete Card -->
-							@card.Card(card.CardProps{Class: "flex flex-col"}) {
-								@card.CardHeader(card.CardHeaderProps{}) {
-									@card.CardTitle(card.CardTitleProps{}) {
+							@card.Card(card.CardArgs{Class: "flex flex-col"}) {
+								@card.CardHeader(card.CardHeaderArgs{}) {
+									@card.CardTitle(card.CardTitleArgs{}) {
 										Complete Card
 									}
-									@card.CardDescription(card.CardDescriptionProps{}) {
+									@card.CardDescription(card.CardDescriptionArgs{}) {
 										This card has all components.
 									}
 								}
-								@card.CardContent(card.CardContentProps{Class: "text-sm"}) {
+								@card.CardContent(card.CardContentArgs{Class: "text-sm"}) {
 									Content
 								}
 								<div class="flex-grow"></div>
-								@card.CardFooter(card.CardFooterProps{Class: "text-sm"}) {
+								@card.CardFooter(card.CardFooterArgs{Class: "text-sm"}) {
 									Footer
 								}
 							}

@@ -9,7 +9,7 @@ type CheckboxSignals struct {
 }
 
 // Checkbox renders a checkbox input with shadcn/ui styling and internal Datastar reactivity
-templ Checkbox(args CheckboxProps) {
+templ Checkbox(args CheckboxArgs) {
 	{{
 		// Create signals using the new structured system
 		signals := utils.Signals(args.ID, CheckboxSignals{
@@ -83,7 +83,7 @@ templ Checkbox(args CheckboxProps) {
 }
 
 // CheckboxIndicator renders the checkbox indicator (check mark)
-templ CheckboxIndicator(args CheckboxIndicatorProps) {
+templ CheckboxIndicator(args CheckboxIndicatorArgs) {
 	<span
 		data-slot="checkbox-indicator"
 		class={ checkboxIndicatorVariants(args.ClassName) }

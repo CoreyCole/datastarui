@@ -1,7 +1,7 @@
 package breadcrumb
 
 // Breadcrumb renders the main navigation wrapper
-templ Breadcrumb(args BreadcrumbProps) {
+templ Breadcrumb(args BreadcrumbArgs) {
 	<nav
 		aria-label="breadcrumb"
 		data-slot="breadcrumb"
@@ -13,7 +13,7 @@ templ Breadcrumb(args BreadcrumbProps) {
 }
 
 // BreadcrumbList renders the ordered list container for breadcrumb items
-templ BreadcrumbList(args BreadcrumbListProps) {
+templ BreadcrumbList(args BreadcrumbListArgs) {
 	<ol
 		data-slot="breadcrumb-list"
 		class={ breadcrumbListVariants(args.Class) }
@@ -24,7 +24,7 @@ templ BreadcrumbList(args BreadcrumbListProps) {
 }
 
 // BreadcrumbItem renders a list item wrapper for breadcrumb content
-templ BreadcrumbItem(args BreadcrumbItemProps) {
+templ BreadcrumbItem(args BreadcrumbItemArgs) {
 	<li
 		data-slot="breadcrumb-item"
 		class={ breadcrumbItemVariants(args.Class) }
@@ -35,7 +35,7 @@ templ BreadcrumbItem(args BreadcrumbItemProps) {
 }
 
 // BreadcrumbLink renders a clickable breadcrumb link
-templ BreadcrumbLink(args BreadcrumbLinkProps) {
+templ BreadcrumbLink(args BreadcrumbLinkArgs) {
 	if args.AsChild {
 		<span
 			data-slot="breadcrumb-link"
@@ -57,7 +57,7 @@ templ BreadcrumbLink(args BreadcrumbLinkProps) {
 }
 
 // BreadcrumbPage renders the current page indicator (non-clickable)
-templ BreadcrumbPage(args BreadcrumbPageProps) {
+templ BreadcrumbPage(args BreadcrumbPageArgs) {
 	<span
 		data-slot="breadcrumb-page"
 		role="link"
@@ -71,7 +71,7 @@ templ BreadcrumbPage(args BreadcrumbPageProps) {
 }
 
 // BreadcrumbSeparator renders the separator between breadcrumb items
-templ BreadcrumbSeparator(args BreadcrumbSeparatorProps) {
+templ BreadcrumbSeparator(args BreadcrumbSeparatorArgs) {
 	<li
 		data-slot="breadcrumb-separator"
 		role="presentation"
@@ -97,7 +97,7 @@ templ BreadcrumbSeparator(args BreadcrumbSeparatorProps) {
 }
 
 // BreadcrumbEllipsis renders an ellipsis indicator for collapsed breadcrumbs
-templ BreadcrumbEllipsis(args BreadcrumbEllipsisProps) {
+templ BreadcrumbEllipsis(args BreadcrumbEllipsisArgs) {
 	<span
 		data-slot="breadcrumb-ellipsis"
 		role="presentation"

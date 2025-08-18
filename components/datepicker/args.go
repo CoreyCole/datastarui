@@ -6,8 +6,8 @@ import (
 	"github.com/coreycole/datastarui/components/calendar"
 )
 
-// DatePickerProps defines the properties for the DatePicker component
-type DatePickerProps struct {
+// DatePickerArgs defines the properties for the DatePicker component
+type DatePickerArgs struct {
 	// ID for the datepicker (auto-generated if not provided)
 	ID string
 
@@ -85,14 +85,14 @@ type DatePickerProps struct {
 	Attributes templ.Attributes
 }
 
-// DatePickerCalendarProps defines properties for the calendar part of the date picker
-type DatePickerCalendarProps struct {
+// DatePickerCalendarArgs defines properties for the calendar part of the date picker
+type DatePickerCalendarArgs struct {
 	// Embed calendar args for full calendar functionality
-	calendar.CalendarProps
+	calendar.CalendarArgs
 }
 
-// DatePickerPopoverProps defines properties for the popover calendar
-type DatePickerPopoverProps struct {
+// DatePickerPopoverArgs defines properties for the popover calendar
+type DatePickerPopoverArgs struct {
 	ID                  string
 	DateInputID         string
 	Mode                string

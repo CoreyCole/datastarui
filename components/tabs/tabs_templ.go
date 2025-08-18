@@ -20,7 +20,7 @@ type TabsSignals struct {
 }
 
 // Tabs is the root container component that manages tab state
-func Tabs(args TabsProps) templ.Component {
+func Tabs(args TabsArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -126,7 +126,7 @@ func Tabs(args TabsProps) templ.Component {
 }
 
 // TabsList contains the tab triggers
-func TabsList(args TabsListProps) templ.Component {
+func TabsList(args TabsListArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -193,7 +193,7 @@ func TabsList(args TabsListProps) templ.Component {
 }
 
 // TabsTrigger is a clickable tab button
-func TabsTrigger(args TabsTriggerProps) templ.Component {
+func TabsTrigger(args TabsTriggerArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -357,7 +357,7 @@ func TabsTrigger(args TabsTriggerProps) templ.Component {
 }
 
 // TabsContent displays the content for the active tab
-func TabsContent(args TabsContentProps) templ.Component {
+func TabsContent(args TabsContentArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

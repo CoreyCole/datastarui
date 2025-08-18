@@ -94,7 +94,7 @@ type CalendarSignals struct {
 }
 
 // Calendar renders a simple, elegant calendar
-templ Calendar(args CalendarProps) {
+templ Calendar(args CalendarArgs) {
 	{{
 		// Generate unique ID
 		calendarID := args.ID
@@ -161,11 +161,11 @@ templ Calendar(args CalendarProps) {
 		}
 		{ args.Attributes... }
 	>
-		@CalendarHeader(CalendarHeaderProps{ID: calendarID, NumberOfMonths: numberOfMonths})
+		@CalendarHeader(CalendarHeaderArgs{ID: calendarID, NumberOfMonths: numberOfMonths})
 		<!-- Months container with responsive flex layout -->
 		if numberOfMonths == 1 {
 			<!-- Single month layout -->
-			@CalendarGrid(CalendarGridProps{
+			@CalendarGrid(CalendarGridArgs{
 				ID:                 calendarID,
 				MonthOffset:        0,
 				HideOutsideDays:    args.HideOutsideDays,
@@ -185,7 +185,7 @@ templ Calendar(args CalendarProps) {
 								<span data-text={ "new Date(Date.UTC(new Date(" + signals.Signal("currentDate") + " + 'T12:00:00Z').getUTCFullYear(), new Date(" + signals.Signal("currentDate") + " + 'T12:00:00Z').getUTCMonth() + " + fmt.Sprintf("%d", monthIndex) + ", 1, 12, 0, 0)).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })" }></span>
 							</div>
 						</div>
-						@CalendarGrid(CalendarGridProps{
+						@CalendarGrid(CalendarGridArgs{
 							ID:                 calendarID,
 							MonthOffset:        monthIndex,
 							HideOutsideDays:    args.HideOutsideDays,
@@ -202,7 +202,7 @@ templ Calendar(args CalendarProps) {
 }
 
 // CalendarHeader renders the month navigation
-templ CalendarHeader(args CalendarHeaderProps) {
+templ CalendarHeader(args CalendarHeaderArgs) {
 	{{
 		// Use the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(args.ID, CalendarSignals{})
@@ -282,7 +282,7 @@ templ CalendarHeader(args CalendarHeaderProps) {
 }
 
 // CalendarGrid renders the calendar days
-templ CalendarGrid(args CalendarGridProps) {
+templ CalendarGrid(args CalendarGridArgs) {
 	{{
 		// Use 5 weeks (35 days) for all calendars for a cleaner, more consistent look
 		weeksNeeded := 5
@@ -303,7 +303,7 @@ templ CalendarGrid(args CalendarGridProps) {
 		<div class="grid grid-cols-7 gap-1">
 			<!-- Generate 35 days (5 weeks × 7 days) for cleaner layout -->
 			for dayIndex := 0; dayIndex < totalDays; dayIndex++ {
-				@CalendarDay(CalendarDayProps{
+				@CalendarDay(CalendarDayArgs{
 					ID:                 args.ID,
 					DayIndex:           dayIndex,
 					MonthOffset:        args.MonthOffset,
@@ -318,7 +318,7 @@ templ CalendarGrid(args CalendarGridProps) {
 }
 
 // CalendarDay renders individual day button with pre-calculated data
-templ CalendarDay(args CalendarDayProps) {
+templ CalendarDay(args CalendarDayArgs) {
 	{{
 		// Share the same signal namespace as the parent calendar - don't create new signals
 		signals := utils.Signals(args.ID, CalendarSignals{})
