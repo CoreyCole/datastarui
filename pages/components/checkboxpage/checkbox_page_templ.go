@@ -532,9 +532,9 @@ func CheckboxPage(rootArgs l.RootArgs) templ.Component {
 						return nil
 					})
 					templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-						TooltipID:  "premium_tooltip",
-						AnchorName: "premium_tooltip_anchor",
-						Class:      "cursor-not-allowed",
+						ID:        "premium_tooltip_trigger",
+						TooltipID: "premium_tooltip",
+						Class:     "cursor-not-allowed",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -562,11 +562,10 @@ func CheckboxPage(rootArgs l.RootArgs) templ.Component {
 						return nil
 					})
 					templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-						ID:         "premium_tooltip",
-						UseAnchor:  true,
-						AnchorName: "premium_tooltip_anchor",
-						Side:       utils.AnchorSideTop,
-						Align:      utils.AnchorAlignCenter,
+						ID:        "premium_tooltip",
+						UseAnchor: true,
+						Side:      utils.AnchorSideTop,
+						Align:     utils.AnchorAlignCenter,
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err

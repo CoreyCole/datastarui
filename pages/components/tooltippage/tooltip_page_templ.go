@@ -91,8 +91,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "simple_tooltip",
-				AnchorName: "simple_tooltip_anchor",
+				ID:        "simple_tooltip_trigger",
+				TooltipID: "simple_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -116,11 +116,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "simple_tooltip",
-				UseAnchor:  true,
-				AnchorName: "simple_tooltip_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "simple_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -168,8 +167,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "top_tooltip",
-				AnchorName: "top_tooltip_anchor",
+				ID:        "top_tooltip_trigger",
+				TooltipID: "top_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -193,11 +192,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "top_tooltip",
-				UseAnchor:  true,
-				AnchorName: "top_tooltip_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "top_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -245,8 +243,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "bottom_tooltip",
-				AnchorName: "bottom_tooltip_anchor",
+				ID:        "bottom_tooltip_trigger",
+				TooltipID: "bottom_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -270,11 +268,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "bottom_tooltip",
-				UseAnchor:  true,
-				AnchorName: "bottom_tooltip_anchor",
-				Side:       utils.AnchorSideBottom,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "bottom_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideBottom,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -322,8 +319,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "left_tooltip",
-				AnchorName: "left_tooltip_anchor",
+				ID:        "left_tooltip_trigger",
+				TooltipID: "left_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -347,11 +344,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "left_tooltip",
-				UseAnchor:  true,
-				AnchorName: "left_tooltip_anchor",
-				Side:       utils.AnchorSideLeft,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "left_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideLeft,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -399,8 +395,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "right_tooltip",
-				AnchorName: "right_tooltip_anchor",
+				ID:        "right_tooltip_trigger",
+				TooltipID: "right_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -424,11 +420,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "right_tooltip",
-				UseAnchor:  true,
-				AnchorName: "right_tooltip_anchor",
-				Side:       utils.AnchorSideRight,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "right_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideRight,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -476,8 +471,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
+				ID:            "fast_tooltip_trigger",
 				TooltipID:     "fast_tooltip",
-				AnchorName:    "fast_tooltip_anchor",
 				DelayDuration: 100,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -502,11 +497,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "fast_tooltip",
-				UseAnchor:  true,
-				AnchorName: "fast_tooltip_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "fast_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -534,8 +528,8 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipTrigger(tooltip.TooltipTriggerArgs{
-				TooltipID:  "text_tooltip",
-				AnchorName: "text_tooltip_anchor",
+				ID:        "text_tooltip_trigger",
+				TooltipID: "text_tooltip",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -559,11 +553,10 @@ func TooltipPage(rootArgs l.RootArgs) templ.Component {
 				return nil
 			})
 			templ_7745c5c3_Err = tooltip.TooltipContent(tooltip.TooltipContentArgs{
-				ID:         "text_tooltip",
-				UseAnchor:  true,
-				AnchorName: "text_tooltip_anchor",
-				Side:       utils.AnchorSideTop,
-				Align:      utils.AnchorAlignCenter,
+				ID:        "text_tooltip",
+				UseAnchor: true,
+				Side:      utils.AnchorSideTop,
+				Align:     utils.AnchorAlignCenter,
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

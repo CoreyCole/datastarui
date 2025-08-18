@@ -8,7 +8,9 @@ templ PopoverTrigger(args PopoverTriggerArgs) {
 		// Create popover handler for clean expressions
 		popoverHandler := NewPopoverHandler(args.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
-		anchorStyle := popoverHandler.BuildAnchorStyle(args.AnchorName)
+		
+		// Use PopoverID as anchor name (shared with content)
+		anchorStyle := popoverHandler.BuildAnchorStyle(args.PopoverID)
 
 		// Build style attribute
 		style := "cursor: pointer;"
@@ -40,9 +42,9 @@ templ PopoverContent(args PopoverContentArgs) {
 		// Generate positioning styles
 		positioningStyle := ""
 
-		if args.UseAnchor && args.AnchorName != "" {
-			// Simplified positioning API
-			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
+		if args.UseAnchor {
+			// Use content ID as position anchor (matches trigger's PopoverID)
+			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.ID) + "; z-index: 50; "
 
 			if args.Side != "" || args.Align != "" {
 				sideOffset := args.SideOffset
@@ -58,7 +60,7 @@ templ PopoverContent(args PopoverContentArgs) {
 		}
 
 		// Add anchor-positioned class if using anchor positioning
-		if args.UseAnchor && args.AnchorName != "" {
+		if args.UseAnchor {
 			contentClasses += " anchor-positioned"
 		}
 	}}

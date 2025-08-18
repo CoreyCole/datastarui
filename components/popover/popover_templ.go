@@ -36,7 +36,9 @@ func PopoverTrigger(args PopoverTriggerArgs) templ.Component {
 		// Create popover handler for clean expressions
 		popoverHandler := NewPopoverHandler(args.PopoverID)
 		toggleHandler := popoverHandler.BuildToggleHandler()
-		anchorStyle := popoverHandler.BuildAnchorStyle(args.AnchorName)
+
+		// Use PopoverID as anchor name (shared with content)
+		anchorStyle := popoverHandler.BuildAnchorStyle(args.PopoverID)
 
 		// Build style attribute
 		style := "cursor: pointer;"
@@ -55,7 +57,7 @@ func PopoverTrigger(args PopoverTriggerArgs) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 20, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 22, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -68,7 +70,7 @@ func PopoverTrigger(args PopoverTriggerArgs) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(toggleHandler)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 21, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 23, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -86,7 +88,7 @@ func PopoverTrigger(args PopoverTriggerArgs) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues(style)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 23, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 25, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -165,9 +167,9 @@ func PopoverContent(args PopoverContentArgs) templ.Component {
 		// Generate positioning styles
 		positioningStyle := ""
 
-		if args.UseAnchor && args.AnchorName != "" {
-			// Simplified positioning API
-			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.AnchorName) + "; z-index: 50; "
+		if args.UseAnchor {
+			// Use content ID as position anchor (matches trigger's PopoverID)
+			positioningStyle = "position: absolute; " + popoverHandler.BuildPositionAnchorStyle(args.ID) + "; z-index: 50; "
 
 			if args.Side != "" || args.Align != "" {
 				sideOffset := args.SideOffset
@@ -183,7 +185,7 @@ func PopoverContent(args PopoverContentArgs) templ.Component {
 		}
 
 		// Add anchor-positioned class if using anchor positioning
-		if args.UseAnchor && args.AnchorName != "" {
+		if args.UseAnchor {
 			contentClasses += " anchor-positioned"
 		}
 		var templ_7745c5c3_Var8 = []any{contentClasses}
@@ -198,7 +200,7 @@ func PopoverContent(args PopoverContentArgs) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 66, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 68, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -224,7 +226,7 @@ func PopoverContent(args PopoverContentArgs) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues(positioningStyle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 69, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/popover/popover.templ`, Line: 71, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
