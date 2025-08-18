@@ -356,7 +356,8 @@ func CheckboxPage(rootArgs l.RootArgs) templ.Component {
 						return nil
 					})
 					templ_7745c5c3_Err = checkbox.Checkbox(checkbox.CheckboxProps{
-						ID: "terms_2",
+						ID:      "terms_2",
+						Checked: true,
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
