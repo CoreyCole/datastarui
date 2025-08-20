@@ -1,12 +1,17 @@
 package tooltip
 
-import "github.com/coreycole/datastarui/utils"
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+)
 
 // TooltipSignals defines the state for a tooltip
 type TooltipSignals struct {
 	Open        bool   `json:"open"`
 	ShowTimeout string `json:"showTimeout"` // Timeout ID for showing
 	HideTimeout string `json:"hideTimeout"` // Timeout ID for hiding
+	TouchHeld   bool   `json:"touchHeld"`   // Whether touch is being held
+	TouchTimer  string `json:"touchTimer"`  // Timeout ID for touch-and-hold
 }
 
 // TooltipTrigger creates a trigger for the tooltip that wraps any element
@@ -25,6 +30,19 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 		showHandler := tooltipHandler.BuildShowHandler(delayDuration)
 		hideHandler := tooltipHandler.BuildHideHandler()
 		
+		// Build touch handlers for mobile support
+		touchStartHandler := tooltipHandler.BuildTouchStartHandler(500) // 500ms touch-and-hold
+		touchEndHandler := tooltipHandler.BuildTouchEndHandler()
+		
+		// Initialize signals for the tooltip
+		signals := utils.Signals(args.TooltipID, TooltipSignals{
+			Open:        false,
+			ShowTimeout: "",
+			HideTimeout: "",
+			TouchHeld:   false,
+			TouchTimer:  "",
+		})
+		
 		// Use TooltipID as anchor name (shared with content)
 		anchorStyle := tooltipHandler.BuildAnchorStyle(args.TooltipID)
 
@@ -36,10 +54,14 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 	}}
 	<div
 		id={ args.ID }
+		data-signals={ signals.DataSignals }
+		data-tooltip-id={ args.TooltipID }
 		data-on-mouseenter={ showHandler }
 		data-on-mouseleave={ hideHandler }
 		data-on-focus={ showHandler }
 		data-on-blur={ hideHandler }
+		data-on-touchstart={ touchStartHandler }
+		data-on-touchend={ touchEndHandler }
 		tabindex="0"
 		if style != "" {
 			style={ style }
@@ -58,6 +80,11 @@ templ TooltipContent(args TooltipContentArgs) {
 
 		// Create tooltip handler for clean expressions
 		tooltipHandler := NewTooltipHandler(args.ID)
+
+		// Build click-outside handler to dismiss tooltip on mobile
+		// Use data attribute to identify tooltip triggers
+		triggerSelector := fmt.Sprintf("[data-tooltip-id=\"%s\"]", args.ID)
+		clickOutsideHandler := tooltipHandler.BuildClickOutsideHandler(triggerSelector)
 
 		// Generate positioning styles (same as popover)
 		positioningStyle := ""
@@ -89,6 +116,7 @@ templ TooltipContent(args TooltipContentArgs) {
 		popover="auto"
 		class={ contentClasses }
 		style={ positioningStyle }
+		data-on-click__outside={ clickOutsideHandler }
 		{ args.Attributes... }
 	>
 		{ children... }
