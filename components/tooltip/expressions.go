@@ -68,3 +68,54 @@ func (h *TooltipHandler) BuildPositionAnchorStyle(anchorName string) string {
 	}
 	return fmt.Sprintf("position-anchor: --%s", anchorName)
 }
+
+// BuildTouchStartHandler creates handler for touch start (mobile touch-and-hold)
+func (h *TooltipHandler) BuildTouchStartHandler(touchHoldMs int) string {
+	signals := utils.Signals(h.tooltipID, TooltipSignals{})
+	
+	if touchHoldMs == 0 {
+		touchHoldMs = 500 // Default touch-and-hold duration
+	}
+	
+	return utils.NewExpression().
+		Statement("evt.preventDefault()"). // Prevent text selection on long press
+		Statement("clearTimeout($" + h.tooltipID + ".touchTimer)").
+		Statement("$" + h.tooltipID + ".touchTimer = setTimeout(() => { " +
+			"$" + h.tooltipID + ".touchHeld = true; " +
+			"document.getElementById('" + h.tooltipID + "').showPopover(); " +
+		"}, " + fmt.Sprintf("%d", touchHoldMs) + ")").
+		Build()
+}
+
+// BuildTouchEndHandler creates handler for touch end (cancel if released early)
+func (h *TooltipHandler) BuildTouchEndHandler() string {
+	signals := utils.Signals(h.tooltipID, TooltipSignals{})
+	
+	return utils.NewExpression().
+		Statement("clearTimeout($" + h.tooltipID + ".touchTimer)").
+		Statement("$" + h.tooltipID + ".touchTimer = null").
+		// Only hide if touch wasn't held long enough
+		Conditional(
+			"!$" + h.tooltipID + ".touchHeld",
+			"document.getElementById('" + h.tooltipID + "').hidePopover()",
+			"null",
+		).
+		Build()
+}
+
+// BuildClickOutsideHandler creates handler to dismiss tooltip when clicking outside (like popover)
+func (h *TooltipHandler) BuildClickOutsideHandler(triggerSelector string) string {
+	signals := utils.Signals(h.tooltipID, TooltipSignals{})
+	
+	// Close tooltip if clicking outside and it was opened via touch
+	condition := "$" + h.tooltipID + ".touchHeld && !evt.target.closest('" + triggerSelector + "')"
+	
+	return utils.NewConditional(
+		condition,
+		utils.NewExpression().
+			Statement("$" + h.tooltipID + ".touchHeld = false").
+			Statement("document.getElementById('" + h.tooltipID + "').hidePopover()").
+			Build(),
+		"null",
+	).Build()
+}
