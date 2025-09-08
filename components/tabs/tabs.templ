@@ -116,18 +116,14 @@ templ TabsContent(args TabsContentArgs) {
 
 		// Create tabs handler for clean expressions
 		tabsHandler := NewTabsHandler(args.ID, signals)
-
-		// Use expression builders for clean, maintainable code
-		showExpr := tabsHandler.BuildContentShowExpression(args.Value)
-		ariaHidden := tabsHandler.BuildContentAriaHidden(args.Value)
 	}}
 	<div
 		data-slot="tabs-content"
 		class={ classes }
 		role="tabpanel"
 		data-value={ args.Value }
-		data-show={ showExpr }
-		data-attr-aria-hidden={ ariaHidden }
+		data-show={ tabsHandler.BuildContentShowExpression(args.Value) }
+		data-attr-aria-hidden={ tabsHandler.BuildContentAriaHidden(args.Value) }
 		tabindex="0"
 		{ args.Attributes... }
 	>
