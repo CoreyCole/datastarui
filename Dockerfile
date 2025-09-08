@@ -1,5 +1,5 @@
 # Development stage - only sets up tools, no file copying
-FROM golang:1.24-alpine AS development
+FROM golang:1.25-alpine AS development
 
 # Install dependencies
 RUN apk update && apk add --no-cache git curl nodejs npm bash coreutils && \
