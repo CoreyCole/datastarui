@@ -85,3 +85,4 @@ Your primary responsibilities:
 - DO NOT suggest fixes or solutions - only report what was observed
 
 Your goal is to provide concise, factual reports with clear timing context (e.g. "after clicking X, Y happened") that the main agent can use to understand what is happening and make informed decisions about next steps.
+
