@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package com.datastarui.v1.forms.options;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/coreycole/datastarui/pkg/proto/forms";
+
+// Extend field options for form-specific metadata
+extend google.protobuf.FieldOptions {
+  FieldOptions field = 50000;
+}
+
+// Field-level options for form generation
+message FieldOptions {
+  // Render field as an array with add/remove buttons
+  bool field_array = 1;
+
+  // Custom renderer name (e.g., "phone_number", "date_range")
+  string renderer = 2;
+
+  // Override the default label (defaults to field name)
+  string label = 3;
+
+  // Placeholder text for input fields
+  string placeholder = 4;
+
+  // Help text displayed below the field
+  string help_text = 5;
+
+  // CSS classes for field wrapper
+  string class = 6;
+
+  // Grid columns (1-12) for field width
+  int32 columns = 7;
+
+  // Conditional visibility expression (Datastar expression)
+  string show_when = 8;
+
+  // Form section/tab name for grouped layouts
+  string section = 9;
+}
+
+// Message-level options for form configuration
+extend google.protobuf.MessageOptions {
+  MessageOptions message = 50001;
+}
+
+// Message-level form options
+message MessageOptions {
+  // Form layout type
+  enum LayoutType {
+    LAYOUT_DEFAULT = 0; // Stack fields vertically
+    LAYOUT_TABS = 1; // Group fields in tabs
+    LAYOUT_STEPS = 2; // Multi-step form wizard
+    LAYOUT_ACCORDION = 3; // Collapsible sections
+  }
+
+  LayoutType layout = 1;
+
+  // Section names for grouped layouts
+  repeated string sections = 2;
+
+  // Submit button label
+  string submit_label = 3;
+
+  // Cancel button label
+  string cancel_label = 4;
+
+  // Form title
+  string title = 5;
+
+  // Form description
+  string description = 6;
+}

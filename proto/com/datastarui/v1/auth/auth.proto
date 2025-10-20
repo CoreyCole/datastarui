@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.datastarui.v1.auth;
+
+import "com/datastarui/v1/forms/login/login.proto";
+
+option go_package = "github.com/coreycole/datastarui/pkg/proto/com/datastarui/v1/auth;authv1";
+
+// AuthService handles user authentication
+service AuthService {
+  // Login authenticates a user with email and password
+  rpc Login(com.datastarui.v1.forms.login.LoginRequest)
+      returns (com.datastarui.v1.forms.login.LoginResponse);
+
+  // Signup creates a new user account
+  rpc Signup(com.datastarui.v1.forms.login.SignupRequest)
+      returns (com.datastarui.v1.forms.login.SignupResponse);
+}

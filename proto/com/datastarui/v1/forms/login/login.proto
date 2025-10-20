@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package com.datastarui.v1.forms.login;
+
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/coreycole/datastarui/pkg/proto/com/datastarui/v1/forms/login;loginv1";
+
+// LoginRequest contains user credentials for authentication
+message LoginRequest {
+  string email = 1 [(buf.validate.field) = {
+    required: true,
+    string: {email: true}
+  }];
+
+  string password = 2 [(buf.validate.field) = {
+    required: true,
+    string: {min_len: 8}
+  }];
+}
+
+// LoginResponse contains the authentication result
+message LoginResponse {
+  // Session token for authenticated requests
+  string token = 1;
+
+  // User information
+  User user = 2;
+}
+
+// SignupRequest contains new user registration data
+message SignupRequest {
+  string email = 1 [(buf.validate.field) = {
+    required: true,
+    string: {email: true}
+  }];
+
+  string password = 2 [(buf.validate.field) = {
+    required: true,
+    string: {
+      min_len: 8,
+      max_len: 128
+    }
+  }];
+
+  string name = 3 [(buf.validate.field) = {
+    required: true,
+    string: {min_len: 1}
+  }];
+}
+
+// SignupResponse contains the registration result
+message SignupResponse {
+  string token = 1;
+  User user = 2;
+}
+
+// User represents a user account
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+}
