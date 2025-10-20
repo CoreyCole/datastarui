@@ -33,6 +33,8 @@ import (
 	"github.com/coreycole/datastarui/api/handler"
 	apimw "github.com/coreycole/datastarui/api/middleware"
 	"github.com/coreycole/datastarui/api/services/auth"
+	authconnect "github.com/coreycole/datastarui/pkg/proto/com/datastarui/v1/auth/authconnect"
+	loginform "github.com/coreycole/datastarui/forms/login"
 )
 
 const port = "4242"
@@ -104,6 +106,18 @@ func main() {
 	// Mount Connect RPC at /connect/* with unwrap middleware
 	unwrappedHandler := apimw.UnwrapFormData(connectMux)
 	e.Any("/connect/*", echo.WrapHandler(http.StripPrefix("/connect", unwrappedHandler)))
+
+	// Create Connect RPC client for internal use by HTTP form handlers
+	authClient := authconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		"http://localhost:"+port+"/connect",
+	)
+
+	// Create HTTP form handlers
+	loginHandler := loginform.NewHandler(authClient)
+
+	// Register HTTP form routes (return HTML for browser interactions)
+	e.POST("/forms/login", loginHandler.HandleLoginForm)
 
 	// Serve the home page at the root route
 	e.GET("/", func(c echo.Context) error {
