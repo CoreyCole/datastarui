@@ -8,6 +8,9 @@ RUN apk update && apk add --no-cache git curl nodejs npm bash coreutils && \
 # Install templ
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
+# Install buf for proto generation
+RUN go install github.com/bufbuild/buf/cmd/buf@latest
+
 # Install air for live reload
 RUN go install github.com/air-verse/air@latest
 

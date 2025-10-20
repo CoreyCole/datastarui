@@ -44,7 +44,6 @@ if [ "$skip_research" = "false" ]; then
   linear get-issue AI-$number >thoughts/shared/tickets/AI-$number.md
   claude --allowedTools="Write,Edit,MultiEdit" "/research_codebase find all places in the code related to thoughts/shared/tickets/AI-${number}.md, ensure your final output filename includes 'eng-${number}'"
   sleep 5
-  humanlayer thoughts sync || echo "thoughts sync failed"
 fi
 
 if [ "$skip_plan" = "false" ]; then
@@ -52,7 +51,6 @@ if [ "$skip_plan" = "false" ]; then
   tmux rename-window "AI-${number}-plan"
   claude --allowedTools="Write,Edit,MultiEdit" "/create_plan make the plan for thoughts/shared/tickets/AI-${number}.md - ensure eng-${number} is in the final plan file name"
   sleep 5
-  humanlayer thoughts sync || echo "thoughts sync failed"
 fi
 
 # linear

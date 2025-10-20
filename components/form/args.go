@@ -3,10 +3,12 @@ package form
 import "github.com/a-h/templ"
 
 type FormArgs struct {
-	ID         string           // Form ID
-	Action     string           // Form action URL
-	Class      string           // Additional CSS classes
-	Attributes templ.Attributes // Additional HTML attributes
+	ID             string           // Form ID
+	Action         string           // Form action URL
+	ContentType    string           // "form" (default) | "json" for Connect RPC
+	FormDataFields []string         // Fields to include in JSON payload (for Connect RPC)
+	Class          string           // Additional CSS classes
+	Attributes     templ.Attributes // Additional HTML attributes
 }
 
 type FormItemArgs struct {

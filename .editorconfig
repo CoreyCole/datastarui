@@ -1,0 +1,14 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Shell scripts
+[*.sh]
+indent_style = space
+indent_size = 4
+
+# You can also configure other shell script files
+[*.{bash,zsh}]
+indent_style = space
+indent_size = 4
