@@ -8,14 +8,21 @@ import (
 
 // LoginFormSignals defines the client-side state for the login form
 type LoginFormSignals struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	EmailError    string `json:"emailError"`
+	PasswordError string `json:"passwordError"`
 }
 
 // LoginFormArgs contains configuration for the login form
 type LoginFormArgs struct {
-	ID          string // Form ID for signal namespacing
-	RedirectURL string // Where to redirect on success
+	ID            string // Form ID for signal namespacing
+	RedirectURL   string // Where to redirect on success
+	// Fields for preserving user input and displaying errors
+	Email         string // Preserved user input
+	Password      string // Preserved user input
+	EmailError    string // Field-specific error
+	PasswordError string // Field-specific error
 }
 
 templ LoginForm(args LoginFormArgs) {
@@ -25,13 +32,18 @@ templ LoginForm(args LoginFormArgs) {
 			formID = "login"
 		}
 
-		// Use form helper to include formId at root level
+		// Initialize signals with preserved values and errors
 		signals := form.SignalsWithFormId(formID, LoginFormSignals{
-			Email:    "",
-			Password: "",
+			Email:         args.Email,
+			Password:      args.Password,
+			EmailError:    args.EmailError,
+			PasswordError: args.PasswordError,
 		})
 	}}
-	<div data-signals={ signals.DataSignals }>
+	<div
+		id={ formID + "-container" }
+		data-signals={ signals.DataSignals }
+	>
 		<!-- Error Message -->
 		<div
 			data-show={ signals.Signal("error") + " !== ''" }
@@ -40,14 +52,17 @@ templ LoginForm(args LoginFormArgs) {
 		></div>
 		@form.Form(form.FormArgs{
 			ID:             formID,
-			Action:         "/connect/com.datastarui.v1.auth.AuthService/Login",
+			Action:         "/forms/login", // HTTP endpoint that returns HTML
 			ContentType:    "json",
 			FormDataFields: []string{"email", "password"},
 			Class:          "space-y-4",
 		}) {
 			<!-- Email Field -->
 			@form.FormItem(form.FormItemArgs{}) {
-				@form.FormLabel(form.FormLabelArgs{For: "email"}) {
+				@form.FormLabel(form.FormLabelArgs{
+					For:      "email",
+					HasError: args.EmailError != "",
+				}) {
 					Email
 				}
 				@input.Input(input.InputArgs{
@@ -57,11 +72,29 @@ templ LoginForm(args LoginFormArgs) {
 					FormID:      formID,
 					Placeholder: "you@example.com",
 					Required:    true,
+					Attributes: func() templ.Attributes {
+						attrs := templ.Attributes{
+							"aria-invalid": templ.Bool(args.EmailError != ""),
+						}
+						if args.EmailError != "" {
+							attrs["aria-describedby"] = "email-error"
+						}
+						return attrs
+					}(),
 				})
+				if args.EmailError != "" {
+					@form.FormMessage(form.FormMessageArgs{
+						ID:      "email-error",
+						Message: args.EmailError,
+					})
+				}
 			}
 			<!-- Password Field -->
 			@form.FormItem(form.FormItemArgs{}) {
-				@form.FormLabel(form.FormLabelArgs{For: "password"}) {
+				@form.FormLabel(form.FormLabelArgs{
+					For:      "password",
+					HasError: args.PasswordError != "",
+				}) {
 					Password
 				}
 				@input.Input(input.InputArgs{
@@ -71,7 +104,22 @@ templ LoginForm(args LoginFormArgs) {
 					FormID:      formID,
 					Placeholder: "••••••••",
 					Required:    true,
+					Attributes: func() templ.Attributes {
+						attrs := templ.Attributes{
+							"aria-invalid": templ.Bool(args.PasswordError != ""),
+						}
+						if args.PasswordError != "" {
+							attrs["aria-describedby"] = "password-error"
+						}
+						return attrs
+					}(),
 				})
+				if args.PasswordError != "" {
+					@form.FormMessage(form.FormMessageArgs{
+						ID:      "password-error",
+						Message: args.PasswordError,
+					})
+				}
 			}
 			<!-- Submit Button -->
 			<div class="pt-2">
