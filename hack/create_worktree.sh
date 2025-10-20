@@ -5,8 +5,7 @@
 # If no name provided, generates a unique human-readable one
 # If no base branch provided, uses current branch
 
-set -e  # Exit on any error
-
+set -e # Exit on any error
 
 # Function to generate a unique worktree name
 generate_unique_name() {
@@ -24,13 +23,13 @@ generate_unique_name() {
 INIT_THOUGHTS=true
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --no-thoughts)
-            INIT_THOUGHTS=false
-            shift
-            ;;
-        *)
-            break
-            ;;
+    --no-thoughts)
+        INIT_THOUGHTS=false
+        shift
+        ;;
+    *)
+        break
+        ;;
     esac
 done
 
@@ -40,7 +39,7 @@ WORKTREE_NAME=${1:-$(generate_unique_name)}
 # Get base branch from second parameter or use current branch
 BASE_BRANCH=${2:-$(git branch --show-current)}
 
-# Get base directory name (should be 'humanlayer')
+# Get base directory name (should be 'datastarui')
 REPO_BASE_NAME=$(basename "$(pwd)")
 
 if [ ! -z "$HUMANLAYER_WORKTREE_OVERRIDE_BASE" ]; then
@@ -93,7 +92,7 @@ cd "$WORKTREE_PATH"
 echo "🔧 Setting up worktree dependencies..."
 if ! make setup; then
     echo "❌ Setup failed. Cleaning up worktree..."
-    cd - > /dev/null
+    cd - >/dev/null
     git worktree remove --force "$WORKTREE_PATH"
     git branch -D "$WORKTREE_NAME" 2>/dev/null || true
     echo "❌ Not allowed to create worktree from a branch that isn't passing setup."
@@ -120,21 +119,10 @@ fi
 if [ "$INIT_THOUGHTS" = true ]; then
     echo "🧠 Initializing thoughts..."
     cd "$WORKTREE_PATH"
-    if humanlayer thoughts init --directory humanlayer > /dev/null 2>&1; then
-        echo "✅ Thoughts initialized!"
-        # Run sync to create searchable directory
-        if humanlayer thoughts sync > /dev/null 2>&1; then
-            echo "✅ Thoughts searchable index created!"
-        else
-            echo "⚠️  Could not create searchable index. Run 'humanlayer thoughts sync' manually."
-        fi
-    else
-        echo "⚠️  Could not initialize thoughts automatically. Run 'humanlayer thoughts init' manually."
-    fi
 fi
 
 # Return to original directory
-cd - > /dev/null
+cd - >/dev/null
 
 echo "✅ Worktree created successfully!"
 echo "📁 Path: ${WORKTREE_PATH}"

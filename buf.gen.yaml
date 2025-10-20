@@ -1,0 +1,18 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/coreycole/datastarui/pkg/proto
+  disable:
+    - module: buf.build/bufbuild/protovalidate
+plugins:
+  # Generate Go protobuf code
+  - remote: buf.build/protocolbuffers/go:v1.36.6
+    out: pkg/proto
+    opt: paths=source_relative
+
+  # Generate Connect RPC Go code
+  - remote: buf.build/connectrpc/go:v1.18.1
+    out: pkg/proto
+    opt: paths=source_relative

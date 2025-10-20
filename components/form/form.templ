@@ -1,28 +1,40 @@
 package form
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 	"github.com/coreycole/datastarui/components/label"
 	"github.com/coreycole/datastarui/utils"
 )
 
-// FormSignals defines the signal structure for form components
-type FormSignals struct {
-	Submitted bool   `json:"submitted"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
+// SignalsWithFormId creates a SignalManager that includes formId at root level
+// This allows the backend to identify which form the signals belong to
+func SignalsWithFormId(formID string, signalsStruct any) *utils.SignalManager {
+	// Sanitize ID by replacing hyphens with underscores for JavaScript compatibility
+	sanitizedID := strings.ReplaceAll(formID, "-", "_")
+
+	// Create signals map with formId at root level
+	signalsMap := map[string]any{
+		"formId":    sanitizedID,
+		sanitizedID: signalsStruct,
+	}
+
+	signalsJSON, err := json.Marshal(signalsMap)
+	if err != nil {
+		signalsJSON = []byte("{}")
+	}
+
+	return &utils.SignalManager{
+		ID:          sanitizedID,
+		Signals:     signalsStruct,
+		DataSignals: string(signalsJSON),
+	}
 }
 
 // Form wrapper component
 templ Form(args FormArgs) {
 	{{
-		// Create signals using the new structured system
-		signals := utils.Signals(args.ID, FormSignals{
-			Submitted: false,
-			Name:      "",
-			Email:     "",
-		})
-
 		// Set up form attributes
 		var formAttrs templ.Attributes
 		formAttrs = make(templ.Attributes)
@@ -45,20 +57,45 @@ templ Form(args FormArgs) {
 				// Remove data-target from attributes as we've handled it
 				delete(formAttrs, "data-target")
 			}
-			formAttrs["data-on-submit"] = fmt.Sprintf("@post('%s', {contentType: 'form'%s})", templ.SafeURL(args.Action), target)
+
+			var submitHandler string
+
+			// If FormDataFields is set, send form data with explicit formId
+			if args.FormDataFields != nil && len(args.FormDataFields) > 0 {
+				// Build regex pattern to match:
+				// - formId (exact match)
+				// - login.email, login.password, etc. (formID.*)
+				// This sends {"formId": "login", "login": {"email": "...", "password": "..."}}
+				filterPattern := fmt.Sprintf("^(formId|%s\\.)", args.ID)
+				filterSignals := fmt.Sprintf("filterSignals: {include: /%s/}", filterPattern)
+
+				if target != "" {
+					submitHandler = fmt.Sprintf("@post('%s', {contentType: 'json', %s%s})", templ.SafeURL(args.Action), filterSignals, target)
+				} else {
+					submitHandler = fmt.Sprintf("@post('%s', {contentType: 'json', %s})", templ.SafeURL(args.Action), filterSignals)
+				}
+			} else {
+				// Default behavior - use contentType
+				contentType := "form"
+				if args.ContentType == "json" {
+					contentType = "json"
+				}
+				submitHandler = fmt.Sprintf("@post('%s', {contentType: '%s'%s})", templ.SafeURL(args.Action), contentType, target)
+			}
+
+			formAttrs["data-on-submit"] = submitHandler
+			formAttrs["data-indicator-fetching"] = ""
 		}
 
 		if args.Class != "" {
 			formAttrs["class"] = args.Class
 		}
 	}}
-	<div data-signals={ signals.DataSignals }>
-		<form
-			{ formAttrs... }
-		>
-			{ children... }
-		</form>
-	</div>
+	<form
+		{ formAttrs... }
+	>
+		{ children... }
+	</form>
 }
 
 // FormItem component - container for form field

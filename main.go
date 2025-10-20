@@ -27,7 +27,12 @@ import (
 	"github.com/coreycole/datastarui/pages/components/tabspage"
 	"github.com/coreycole/datastarui/pages/components/componentspage"
 	"github.com/coreycole/datastarui/pages/components/tooltippage"
+	"github.com/coreycole/datastarui/pages/login"
 	"github.com/coreycole/datastarui/utils"
+
+	"github.com/coreycole/datastarui/api/handler"
+	apimw "github.com/coreycole/datastarui/api/middleware"
+	"github.com/coreycole/datastarui/api/services/auth"
 )
 
 const port = "4242"
@@ -81,6 +86,24 @@ func main() {
 			return next(c)
 		}
 	})
+
+	// Setup Connect RPC services
+	connectMux := http.NewServeMux()
+
+	// Register services
+	services := []handler.ServiceHandler{
+		auth.NewService(),
+	}
+
+	for _, svc := range services {
+		path, handler := svc.Handler()
+		connectMux.Handle(path, handler)
+		log.Printf("Registered Connect RPC service: %s", path)
+	}
+
+	// Mount Connect RPC at /connect/* with unwrap middleware
+	unwrappedHandler := apimw.UnwrapFormData(connectMux)
+	e.Any("/connect/*", echo.WrapHandler(http.StripPrefix("/connect", unwrappedHandler)))
 
 	// Serve the home page at the root route
 	e.GET("/", func(c echo.Context) error {
@@ -164,6 +187,17 @@ func main() {
 			DatastarProAvailable: datastarProAvailable,
 		}
 		return p.ExamplesPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
+	})
+
+	// Serve the login page
+	e.GET("/login", func(c echo.Context) error {
+		rootArgs := l.RootArgs{
+			CurrentPage:          "login",
+			CurrentPath:          c.Request().URL.Path,
+			InspectorEnabled:     cfg.DatastarInspectorEnabled,
+			DatastarProAvailable: datastarProAvailable,
+		}
+		return login.LoginPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve static files

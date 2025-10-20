@@ -1,0 +1,30 @@
+package login
+
+import (
+	"github.com/coreycole/datastarui/layouts"
+	loginform "github.com/coreycole/datastarui/forms/login"
+)
+
+templ LoginPage(rootArgs layouts.RootArgs) {
+	@layouts.Root(rootArgs) {
+		<div class="flex min-h-screen items-center justify-center">
+			<div class="w-full max-w-md space-y-8 rounded-lg border bg-card p-8 shadow-lg">
+				<div class="space-y-2 text-center">
+					<h1 class="text-3xl font-bold">Welcome back</h1>
+					<p class="text-muted-foreground">Enter your credentials to sign in</p>
+				</div>
+				@loginform.LoginForm(loginform.LoginFormArgs{
+					ID:          "login",
+					RedirectURL: "/dashboard",
+				})
+				<!-- Signup Link -->
+				<p class="text-center text-sm text-muted-foreground">
+					Don't have an account?
+					<a href="/signup" class="font-medium text-primary hover:underline">
+						Sign up
+					</a>
+				</p>
+			</div>
+		</div>
+	}
+}

@@ -3,6 +3,10 @@ build:
   @go build -o datastarui main.go
   @just build-tailwind
 
+# Generate proto files only
+proto:
+  @buf generate
+
 build-tailwind:
     @echo "🎨 Building Tailwind CSS..."
     @pnpm exec tailwindcss -i static/css/index.css -o static/css/out.css --content "./components/**/*" --content "./pages/**/*" --content "./layouts/**/*"
@@ -25,6 +29,7 @@ install:
   @pnpm install
   @go install github.com/air-verse/air@latest
   @go install github.com/a-h/templ/cmd/templ@latest
+  @go install github.com/bufbuild/buf/cmd/buf@latest
   @go get ./...
   @go mod tidy
   @go mod download
