@@ -366,6 +366,96 @@ templ SelectPage(rootArgs l.RootArgs) {
 					</div>
 				}
 			</section>
+			<!-- Scrollable Select with Custom Max Height -->
+			<section class="space-y-6">
+				<h2 class="text-2xl font-semibold">Scrollable Select</h2>
+				<p class="text-muted-foreground">
+					Demonstrates a long list of options with custom max-height for scrolling. Use the <code class="text-sm bg-muted px-1 py-0.5 rounded">Class</code> parameter on <code class="text-sm bg-muted px-1 py-0.5 rounded">SelectContent</code> to set max-height.
+				</p>
+				<div class="max-w-md space-y-2">
+					<h3 class="text-lg font-medium">Select a Country</h3>
+					@selectui.Select(selectui.SelectArgs{
+						ID:          "country_select",
+						Name:        "country",
+						Placeholder: "Select a country...",
+					}) {
+						@selectui.SelectTrigger(selectui.SelectTriggerArgs{
+							ID: "country_select",
+						}) {
+							@selectui.SelectValue(selectui.SelectValueArgs{
+								ID:          "country_select",
+								Placeholder: "Select a country...",
+							})
+						}
+						@selectui.SelectContent(selectui.SelectContentArgs{
+							ID:    "country_select",
+							Class: "max-h-[300px]",
+						}) {
+							@selectui.SelectGroup(selectui.SelectGroupArgs{}) {
+								@selectui.SelectLabel(selectui.SelectLabelArgs{}) {
+									North America
+								}
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "us", Index: 0}) { United States }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "ca", Index: 1}) { Canada }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "mx", Index: 2}) { Mexico }
+							}
+							@selectui.SelectSeparator(selectui.SelectSeparatorArgs{})
+							@selectui.SelectGroup(selectui.SelectGroupArgs{}) {
+								@selectui.SelectLabel(selectui.SelectLabelArgs{}) {
+									Europe
+								}
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "uk", Index: 3}) { United Kingdom }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "fr", Index: 4}) { France }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "de", Index: 5}) { Germany }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "es", Index: 6}) { Spain }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "it", Index: 7}) { Italy }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "nl", Index: 8}) { Netherlands }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "be", Index: 9}) { Belgium }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "se", Index: 10}) { Sweden }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "no", Index: 11}) { Norway }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "dk", Index: 12}) { Denmark }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "fi", Index: 13}) { Finland }
+							}
+							@selectui.SelectSeparator(selectui.SelectSeparatorArgs{})
+							@selectui.SelectGroup(selectui.SelectGroupArgs{}) {
+								@selectui.SelectLabel(selectui.SelectLabelArgs{}) {
+									Asia
+								}
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "jp", Index: 14}) { Japan }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "cn", Index: 15}) { China }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "kr", Index: 16}) { South Korea }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "in", Index: 17}) { India }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "sg", Index: 18}) { Singapore }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "th", Index: 19}) { Thailand }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "vn", Index: 20}) { Vietnam }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "id", Index: 21}) { Indonesia }
+							}
+							@selectui.SelectSeparator(selectui.SelectSeparatorArgs{})
+							@selectui.SelectGroup(selectui.SelectGroupArgs{}) {
+								@selectui.SelectLabel(selectui.SelectLabelArgs{}) {
+									Oceania
+								}
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "au", Index: 22}) { Australia }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "nz", Index: 23}) { New Zealand }
+							}
+							@selectui.SelectSeparator(selectui.SelectSeparatorArgs{})
+							@selectui.SelectGroup(selectui.SelectGroupArgs{}) {
+								@selectui.SelectLabel(selectui.SelectLabelArgs{}) {
+									South America
+								}
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "br", Index: 24}) { Brazil }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "ar", Index: 25}) { Argentina }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "cl", Index: 26}) { Chile }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "co", Index: 27}) { Colombia }
+								@selectui.SelectItem(selectui.SelectItemArgs{ID: "country_select", Value: "pe", Index: 28}) { Peru }
+							}
+						}
+					}
+					<p class="text-sm text-muted-foreground mt-2">
+						This example uses <code class="text-xs bg-muted px-1 py-0.5 rounded">Class: "max-h-[300px]"</code> on SelectContent to enable scrolling.
+					</p>
+				</div>
+			</section>
 			<!-- Tab Navigation Test -->
 			<section class="space-y-6">
 				<h2 class="text-2xl font-semibold">Tab Navigation Test</h2>

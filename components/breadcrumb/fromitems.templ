@@ -1,0 +1,32 @@
+package breadcrumb
+
+// BreadcrumbItemData represents a single breadcrumb item
+type BreadcrumbItemData struct {
+	Label string
+	Href  string // Empty string means this is the current page (uses BreadcrumbPage instead of BreadcrumbLink)
+}
+
+// FromItems creates a breadcrumb navigation from a slice of items
+// This is a higher-level helper that handles the manual construction of breadcrumbs
+templ FromItems(items []BreadcrumbItemData) {
+	@Breadcrumb(BreadcrumbArgs{}) {
+		@BreadcrumbList(BreadcrumbListArgs{}) {
+			for i, item := range items {
+				@BreadcrumbItem(BreadcrumbItemArgs{}) {
+					if item.Href != "" {
+						@BreadcrumbLink(BreadcrumbLinkArgs{Href: item.Href}) {
+							{ item.Label }
+						}
+					} else {
+						@BreadcrumbPage(BreadcrumbPageArgs{}) {
+							{ item.Label }
+						}
+					}
+				}
+				if i < len(items)-1 {
+					@BreadcrumbSeparator(BreadcrumbSeparatorArgs{})
+				}
+			}
+		}
+	}
+}

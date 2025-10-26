@@ -103,13 +103,9 @@ func (h *TooltipHandler) BuildTouchEndHandler() string {
 func (h *TooltipHandler) BuildClickOutsideHandler(triggerSelector string) string {
 	// Close tooltip if clicking outside and it was opened via touch
 	condition := "$" + h.tooltipID + ".touchHeld && !evt.target.closest('" + triggerSelector + "')"
-	
-	return utils.BuildConditional(
-		condition,
-		utils.NewExpression().
-			Statement("$" + h.tooltipID + ".touchHeld = false").
-			Statement("document.getElementById('" + h.tooltipID + "').hidePopover()").
-			Build(),
-		"null",
-	)
+
+	// Use comma operator to join multiple expressions in ternary branch
+	action := "($" + h.tooltipID + ".touchHeld = false, document.getElementById('" + h.tooltipID + "').hidePopover())"
+
+	return utils.BuildConditional(condition, action, "null")
 }

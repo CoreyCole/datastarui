@@ -1,5 +1,7 @@
 package themetoggle
 
+import "github.com/coreycole/datastarui/utils"
+
 // ThemeToggleSignals defines the signal structure for theme toggle components
 // Note: This is kept for reference but not used since we use the global theme signal
 type ThemeToggleSignals struct {
@@ -11,6 +13,18 @@ templ ThemeToggle(args ThemeToggleArgs) {
 		// Use the global theme signal instead of creating a local one
 		// The global theme is initialized at the body level as $theme
 		toggleExpr := "$theme = $theme === 'dark' ? 'light' : 'dark'; document.documentElement.classList.toggle('dark', $theme === 'dark'); localStorage.setItem('theme', $theme);"
+
+		// Sun icon classes: visible in light mode, hidden in dark mode
+		sunClasses := utils.NewDataClass().
+			Add("rotate-0 scale-100", "$theme === 'light'").
+			Add("-rotate-90 scale-0", "$theme === 'dark'").
+			Build()
+
+		// Moon icon classes: hidden in light mode, visible in dark mode
+		moonClasses := utils.NewDataClass().
+			Add("rotate-90 scale-0", "$theme === 'light'").
+			Add("rotate-0 scale-100", "$theme === 'dark'").
+			Build()
 	}}
 	<div>
 		<button
@@ -18,9 +32,10 @@ templ ThemeToggle(args ThemeToggleArgs) {
 			data-on-click={ toggleExpr }
 			{ args.Attributes... }
 		>
-			<!-- Sun icon (visible in dark mode) -->
+			<!-- Sun icon (visible in light mode, hidden in dark mode) -->
 			<svg
-				class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+				class="h-4 w-4 transition-all"
+				data-class={ sunClasses }
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"
@@ -28,9 +43,10 @@ templ ThemeToggle(args ThemeToggleArgs) {
 				<circle cx="12" cy="12" r="5"></circle>
 				<path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
 			</svg>
-			<!-- Moon icon (visible in light mode) -->
+			<!-- Moon icon (hidden in light mode, visible in dark mode) -->
 			<svg
-				class="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+				class="absolute h-4 w-4 transition-all"
+				data-class={ moonClasses }
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"
