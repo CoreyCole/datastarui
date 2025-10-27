@@ -1,0 +1,29 @@
+package avatar
+
+import "github.com/coreycole/datastarui/utils"
+
+templ Avatar(args AvatarArgs) {
+	{{
+		// Default to white text if not specified
+		textColor := args.TextColor
+		if textColor == "" {
+			textColor = "#ffffff"
+		}
+
+		// Build inline style for colors
+		styleValue := ""
+		if args.BackgroundColor != "" {
+			styleValue = "background-color: " + args.BackgroundColor + "; color: " + textColor + ";"
+		}
+	}}
+	<div
+		data-slot="avatar"
+		class={ utils.TwMerge("w-[32px] h-[32px] inline-flex items-center justify-center overflow-hidden rounded-full", args.Class) }
+		if styleValue != "" {
+			style={ styleValue }
+		}
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}

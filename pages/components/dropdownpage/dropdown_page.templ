@@ -3,6 +3,7 @@ package dropdownpage
 import (
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/dropdown"
+	selectcomponent "github.com/coreycole/datastarui/components/select"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
@@ -227,6 +228,69 @@ templ DropdownPage(rootArgs l.RootArgs) {
 								}
 							}
 						</div>
+					}
+				}
+				<!-- Dropdown with Select (Overflow Test) -->
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
+							Dropdown with Select
+						}
+						@card.CardDescription(card.CardDescriptionArgs{}) {
+							Test that a select component inside a dropdown doesn't get clipped when it extends below the dropdown's edge.
+						}
+					}
+					@card.CardContent(card.CardContentArgs{}) {
+						<div class="inline-block">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "select_dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
+									ID:    "select_dropdown",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Open Dropdown with Select
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
+									ID:    "select_dropdown",
+									Align: "start",
+								}) {
+									@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
+										ID: "select_dropdown",
+									}) {
+										Select an Option
+									}
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
+										ID: "select_dropdown",
+									})
+									<div class="px-2 py-2">
+										@selectcomponent.Select(selectcomponent.SelectArgs{
+											ID:          "dropdown_select",
+											Placeholder: "Choose a framework",
+											Options: []selectcomponent.SelectOptionArgs{
+												{Value: "next", Label: "Next.js"},
+												{Value: "react", Label: "React"},
+												{Value: "vue", Label: "Vue"},
+												{Value: "svelte", Label: "Svelte"},
+												{Value: "angular", Label: "Angular"},
+												{Value: "solid", Label: "Solid"},
+												{Value: "qwik", Label: "Qwik"},
+												{Value: "astro", Label: "Astro"},
+											},
+										})
+									</div>
+									@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
+										ID: "select_dropdown",
+									})
+									@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
+										ID: "select_dropdown",
+									}) {
+										Close
+									}
+								}
+							}
+						</div>
+						<p class="mt-4 text-sm text-muted-foreground">
+							The select options should extend below the dropdown edge without being clipped.
+						</p>
 					}
 				}
 				<!-- Multiple Dropdowns Test -->
