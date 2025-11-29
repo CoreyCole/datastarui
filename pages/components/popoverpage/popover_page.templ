@@ -3,6 +3,7 @@ package popoverpage
 import (
 	"github.com/coreycole/datastarui/components/button"
 	"github.com/coreycole/datastarui/components/popover"
+	"github.com/coreycole/datastarui/components/textarea"
 	l "github.com/coreycole/datastarui/layouts"
 	"github.com/coreycole/datastarui/utils"
 )
@@ -400,6 +401,60 @@ templ PopoverPage(rootArgs l.RootArgs) {
 								</div>
 							}
 						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Notion-Style Comment Example -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Notion-Style Comment</h2>
+				<p class="text-sm text-muted-foreground">
+					A clean comment input popover matching Notion's design with a textarea and submit button.
+				</p>
+				<div class="flex justify-center min-h-[300px] bg-muted/50 rounded-lg items-center">
+					<div data-signals="{demo_comment: ''}">
+						@popover.PopoverTrigger(popover.PopoverTriggerArgs{
+							ID:        "notion_comment_trigger",
+							PopoverID: "notion_comment_popover",
+						}) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-48",
+							}) {
+								Add a comment...
+							}
+						}
+						@popover.PopoverContent(popover.PopoverContentArgs{
+							ID:         "notion_comment_popover",
+							Class:      "w-96",
+							UseAnchor:  true,
+							Side:       utils.AnchorSideBottom,
+							Align:      utils.AnchorAlignStart,
+							SideOffset: 8,
+						}) {
+							<div class="flex items-start gap-2 p-2">
+								@textarea.Textarea(textarea.TextareaArgs{
+									Placeholder: "Add a comment...",
+									Rows:        3,
+									Borderless:  true,
+									Class:       "flex-1 resize-none text-sm",
+									Attributes: templ.Attributes{
+										"data-bind": "$demo_comment",
+									},
+								})
+								@button.Button(button.ButtonArgs{
+									Size:    "icon",
+									Variant: "ghost",
+									Class:   "shrink-0",
+									Attributes: templ.Attributes{
+										"data-on-click": "if (!$demo_comment || !$demo_comment.trim()) return; console.log('Comment submitted:', $demo_comment); $demo_comment = ''; document.getElementById('notion_comment_popover').hidePopover()",
+									},
+								}) {
+									<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+									</svg>
+								}
+							</div>
+						}
 					</div>
 				</div>
 			</div>

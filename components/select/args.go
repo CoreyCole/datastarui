@@ -49,6 +49,10 @@ type SelectArgs struct {
 	// Placeholder text to show when no value is selected
 	Placeholder string
 
+	// OnChange is an optional Datastar expression to execute when value changes
+	// Example: "@post('/api/update')"
+	OnChange string
+
 	// Class allows additional CSS classes to be added
 	Class string
 

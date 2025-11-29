@@ -176,5 +176,5 @@ func (s *SelectItemHandler) BuildClickHandler() string {
 
 // BuildKeyboardHandler creates the item keyboard handler
 func (s *SelectItemHandler) BuildKeyboardHandler() string {
-	return fmt.Sprintf(`(evt.key === 'Enter' || evt.key === ' ') ? (evt.preventDefault(), evt.target.click()) : null`)
+	return `(evt.key === 'Enter' || evt.key === ' ') ? (evt.preventDefault(), evt.target.click()) : null`
 }

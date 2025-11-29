@@ -9,7 +9,7 @@ import (
 
 templ DropdownPage(rootArgs l.RootArgs) {
 	@l.Root(rootArgs) {
-		<div class="space-y-8">
+		<div class="space-y-8 pb-32">
 			@l.ComponentPageBreadcrumbs("Dropdown")
 			<!-- Page Header -->
 			<div class="space-y-2">
@@ -420,6 +420,184 @@ templ DropdownPage(rootArgs l.RootArgs) {
 					}
 				}
 			</div>
+			<!-- Nested Dropdown/Select Test (User Profile Scenario) -->
+			@card.Card(card.CardArgs{}) {
+				@card.CardHeader(card.CardHeaderArgs{}) {
+					@card.CardTitle(card.CardTitleArgs{}) {
+						Nested Dropdown + Select (User Profile)
+					}
+					@card.CardDescription(card.CardDescriptionArgs{}) {
+						Test that a select component inside a dropdown menu doesn't close the dropdown when interacted with. This reproduces the user profile menu scenario.
+					}
+				}
+				@card.CardContent(card.CardContentArgs{}) {
+					<div class="inline-block">
+						@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "user_profile_test"}) {
+							@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
+								ID:    "user_profile_test",
+								Class: "h-8 w-8 rounded-full p-0 inline-flex items-center justify-center bg-primary text-primary-foreground",
+							}) {
+								U
+							}
+							@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
+								ID:    "user_profile_test",
+								Align: "start",
+							}) {
+								@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
+									ID: "user_profile_test",
+								}) {
+									user@example.com
+								}
+								@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
+									ID: "user_profile_test",
+								}) {
+									<div class="flex items-center gap-2 py-2">
+										<span class="text-sm text-muted-foreground whitespace-nowrap">Theme:</span>
+										@selectcomponent.Select(selectcomponent.SelectArgs{
+											ID:          "nested_theme_select",
+											Placeholder: "Select theme",
+											Options: []selectcomponent.SelectOptionArgs{
+												{Value: "monokai", Label: "Monokai"},
+												{Value: "dracula", Label: "Dracula"},
+												{Value: "github", Label: "GitHub"},
+												{Value: "nord", Label: "Nord"},
+											},
+										})
+									</div>
+								}
+								@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
+									ID: "user_profile_test",
+								})
+								@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
+									ID:      "user_profile_test",
+									Variant: "destructive",
+								}) {
+									Log out
+								}
+							}
+						}
+					</div>
+				}
+			}
+			<!-- Manual Composition Select (Syntax Theme Repro) -->
+			@card.Card(card.CardArgs{}) {
+				@card.CardHeader(card.CardHeaderArgs{}) {
+					@card.CardTitle(card.CardTitleArgs{}) {
+						Manual Composition Select (Syntax Theme Repro)
+					}
+					@card.CardDescription(card.CardDescriptionArgs{}) {
+						Reproducing the exact syntax theme selector structure to test if manual composition causes the dropdown to close.
+					}
+				}
+				@card.CardContent(card.CardContentArgs{}) {
+					<div class="inline-block">
+						@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "manual_composition_test"}) {
+							@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
+								ID:    "manual_composition_test",
+								Class: "h-8 w-8 rounded-full p-0 inline-flex items-center justify-center bg-primary text-primary-foreground",
+							}) {
+								U
+							}
+							@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{
+								ID:    "manual_composition_test",
+								Align: "start",
+							}) {
+								@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
+									ID: "manual_composition_test",
+								}) {
+									user@example.com
+								}
+								@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
+									ID: "manual_composition_test",
+								}) {
+									<!-- Exact structure from syntax theme selector -->
+									<div class="flex items-center gap-2">
+										<span class="text-sm text-muted-foreground whitespace-nowrap">Syntax:</span>
+										@selectcomponent.Select(selectcomponent.SelectArgs{
+											ID:          "manual_syntax_select",
+											Placeholder: "Select theme",
+											Class:       "w-[180px]",
+										}) {
+											@selectcomponent.SelectTrigger(selectcomponent.SelectTriggerArgs{
+												ID: "manual_syntax_select",
+											}) {
+												@selectcomponent.SelectValue(selectcomponent.SelectValueArgs{
+													ID:          "manual_syntax_select",
+													Placeholder: "Select theme",
+												})
+											}
+											@selectcomponent.SelectContent(selectcomponent.SelectContentArgs{
+												ID:    "manual_syntax_select",
+												Class: "max-h-[300px]",
+											}) {
+												@selectcomponent.SelectGroup(selectcomponent.SelectGroupArgs{}) {
+													@selectcomponent.SelectLabel(selectcomponent.SelectLabelArgs{}) {
+														Dark Themes
+													}
+													@selectcomponent.SelectItem(selectcomponent.SelectItemArgs{
+														ID:    "manual_syntax_select",
+														Value: "monokai",
+														Index: 0,
+													}) {
+														Monokai
+													}
+													@selectcomponent.SelectItem(selectcomponent.SelectItemArgs{
+														ID:    "manual_syntax_select",
+														Value: "dracula",
+														Index: 1,
+													}) {
+														Dracula
+													}
+													@selectcomponent.SelectItem(selectcomponent.SelectItemArgs{
+														ID:    "manual_syntax_select",
+														Value: "nord",
+														Index: 2,
+													}) {
+														Nord
+													}
+												}
+												@selectcomponent.SelectSeparator(selectcomponent.SelectSeparatorArgs{})
+												@selectcomponent.SelectGroup(selectcomponent.SelectGroupArgs{}) {
+													@selectcomponent.SelectLabel(selectcomponent.SelectLabelArgs{}) {
+														Light Themes
+													}
+													@selectcomponent.SelectItem(selectcomponent.SelectItemArgs{
+														ID:    "manual_syntax_select",
+														Value: "github",
+														Index: 3,
+													}) {
+														GitHub
+													}
+													@selectcomponent.SelectItem(selectcomponent.SelectItemArgs{
+														ID:    "manual_syntax_select",
+														Value: "solarized-light",
+														Index: 4,
+													}) {
+														Solarized Light
+													}
+												}
+											}
+										}
+									</div>
+								}
+								@dropdown.DropdownMenuSeparator(dropdown.DropdownMenuSeparatorArgs{
+									ID: "manual_composition_test",
+								})
+								@dropdown.DropdownMenuItem(dropdown.DropdownMenuItemArgs{
+									ID:      "manual_composition_test",
+									Variant: "destructive",
+								}) {
+									Log out
+								}
+							}
+						}
+					</div>
+					<p class="mt-4 text-sm text-muted-foreground">
+						This test case uses manual Select composition (SelectTrigger/SelectContent/SelectGroup) exactly like the syntax theme selector.
+						If this fails the same way, it confirms the issue is in the manual composition pattern, not the SyntaxThemeSelector component.
+					</p>
+				}
+			}
 		</div>
 	}
 }

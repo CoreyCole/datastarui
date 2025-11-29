@@ -3,9 +3,9 @@ package form
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 	"github.com/coreycole/datastarui/components/label"
 	"github.com/coreycole/datastarui/utils"
+	"strings"
 )
 
 // SignalsWithFormId creates a SignalManager that includes formId at root level
@@ -66,7 +66,8 @@ templ Form(args FormArgs) {
 				// - formId (exact match)
 				// - login.email, login.password, etc. (formID.*)
 				// This sends {"formId": "login", "login": {"email": "...", "password": "..."}}
-				filterPattern := fmt.Sprintf("^(formId|%s\\.)", args.ID)
+				sanitizedID := strings.ReplaceAll(args.ID, "-", "_")
+				filterPattern := fmt.Sprintf("^(formId|%s\\.)", sanitizedID)
 				filterSignals := fmt.Sprintf("filterSignals: {include: /%s/}", filterPattern)
 
 				if target != "" {
@@ -100,9 +101,7 @@ templ Form(args FormArgs) {
 
 // FormItem component - container for form field
 templ FormItem(args FormItemArgs) {
-	{{
-		classes := formItemVariants(args.Class)
-	}}
+	{{ classes := formItemVariants(args.Class) }}
 	<div
 		data-slot="form-item"
 		class={ classes }
@@ -114,9 +113,7 @@ templ FormItem(args FormItemArgs) {
 
 // FormLabel component - label for form field
 templ FormLabel(args FormLabelArgs) {
-	{{
-		classes := formLabelVariants(args.Class, args.HasError)
-	}}
+	{{ classes := formLabelVariants(args.Class, args.HasError) }}
 	@label.Label(label.LabelArgs{
 		Class: classes,
 		For:   args.For,
@@ -131,9 +128,7 @@ templ FormLabel(args FormLabelArgs) {
 
 // FormDescription component - help text for form field
 templ FormDescription(args FormDescriptionArgs) {
-	{{
-		classes := formDescriptionVariants(args.Class)
-	}}
+	{{ classes := formDescriptionVariants(args.Class) }}
 	<p
 		data-slot="form-description"
 		if args.ID != "" {
@@ -149,9 +144,7 @@ templ FormDescription(args FormDescriptionArgs) {
 // FormMessage component - error message for form field
 templ FormMessage(args FormMessageArgs) {
 	if args.Message != "" {
-		{{
-			classes := formMessageVariants(args.Class)
-		}}
+		{{ classes := formMessageVariants(args.Class) }}
 		<p
 			data-slot="form-message"
 			if args.ID != "" {

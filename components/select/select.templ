@@ -60,11 +60,24 @@ templ Select(args SelectArgs) {
 
 		// Click outside handler - use conditional pattern from Datastar docs
 		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+
+		// Create a data-effect handler that watches for value changes
+		effectHandler := ""
+		if args.OnChange != "" {
+			// Only execute OnChange when value actually changes (not on initial load or other signal changes)
+			effectHandler = fmt.Sprintf(
+				"if ($%s.value && $%s.value !== $%s._lastValue) { $%s._lastValue = $%s.value; %s }",
+				selectID, selectID, selectID, selectID, selectID, args.OnChange,
+			)
+		}
 	}}
 	<div
 		data-slot="select"
 		data-select-id={ selectID }
 		data-signals={ signals.DataSignals }
+		if effectHandler != "" {
+			data-effect={ effectHandler }
+		}
 		data-on-click__outside={ clickOutsideHandler }
 		class={ selectVariants(args.Class) }
 		{ args.Attributes... }
