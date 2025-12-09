@@ -5,6 +5,7 @@ import (
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/form"
 	"github.com/coreycole/datastarui/components/input"
+	"github.com/coreycole/datastarui/components/textarea"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
@@ -207,15 +208,16 @@ templ FormPage(rootArgs l.RootArgs) {
 									@form.FormLabel(form.FormLabelArgs{For: "message"}) {
 										Message
 									}
-									<textarea
-										id="message"
-										name="message"
-										placeholder="Your message..."
-										required
-										rows="4"
-										class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-										data-bind="$contact.message"
-									></textarea>
+									@textarea.Textarea(textarea.TextareaArgs{
+										ID:          "message",
+										Name:        "message",
+										Placeholder: "Your message...",
+										Required:    true,
+										Rows:        4,
+										Attributes: templ.Attributes{
+											"data-bind": "$contact.message",
+										},
+									})
 									@form.FormDescription(form.FormDescriptionArgs{}) {
 										Please provide as much detail as possible.
 									}

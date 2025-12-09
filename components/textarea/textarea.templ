@@ -1,0 +1,58 @@
+package textarea
+
+import "strings"
+import "strconv"
+
+templ Textarea(args TextareaArgs) {
+	{{
+		// Generate CSS classes
+		classes := textareaVariants(args.Class, args.Borderless)
+
+		// Set up textarea attributes
+		var textareaAttrs templ.Attributes
+		textareaAttrs = make(templ.Attributes)
+
+		// Copy user-provided attributes first
+		for k, v := range args.Attributes {
+			textareaAttrs[k] = v
+		}
+
+		// Standard textarea attributes
+		textareaAttrs["data-slot"] = "textarea"
+		textareaAttrs["class"] = classes
+
+		if args.Placeholder != "" {
+			textareaAttrs["placeholder"] = args.Placeholder
+		}
+		if args.Name != "" {
+			textareaAttrs["name"] = args.Name
+		}
+		if args.ID != "" {
+			textareaAttrs["id"] = args.ID
+		}
+		if args.Disabled {
+			textareaAttrs["disabled"] = true
+		}
+		if args.Required {
+			textareaAttrs["required"] = true
+		}
+
+		// Set rows (default to 4 if not specified)
+		rows := args.Rows
+		if rows == 0 {
+			rows = 4
+		}
+		textareaAttrs["rows"] = strconv.Itoa(rows)
+
+		// Set up data-bind if FormID and Name are provided
+		if args.FormID != "" && args.Name != "" {
+			// Convert form ID to valid signal name (replace hyphens with underscores)
+			signalName := strings.ReplaceAll(args.FormID, "-", "_")
+			dataBindValue := signalName + "." + args.Name
+			textareaAttrs["data-bind"] = dataBindValue
+		}
+	}}
+	<textarea
+		{ textareaAttrs... }
+	>{ args.Value }</textarea>
+}

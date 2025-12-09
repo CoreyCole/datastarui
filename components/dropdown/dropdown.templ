@@ -126,6 +126,11 @@ templ DropdownMenuItem(args DropdownMenuItemArgs) {
 		// Create signals manager for this dropdown
 		signals := utils.Signals(args.ID, DropdownSignals{})
 		hideExpr := signals.Set("open", "false")
+		// Combine hideExpr with custom OnClick if provided
+		clickExpr := hideExpr
+		if args.OnClick != "" {
+			clickExpr = hideExpr + "; " + args.OnClick
+		}
 	}}
 	if args.AsChild {
 		<span
@@ -150,7 +155,7 @@ templ DropdownMenuItem(args DropdownMenuItemArgs) {
 			class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
 			role="menuitem"
 			tabindex="0"
-			data-on-click={ hideExpr }
+			data-on-click={ clickExpr }
 			if args.Disabled {
 				aria-disabled="true"
 			}

@@ -84,6 +84,10 @@ type DropdownMenuItemArgs struct {
 
 	// AsChild renders the item as a child element (for composition)
 	AsChild bool
+
+	// OnClick is an optional Datastar expression to execute after closing the dropdown
+	// Example: "@post('/api/action')" or "$mySignal = true"
+	OnClick string
 }
 
 // DropdownMenuLabelArgs defines the properties for the DropdownMenuLabel component

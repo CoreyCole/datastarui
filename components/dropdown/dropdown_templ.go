@@ -414,6 +414,11 @@ func DropdownMenuItem(args DropdownMenuItemArgs) templ.Component {
 		// Create signals manager for this dropdown
 		signals := utils.Signals(args.ID, DropdownSignals{})
 		hideExpr := signals.Set("open", "false")
+		// Combine hideExpr with custom OnClick if provided
+		clickExpr := hideExpr
+		if args.OnClick != "" {
+			clickExpr = hideExpr + "; " + args.OnClick
+		}
 		if args.AsChild {
 			var templ_7745c5c3_Var19 = []any{dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var19...)
@@ -491,9 +496,9 @@ func DropdownMenuItem(args DropdownMenuItemArgs) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var23 string
-			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(hideExpr)
+			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(clickExpr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 153, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/dropdown/dropdown.templ`, Line: 158, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
