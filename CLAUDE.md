@@ -77,6 +77,285 @@ Each component follows a consistent 3-file pattern:
 
 ## Datastar Development Guidelines
 
+### Datastar SSE Events Reference
+
+Backend handlers respond to frontend actions by sending Server-Sent Events (SSE) with content type `text/event-stream`. Datastar supports multiple event types for different operations.
+
+**IMPORTANT**: Use the `datastar-go` SDK (github.com/starfederation/datastar-go/datastar) to handle SSE formatting automatically. The SDK methods handle all the formatting details for you.
+
+#### Using the datastar-go SDK
+
+```go
+import "github.com/starfederation/datastar-go/datastar"
+
+func HandleExample(c echo.Context) error {
+    // Get the underlying response writer and request
+    w := c.Response().Writer
+    r := c.Request()
+
+    // Create SSE stream
+    sse := datastar.NewSSE(w, r)
+
+    // Patch elements using templ components
+    component := MyTemplComponent()
+    return sse.PatchElementTempl(component)
+
+    // Or send multiple patches
+    sse.PatchElementTempl(component1)
+    sse.PatchElementTempl(component2)
+    return sse.PatchSignals(map[string]interface{}{"loading": false})
+}
+```
+
+#### Event Types
+
+##### datastar-patch-elements
+
+Patches one or more elements in the DOM. By default, Datastar morphs elements by matching top-level elements based on their ID.
+
+```
+event: datastar-patch-elements
+data: elements <div id="foo">Hello world!</div>
+```
+
+**Be sure to place IDs on top-level elements to be morphed**, as well as on elements within them that you'd like to preserve state on (event listeners, CSS transitions, etc.).
+
+**Patch Modes:**
+
+Additional data lines can be added to override the default behavior:
+
+| Key | Description |
+|-----|-------------|
+| `data: mode outer` | Morphs the outer HTML of the elements. This is the default (and recommended) mode. |
+| `data: mode inner` | Morphs the inner HTML of the elements. |
+| `data: mode replace` | Replaces the outer HTML of the elements. |
+| `data: mode prepend` | Prepends the elements to the target's children. |
+| `data: mode append` | Appends the elements to the target's children. |
+| `data: mode before` | Inserts the elements before the target as siblings. |
+| `data: mode after` | Inserts the elements after the target as siblings. |
+| `data: mode remove` | Removes the target elements from DOM. |
+| `data: selector #foo` | Selects the target element using a CSS selector. Not required when using outer or replace modes. |
+| `data: useViewTransition true` | Whether to use view transitions when patching elements. Defaults to false. |
+
+**Examples:**
+
+Remove an element:
+
+```
+event: datastar-patch-elements
+data: mode remove
+data: selector #foo
+```
+
+Multiline elements with options:
+
+```
+event: datastar-patch-elements
+data: mode inner
+data: selector #foo
+data: useViewTransition true
+data: elements <div>
+data: elements   Hello world!
+data: elements </div>
+```
+
+##### datastar-patch-signals
+
+Patches signals into the existing signals on the page. The `onlyIfMissing` line determines whether to update each signal with the new value only if a signal with that name does not yet exist.
+
+```
+event: datastar-patch-signals
+data: signals {"foo": 1, "bar": 2}
+```
+
+Signals can be removed by setting their values to null:
+
+```
+event: datastar-patch-signals
+data: signals {"foo": null, "bar": null}
+```
+
+With onlyIfMissing option:
+
+```
+event: datastar-patch-signals
+data: onlyIfMissing true
+data: signals {"foo": 1, "bar": 2}
+```
+
+##### datastar-execute-script
+
+Executes JavaScript code on the frontend. Useful for one-off operations.
+
+IMPORTANT: never use this for reloading the page. patch html or signals into the page using datastar sse.
+
+```
+event: datastar-execute-script
+data: script setTimeout(() => { document.getElementById('msg')?.remove(); }, 2000)
+```
+
+**Using with SDK:**
+
+```go
+script := `setTimeout(() => { document.getElementById('comment-success')?.remove(); }, 2000)`
+return sse.ExecuteScript(script)
+```
+
+#### Sending Multiple Patches in One Response
+
+The datastar-go SDK makes it easy to send multiple patches in a single SSE response:
+
+```go
+func HandleCreateComment(c echo.Context) error {
+    w := c.Response().Writer
+    r := c.Request()
+    sse := datastar.NewSSE(w, r)
+
+    // Create comment in database
+    comment, err := createComment(...)
+    if err != nil {
+        return sse.PatchElementTempl(ErrorMessage(err.Error()))
+    }
+
+    // Send multiple patches:
+    // 1. Clear the form
+    sse.PatchElementTempl(CommentUIClear())
+
+    // 2. Show success message
+    sse.PatchElementTempl(CommentSuccessMessage())
+
+    // 3. Update sidebar with new comment
+    sse.PatchElementTempl(CommentSidebarItem(comment))
+
+    // 4. Auto-remove success message after delay
+    script := `setTimeout(() => document.getElementById('comment-success')?.remove(), 2000)`
+    return sse.ExecuteScript(script)
+}
+```
+
+**Critical Requirements:**
+
+- Each patched element MUST have an `id` attribute for Datastar to target it
+- Components should wrap their content in a container with a stable ID
+- Use templ components and `PatchElementTempl()` for type-safe rendering
+- Multiple patches are processed in order, allowing coordinated updates
+
+### Component Pattern
+
+Components should use Datastar attributes for interactivity. **Use the signals utility from `github.com/coreycole/datastarui/utils` for proper signal management**:
+
+```go
+import "github.com/coreycole/datastarui/utils"
+
+// In your templ component:
+{{
+    type MySignals struct {
+        Value string `json:"value"`
+        Open  bool   `json:"open"`
+    }
+    signals := utils.Signals("componentName", MySignals{
+        Value: "initial",
+        Open:  false,
+    })
+}}
+
+// Use in template:
+<div data-signals={ signals.DataSignals }>
+    <select data-bind={ signals.Signal("value") } data-on-change="@post('/api/update')">
+        <option value="opt1">Option 1</option>
+    </select>
+    <button data-on-click={ signals.Toggle("open") }>Toggle</button>
+</div>
+```
+
+Raw HTML example (generated output):
+
+```html
+<!-- Initialize signals -->
+<div data-signals='{"componentName": {"value": "monokai", "open": false}}'>
+    <!-- Bind input/select to signal -->
+    <select data-bind="$componentName.value" data-on-change="@post('/api/theme')">
+        <option value="monokai">Monokai</option>
+    </select>
+</div>
+
+<!-- Multiple statements with semicolons -->
+<button data-on-click="$loading = true; @post('/api/action')">Submit</button>
+
+<!-- Conditional actions -->
+<button data-on-click="$valid && @post('/api/save')">Save if Valid</button>
+
+<!-- Elements with IDs will be patched by SSE responses -->
+<link id="syntax-theme" rel="stylesheet" href="/css/syntax-monokai.css">
+```
+
+### Datastar Attribute Reference
+
+- `data-signals` - Initialize signals (format: `"signalName: value"` or JSON object)
+- `data-bind` - Bind form input/select value to signal (use $ prefix for signal reference)
+- `data-on-[event]` - Event handlers (use hyphen: `data-on-click`, `data-on-change`)
+- `data-text` - Set text content based on signal
+- `data-show` - Show/hide element based on signal
+- Actions: `@get()`, `@post()` - Send requests with all signals as JSON/query params
+
+### Using datastarui/utils for Signal Management
+
+The `github.com/coreycole/datastarui/utils` package provides a `Signals` utility for proper Datastar signal management:
+
+```go
+// Create signals with proper namespacing
+signals := utils.Signals("componentName", MySignals{...})
+
+// Available helper methods:
+signals.DataSignals           // Returns JSON for data-signals attribute
+signals.Signal("property")     // Returns "$componentName.property"
+signals.Toggle("property")     // Returns toggle expression
+signals.Set("property", val)   // Returns set expression
+signals.SetString("prop", str) // Returns set expression with quoted string
+signals.Equals("prop", val)    // Returns comparison expression
+```
+
+This utility ensures:
+
+- Proper JSON formatting for nested signal structures
+- Consistent namespacing (component signals are nested: `{componentName: {prop: value}}`)
+- Type-safe signal references
+- Backend receives properly structured JSON
+
+### Key Principles
+
+1. **Backend drives UI state** - Store preferences server-side, not in localStorage
+1. **Forms are always HTML forms** - Use `name` attributes and `contentType:'form'`. Never use signals for form inputs
+1. **Use SSE for patches** - Return HTML fragments that morph into existing DOM
+1. **ID-based targeting** - Elements with IDs are patch targets
+1. **No page refresh needed** - Updates happen via morphing, preserving page state
+1. **Progressive enhancement** - Works without JavaScript when possible
+
+### Why No Page Refresh with Datastar
+
+With Datastar's SSE-based architecture, **page refreshes are unnecessary and should be avoided**:
+
+- **Dynamic Updates**: SSE patches update specific DOM elements without losing page state
+- **Preserved Context**: User's scroll position, form inputs, and selections remain intact
+- **Better UX**: No flash of white, no network delay, no re-rendering
+- **Live Updates**: New content (like comments) can be patched directly into sidebars or lists
+- **Efficient**: Only changed elements are updated, not the entire page
+
+Example: When creating a comment, instead of refreshing to show the new comment:
+
+1. The backend creates the comment in the database
+1. Returns SSE patches to: clear the form, show success message, AND update the comment sidebar
+1. All updates happen instantly without page refresh
+1. User continues working without interruption
+
+## Backend State Management Principle
+
+- **IMPORTANT**: Keep state on the backend whenever possible
+- Frontend signals should only be used when absolutely necessary
+- Use SQLite or other backend storage for session state
+- This provides persistence, multi-tab support, and simpler logic
+- Avoids complex frontend state synchronization issues
+
 ### IMPORTANT: Use Utility Libraries
 
 **Always use the utility libraries in `utils/` instead of string concatenation for Datastar expressions.**
@@ -281,6 +560,7 @@ backdropDataClass := utils.NewDataClass().
 ```
 
 **How it works**:
+
 - `utils.NewDataClass()` generates object syntax: `{'opacity-0': !$signal.open, 'opacity-100': $signal.open}`
 - Datastar evaluates these expressions reactively as signals change
 - Base classes go in `class` attribute, conditional classes in `data-class`
@@ -372,7 +652,7 @@ backdropDataClass := utils.NewDataClass().
 
 Use the `playwright-component-tester` agent for browser automation testing. This specialized agent handles:
 
-- Component navigation and interaction testing  
+- Component navigation and interaction testing
 - Console error detection and reporting
 - Visual verification through screenshots
 - Datastar signal validation

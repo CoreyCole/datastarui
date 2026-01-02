@@ -7,6 +7,7 @@ static/css/out*
 .tmp/
 log/
 node_modules/
+pkg/ui
 static/js/datastar-pro*
 static/js/datastar.js
 static/js/datastar-inspector

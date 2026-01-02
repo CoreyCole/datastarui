@@ -1,44 +1,41 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(./hack/spec_metadata.sh)",
-      "Bash(hack/spec_metadata.sh)",
-      "Bash(bash hack/spec_metadata.sh)",
-      "Bash(just docker-tail:*)",
-      "Bash(grep:*)",
-      "Bash(rm:*)",
-      "Bash(rg:*)",
-      "Bash(ls:*)",
-      "Bash(cp:*)",
-      "Bash(find:*)",
-      "Bash(go get:*)",
-      "Bash(go run:*)",
-      "Bash(git checkout:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(templ generate)",
-      "Bash(templ generate:*)",
-      "Bash(go build:*)",
-      "Bash(docker compose logs:*)",
-      "Bash(docker compose:*)",
-      "WebFetch(domain:raw.githubusercontent.com)",
-      "mcp__playwright__playwright_navigate",
-      "mcp__playwright__playwright_console_logs",
-      "mcp__playwright__playwright_screenshot",
-      "mcp__playwright__playwright_click",
-      "mcp__playwright__playwright_get_visible_html",
-      "mcp__playwright__playwright_press_key",
-      "mcp__playwright__playwright_close",
-      "mcp__playwright__playwright_evaluate",
-      "mcp__playwright__playwright_fill",
-      "mcp__playwright__playwright_custom_user_agent",
-      "mcp__playwright__playwright_get_visible_text"
-    ],
-    "deny": ["Bash(rm:*)"]
-  },
-  "enableAllProjectMcpServers": false,
-  "env": {
-    "MAX_THINKING_TOKENS": "32000"
-  }
+	"permissions": {
+		"allow": [
+			"Bash(scripts/spec_metadata.sh)",
+			"Bash(just docker-tail:*)",
+			"Bash(grep:*)",
+			"Bash(rm:*)",
+			"Bash(rg:*)",
+			"Bash(ls:*)",
+			"Bash(cp:*)",
+			"Bash(find:*)",
+			"Bash(go get:*)",
+			"Bash(go run:*)",
+			"Bash(git checkout:*)",
+			"Bash(git add:*)",
+			"Bash(git commit:*)",
+			"Bash(templ generate)",
+			"Bash(templ generate:*)",
+			"Bash(go build:*)",
+			"Bash(docker compose logs:*)",
+			"Bash(docker compose:*)",
+			"WebFetch(domain:raw.githubusercontent.com)",
+			"mcp__playwright__playwright_navigate",
+			"mcp__playwright__playwright_console_logs",
+			"mcp__playwright__playwright_screenshot",
+			"mcp__playwright__playwright_click",
+			"mcp__playwright__playwright_get_visible_html",
+			"mcp__playwright__playwright_press_key",
+			"mcp__playwright__playwright_close",
+			"mcp__playwright__playwright_evaluate",
+			"mcp__playwright__playwright_fill",
+			"mcp__playwright__playwright_custom_user_agent",
+			"mcp__playwright__playwright_get_visible_text"
+		],
+		"deny": ["Bash(rm:*)"]
+	},
+	"enableAllProjectMcpServers": false,
+	"env": {
+		"MAX_THINKING_TOKENS": "32000"
+	}
 }
-

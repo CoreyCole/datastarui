@@ -1,7 +1,3 @@
----
-description: Implement technical plans from thoughts/shared/plans with verification
----
-
 # Implement Plan
 
 You are tasked with implementing an approved technical plan from `thoughts/shared/plans/`. These plans contain phases with specific changes and success criteria.
@@ -17,6 +13,15 @@ When given a plan path:
 - Start implementing if you understand what needs to be done
 
 If no plan path provided, ask for one.
+
+## IMPORTANT: Graphite PR stacking
+
+**IMPORTANT**: After completing a phase in the plan use the **graphite-branch-creator** agent to save the phase into a reviewable branch in a graphite PR stack.
+  - Provide the agent:
+		- The file path to the plan you're implementing
+		- The phase in the plan you want the branch to be created for
+		- A summary of the changes you've made in this phase
+	- Create the graphite branch using the commands returned by the **graphite-branch-creator** agent
 
 ## Implementation Philosophy
 
@@ -43,27 +48,12 @@ If you encounter a mismatch:
 ## Verification Approach
 
 After implementing a phase:
-- Run the success criteria checks (usually `make check test` covers everything)
+- Run the success criteria checks (usually `./hooks/pre-push` covers everything)
 - Fix any issues before proceeding
 - Update your progress in both the plan and your todos
 - Check off completed items in the plan file itself using Edit
-- **Pause for human verification**: After completing all automated verification for a phase, pause and inform the human that the phase is ready for manual testing. Use this format:
-  ```
-  Phase [N] Complete - Ready for Manual Verification
 
-  Automated verification passed:
-  - [List automated checks that passed]
-
-  Please perform the manual verification steps listed in the plan:
-  - [List manual verification items from the plan]
-
-  Let me know when manual testing is complete so I can proceed to Phase [N+1].
-  ```
-
-If instructed to execute multiple phases consecutively, skip the pause until the last phase. Otherwise, assume you are just doing one phase.
-
-do not check off items in the manual testing steps until confirmed by the user.
-
+Don't let verification interrupt your flow - batch it at natural stopping points.
 
 ## If You Get Stuck
 
