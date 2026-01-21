@@ -4,11 +4,11 @@ tmp_dir = ".tmp"
 
 [build]
   args_bin = []
-  bin = "datastarui"
+  bin = "datastarui-linux"
   cmd = "just"
   delay = 1000
   exclude_dir = ["log", "public", "testdata", "node_modules"]
-  exclude_file = ["static/css/out*"]
+  exclude_file = ["static/css/out*", "static/css/generated-theme*"]
   exclude_regex = [".*_templ.go", "_test.go"]
   exclude_unchanged = false
   follow_symlink = false

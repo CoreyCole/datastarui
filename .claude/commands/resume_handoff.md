@@ -11,14 +11,16 @@ You are tasked with resuming work from a handoff document through an interactive
 When this command is invoked:
 
 1. **If the path to a handoff document was provided**:
+
    - If a handoff document path was provided as a parameter, skip the default message
    - Immediately read the handoff document FULLY
    - Immediately read any research or plan documents that it links to under `thoughts/shared/plans` or `thoughts/shared/research`. do NOT use a sub-agent to read these critical files.
    - Begin the analysis process by ingesting relevant context from the handoff document, reading additional files it mentions
    - Then propose a course of action to the user and confirm, or ask for clarification on direction.
 
-2. **If a ticket number (like ENG-XXXX) was provided**:
-   - run `humanlayer thoughts sync` to ensure your `thoughts/` directory is up to date.
+1. **If a ticket number (like ENG-XXXX) was provided**:
+
+   - run `just sync-thoughts` to ensure your `thoughts/` directory is up to date.
    - locate the most recent handoff document for the ticket. Tickets will be located in `thoughts/shared/handoffs/ENG-XXXX` where `ENG-XXXX` is the ticket number. e.g. for `ENG-2124` the handoffs would be in `thoughts/shared/handoffs/ENG-2124/`. **List this directory's contents.**
    - There may be zero, one or multiple files in the directory.
    - **If there are zero files in the directory, or the directory does not exist**: tell the user: "I'm sorry, I can't seem to find that handoff document. Can you please provide me with a path to it?"
@@ -29,7 +31,8 @@ When this command is invoked:
    - Begin the analysis process by ingesting relevant context from the handoff document, reading additional files it mentions
    - Then propose a course of action to the user and confirm, or ask for clarification on direction.
 
-3. **If no parameters provided**, respond with:
+1. **If no parameters provided**, respond with:
+
 ```
 I'll help you resume work from a handoff document. Let me find the available handoffs.
 
@@ -47,6 +50,7 @@ Then wait for the user's input.
 ### Step 1: Read and Analyze Handoff
 
 1. **Read handoff document completely**:
+
    - Use the Read tool WITHOUT limit/offset parameters
    - Extract all sections:
      - Task(s) and their statuses
@@ -56,7 +60,7 @@ Then wait for the user's input.
      - Action items and next steps
      - Other notes
 
-2. **Spawn focused research tasks**:
+1. **Spawn focused research tasks**:
    Based on the handoff content, spawn parallel research tasks to verify current state:
 
    ```
@@ -70,9 +74,10 @@ Then wait for the user's input.
    Return: Summary of artifact contents and key decisions
    ```
 
-3. **Wait for ALL sub-tasks to complete** before proceeding
+1. **Wait for ALL sub-tasks to complete** before proceeding
 
-4. **Read critical files identified**:
+1. **Read critical files identified**:
+
    - Read files from "Learnings" section completely
    - Read files from "Recent changes" to understand modifications
    - Read any new related files discovered during research
@@ -80,6 +85,7 @@ Then wait for the user's input.
 ### Step 2: Synthesize and Present Analysis
 
 1. **Present comprehensive analysis**:
+
    ```
    I've analyzed the handoff from [date] by [researcher]. Here's the current situation:
 
@@ -112,16 +118,18 @@ Then wait for the user's input.
    Shall I proceed with [recommended action 1], or would you like to adjust the approach?
    ```
 
-2. **Get confirmation** before proceeding
+1. **Get confirmation** before proceeding
 
 ### Step 3: Create Action Plan
 
 1. **Use TodoWrite to create task list**:
+
    - Convert action items from handoff into todos
    - Add any new tasks discovered during analysis
    - Prioritize based on dependencies and handoff guidance
 
-2. **Present the plan**:
+1. **Present the plan**:
+
    ```
    I've created a task list based on the handoff and current analysis:
 
@@ -133,37 +141,42 @@ Then wait for the user's input.
 ### Step 4: Begin Implementation
 
 1. **Start with the first approved task**
-2. **Reference learnings from handoff** throughout implementation
-3. **Apply patterns and approaches documented** in the handoff
-4. **Update progress** as tasks are completed
+1. **Reference learnings from handoff** throughout implementation
+1. **Apply patterns and approaches documented** in the handoff
+1. **Update progress** as tasks are completed
 
 ## Guidelines
 
 1. **Be Thorough in Analysis**:
+
    - Read the entire handoff document first
    - Verify ALL mentioned changes still exist
    - Check for any regressions or conflicts
    - Read all referenced artifacts
 
-2. **Be Interactive**:
+1. **Be Interactive**:
+
    - Present findings before starting work
    - Get buy-in on the approach
    - Allow for course corrections
    - Adapt based on current state vs handoff state
 
-3. **Leverage Handoff Wisdom**:
+1. **Leverage Handoff Wisdom**:
+
    - Pay special attention to "Learnings" section
    - Apply documented patterns and approaches
    - Avoid repeating mistakes mentioned
    - Build on discovered solutions
 
-4. **Track Continuity**:
+1. **Track Continuity**:
+
    - Use TodoWrite to maintain task continuity
    - Reference the handoff document in commits
    - Document any deviations from original plan
    - Consider creating a new handoff when done
 
-5. **Validate Before Acting**:
+1. **Validate Before Acting**:
+
    - Never assume handoff state matches current state
    - Verify all file references still exist
    - Check for breaking changes since handoff
@@ -172,24 +185,28 @@ Then wait for the user's input.
 ## Common Scenarios
 
 ### Scenario 1: Clean Continuation
+
 - All changes from handoff are present
 - No conflicts or regressions
 - Clear next steps in action items
 - Proceed with recommended actions
 
 ### Scenario 2: Diverged Codebase
+
 - Some changes missing or modified
 - New related code added since handoff
 - Need to reconcile differences
 - Adapt plan based on current state
 
 ### Scenario 3: Incomplete Handoff Work
+
 - Tasks marked as "in_progress" in handoff
 - Need to complete unfinished work first
 - May need to re-understand partial implementations
 - Focus on completing before new work
 
 ### Scenario 4: Stale Handoff
+
 - Significant time has passed
 - Major refactoring has occurred
 - Original approach may no longer apply
@@ -215,4 +232,3 @@ Shall I proceed with implementing the webhook validation fix, or would you like 
 User: Yes, proceed with the webhook validation
 Assistant: [Creates todo list and begins implementation]
 ```
-

@@ -1,5 +1,11 @@
 build:
   @templ generate
+  @go build -o datastarui-linux main.go
+  @just build-tailwind
+
+# Build for local macOS development (not Docker)
+build-local:
+  @templ generate
   @go build -o datastarui main.go
   @just build-tailwind
 

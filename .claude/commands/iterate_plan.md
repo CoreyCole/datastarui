@@ -12,12 +12,14 @@ You are tasked with updating existing implementation plans based on user feedbac
 When this command is invoked:
 
 1. **Parse the input to identify**:
+
    - Plan file path (e.g., `thoughts/shared/plans/2025-10-16-feature.md`)
    - Requested changes/feedback
 
-2. **Handle different input scenarios**:
+1. **Handle different input scenarios**:
 
    **If NO plan file provided**:
+
    ```
    I'll help you iterate on an existing implementation plan.
 
@@ -25,9 +27,11 @@ When this command is invoked:
 
    Tip: You can list recent plans with `ls -lt thoughts/shared/plans/ | head`
    ```
+
    Wait for user input, then re-check for feedback.
 
    **If plan file provided but NO feedback**:
+
    ```
    I've found the plan at [path]. What changes would you like to make?
 
@@ -37,9 +41,11 @@ When this command is invoked:
    - "Adjust the scope to exclude feature X"
    - "Split Phase 2 into two separate phases"
    ```
+
    Wait for user input.
 
    **If BOTH plan file AND feedback provided**:
+
    - Proceed immediately to Step 1
    - No preliminary questions needed
 
@@ -48,11 +54,13 @@ When this command is invoked:
 ### Step 1: Read and Understand Current Plan
 
 1. **Read the existing plan file COMPLETELY**:
+
    - Use the Read tool WITHOUT limit/offset parameters
    - Understand the current structure, phases, and scope
    - Note the success criteria and implementation approach
 
-2. **Understand the requested changes**:
+1. **Understand the requested changes**:
+
    - Parse what the user wants to add/modify/remove
    - Identify if changes require codebase research
    - Determine scope of the update
@@ -65,28 +73,32 @@ If the user's feedback requires understanding new code patterns or validating as
 
 1. **Create a research todo list** using TodoWrite
 
-2. **Spawn parallel sub-tasks for research**:
+1. **Spawn parallel sub-tasks for research**:
    Use the right agent for each type of research:
 
    **For code investigation:**
+
    - **codebase-locator** - To find relevant files
    - **codebase-analyzer** - To understand implementation details
    - **codebase-pattern-finder** - To find similar patterns
 
    **For historical context:**
+
    - **thoughts-locator** - To find related research or decisions
    - **thoughts-analyzer** - To extract insights from documents
 
    **Be EXTREMELY specific about directories**:
+
    - If the change involves "WUI", specify `humanlayer-wui/` directory
    - If it involves "daemon", specify `hld/` directory
    - Include full path context in prompts
 
-3. **Read any new files identified by research**:
+1. **Read any new files identified by research**:
+
    - Read them FULLY into the main context
    - Cross-reference with the plan requirements
 
-4. **Wait for ALL sub-tasks to complete** before proceeding
+1. **Wait for ALL sub-tasks to complete** before proceeding
 
 ### Step 3: Present Understanding and Approach
 
@@ -113,18 +125,21 @@ Get user confirmation before proceeding.
 ### Step 4: Update the Plan
 
 1. **Make focused, precise edits** to the existing plan:
+
    - Use the Edit tool for surgical changes
    - Maintain the existing structure unless explicitly changing it
    - Keep all file:line references accurate
    - Update success criteria if needed
 
-2. **Ensure consistency**:
+1. **Ensure consistency**:
+
    - If adding a new phase, ensure it follows the existing pattern
    - If modifying scope, update "What We're NOT Doing" section
    - If changing approach, update "Implementation Approach" section
    - Maintain the distinction between automated vs manual success criteria
 
-3. **Preserve quality standards**:
+1. **Preserve quality standards**:
+
    - Include specific file paths and line numbers for new content
    - Write measurable success criteria
    - Use `make` commands for automated verification
@@ -133,10 +148,12 @@ Get user confirmation before proceeding.
 ### Step 5: Sync and Review
 
 1. **Sync the updated plan**:
-   - Run `humanlayer thoughts sync`
+
+   - Run `just sync-thoughts`
    - This ensures changes are properly indexed
 
-2. **Present the changes made**:
+1. **Present the changes made**:
+
    ```
    I've updated the plan at `thoughts/shared/plans/[filename].md`
 
@@ -151,40 +168,46 @@ Get user confirmation before proceeding.
    Would you like any further adjustments?
    ```
 
-3. **Be ready to iterate further** based on feedback
+1. **Be ready to iterate further** based on feedback
 
 ## Important Guidelines
 
 1. **Be Skeptical**:
+
    - Don't blindly accept change requests that seem problematic
    - Question vague feedback - ask for clarification
    - Verify technical feasibility with code research
    - Point out potential conflicts with existing plan phases
 
-2. **Be Surgical**:
+1. **Be Surgical**:
+
    - Make precise edits, not wholesale rewrites
    - Preserve good content that doesn't need changing
    - Only research what's necessary for the specific changes
    - Don't over-engineer the updates
 
-3. **Be Thorough**:
+1. **Be Thorough**:
+
    - Read the entire existing plan before making changes
    - Research code patterns if changes require new technical understanding
    - Ensure updated sections maintain quality standards
    - Verify success criteria are still measurable
 
-4. **Be Interactive**:
+1. **Be Interactive**:
+
    - Confirm understanding before making changes
    - Show what you plan to change before doing it
    - Allow course corrections
    - Don't disappear into research without communicating
 
-5. **Track Progress**:
+1. **Track Progress**:
+
    - Use TodoWrite to track update tasks if complex
    - Update todos as you complete research
    - Mark tasks complete when done
 
-6. **No Open Questions**:
+1. **No Open Questions**:
+
    - If the requested change raises questions, ASK
    - Research or get clarification immediately
    - Do NOT update the plan with unresolved questions
@@ -195,12 +218,14 @@ Get user confirmation before proceeding.
 When updating success criteria, always maintain the two-category structure:
 
 1. **Automated Verification** (can be run by execution agents):
+
    - Commands that can be run: `make test`, `npm run lint`, etc.
    - Prefer `make` commands: `make -C humanlayer-wui check` instead of `cd humanlayer-wui && bun run fmt`
    - Specific files that should exist
    - Code compilation/type checking
 
-2. **Manual Verification** (requires human testing):
+1. **Manual Verification** (requires human testing):
+
    - UI/UX functionality
    - Performance under real conditions
    - Edge cases that are hard to automate
@@ -211,26 +236,28 @@ When updating success criteria, always maintain the two-category structure:
 When spawning research sub-tasks:
 
 1. **Only spawn if truly needed** - don't research for simple changes
-2. **Spawn multiple tasks in parallel** for efficiency
-3. **Each task should be focused** on a specific area
-4. **Provide detailed instructions** including:
+1. **Spawn multiple tasks in parallel** for efficiency
+1. **Each task should be focused** on a specific area
+1. **Provide detailed instructions** including:
    - Exactly what to search for
    - Which directories to focus on
    - What information to extract
    - Expected output format
-5. **Request specific file:line references** in responses
-6. **Wait for all tasks to complete** before synthesizing
-7. **Verify sub-task results** - if something seems off, spawn follow-up tasks
+1. **Request specific file:line references** in responses
+1. **Wait for all tasks to complete** before synthesizing
+1. **Verify sub-task results** - if something seems off, spawn follow-up tasks
 
 ## Example Interaction Flows
 
 **Scenario 1: User provides everything upfront**
+
 ```
 User: /iterate_plan thoughts/shared/plans/2025-10-16-feature.md - add phase for error handling
 Assistant: [Reads plan, researches error handling patterns, updates plan]
 ```
 
 **Scenario 2: User provides just plan file**
+
 ```
 User: /iterate_plan thoughts/shared/plans/2025-10-16-feature.md
 Assistant: I've found the plan. What changes would you like to make?
@@ -239,6 +266,7 @@ Assistant: [Proceeds with update]
 ```
 
 **Scenario 3: User provides no arguments**
+
 ```
 User: /iterate_plan
 Assistant: Which plan would you like to update? Please provide the path...
