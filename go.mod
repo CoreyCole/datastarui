@@ -7,7 +7,7 @@ require (
 	buf.build/go/protovalidate v1.0.0
 	connectrpc.com/connect v1.19.1
 	github.com/Oudwins/tailwind-merge-go v0.2.0
-	github.com/a-h/templ v0.3.943
+	github.com/a-h/templ v0.3.977
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo/v4 v4.13.3
 	google.golang.org/protobuf v1.36.10
