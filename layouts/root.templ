@@ -4,6 +4,7 @@ import (
 	"github.com/coreycole/datastarui/components/breadcrumb"
 	"github.com/coreycole/datastarui/components/sidebar"
 	"github.com/coreycole/datastarui/components/themetoggle"
+	"github.com/coreycole/datastarui/theme"
 	"github.com/coreycole/datastarui/utils"
 	"path/filepath"
 )
@@ -37,6 +38,16 @@ templ Root(args RootArgs) {
 			fileName := filepath.Base(files[0])
 			cssFile = "/css/" + fileName
 		}
+
+		// Get hashed theme CSS file (e.g., /css/generated-theme.abc123.css)
+		themeCSSFile := theme.GetCSSFile()
+
+		// Get style class - use provided or fall back to saved theme
+		styleClass := args.StyleClass
+		if styleClass == "" {
+			savedConfig := theme.Get()
+			styleClass = "style-" + savedConfig.Style
+		}
 	}}
 	<!DOCTYPE html>
 	<html lang="en">
@@ -60,6 +71,10 @@ templ Root(args RootArgs) {
 			<link rel="apple-touch-icon" sizes="120x120" href="/img/datastarui-icons/ios/120.png"/>
 			<!-- Tailwind CSS -->
 			<link rel="stylesheet" href={ cssFile }/>
+			<!-- Self-hosted fonts -->
+			<link rel="stylesheet" href="/css/fonts.css"/>
+			<!-- Generated theme overrides (from theme.json) - hashed for cache busting -->
+			<link rel="stylesheet" href={ themeCSSFile }/>
 			<!-- Popover API Polyfill -->
 			<script type="module">
 				if (!('popover' in HTMLElement.prototype)) {
@@ -107,21 +122,13 @@ templ Root(args RootArgs) {
 					window.CSS_ANCHOR_POLYFILL_LOADED = false;
 				}
 			</script>
-			<!-- Theme initialization -->
+			<!-- Theme initialization - sets dark class before render to prevent flash -->
 			<script>
-				// Initialize theme from localStorage or system preference
-				function initTheme() {
-					const theme =
-						localStorage.getItem('theme') ||
-						(window.matchMedia('(prefers-color-scheme: dark)').matches
-							? 'dark'
-							: 'light');
-					document.documentElement.classList.toggle('dark', theme === 'dark');
-					return theme;
-				}
-
-				// Set initial theme before page renders
-				initTheme();
+				(function() {
+					var theme = localStorage.getItem('theme') ||
+						(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+					if (theme === 'dark') document.documentElement.classList.add('dark');
+				})();
 			</script>
 			<!-- Datastar -->
 			if args.DatastarProAvailable {
@@ -142,9 +149,12 @@ templ Root(args RootArgs) {
 			// Build data-signals with shared sidebar state
 			sidebarID := "main_sidebar"
 			sidebarSignals := utils.Signals(sidebarID, sidebar.SidebarSignals{MobileOpen: false}).DataSignals
-			dataSignals := "{theme: initTheme(), " + sidebarID + ": " + sidebarSignals + "}"
+			// Theme defaults to 'light' - synced with actual DOM state via data-on-load
+			dataSignals := "{theme: 'light', " + sidebarID + ": " + sidebarSignals + "}"
+			// Sync theme signal with actual DOM state (set by script in head)
+			themeSync := "$theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'"
 		}}
-		<body class="min-h-screen bg-background font-sans antialiased" data-signals={ dataSignals }>
+		<body class={ "min-h-screen bg-background font-sans antialiased " + styleClass } data-signals={ dataSignals } data-on-load={ themeSync }>
 			if args.InspectorEnabled {
 				<datastar-inspector></datastar-inspector>
 			}

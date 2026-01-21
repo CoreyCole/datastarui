@@ -1,0 +1,29 @@
+{
+  "styles": [
+    {
+      "name": "vega",
+      "title": "Vega",
+      "description": "Classic shadcn/ui, clean and neutral"
+    },
+    {
+      "name": "nova",
+      "title": "Nova",
+      "description": "Reduced padding/margins, compact layouts"
+    },
+    {
+      "name": "maia",
+      "title": "Maia",
+      "description": "Soft/rounded, generous spacing"
+    },
+    {
+      "name": "lyra",
+      "title": "Lyra",
+      "description": "Boxy/sharp, pairs with mono fonts"
+    },
+    {
+      "name": "mira",
+      "title": "Mira",
+      "description": "Most compact, dense interfaces"
+    }
+  ]
+}

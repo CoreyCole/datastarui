@@ -5,6 +5,12 @@ import "github.com/coreycole/datastarui/components/sidebar"
 func GetSidebarSections() []sidebar.SidebarSection {
 	return []sidebar.SidebarSection{
 		{
+			Title: "Getting Started",
+			Items: []sidebar.SidebarItem{
+				{Title: "Create Theme", Href: "/create"},
+			},
+		},
+		{
 			Title: "Components",
 			Items: []sidebar.SidebarItem{
 				{Title: "Breadcrumb", Href: "/components/breadcrumb"},
@@ -24,16 +30,5 @@ func GetSidebarSections() []sidebar.SidebarSection {
 				{Title: "Tooltip", Href: "/components/tooltip"},
 			},
 		},
-	}
-}
-
-func getCurrentPath(currentPage string) string {
-	switch currentPage {
-	case "docs":
-		return "/docs"
-	case "components":
-		return "/components"
-	default:
-		return "/"
 	}
 }

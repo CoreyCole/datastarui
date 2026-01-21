@@ -1,0 +1,81 @@
+{
+  "fonts": [
+    {
+      "name": "Geist Sans",
+      "value": "geist",
+      "type": "sans",
+      "file": "geist-latin-wght-normal.woff2",
+      "fontFamily": "'Geist Variable', sans-serif"
+    },
+    {
+      "name": "Inter",
+      "value": "inter",
+      "type": "sans",
+      "file": "inter-latin-wght-normal.woff2",
+      "fontFamily": "'Inter Variable', sans-serif"
+    },
+    {
+      "name": "Noto Sans",
+      "value": "noto-sans",
+      "type": "sans",
+      "file": "noto-sans-latin-wght-normal.woff2",
+      "fontFamily": "'Noto Sans Variable', sans-serif"
+    },
+    {
+      "name": "Nunito Sans",
+      "value": "nunito-sans",
+      "type": "sans",
+      "file": "nunito-sans-latin-wght-normal.woff2",
+      "fontFamily": "'Nunito Sans Variable', sans-serif"
+    },
+    {
+      "name": "Figtree",
+      "value": "figtree",
+      "type": "sans",
+      "file": "figtree-latin-wght-normal.woff2",
+      "fontFamily": "'Figtree Variable', sans-serif"
+    },
+    {
+      "name": "Roboto",
+      "value": "roboto",
+      "type": "sans",
+      "file": "roboto-flex-latin-wght-normal.woff2",
+      "fontFamily": "'Roboto Flex Variable', sans-serif"
+    },
+    {
+      "name": "Raleway",
+      "value": "raleway",
+      "type": "sans",
+      "file": "raleway-latin-wght-normal.woff2",
+      "fontFamily": "'Raleway Variable', sans-serif"
+    },
+    {
+      "name": "DM Sans",
+      "value": "dm-sans",
+      "type": "sans",
+      "file": "dm-sans-latin-wght-normal.woff2",
+      "fontFamily": "'DM Sans Variable', sans-serif"
+    },
+    {
+      "name": "Public Sans",
+      "value": "public-sans",
+      "type": "sans",
+      "file": "public-sans-latin-wght-normal.woff2",
+      "fontFamily": "'Public Sans Variable', sans-serif"
+    },
+    {
+      "name": "Outfit",
+      "value": "outfit",
+      "type": "sans",
+      "file": "outfit-latin-wght-normal.woff2",
+      "fontFamily": "'Outfit Variable', sans-serif"
+    },
+    {
+      "name": "JetBrains Mono",
+      "value": "jetbrains-mono",
+      "type": "mono",
+      "file": "jetbrains-mono-latin-wght-normal.woff2",
+      "fontFamily": "'JetBrains Mono Variable', monospace"
+    }
+  ]
+}

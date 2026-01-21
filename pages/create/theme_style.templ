@@ -1,0 +1,50 @@
+package create
+
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/registry"
+)
+
+// ThemeStyle generates inline CSS for preview mode
+// This overrides the saved theme.css when previewing changes
+templ ThemeStyle(config registry.DesignSystemConfig) {
+	<!-- Load self-hosted fonts (all @font-face rules) -->
+	<link id="theme-fonts" rel="stylesheet" href="/css/fonts.css"/>
+	<!-- Load Style CSS (vega, nova, maia, lyra, mira) -->
+	<link id="theme-style" rel="stylesheet" href={ fmt.Sprintf("/css/styles/style-%s.css", config.Style) }/>
+	<!-- CSS Variables (override saved theme.css) -->
+	@ThemeVarsStyle(config)
+	<!-- Apply selected font family to body -->
+	@FontFamilyStyle(config)
+}
+
+// ThemeVarsStyle renders the CSS variables as an inline style tag
+templ ThemeVarsStyle(config registry.DesignSystemConfig) {
+	<style id="theme-vars">
+		@templ.Raw(buildThemeVarsCSS(config))
+	</style>
+}
+
+// FontFamilyStyle renders the font-family style for the selected font
+templ FontFamilyStyle(config registry.DesignSystemConfig) {
+	if registry.GetFont(config.Font) != nil {
+		<style id="theme-font-family">
+			@templ.Raw(buildFontFamilyCSS(config))
+		</style>
+	}
+}
+
+// buildThemeVarsCSS returns the CSS variables for the theme
+func buildThemeVarsCSS(config registry.DesignSystemConfig) string {
+	lightCSS, darkCSS := registry.BuildThemeCSS(config)
+	return lightCSS + "\n\n" + darkCSS
+}
+
+// buildFontFamilyCSS returns the font-family CSS rule
+func buildFontFamilyCSS(config registry.DesignSystemConfig) string {
+	font := registry.GetFont(config.Font)
+	if font == nil {
+		return ""
+	}
+	return "body { font-family: " + font.FontFamily + "; }"
+}

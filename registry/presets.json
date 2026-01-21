@@ -1,0 +1,79 @@
+{
+  "presets": [
+    {
+      "name": "vega",
+      "title": "Vega",
+      "description": "Vega / Lucide / Geist Sans",
+      "config": {
+        "style": "vega",
+        "iconLibrary": "lucide",
+        "font": "geist",
+        "baseColor": "neutral",
+        "theme": "neutral",
+        "menuAccent": "subtle",
+        "menuColor": "default",
+        "radius": "default"
+      }
+    },
+    {
+      "name": "nova",
+      "title": "Nova",
+      "description": "Nova / Hugeicons / Inter",
+      "config": {
+        "style": "nova",
+        "iconLibrary": "hugeicons",
+        "font": "inter",
+        "baseColor": "neutral",
+        "theme": "neutral",
+        "menuAccent": "subtle",
+        "menuColor": "default",
+        "radius": "default"
+      }
+    },
+    {
+      "name": "maia",
+      "title": "Maia",
+      "description": "Maia / Hugeicons / Figtree",
+      "config": {
+        "style": "maia",
+        "iconLibrary": "hugeicons",
+        "font": "figtree",
+        "baseColor": "neutral",
+        "theme": "neutral",
+        "menuAccent": "subtle",
+        "menuColor": "default",
+        "radius": "default"
+      }
+    },
+    {
+      "name": "lyra",
+      "title": "Lyra",
+      "description": "Lyra / Tabler / JetBrains Mono",
+      "config": {
+        "style": "lyra",
+        "iconLibrary": "tabler",
+        "font": "jetbrains-mono",
+        "baseColor": "neutral",
+        "theme": "neutral",
+        "menuAccent": "subtle",
+        "menuColor": "default",
+        "radius": "default"
+      }
+    },
+    {
+      "name": "mira",
+      "title": "Mira",
+      "description": "Mira / Hugeicons / Inter",
+      "config": {
+        "style": "mira",
+        "iconLibrary": "hugeicons",
+        "font": "inter",
+        "baseColor": "neutral",
+        "theme": "neutral",
+        "menuAccent": "subtle",
+        "menuColor": "default",
+        "radius": "default"
+      }
+    }
+  ]
+}

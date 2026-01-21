@@ -1,0 +1,10 @@
+{
+  "baseColor": "neutral",
+  "theme": "neutral",
+  "radius": "default",
+  "font": "geist",
+  "style": "vega",
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "iconLibrary": "lucide"
+}

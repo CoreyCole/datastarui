@@ -27,7 +27,9 @@ import (
 	"github.com/coreycole/datastarui/pages/components/sidebarpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
 	"github.com/coreycole/datastarui/pages/components/tooltippage"
+	"github.com/coreycole/datastarui/pages/create"
 	"github.com/coreycole/datastarui/pages/login"
+	"github.com/coreycole/datastarui/theme"
 	"github.com/coreycole/datastarui/utils"
 
 	"github.com/coreycole/datastarui/api/handler"
@@ -56,6 +58,11 @@ func componentRootArgs(path string, cfg Config) l.RootArgs {
 }
 
 func main() {
+	// Load saved theme (or create defaults)
+	if err := theme.Load(); err != nil {
+		log.Printf("Warning: could not load theme: %v", err)
+	}
+
 	// Load configuration from environment
 	var cfg Config
 	if err := envconfig.Process("", &cfg); err != nil {
@@ -213,6 +220,10 @@ func main() {
 		}
 		return login.LoginPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
 	})
+
+	// Serve the create page (theme customizer)
+	e.GET("/create", create.HandleCreatePage)
+	e.POST("/create/save", create.HandleSaveTheme)
 
 	// Serve static files
 	e.Static("/", "static/")

@@ -6,4 +6,5 @@ type RootArgs struct {
 	CurrentPath          string // The actual URL path (e.g., "/components/button")
 	InspectorEnabled     bool   // Whether to show the Datastar inspector (from env var)
 	DatastarProAvailable bool   // Whether the Datastar Pro file exists locally
+	StyleClass           string // Style class applied to body (e.g., "style-vega") - if empty, uses saved theme
 }

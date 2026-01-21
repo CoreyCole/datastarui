@@ -1,0 +1,335 @@
+package create
+
+import (
+	"github.com/coreycole/datastarui/registry"
+)
+
+// PresetPicker allows selecting a preset configuration
+templ PresetPicker(config registry.DesignSystemConfig) {
+	{{
+		currentPreset := registry.MatchPreset(config)
+		presetName := "Custom"
+		if currentPreset != nil {
+			presetName = currentPreset.Title
+		}
+	}}
+	<div class="space-y-3">
+		<div class="flex items-center justify-between">
+			<label class="text-sm font-medium">Preset</label>
+			<span class="text-sm text-muted-foreground">{ presetName }</span>
+		</div>
+		<div class="space-y-2">
+			for _, preset := range registry.AllPresets() {
+				{{
+					isSelected := currentPreset != nil && currentPreset.Name == preset.Name
+					presetURL := buildConfigURL(preset.Config)
+				}}
+				<button
+					type="button"
+					class={
+						"flex items-center gap-3 w-full p-3 rounded-lg border transition-all text-left",
+						templ.KV("border-primary bg-primary/5", isSelected),
+						templ.KV("border-border hover:border-primary/50", !isSelected),
+					}
+					data-on:click={ getClickAction(presetURL) }
+				>
+					<div
+						class={
+							"w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0",
+							templ.KV("border-primary", isSelected),
+							templ.KV("border-muted-foreground", !isSelected),
+						}
+					>
+						if isSelected {
+							<div class="w-2 h-2 rounded-full bg-primary"></div>
+						}
+					</div>
+					<div class="flex-1 min-w-0">
+						<div class="text-sm font-medium">{ preset.Title }</div>
+						<div class="text-xs text-muted-foreground truncate">{ preset.Description }</div>
+					</div>
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// StylePicker allows selecting a style variant
+templ StylePicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Style</label>
+		<div class="grid grid-cols-5 gap-2">
+			for _, style := range registry.AllStyles() {
+				{{
+					isSelected := config.Style == style.Name
+					newURL := buildURL(config, "style", style.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"px-2 py-2 text-xs rounded-md border transition-all",
+						templ.KV("border-primary bg-primary/10 text-foreground", isSelected),
+						templ.KV("border-border hover:border-primary/50 text-muted-foreground hover:text-foreground", !isSelected),
+					}
+					data-on:click={ getClickAction(newURL) }
+					title={ style.Description }
+				>
+					{ style.Title }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// BaseColorPicker allows selecting a base color
+templ BaseColorPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Base Color</label>
+		<div class="grid grid-cols-4 gap-2">
+			for _, bc := range registry.BaseColors() {
+				{{
+					isSelected := config.BaseColor == bc.Name
+					newURL := buildURL(config, "baseColor", bc.Name)
+					// Get a representative color from the theme
+					bgColor := bc.CSSVars.Light["muted"]
+					if bgColor == "" {
+						bgColor = bc.CSSVars.Light["secondary"]
+					}
+				}}
+				<button
+					type="button"
+					class={
+						"h-10 w-full rounded-md border-2 transition-all flex items-center justify-center",
+						templ.KV("border-primary ring-2 ring-primary/20", isSelected),
+						templ.KV("border-border hover:border-primary/50", !isSelected),
+					}
+					style={ "background-color: " + bgColor }
+					data-on:click={ getClickAction(newURL) }
+					title={ bc.Title }
+				>
+					<span class="sr-only">{ bc.Title }</span>
+					<span class="text-xs font-medium text-foreground/70">{ bc.Title }</span>
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// ThemePicker allows selecting an accent theme
+templ ThemePicker(config registry.DesignSystemConfig) {
+	{{
+		// Get accent themes (includes current base color + all non-base themes)
+		themes := registry.AccentThemes(config.BaseColor)
+	}}
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Theme Color</label>
+		<div class="grid grid-cols-7 gap-2">
+			for _, theme := range themes {
+				{{
+					isSelected := config.Theme == theme.Name
+					primaryColor := theme.CSSVars.Light["primary"]
+					if primaryColor == "" {
+						primaryColor = theme.CSSVars.Light["foreground"]
+					}
+					newURL := buildURL(config, "theme", theme.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"h-8 w-full rounded-md border-2 transition-all",
+						templ.KV("border-foreground ring-2 ring-foreground/20", isSelected),
+						templ.KV("border-transparent hover:border-foreground/30", !isSelected),
+					}
+					style={ "background-color: " + primaryColor }
+					data-on:click={ getClickAction(newURL) }
+					title={ theme.Title }
+				>
+					<span class="sr-only">{ theme.Title }</span>
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// FontPicker allows selecting a font
+templ FontPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Font</label>
+		<div class="grid grid-cols-2 gap-2">
+			for _, font := range registry.AllFonts() {
+				{{
+					isSelected := config.Font == font.Value
+					newURL := buildURL(config, "font", font.Value)
+				}}
+				<button
+					type="button"
+					class={
+						"px-3 py-2 text-sm rounded-md border transition-all text-left truncate",
+						templ.KV("border-primary bg-primary/10", isSelected),
+						templ.KV("border-border hover:border-primary/50", !isSelected),
+					}
+					style={ "font-family: " + font.FontFamily }
+					data-on:click={ getClickAction(newURL) }
+				>
+					{ font.Name }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// RadiusPicker allows selecting a border radius
+templ RadiusPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Radius</label>
+		<div class="flex gap-1 p-1 bg-muted rounded-lg">
+			for _, radius := range registry.AllRadii() {
+				{{
+					isSelected := config.Radius == radius.Name
+					newURL := buildURL(config, "radius", radius.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"flex-1 px-2 py-1.5 text-xs font-medium rounded-md transition-all",
+						templ.KV("bg-background text-foreground shadow-sm", isSelected),
+						templ.KV("text-muted-foreground hover:text-foreground", !isSelected),
+					}
+					data-on:click={ getClickAction(newURL) }
+				>
+					{ radius.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// MenuColorPicker allows selecting menu color scheme
+templ MenuColorPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Menu Color</label>
+		<div class="flex gap-1 p-1 bg-muted rounded-lg">
+			for _, mc := range registry.AllMenuColors() {
+				{{
+					isSelected := config.MenuColor == mc.Name
+					newURL := buildURL(config, "menuColor", mc.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-all",
+						templ.KV("bg-background text-foreground shadow-sm", isSelected),
+						templ.KV("text-muted-foreground hover:text-foreground", !isSelected),
+					}
+					data-on:click={ getClickAction(newURL) }
+					title={ mc.Description }
+				>
+					{ mc.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// MenuAccentPicker allows selecting menu accent style
+templ MenuAccentPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Menu Accent</label>
+		<div class="flex gap-1 p-1 bg-muted rounded-lg">
+			for _, ma := range registry.AllMenuAccents() {
+				{{
+					isSelected := config.MenuAccent == ma.Name
+					newURL := buildURL(config, "menuAccent", ma.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-all",
+						templ.KV("bg-background text-foreground shadow-sm", isSelected),
+						templ.KV("text-muted-foreground hover:text-foreground", !isSelected),
+					}
+					data-on:click={ getClickAction(newURL) }
+					title={ ma.Description }
+				>
+					{ ma.Label }
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// IconLibraryPicker allows selecting an icon library
+templ IconLibraryPicker(config registry.DesignSystemConfig) {
+	<div class="space-y-3">
+		<label class="text-sm font-medium">Icon Library</label>
+		<div class="grid grid-cols-2 gap-2">
+			for _, lib := range registry.AllIconLibraries() {
+				{{
+					isSelected := config.IconLibrary == lib.Name
+					newURL := buildURL(config, "iconLibrary", lib.Name)
+				}}
+				<button
+					type="button"
+					class={
+						"p-3 rounded-md border transition-all text-left",
+						templ.KV("border-primary bg-primary/10", isSelected),
+						templ.KV("border-border hover:border-primary/50", !isSelected),
+					}
+					data-on:click={ getClickAction(newURL) }
+				>
+					<div class="text-sm font-medium">{ lib.Title }</div>
+					<div class="text-xs text-muted-foreground">{ lib.Description }</div>
+				</button>
+			}
+		</div>
+	</div>
+}
+
+// ShuffleButton generates a random configuration
+templ ShuffleButton() {
+	{{
+		randomURL := buildRandomConfigURL()
+	}}
+	<button
+		type="button"
+		data-on:click={ getClickAction(randomURL) }
+		class="w-full px-4 py-2 text-sm font-medium border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+	>
+		<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+		</svg>
+		Try Random
+	</button>
+}
+
+// ResetButton returns to default configuration
+templ ResetButton() {
+	{{
+		defaultConfig := registry.DefaultConfig()
+		resetURL := buildConfigURL(defaultConfig)
+	}}
+	<button
+		type="button"
+		data-on:click={ getClickAction(resetURL) }
+		class="w-full px-4 py-2 text-sm font-medium border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+	>
+		<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+		</svg>
+		Reset to Default
+	</button>
+}
+
+// ShareButton copies the current URL to clipboard
+templ ShareButton() {
+	<button
+		type="button"
+		data-on:click="navigator.clipboard.writeText(window.location.href); evt.target.textContent = 'Copied!'; setTimeout(() => evt.target.innerHTML = '<svg class=\\'w-4 h-4 inline-block mr-2\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'2\\' d=\\'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z\\'></path></svg>Share URL', 2000)"
+		class="w-full px-4 py-2 text-sm font-medium border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+	>
+		<svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+		</svg>
+		Share URL
+	</button>
+}

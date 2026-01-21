@@ -1,0 +1,274 @@
+package create
+
+import (
+	"github.com/coreycole/datastarui/layouts"
+	"github.com/coreycole/datastarui/registry"
+)
+
+templ CreatePage(config registry.DesignSystemConfig, isPreview bool) {
+	@layouts.Root(layouts.RootArgs{
+		CurrentPage: "create",
+		CurrentPath: "/create",
+		StyleClass:  "style-" + config.Style,
+	}) {
+		// Only render inline ThemeStyle in preview mode
+		// In non-preview mode, Root layout's theme.css is used
+		if isPreview {
+			@ThemeStyle(config)
+		}
+		<div class="space-y-6">
+			<div>
+				<h1 class="text-3xl font-bold tracking-tight">Create Your Theme</h1>
+				<p class="text-muted-foreground">
+					Customize the design system to match your brand. Changes are previewed live.
+				</p>
+			</div>
+			<div class="flex flex-col lg:flex-row gap-8">
+				<!-- Customizer Panel -->
+				<div class="w-full lg:w-80 shrink-0">
+					<div class="sticky top-20 space-y-6">
+						<h2 class="text-lg font-semibold">Customize</h2>
+						<!-- Pickers -->
+						<div class="space-y-6">
+							@PresetPicker(config)
+							<div class="border-t pt-4">
+								@StylePicker(config)
+							</div>
+							@BaseColorPicker(config)
+							@ThemePicker(config)
+							@FontPicker(config)
+							@RadiusPicker(config)
+							<div class="border-t pt-4 space-y-4">
+								<p class="text-xs text-muted-foreground">Menu Options</p>
+								@MenuColorPicker(config)
+								@MenuAccentPicker(config)
+							</div>
+							@IconLibraryPicker(config)
+						</div>
+						<!-- Action Buttons -->
+						<div class="space-y-2 border-t pt-4">
+							@SaveButton(config, isPreview)
+							<div class="grid grid-cols-2 gap-2">
+								@ShuffleButton()
+								@ResetButton()
+							</div>
+							@ShareButton()
+						</div>
+					</div>
+				</div>
+				<!-- Preview Area -->
+				<div class="flex-1">
+					<h2 class="text-lg font-semibold mb-6">Preview</h2>
+					@ComponentShowcase()
+				</div>
+			</div>
+		</div>
+	}
+}
+
+templ SaveButton(config registry.DesignSystemConfig, isPreview bool) {
+	<div id="save-button-container">
+		if isPreview {
+			<button
+				type="button"
+				class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+				data-on:click={ buildSaveAction(config) }
+			>
+				<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+				</svg>
+				Save Theme
+			</button>
+		} else {
+			<button
+				type="button"
+				class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-muted text-muted-foreground h-10 px-4 py-2 cursor-not-allowed"
+				disabled
+			>
+				<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+				</svg>
+				Theme Saved
+			</button>
+		}
+	</div>
+}
+
+templ SaveButtonSaved() {
+	<div id="save-button-container">
+		<button
+			type="button"
+			class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-600 text-white h-10 px-4 py-2"
+			disabled
+		>
+			<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+			</svg>
+			Theme Saved
+		</button>
+	</div>
+}
+
+func buildSaveAction(config registry.DesignSystemConfig) string {
+	return "@post('/create/save?baseColor=" + config.BaseColor +
+		"&theme=" + config.Theme +
+		"&radius=" + config.Radius +
+		"&font=" + config.Font +
+		"&style=" + config.Style +
+		"&menuColor=" + config.MenuColor +
+		"&menuAccent=" + config.MenuAccent +
+		"&iconLibrary=" + config.IconLibrary + "')"
+}
+
+// ComponentShowcase displays sample components to preview the theme
+templ ComponentShowcase() {
+	<div class="grid gap-6">
+		<!-- Card Example -->
+		<div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+			<div class="p-6 space-y-4">
+				<div class="space-y-1.5">
+					<h3 class="text-2xl font-semibold leading-none tracking-tight">Create Project</h3>
+					<p class="text-sm text-muted-foreground">Deploy your new project in one-click.</p>
+				</div>
+				<div class="space-y-4">
+					<div class="space-y-2">
+						<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
+						<input
+							type="text"
+							placeholder="My Project"
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						/>
+					</div>
+					<div class="space-y-2">
+						<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Framework</label>
+						<select class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+							<option value="">Select a framework</option>
+							<option value="next">Next.js</option>
+							<option value="remix">Remix</option>
+							<option value="astro">Astro</option>
+						</select>
+					</div>
+					<div class="flex items-center space-x-2">
+						<input
+							type="checkbox"
+							id="terms"
+							class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+						/>
+						<label for="terms" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+							Accept terms and conditions
+						</label>
+					</div>
+				</div>
+				<div class="flex items-center justify-between pt-4">
+					<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+						Cancel
+					</button>
+					<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+						Deploy
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Button Variants -->
+		<div class="space-y-3">
+			<h4 class="text-sm font-medium">Buttons</h4>
+			<div class="flex flex-wrap gap-2">
+				<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+					Primary
+				</button>
+				<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">
+					Secondary
+				</button>
+				<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+					Outline
+				</button>
+				<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+					Ghost
+				</button>
+				<button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
+					Destructive
+				</button>
+			</div>
+		</div>
+		<!-- Alert Examples -->
+		<div class="space-y-3">
+			<h4 class="text-sm font-medium">Alerts</h4>
+			<div class="space-y-2">
+				<div class="relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground">
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+					<h5 class="mb-1 font-medium leading-none tracking-tight">Heads up!</h5>
+					<div class="text-sm [&_p]:leading-relaxed">
+						You can add components to your app using the cli.
+					</div>
+				</div>
+				<div class="relative w-full rounded-lg border border-destructive/50 text-destructive p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4">
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+					</svg>
+					<h5 class="mb-1 font-medium leading-none tracking-tight">Error</h5>
+					<div class="text-sm [&_p]:leading-relaxed">
+						Your session has expired. Please log in again.
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Color Swatches -->
+		<div class="space-y-3">
+			<h4 class="text-sm font-medium">Color Palette</h4>
+			<div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-background border" title="Background"></div>
+					<p class="text-xs text-muted-foreground text-center">Background</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-foreground" title="Foreground"></div>
+					<p class="text-xs text-muted-foreground text-center">Foreground</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-primary" title="Primary"></div>
+					<p class="text-xs text-muted-foreground text-center">Primary</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-secondary" title="Secondary"></div>
+					<p class="text-xs text-muted-foreground text-center">Secondary</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-muted" title="Muted"></div>
+					<p class="text-xs text-muted-foreground text-center">Muted</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-accent" title="Accent"></div>
+					<p class="text-xs text-muted-foreground text-center">Accent</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-destructive" title="Destructive"></div>
+					<p class="text-xs text-muted-foreground text-center">Destructive</p>
+				</div>
+				<div class="space-y-1">
+					<div class="h-12 rounded-md bg-card border" title="Card"></div>
+					<p class="text-xs text-muted-foreground text-center">Card</p>
+				</div>
+			</div>
+		</div>
+		<!-- Badge Examples -->
+		<div class="space-y-3">
+			<h4 class="text-sm font-medium">Badges</h4>
+			<div class="flex flex-wrap gap-2">
+				<span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground">
+					Primary
+				</span>
+				<span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground">
+					Secondary
+				</span>
+				<span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+					Outline
+				</span>
+				<span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground">
+					Destructive
+				</span>
+			</div>
+		</div>
+	</div>
+}
