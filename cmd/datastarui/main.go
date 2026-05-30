@@ -3,114 +3,110 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
 	copycmd "github.com/coreycole/datastarui/cmd/datastarui/internal/copy"
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	if err := run(context.Background(), os.Args[1:]); err != nil {
+	if err := newRootCommand(context.Background(), os.Stdout, os.Stderr).Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
-func run(ctx context.Context, args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("usage: datastarui add|update|diff|doctor [components...] --source <dir> --target <dir> --module <module>")
-	}
-	cmd, rest := args[0], args[1:]
-	opts, err := parseOptions(rest)
-	if err != nil {
-		return err
-	}
+func newRootCommand(ctx context.Context, stdout, stderr io.Writer) *cobra.Command {
+	opts := &copycmd.Options{SourceRoot: ".", TargetRoot: "./pkg/datastarui"}
 
-	var result copycmd.Result
-	switch cmd {
-	case "init", "add":
-		result, err = copycmd.Add(ctx, opts)
-	case "update":
-		result, err = copycmd.Update(ctx, opts)
-	case "diff":
-		result, err = copycmd.Diff(ctx, opts)
-	case "doctor":
-		err = copycmd.Doctor(ctx, opts)
-	default:
-		return fmt.Errorf("unknown command %q", cmd)
+	cmd := &cobra.Command{
+		Use:           "datastarui",
+		Short:         "Copy DatastarUI source into consumer apps",
+		SilenceUsage:  true,
+		SilenceErrors: true,
 	}
-	if err != nil {
-		return err
+	cmd.SetOut(stdout)
+	cmd.SetErr(stderr)
+
+	cmd.PersistentFlags().StringVar(&opts.SourceRoot, "source", opts.SourceRoot, "DatastarUI source checkout")
+	cmd.PersistentFlags().StringVar(&opts.TargetRoot, "target", opts.TargetRoot, "consumer copied-source target")
+	cmd.PersistentFlags().StringVar(&opts.TargetModule, "module", opts.TargetModule, "consumer Go module path")
+	cmd.PersistentFlags().BoolVar(&opts.Force, "force", false, "overwrite modified managed files; reserved for explicit emergency use")
+
+	cmd.AddCommand(
+		newCopyCommand(ctx, "add", "Copy selected components into a consumer", opts, copycmd.Add),
+		newCopyCommand(ctx, "init", "Initialize copied DatastarUI source in a consumer", opts, copycmd.Add),
+		newCopyCommand(ctx, "update", "Refresh copied DatastarUI source", opts, copycmd.Update),
+		newDiffCommand(ctx, opts),
+		newDoctorCommand(ctx, opts),
+	)
+	return cmd
+}
+
+func newCopyCommand(ctx context.Context, use, short string, opts *copycmd.Options, run func(context.Context, copycmd.Options) (copycmd.Result, error)) *cobra.Command {
+	return &cobra.Command{
+		Use:   use + " [components...]",
+		Short: short,
+		Args:  cobra.ArbitraryArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			opts.Components = args
+			result, err := run(ctx, *opts)
+			if err != nil {
+				return err
+			}
+			return printResult(cmd.OutOrStdout(), result)
+		},
 	}
+}
+
+func newDiffCommand(ctx context.Context, opts *copycmd.Options) *cobra.Command {
+	return &cobra.Command{
+		Use:   "diff",
+		Short: "Report copied-source drift from datastarui.lock.json",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			result, err := copycmd.Diff(ctx, *opts)
+			if err != nil {
+				return err
+			}
+			if err := printResult(cmd.OutOrStdout(), result); err != nil {
+				return err
+			}
+			if len(result.Drift) > 0 {
+				return fmt.Errorf("drift found: %s", strings.TrimSpace(result.LockPath))
+			}
+			return nil
+		},
+	}
+}
+
+func newDoctorCommand(ctx context.Context, opts *copycmd.Options) *cobra.Command {
+	return &cobra.Command{
+		Use:   "doctor",
+		Short: "Validate copied-source target health",
+		Args:  cobra.NoArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return copycmd.Doctor(ctx, *opts)
+		},
+	}
+}
+
+func printResult(w io.Writer, result copycmd.Result) error {
 	if len(result.CopiedFiles) > 0 {
-		fmt.Printf("copied %d files\n", len(result.CopiedFiles))
-	}
-	if len(result.Drift) > 0 {
-		for _, drift := range result.Drift {
-			fmt.Printf("%s %s\n", drift.Status, drift.Path)
+		if _, err := fmt.Fprintf(w, "copied %d files\n", len(result.CopiedFiles)); err != nil {
+			return err
 		}
-		return fmt.Errorf("drift found: %s", strings.TrimSpace(result.LockPath))
+	}
+	for _, drift := range result.Drift {
+		if _, err := fmt.Fprintf(w, "%s %s\n", drift.Status, drift.Path); err != nil {
+			return err
+		}
 	}
 	if result.LockPath != "" {
-		fmt.Println(result.LockPath)
+		_, err := fmt.Fprintln(w, result.LockPath)
+		return err
 	}
 	return nil
-}
-
-func parseOptions(args []string) (copycmd.Options, error) {
-	opts := copycmd.Options{SourceRoot: ".", TargetRoot: "./pkg/datastarui"}
-	for i := 0; i < len(args); i++ {
-		arg := args[i]
-		switch arg {
-		case "--source":
-			value, next, err := flagValue(args, i, arg)
-			if err != nil {
-				return copycmd.Options{}, err
-			}
-			opts.SourceRoot = value
-			i = next
-		case "--target":
-			value, next, err := flagValue(args, i, arg)
-			if err != nil {
-				return copycmd.Options{}, err
-			}
-			opts.TargetRoot = value
-			i = next
-		case "--module":
-			value, next, err := flagValue(args, i, arg)
-			if err != nil {
-				return copycmd.Options{}, err
-			}
-			opts.TargetModule = value
-			i = next
-		case "--force":
-			opts.Force = true
-		default:
-			if strings.HasPrefix(arg, "--source=") {
-				opts.SourceRoot = strings.TrimPrefix(arg, "--source=")
-				continue
-			}
-			if strings.HasPrefix(arg, "--target=") {
-				opts.TargetRoot = strings.TrimPrefix(arg, "--target=")
-				continue
-			}
-			if strings.HasPrefix(arg, "--module=") {
-				opts.TargetModule = strings.TrimPrefix(arg, "--module=")
-				continue
-			}
-			if strings.HasPrefix(arg, "-") {
-				return copycmd.Options{}, fmt.Errorf("unknown flag %q", arg)
-			}
-			opts.Components = append(opts.Components, arg)
-		}
-	}
-	return opts, nil
-}
-
-func flagValue(args []string, index int, name string) (string, int, error) {
-	next := index + 1
-	if next >= len(args) || strings.HasPrefix(args[next], "--") {
-		return "", index, fmt.Errorf("%s requires a value", name)
-	}
-	return args[next], next, nil
 }
