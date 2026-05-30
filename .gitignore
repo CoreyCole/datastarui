@@ -1,8 +1,8 @@
-datastarui
-datastarui~
-datastarui-linux
-datastarui.exe
-datastarui.exe~
+/datastarui
+/datastarui~
+/datastarui-linux
+/datastarui.exe
+/datastarui.exe~
 static/css/out*
 .tmp/
 log/
