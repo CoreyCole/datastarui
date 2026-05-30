@@ -13,6 +13,7 @@ type SelectSignals struct {
 	Value       string `json:"value"`
 	Label       string `json:"label"`
 	Highlighted int    `json:"highlighted"` // Index of currently highlighted item (-1 = none)
+	LastValue   string `json:"_lastValue"`
 }
 
 // Select renders the main select wrapper with Datastar state management
@@ -39,9 +40,9 @@ templ Select(args SelectArgs) {
 			initialValue = args.DefaultValue
 		}
 
-		// Find initial label if value is set and options are provided
+		// Find initial label if options are provided, including explicit empty-string values.
 		initialLabel := ""
-		if initialValue != "" && len(args.Options) > 0 {
+		if len(args.Options) > 0 {
 			for _, option := range args.Options {
 				if option.Value == initialValue {
 					initialLabel = option.Label
@@ -56,20 +57,14 @@ templ Select(args SelectArgs) {
 			Value:       initialValue,
 			Label:       initialLabel, // Set initial label if found
 			Highlighted: -1,           // No item highlighted initially
+			LastValue:   initialValue,
 		})
 
 		// Click outside handler - use conditional pattern from Datastar docs
 		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
 
-		// Create a data-effect handler that watches for value changes
-		effectHandler := ""
-		if args.OnChange != "" {
-			// Only execute OnChange when value actually changes (not on initial load or other signal changes)
-			effectHandler = fmt.Sprintf(
-				"if ($%s.value && $%s.value !== $%s._lastValue) { $%s._lastValue = $%s.value; %s }",
-				selectID, selectID, selectID, selectID, selectID, args.OnChange,
-			)
-		}
+		// Create a data-effect handler that watches for value changes.
+		effectHandler := selectOnChangeEffect(selectID, args.OnChange)
 	}}
 	<div
 		data-slot="select"
@@ -93,21 +88,23 @@ templ Select(args SelectArgs) {
 				}
 			/>
 		}
-		if len(args.Options) > 0 {
+		if args.Options != nil {
 			<!-- Auto-render complete select UI when options are provided -->
 			@SelectTrigger(SelectTriggerArgs{
 				ID:       selectID,
-				Disabled: args.Disabled,
+				Disabled: args.Disabled || len(args.Options) == 0,
 			}) {
 				@SelectValue(SelectValueArgs{
 					ID:          selectID,
 					Placeholder: args.Placeholder,
 				})
 			}
-			@SelectContent(SelectContentArgs{
-				ID: selectID,
-			}) {
-				@renderSelectOptions(selectID, args.Options)
+			if len(args.Options) > 0 {
+				@SelectContent(SelectContentArgs{
+					ID: selectID,
+				}) {
+					@renderSelectOptions(selectID, args.Options)
+				}
 			}
 		} else {
 			<!-- Manual composition when no options provided -->
@@ -290,6 +287,7 @@ templ SelectItem(args SelectItemArgs) {
 
 		// Add highlighted class conditionally using data-class helper
 		highlightedClass := highlightedItem(fmt.Sprintf("%s.highlighted", args.ID), args.Index)
+		selectedExpr := selectValueEqualsExpression(signals.Signal("value"), args.Value)
 	}}
 	<div
 		data-slot="select-item"
@@ -313,7 +311,7 @@ templ SelectItem(args SelectItemArgs) {
 			<!-- Check icon for selected state -->
 			<svg
 				class="h-4 w-4"
-				data-show={ signals.Equals("value", args.Value) }
+				data-show={ selectedExpr }
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"
@@ -335,9 +333,7 @@ templ SelectItem(args SelectItemArgs) {
 
 // SelectLabel renders a label for a group of items
 templ SelectLabel(args SelectLabelArgs) {
-	{{
-		classes := selectLabelVariants(args.Class)
-	}}
+	{{ classes := selectLabelVariants(args.Class) }}
 	<div
 		data-slot="select-label"
 		class={ classes }
@@ -349,9 +345,7 @@ templ SelectLabel(args SelectLabelArgs) {
 
 // SelectSeparator renders a visual separator between groups
 templ SelectSeparator(args SelectSeparatorArgs) {
-	{{
-		classes := selectSeparatorVariants(args.Class)
-	}}
+	{{ classes := selectSeparatorVariants(args.Class) }}
 	<div
 		data-slot="select-separator"
 		class={ classes }

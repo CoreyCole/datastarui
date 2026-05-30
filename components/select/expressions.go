@@ -1,6 +1,7 @@
 package selectcomponent
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/coreycole/datastarui/utils"
@@ -15,10 +16,41 @@ func highlightedItem(signalPath string, index int) string {
 }
 
 // SelectedItem creates a data-class expression for selected items
+func jsStringLiteral(value string) string {
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return "\"\""
+	}
+	return string(encoded)
+}
+
+func selectItemExpression(id, value, labelExpr string) string {
+	return fmt.Sprintf(`$%s.value = %s; $%s.label = %s; $%s.open = false`,
+		id, jsStringLiteral(value),
+		id, labelExpr,
+		id,
+	)
+}
+
+func selectOnChangeEffect(id, onChange string) string {
+	if onChange == "" {
+		return ""
+	}
+	return fmt.Sprintf(
+		"if ($%s.value !== $%s._lastValue) { $%s._lastValue = $%s.value; %s }",
+		id, id, id, id, onChange,
+	)
+}
+
+func selectValueEqualsExpression(signalExpr, value string) string {
+	return fmt.Sprintf("%s === %s", signalExpr, jsStringLiteral(value))
+}
+
 func selectedItem(signalPath, value string) string {
+	expr := selectValueEqualsExpression("$"+signalPath, value)
 	return utils.NewDataClass().
-		Add("bg-primary", fmt.Sprintf("$%s === '%s'", signalPath, value)).
-		Add("text-primary-foreground", fmt.Sprintf("$%s === '%s'", signalPath, value)).
+		Add("bg-primary", expr).
+		Add("text-primary-foreground", expr).
 		Build()
 }
 
@@ -167,11 +199,7 @@ func (s *SelectItemHandler) BuildClickHandler() string {
 	// Extract label from clicked item
 	labelExpr := "evt.currentTarget.querySelector('.select-item-text')?.textContent.trim() || ''"
 
-	return fmt.Sprintf(`$%s.value = '%s'; $%s.label = %s; $%s.open = false`,
-		s.selectID, s.value,
-		s.selectID, labelExpr,
-		s.selectID,
-	)
+	return selectItemExpression(s.selectID, s.value, labelExpr)
 }
 
 // BuildKeyboardHandler creates the item keyboard handler
