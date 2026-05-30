@@ -3,6 +3,7 @@ package dropdown
 import (
 	"crypto/rand"
 	"fmt"
+
 	"github.com/coreycole/datastarui/utils"
 )
 
@@ -122,18 +123,9 @@ templ DropdownMenuContent(args DropdownMenuContentArgs) {
 
 // DropdownMenuItem renders a clickable menu item
 templ DropdownMenuItem(args DropdownMenuItemArgs) {
-	{{
-		// Create signals manager for this dropdown
-		signals := utils.Signals(args.ID, DropdownSignals{})
-		hideExpr := signals.Set("open", "false")
-		// Combine hideExpr with custom OnClick if provided
-		clickExpr := hideExpr
-		if args.OnClick != "" {
-			clickExpr = hideExpr + "; " + args.OnClick
-		}
-	}}
+	{{ clickExpr := dropdownMenuItemClickExpr(args.ID, args.OnClick) }}
 	if args.AsChild {
-		<span
+		<div
 			data-slot="dropdown-menu-item"
 			class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
 			role="menuitem"
@@ -148,7 +140,7 @@ templ DropdownMenuItem(args DropdownMenuItemArgs) {
 			{ args.Attributes... }
 		>
 			{ children... }
-		</span>
+		</div>
 	} else {
 		<div
 			data-slot="dropdown-menu-item"
@@ -169,6 +161,99 @@ templ DropdownMenuItem(args DropdownMenuItemArgs) {
 			{ children... }
 		</div>
 	}
+}
+
+// DropdownMenuLinkItem renders an anchor menu item.
+templ DropdownMenuLinkItem(args DropdownMenuLinkItemArgs) {
+	{{ clickExpr := dropdownMenuItemClickExpr(args.ID, args.OnClick) }}
+	<a
+		data-slot="dropdown-menu-item"
+		href={ templ.SafeURL(args.Href) }
+		class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
+		role="menuitem"
+		if args.Target != "" {
+			target={ args.Target }
+		}
+		if args.Rel != "" {
+			rel={ args.Rel }
+		}
+		if !args.Disabled {
+			data-on-click={ clickExpr }
+		}
+		if args.Disabled {
+			aria-disabled="true"
+			tabindex="-1"
+		}
+		{ templ.Attributes(map[string]any{
+			"data-inset": args.Inset,
+			"data-variant": args.Variant,
+			"data-disabled": args.Disabled,
+		})... }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</a>
+}
+
+// DropdownMenuFormItem renders a form with a submit button as a menu item.
+templ DropdownMenuFormItem(args DropdownMenuFormItemArgs) {
+	{{
+		method := args.Method
+		if method == "" {
+			method = "post"
+		}
+	}}
+	<form
+		data-slot="dropdown-menu-form-item"
+		action={ templ.SafeURL(args.Action) }
+		method={ method }
+		class={ args.Class }
+		{ args.Attributes... }
+	>
+		<button
+			type="submit"
+			class={ dropdownMenuItemVariants(args.Variant, "w-full", args.Inset, args.Disabled) }
+			disabled?={ args.Disabled }
+			role="menuitem"
+			{ templ.Attributes(map[string]any{
+				"data-inset": args.Inset,
+				"data-variant": args.Variant,
+				"data-disabled": args.Disabled,
+			})... }
+			{ args.ButtonAttributes... }
+		>
+			{ children... }
+		</button>
+	</form>
+}
+
+// DropdownMenuCustomItem renders a flow-content container as a menu item.
+templ DropdownMenuCustomItem(args DropdownMenuCustomItemArgs) {
+	{{
+		clickExpr := ""
+		if args.CloseOnClick {
+			clickExpr = dropdownMenuItemClickExpr(args.ID, "")
+		}
+	}}
+	<div
+		data-slot="dropdown-menu-item"
+		class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
+		role="menuitem"
+		if !args.Disabled && clickExpr != "" {
+			data-on-click={ clickExpr }
+		}
+		if args.Disabled {
+			aria-disabled="true"
+		}
+		{ templ.Attributes(map[string]any{
+			"data-inset": args.Inset,
+			"data-variant": args.Variant,
+			"data-disabled": args.Disabled,
+		})... }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
 }
 
 // DropdownMenuLabel renders a non-interactive label

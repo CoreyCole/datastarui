@@ -76,6 +76,43 @@ templ DropdownPage(rootArgs l.RootArgs) {
 						</div>
 					}
 				}
+				<!-- Typed Link/Form/Custom Items -->
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
+							Typed Link/Form/Custom Items
+						}
+						@card.CardDescription(card.CardDescriptionArgs{}) {
+							Real anchors, forms, and flow-content containers for action menus.
+						}
+					}
+					@card.CardContent(card.CardContentArgs{}) {
+						<div class="inline-block">
+							@dropdown.DropdownMenu(dropdown.DropdownMenuArgs{ID: "typed_actions_dropdown"}) {
+								@dropdown.DropdownMenuTrigger(dropdown.DropdownMenuTriggerArgs{
+									ID:    "typed_actions_dropdown",
+									Class: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2",
+								}) {
+									Actions
+								}
+								@dropdown.DropdownMenuContent(dropdown.DropdownMenuContentArgs{ID: "typed_actions_dropdown", Align: "start"}) {
+									@dropdown.DropdownMenuLinkItem(dropdown.DropdownMenuLinkItemArgs{ID: "typed_actions_dropdown", Href: "/docs", Target: "_blank", Rel: "noreferrer"}) {
+										Open docs
+									}
+									@dropdown.DropdownMenuFormItem(dropdown.DropdownMenuFormItemArgs{ID: "typed_actions_dropdown", Action: "/examples/action", Method: "post"}) {
+										Run action
+									}
+									@dropdown.DropdownMenuCustomItem(dropdown.DropdownMenuCustomItemArgs{ID: "typed_actions_dropdown", Class: "block"}) {
+										<details>
+											<summary class="cursor-pointer text-xs">Confirm custom action</summary>
+											<p class="mt-2 text-xs text-muted-foreground">Custom item can host flow content without a span wrapper.</p>
+										</details>
+									}
+								}
+							}
+						</div>
+					}
+				}
 				<!-- Dropdown with Icons and Shortcuts -->
 				@card.Card(card.CardArgs{}) {
 					@card.CardHeader(card.CardHeaderArgs{}) {

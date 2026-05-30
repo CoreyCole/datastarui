@@ -12,7 +12,7 @@ templ Button(args ButtonArgs) {
 		classes := buttonVariants(args.Variant, args.Size, args.Class)
 	}}
 	if args.AsChild {
-		<!-- When AsChild is true, we render a span that can be styled as a button -->
+		<!-- AsChild is wrapper compatibility only; it does not transfer child attributes. -->
 		<span
 			class={ classes }
 			if args.Disabled {
@@ -33,4 +33,21 @@ templ Button(args ButtonArgs) {
 			{ children... }
 		</button>
 	}
+}
+
+templ LinkButton(args LinkButtonArgs) {
+	{{ classes := buttonVariants(args.Variant, args.Size, args.Class) }}
+	<a
+		href={ templ.SafeURL(args.Href) }
+		class={ classes }
+		if args.Target != "" {
+			target={ args.Target }
+		}
+		if args.Rel != "" {
+			rel={ args.Rel }
+		}
+		{ args.Attributes... }
+	>
+		{ children... }
+	</a>
 }

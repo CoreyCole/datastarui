@@ -74,6 +74,18 @@ templ ButtonPage(rootArgs l.RootArgs) {
 								}
 							</div>
 						</div>
+						<!-- Link Button -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Link Button</h3>
+							<div class="flex flex-wrap gap-2">
+								@button.LinkButton(button.LinkButtonArgs{Href: "/docs", Variant: "outline", Size: "sm"}) {
+									Docs link
+								}
+								@button.LinkButton(button.LinkButtonArgs{Href: "https://data-star.dev", Target: "_blank", Rel: "noreferrer", Variant: "secondary", Size: "sm"}) {
+									External link
+								}
+							</div>
+						</div>
 						<!-- Interactive Examples -->
 						<div class="space-y-2">
 							<h3 class="text-sm font-medium">Interactive Examples</h3>

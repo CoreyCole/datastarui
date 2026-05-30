@@ -31,7 +31,8 @@ type DropdownMenuTriggerArgs struct {
 	// Attributes allows additional HTML attributes to be added
 	Attributes templ.Attributes
 
-	// AsChild renders the trigger as a child element (for composition)
+	// AsChild renders wrapper-styled children for compatibility only.
+	// It does not transfer attributes into the child element.
 	AsChild bool
 
 	// Disabled makes the trigger non-interactive
@@ -82,12 +83,103 @@ type DropdownMenuItemArgs struct {
 	// Disabled makes the item non-interactive
 	Disabled bool
 
-	// AsChild renders the item as a child element (for composition)
+	// AsChild renders wrapper-styled children for compatibility only.
+	// It does not transfer attributes into the child element.
 	AsChild bool
 
 	// OnClick is an optional Datastar expression to execute after closing the dropdown
 	// Example: "@post('/api/action')" or "$mySignal = true"
 	OnClick string
+}
+
+// DropdownMenuLinkItemArgs defines the properties for an anchor menu item.
+type DropdownMenuLinkItemArgs struct {
+	// ID is the dropdown identifier (required to link to the correct dropdown)
+	ID string
+
+	// Href is the destination URL for the link.
+	Href string
+
+	// Target specifies where to open the linked document.
+	Target string
+
+	// Rel specifies the relationship of the target object to the link object.
+	Rel string
+
+	// Variant defines the visual style of the item.
+	// Options: "default", "destructive"
+	Variant string
+
+	// Disabled makes the item non-interactive.
+	Disabled bool
+
+	// OnClick is an optional Datastar expression to execute after closing the dropdown.
+	OnClick string
+
+	// Inset adds left padding for nested items.
+	Inset bool
+
+	// Class allows additional CSS classes to be added.
+	Class string
+
+	// Attributes allows additional HTML attributes to be added.
+	Attributes templ.Attributes
+}
+
+// DropdownMenuFormItemArgs defines the properties for a form menu item.
+type DropdownMenuFormItemArgs struct {
+	// ID is the dropdown identifier (required to link to the correct dropdown).
+	ID string
+
+	// Action is the form action URL.
+	Action string
+
+	// Method is the form method. Defaults to post.
+	Method string
+
+	// Variant defines the visual style of the submit button.
+	// Options: "default", "destructive"
+	Variant string
+
+	// Disabled makes the submit button non-interactive.
+	Disabled bool
+
+	// Inset adds left padding for nested items.
+	Inset bool
+
+	// Class allows additional CSS classes to be added to the form.
+	Class string
+
+	// Attributes allows additional HTML attributes to be added to the form.
+	Attributes templ.Attributes
+
+	// ButtonAttributes allows additional HTML attributes to be added to the submit button.
+	ButtonAttributes templ.Attributes
+}
+
+// DropdownMenuCustomItemArgs defines the properties for a custom flow-content menu item.
+type DropdownMenuCustomItemArgs struct {
+	// ID is the dropdown identifier (required to link to the correct dropdown).
+	ID string
+
+	// Variant defines the visual style of the item.
+	// Options: "default", "destructive"
+	Variant string
+
+	// Disabled makes the item non-interactive.
+	Disabled bool
+
+	// CloseOnClick closes the dropdown when the custom item is clicked.
+	CloseOnClick bool
+
+	// Inset adds left padding for nested items.
+	Inset bool
+
+	// Class allows additional CSS classes to be added.
+	Class string
+
+	// Attributes allows additional HTML attributes to be added.
+	Attributes templ.Attributes
 }
 
 // DropdownMenuLabelArgs defines the properties for the DropdownMenuLabel component

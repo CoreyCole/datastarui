@@ -29,6 +29,15 @@ func (d *DropdownHandler) buildEscapeHandler() string {
 	return d.signals.ConditionalAction(condition, "open", "false")
 }
 
+func dropdownMenuItemClickExpr(id, onClick string) string {
+	signals := utils.Signals(id, DropdownSignals{})
+	hideExpr := signals.Set("open", "false")
+	if onClick == "" {
+		return hideExpr
+	}
+	return hideExpr + "; " + onClick
+}
+
 // CreateSideClasses generates positioning classes for dropdown sides
 func createSideClasses(side string, offset int) string {
 	if offset == 0 {
