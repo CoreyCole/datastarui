@@ -40,11 +40,6 @@ type Config struct {
 	AppConfig    appconfig.Config
 }
 
-type Context struct {
-	Config Config
-	Page   playwright.Page
-}
-
 func LoadConfig(cwd string, cfg appconfig.Config, app AppRuntime) (Config, error) {
 	catalog, err := selectors.LoadCatalogFromConfig(cfg)
 	if err != nil {
