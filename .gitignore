@@ -12,3 +12,5 @@ static/js/datastar-pro*
 static/js/datastar.js
 static/js/datastar-inspector
 static/js/datastar-inspector*
+
+bin/

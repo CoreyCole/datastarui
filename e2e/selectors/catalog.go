@@ -57,15 +57,7 @@ func LoadCatalog(path string) (Catalog, error) {
 }
 
 func LoadCatalogFromConfig(cfg appconfig.Config) (Catalog, error) {
-	catalog := FromMap(cfg.Selectors)
-	if cfg.SelectorFile == "" {
-		return catalog, nil
-	}
-	fromFile, err := LoadCatalog(cfg.ResolvePath(cfg.SelectorFile))
-	if err != nil {
-		return Catalog{}, err
-	}
-	return catalog.Merge(fromFile), nil
+	return NewCatalog(nil), nil
 }
 
 func (c Catalog) Merge(other Catalog) Catalog {

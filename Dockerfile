@@ -5,8 +5,8 @@ FROM golang:1.25-alpine AS development
 RUN apk update && apk add --no-cache git curl nodejs npm bash coreutils && \
     rm -rf /var/cache/apk/*
 
-# Install templ
-RUN go install github.com/a-h/templ/cmd/templ@latest
+# Install templ version pinned by go.mod-generated code compatibility.
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.977
 
 # Install buf for proto generation
 RUN go install github.com/bufbuild/buf/cmd/buf@latest
@@ -19,17 +19,15 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh -o /tmp
     bash /tmp/install-just.sh --to /usr/local/bin && \
     rm /tmp/install-just.sh
 
-# Install pnpm
-ENV SHELL=/bin/bash
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-ENV PATH="/root/.local/share/pnpm:$PATH"
+# Install pnpm for non-interactive Docker build steps.
+RUN npm install -g pnpm@11.5.0
 
 # Set working directory
 WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install && pnpm store prune
+RUN pnpm install --dangerously-allow-all-builds && pnpm store prune
 
 # Expose port
 EXPOSE 4242

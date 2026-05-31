@@ -6,7 +6,13 @@ import (
 	"testing"
 )
 
-func TestFindWalksUpToVamosE2EConfig(t *testing.T) {
+func TestDefaultConfigFileIsGenericDatastarUIName(t *testing.T) {
+	if DefaultConfigFile != "datastarui-e2e.yml" {
+		t.Fatalf("DefaultConfigFile = %q", DefaultConfigFile)
+	}
+}
+
+func TestFindWalksUpToDatastarUIE2EConfig(t *testing.T) {
 	root := t.TempDir()
 	nested := filepath.Join(root, "a", "b")
 	if err := os.MkdirAll(nested, 0o755); err != nil {
@@ -32,7 +38,7 @@ func TestFindWalksUpToVamosE2EConfig(t *testing.T) {
 func TestLoadAppliesDefaultsAndRootDir(t *testing.T) {
 	root := t.TempDir()
 	configPath := filepath.Join(root, DefaultConfigFile)
-	if err := os.WriteFile(configPath, []byte("app: datastarui\nbase_url: http://localhost:4242\npages:\n  SelectComponent: /components/select\n"), 0o644); err != nil {
+	if err := os.WriteFile(configPath, []byte("app: datastarui\nbase_url: http://localhost:4242\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
@@ -43,17 +49,11 @@ func TestLoadAppliesDefaultsAndRootDir(t *testing.T) {
 	if cfg.RunPackage != "./tests/e2e" {
 		t.Fatalf("RunPackage = %q", cfg.RunPackage)
 	}
-	if cfg.Auth.Mode != "none" {
-		t.Fatalf("Auth.Mode = %q", cfg.Auth.Mode)
-	}
-	if cfg.Preflight.Mode != "none" {
-		t.Fatalf("Preflight.Mode = %q", cfg.Preflight.Mode)
-	}
 	if cfg.RootDir != root {
 		t.Fatalf("RootDir = %q, want %q", cfg.RootDir, root)
 	}
-	if got := cfg.Pages["SelectComponent"]; got != "/components/select" {
-		t.Fatalf("page alias = %q", got)
+	if len(cfg.Viewports) != 1 || cfg.Viewports[0] != "desktop-full" {
+		t.Fatalf("Viewports = %#v", cfg.Viewports)
 	}
 }
 
@@ -72,7 +72,7 @@ func TestLoadRejectsMissingBaseURL(t *testing.T) {
 
 func TestResolvePathUsesConfigRoot(t *testing.T) {
 	cfg := Config{RootDir: "/tmp/project"}
-	if got := cfg.ResolvePath("selectors.yaml"); got != "/tmp/project/selectors.yaml" {
+	if got := cfg.ResolvePath("artifacts"); got != "/tmp/project/artifacts" {
 		t.Fatalf("ResolvePath() = %q", got)
 	}
 	if got := cfg.ResolvePath("/already/absolute"); got != "/already/absolute" {

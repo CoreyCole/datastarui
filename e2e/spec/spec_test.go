@@ -46,6 +46,50 @@ func TestViewportsAreStoredOnScenario(t *testing.T) {
 	}
 }
 
+func TestStoryBuilderAppendsDuckTypedStepsFlat(t *testing.T) {
+	builder := Story(t, "flat story").
+		As(fakeActor{"as"}).
+		With(fakeFixture{"with"}).
+		Visit(fakePage{"visit"}).
+		Expect(fakeExpectation{"expect"}).
+		Do(namedStep("do"))
+
+	steps := builder.orderedSteps()
+	names := make([]string, 0, len(steps))
+	for _, step := range steps {
+		names = append(names, step.Name())
+	}
+	want := []string{"as", "with", "visit", "expect", "do"}
+	for i := range want {
+		if names[i] != want[i] {
+			t.Fatalf("names = %v, want %v", names, want)
+		}
+	}
+}
+
+func TestStoryBuilderViewportStoresExplicitViewport(t *testing.T) {
+	builder := Story(t, "flat viewport").Viewports(runtime.ViewportMobile, runtime.ViewportDesktopHalf)
+	if got := builder.scenario.Viewports; len(got) != 2 || got[0] != runtime.ViewportMobile || got[1] != runtime.ViewportDesktopHalf {
+		t.Fatalf("viewports = %v", got)
+	}
+}
+
+type fakeActor struct{ name string }
+
+func (f fakeActor) AuthStep() Step { return namedStep(f.name) }
+
+type fakeFixture struct{ name string }
+
+func (f fakeFixture) SetupStep() Step { return namedStep(f.name) }
+
+type fakePage struct{ name string }
+
+func (f fakePage) VisitStep() Step { return namedStep(f.name) }
+
+type fakeExpectation struct{ name string }
+
+func (f fakeExpectation) CheckStep() Step { return namedStep(f.name) }
+
 func namedStep(name string) Step {
 	return Custom(name, func(testing.TB, *runtime.Context) {})
 }

@@ -10,8 +10,27 @@ import (
 	"github.com/playwright-community/playwright-go"
 
 	"github.com/coreycole/datastarui/e2e/appconfig"
-	"github.com/coreycole/datastarui/e2e/selectors"
 )
+
+type App struct {
+	Name         string
+	Authenticate func(context.Context, playwright.Page, Config, string) error
+	Preflight    func(context.Context, Config) error
+}
+
+func (a App) authenticate(ctx context.Context, page playwright.Page, cfg Config, email string) error {
+	if a.Authenticate == nil {
+		return nil
+	}
+	return a.Authenticate(ctx, page, cfg, email)
+}
+
+func (a App) preflight(ctx context.Context, cfg Config) error {
+	if a.Preflight == nil {
+		return nil
+	}
+	return a.Preflight(ctx, cfg)
+}
 
 type AppRuntime interface {
 	Authenticate(context.Context, playwright.Page, Config, string) error
@@ -20,16 +39,19 @@ type AppRuntime interface {
 
 type noopAppRuntime struct{}
 
-var defaultAppRuntime AppRuntime = noopAppRuntime{}
+var defaultAppRuntime App = App{Name: "app"}
 
 func NoopAppRuntime() AppRuntime { return noopAppRuntime{} }
 
 func SetDefaultAppRuntime(app AppRuntime) {
 	if app == nil {
-		defaultAppRuntime = noopAppRuntime{}
+		defaultAppRuntime = App{Name: "app"}
 		return
 	}
-	defaultAppRuntime = app
+	defaultAppRuntime = App{
+		Authenticate: app.Authenticate,
+		Preflight:    app.Preflight,
+	}
 }
 
 func (noopAppRuntime) Authenticate(context.Context, playwright.Page, Config, string) error {
@@ -44,17 +66,11 @@ type Config struct {
 	ArtifactsDir string
 	Headless     bool
 	Viewports    []ViewportClass
-	Selectors    selectors.Catalog
-	Pages        map[string]string
-	App          AppRuntime
+	App          App
 	AppConfig    appconfig.Config
 }
 
-func LoadConfig(cwd string, cfg appconfig.Config, app AppRuntime) (Config, error) {
-	catalog, err := selectors.LoadCatalogFromConfig(cfg)
-	if err != nil {
-		return Config{}, err
-	}
+func LoadConfig(cwd string, cfg appconfig.Config, app App) (Config, error) {
 	baseURL := envOr("E2E_BASE_URL", cfg.BaseURL)
 	artifactsDir := envOr("E2E_ARTIFACTS_DIR", cfg.ResolvePath(cfg.ArtifactsDir))
 
@@ -70,8 +86,11 @@ func LoadConfig(cwd string, cfg appconfig.Config, app AppRuntime) (Config, error
 		viewports = append(viewports, ViewportClass(name))
 	}
 
-	if app == nil {
+	if isZeroApp(app) {
 		app = defaultAppRuntime
+		app.Name = cfg.App
+	} else if app.Name == "" {
+		app.Name = cfg.App
 	}
 	root := cfg.RootDir
 	if root == "" {
@@ -84,14 +103,12 @@ func LoadConfig(cwd string, cfg appconfig.Config, app AppRuntime) (Config, error
 		ArtifactsDir: artifactsDir,
 		Headless:     os.Getenv("E2E_HEADLESS") != "false",
 		Viewports:    viewports,
-		Selectors:    catalog,
-		Pages:        cfg.Pages,
 		App:          app,
 		AppConfig:    cfg,
 	}, nil
 }
 
-func LoadConfigFromEnv(cwd string, app AppRuntime) (Config, error) {
+func LoadConfigFromEnv(cwd string, app App) (Config, error) {
 	path, ok, err := appconfig.Find(cwd)
 	if err != nil {
 		return Config{}, err
@@ -110,10 +127,11 @@ func (c Config) PagePath(keyOrPath string) (string, error) {
 	if strings.HasPrefix(keyOrPath, "/") {
 		return keyOrPath, nil
 	}
-	if path, ok := c.Pages[keyOrPath]; ok {
-		return path, nil
-	}
-	return "", fmt.Errorf("unknown page key %q", keyOrPath)
+	return "", fmt.Errorf("unknown page key %q; use a literal path or app-specific page object", keyOrPath)
+}
+
+func isZeroApp(app App) bool {
+	return app.Name == "" && app.Authenticate == nil && app.Preflight == nil
 }
 
 func envOr(key, fallback string) string {

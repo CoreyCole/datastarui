@@ -1,10 +1,10 @@
 # E2E Story Testing
 
-DatastarUI owns the reusable Go Story E2E library for templ + DatastarUI apps. Authored Go tests are the source of truth; YAML only wires app runtime details such as base URL, pages, selectors, artifacts, and server command.
+DatastarUI owns the reusable Go Story E2E library for templ + DatastarUI apps. Authored Go tests are the source of truth; YAML is run/environment wiring only: app name, base URL, run package, artifacts, server command, and viewports. App behavior belongs in Go helpers.
 
 ## Config
 
-`vamos-e2e.yaml` is discovered from the current directory upward, or set explicitly with `E2E_CONFIG`.
+`datastarui-e2e.yml` is discovered from the current directory upward, or set explicitly with `E2E_CONFIG`.
 
 ```yaml
 app: datastarui
@@ -14,55 +14,61 @@ artifacts_dir: .e2e-runs
 server:
   command: just build-local
   skip_when_base_url_set: true
-auth:
-  mode: none
-preflight:
-  mode: none
-pages:
-  SelectComponent: /components/select
+viewports:
+  - desktop-full
 ```
-
-Common environment overrides:
-
-- `E2E_CONFIG` — explicit config file.
-- `E2E_BASE_URL` — app URL under test.
-- `E2E_ARTIFACTS_DIR` — screenshot/HTML artifact root.
-- `E2E_VIEWPORTS` — comma-separated viewport names.
-- `E2E_RUN_BROWSER=1` — allow browser tests to run.
-- `E2E_CAPTURE_SUCCESS=1` — capture artifacts on passing scenarios too.
 
 ## Story API
 
-Write normal Go tests under `tests/e2e`:
+Write normal Go tests under `tests/e2e` with the flat Story builder:
 
 ```go
 func TestSelectComponent(t *testing.T) {
-	spec.Feature("Select component").
-		Scenario("opens options").
-		Given(spec.OpenPage("SelectComponent")).
-		When(spec.Click(spec.SelectorAlias("select.trigger"))).
-		Then(
-			spec.Visible(spec.SelectorAlias("select.content")),
-			spec.ConsoleClean(),
-		).
-		Run(t)
+    spec.Story(t, "select component opens options").
+        Visit(spec.Path("/components/select")).
+        Do(spec.Click(spec.CSS("[data-slot='select-trigger']"))).
+        Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-slot='select-content']")))).
+        Expect(spec.ExpectStep(spec.ConsoleClean())).
+        Run()
 }
 ```
 
-Prefer semantic locators when they are clear: `Role`, `Text`, `Label`, `TestID`, and `CSS`. Use `SelectorAlias` for repeated or component-specific selectors that are easier to keep in config.
+Prefer app/component packages that expose typed page, fixture, actor, and expectation objects when selectors repeat. Avoid YAML page/selector registries for app behavior.
 
 ## Commands
 
-List component proof tests without launching a browser:
-
 ```bash
 go test ./e2e/... ./tests/e2e -list Test
+just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select-component
+scripts/datastarui.sh e2e review --run .e2e-runs/<run-id> --plan-dir <plan-dir>
+scripts/datastarui.sh e2e goldens compare --run .e2e-runs/<run-id> --plan-dir <plan-dir>
+scripts/datastarui.sh e2e goldens accept --run .e2e-runs/<run-id> --human-approved --golden-root ./testdata/goldens
 ```
 
-Run browser tests when the DatastarUI app is already available at `base_url`:
+`just e2e` calls `scripts/datastarui.sh`, which rebuilds the stable launcher `bin/datastarui` only when launcher sources change. The launcher builds `bin/datastarui-runtime-<hash>` when CLI/E2E sources change, then execs that runtime.
+
+## Running the demo server for browser E2E
+
+DatastarUI component stories need the demo app at `http://localhost:4242`. Do not run `go run main.go`; use the existing Docker/live-reload server or an explicitly managed process.
+
+Preferred local path:
 
 ```bash
-E2E_BASE_URL=http://localhost:4242 E2E_RUN_BROWSER=1 go test ./tests/e2e -run 'Test(SelectComponent|DatePickerComponent|TabsComponent)' -count=1
+just up
+just docker-tail app
+curl -f http://localhost:4242/components/select
+just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select-component --viewport desktop-full
 ```
 
-Do not run `go run main.go` for local verification. Use the existing Docker/live-reload environment or configured `just build-local` command.
+If Docker is unavailable and a human explicitly wants a local one-off process, build first and run the compiled binary in a supervised shell/tmux outside normal verification:
+
+```bash
+just build-local
+./datastarui
+```
+
+Stop the one-off process after testing. Do not leave unmanaged DatastarUI servers running as verification evidence.
+
+## Vamos-managed app processes
+
+Long term, feature-branch browser verification should be owned by Vamos workspace management, not ad hoc ports. Vamos should start app child processes, record their checkout, branch, commit, port, public URL, and latest E2E review index, then expose those links from the main `/workspaces` detail page. Until DatastarUI is registered as a Vamos-managed app, record the demo URL/port and run artifact path manually in verification notes.

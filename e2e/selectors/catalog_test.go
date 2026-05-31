@@ -4,8 +4,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/coreycole/datastarui/e2e/appconfig"
 )
 
 func TestLoadCatalogFromMapYAML(t *testing.T) {
@@ -44,33 +42,6 @@ func TestLoadCatalogFromEntryListYAML(t *testing.T) {
 	}
 	if entry.Description != "Select content" {
 		t.Fatalf("Description = %q", entry.Description)
-	}
-}
-
-func TestLoadCatalogFromConfigMergesInlineAndFile(t *testing.T) {
-	root := t.TempDir()
-	path := filepath.Join(root, "selectors.yaml")
-	if err := os.WriteFile(path, []byte("shared: .from-file\nfile.only: .file\n"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	cfg := appconfig.Config{
-		RootDir:      root,
-		Selectors:    map[string]string{"inline.only": ".inline", "shared": ".inline-shared"},
-		SelectorFile: "selectors.yaml",
-	}
-
-	catalog, err := LoadCatalogFromConfig(cfg)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got, _ := catalog.Resolve("inline.only"); got.CSS != ".inline" {
-		t.Fatalf("inline CSS = %q", got.CSS)
-	}
-	if got, _ := catalog.Resolve("file.only"); got.CSS != ".file" {
-		t.Fatalf("file CSS = %q", got.CSS)
-	}
-	if got, _ := catalog.Resolve("shared"); got.CSS != ".from-file" {
-		t.Fatalf("file should override inline, got %q", got.CSS)
 	}
 }
 

@@ -62,8 +62,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Check if datastar pro file exists
-	if _, err := os.Stat("static/js/datastar-pro.js"); err == nil {
+	// Check if datastar pro file exists. The layout still falls back to the
+	// public CDN if the licensed local asset is absent.
+	if _, err := os.Stat("static/js/datastar-pro-v1.js"); err == nil {
 		cfg.DatastarProAvailable = true
 	}
 	if _, err := os.Stat("static/js/datastar-inspector.js"); err == nil {

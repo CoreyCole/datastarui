@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -71,13 +72,29 @@ func RunScenarioWithConfig(
 
 func resolveScenarioConfig(t testing.TB, cfg *Config) (Config, error) {
 	t.Helper()
-	if cfg != nil {
-		return *cfg, nil
-	}
 	if os.Getenv("E2E_BASE_URL") == "" && os.Getenv("E2E_RUN_BROWSER") != "1" {
 		t.Skip("E2E_BASE_URL is required for browser E2E")
 	}
-	return LoadConfigFromEnv(".", nil)
+	if cfg == nil {
+		return LoadConfigFromEnv(".", App{})
+	}
+	if cfg.BaseURL != "" {
+		return *cfg, nil
+	}
+	resolved, err := LoadConfigFromEnv(".", cfg.App)
+	if err != nil {
+		return Config{}, err
+	}
+	if cfg.ArtifactsDir != "" {
+		resolved.ArtifactsDir = cfg.ArtifactsDir
+	}
+	if cfg.Headless != false {
+		resolved.Headless = cfg.Headless
+	}
+	if len(cfg.Viewports) > 0 {
+		resolved.Viewports = append([]ViewportClass{}, cfg.Viewports...)
+	}
+	return resolved, nil
 }
 
 func scenarioViewports(cfg Config, explicit ViewportClass) ([]ViewportClass, error) {
@@ -105,9 +122,6 @@ func newPageOptionsForViewport(viewport Viewport) playwright.BrowserNewPageOptio
 		Viewport: &playwright.Size{
 			Width:  viewport.Width,
 			Height: viewport.Height,
-		},
-		ExtraHttpHeaders: map[string]string{
-			"X-E2E-Viewport-Class": string(viewport.Class),
 		},
 	}
 }
@@ -158,6 +172,9 @@ func runScenarioOnce(
 	if err != nil {
 		return fmt.Errorf("artifact sink: %w", err)
 	}
+	if err := cfg.App.preflight(context.Background(), cfg); err != nil {
+		return fmt.Errorf("preflight: %w", err)
+	}
 	ctx := &Context{
 		Config:     cfg,
 		Playwright: pw,
@@ -168,8 +185,23 @@ func runScenarioOnce(
 		Memory:     map[string]string{},
 	}
 	defer func() {
-		if t.Failed() || os.Getenv("E2E_CAPTURE_SUCCESS") == "1" {
-			_ = ctx.Artifacts.Capture("page", ctx.Page)
+		if !t.Failed() && os.Getenv("E2E_CAPTURE_SUCCESS") != "1" {
+			return
+		}
+		if step := ctx.Memory["datastarui.current_step"]; step != "" {
+			t.Logf("E2E current step: %s", step)
+		}
+		if artifactSink.Dir != "" {
+			t.Logf("E2E artifacts: %s", artifactSink.Dir)
+		}
+		if err := ctx.Artifacts.Capture("page", ctx.Page); err != nil {
+			t.Logf("E2E artifact capture failed: %v", err)
+		} else if artifactSink.Dir != "" {
+			t.Logf("E2E screenshot: %s", filepath.Join(artifactSink.Dir, "page.png"))
+			t.Logf("E2E HTML snapshot: %s", filepath.Join(artifactSink.Dir, "page.html"))
+		}
+		if problems := ctx.Console.Problems(); len(problems) > 0 {
+			t.Logf("E2E console problems:\n%s", FormatConsoleProblems(problems))
 		}
 	}()
 

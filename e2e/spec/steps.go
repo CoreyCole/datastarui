@@ -12,6 +12,45 @@ import (
 	"github.com/coreycole/datastarui/e2e/runtime"
 )
 
+type Key string
+
+const (
+	KeyEscape Key = "Escape"
+	KeyTab    Key = "Tab"
+	KeyEnter  Key = "Enter"
+	KeySpace  Key = " "
+)
+
+type Attribute string
+
+const (
+	AriaExpanded Attribute = "aria-expanded"
+	AriaModal    Attribute = "aria-modal"
+	RoleAttr     Attribute = "role"
+	ClassAttr    Attribute = "class"
+	DataShow     Attribute = "data-show"
+	DataText     Attribute = "data-text"
+)
+
+type pathPage string
+
+func Path(path string) Page        { return pathPage(path) }
+func (p pathPage) VisitStep() Step { return Visit(string(p)) }
+
+type stepExpectation struct{ step Step }
+
+func ExpectStep(step Step) Expectation    { return stepExpectation{step: step} }
+func (e stepExpectation) CheckStep() Step { return e.step }
+
+func All(steps ...Step) Step {
+	return Custom("all", func(t testing.TB, ctx *runtime.Context) {
+		t.Helper()
+		for _, step := range steps {
+			step.Run(t, ctx)
+		}
+	})
+}
+
 func OpenPage(keyOrPath string) Step {
 	return Custom("open page "+keyOrPath, func(t testing.TB, ctx *runtime.Context) {
 		path, err := ctx.Config.PagePath(keyOrPath)
@@ -68,6 +107,166 @@ func SelectOption(locator Locator, value string) Step {
 			t.Fatal(err)
 		}
 	})
+}
+
+func Press(locator Locator, key Key) Step {
+	return Custom("press "+string(key)+" on "+locatorName(locator), func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := resolved.First().Press(string(key)); err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
+func PressPage(key Key) Step {
+	return Custom("press page "+string(key), func(t testing.TB, ctx *runtime.Context) {
+		if err := ctx.Page.Keyboard().Press(string(key)); err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
+func InputValue(locator Locator, want string) Expectation {
+	return ExpectStep(Custom("input value "+locatorName(locator)+" = "+want, func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			got, err := resolved.First().InputValue()
+			return got == want, got, err
+		})
+	}))
+}
+
+func TextEquals(locator Locator, want string) Expectation {
+	return ExpectStep(Custom("text equals "+locatorName(locator)+" = "+want, func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			got, err := resolved.First().InnerText()
+			return strings.TrimSpace(got) == want, got, err
+		})
+	}))
+}
+
+func TextContains(locator Locator, want string) Expectation {
+	return ExpectStep(Custom("text contains "+locatorName(locator)+" = "+want, func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			got, err := resolved.First().InnerText()
+			return strings.Contains(got, want), got, err
+		})
+	}))
+}
+
+func AttributeEquals(locator Locator, attr Attribute, want string) Expectation {
+	return ExpectStep(Custom("attribute "+string(attr)+" equals "+locatorName(locator)+" = "+want, func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			got, err := resolved.First().GetAttribute(string(attr))
+			return got == want, got, err
+		})
+	}))
+}
+
+func AttributeContains(locator Locator, attr Attribute, want string) Expectation {
+	return ExpectStep(Custom("attribute "+string(attr)+" contains "+locatorName(locator)+" = "+want, func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			got, err := resolved.First().GetAttribute(string(attr))
+			return strings.Contains(got, want), got, err
+		})
+	}))
+}
+
+func Focused(locator Locator) Expectation {
+	return ExpectStep(Custom("focused "+locatorName(locator), func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pollUntil(t, 2*time.Second, func() (bool, string, error) {
+			result, err := resolved.First().Evaluate(`el => el === document.activeElement`, nil)
+			if err != nil {
+				return false, "", err
+			}
+			if ok, _ := result.(bool); ok {
+				return true, "active element matched", nil
+			}
+			active, _ := ctx.Page.Locator(":focus").First().Evaluate(`el => el ? (el.id || el.getAttribute('data-slot') || el.tagName) : 'none'`, nil)
+			return false, fmt.Sprint(active), nil
+		})
+	}))
+}
+
+func WithinViewport(locator Locator) Expectation {
+	return ExpectStep(Custom("within viewport "+locatorName(locator), func(t testing.TB, ctx *runtime.Context) {
+		resolved, err := locator.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		box, err := resolved.First().BoundingBox()
+		if err != nil {
+			t.Fatal(err)
+		}
+		viewport := ctx.Page.ViewportSize()
+		if viewport == nil {
+			t.Fatal("page has no viewport size")
+		}
+		if box == nil {
+			t.Fatalf("%s has no bounding box", locatorName(locator))
+		}
+		if box.X < 0 || box.Y < 0 || box.X+box.Width > float64(viewport.Width) || box.Y+box.Height > float64(viewport.Height) {
+			t.Fatalf("%s outside viewport: box=%+v viewport=%+v", locatorName(locator), box, viewport)
+		}
+	}))
+}
+
+func NotClippedBy(child Locator, ancestor Locator) Expectation {
+	return ExpectStep(Custom("not clipped "+locatorName(child)+" by "+locatorName(ancestor), func(t testing.TB, ctx *runtime.Context) {
+		childResolved, err := child.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		ancestorResolved, err := ancestor.Resolve(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		childBox, err := childResolved.First().BoundingBox()
+		if err != nil {
+			t.Fatal(err)
+		}
+		ancestorBox, err := ancestorResolved.First().BoundingBox()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if childBox == nil || ancestorBox == nil {
+			t.Fatalf("missing bounding box: child=%+v ancestor=%+v", childBox, ancestorBox)
+		}
+		childBottom := childBox.Y + childBox.Height
+		ancestorBottom := ancestorBox.Y + ancestorBox.Height
+		childRight := childBox.X + childBox.Width
+		ancestorRight := ancestorBox.X + ancestorBox.Width
+		if childBottom > ancestorBottom || childRight > ancestorRight || childBox.Y < ancestorBox.Y || childBox.X < ancestorBox.X {
+			return
+		}
+		t.Fatalf("%s appears fully constrained inside %s: child=%+v ancestor=%+v", locatorName(child), locatorName(ancestor), childBox, ancestorBox)
+	}))
 }
 
 func Visible(locator Locator) Step {
@@ -129,10 +328,31 @@ func ConsoleClean() Step {
 
 func AuthenticatedAs(email string) Step {
 	return Custom("authenticated as "+email, func(t testing.TB, ctx *runtime.Context) {
+		if ctx.Config.App.Authenticate == nil {
+			return
+		}
 		if err := ctx.Config.App.Authenticate(context.Background(), ctx.Page, ctx.Config, email); err != nil {
 			t.Fatal(err)
 		}
 	})
+}
+
+func pollUntil(t testing.TB, timeout time.Duration, check func() (bool, string, error)) {
+	t.Helper()
+	deadline := time.Now().Add(timeout)
+	last := ""
+	for time.Now().Before(deadline) {
+		ok, got, err := check()
+		if err != nil {
+			last = err.Error()
+		} else if ok {
+			return
+		} else {
+			last = got
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+	t.Fatalf("condition not met before timeout; last value %q", last)
 }
 
 func locatorName(locator Locator) string {

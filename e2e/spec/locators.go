@@ -37,11 +37,7 @@ func TestID(id string) Locator {
 
 func SelectorAlias(key string) Locator {
 	return locatorFunc{label: "selector:" + key, fn: func(ctx *runtime.Context) (playwright.Locator, error) {
-		entry, err := ctx.Config.Selectors.Resolve(key)
-		if err != nil {
-			return nil, err
-		}
-		return ctx.Page.Locator(entry.CSS), nil
+		return nil, fmt.Errorf("selector aliases are deprecated; use app-specific Go locators for %q", key)
 	}}
 }
 

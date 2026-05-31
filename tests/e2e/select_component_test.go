@@ -7,14 +7,11 @@ import (
 )
 
 func TestSelectComponent(t *testing.T) {
-	spec.Feature("Select component").
-		Scenario("opens options").
-		Given(spec.OpenPage("SelectComponent")).
-		When(spec.Click(spec.SelectorAlias("select.trigger"))).
-		Then(
-			spec.Visible(spec.SelectorAlias("select.content")),
-			spec.Visible(spec.SelectorAlias("select.first_item")),
-			spec.ConsoleClean(),
-		).
-		Run(t)
+	spec.Story(t, "select component opens options").
+		Visit(spec.Path("/components/select")).
+		Do(spec.Click(spec.CSS("[data-select-id='slice_theme_select'] [data-slot='select-trigger']"))).
+		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-select-id='slice_theme_select'] [data-slot='select-content']")))).
+		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-select-id='slice_theme_select'] [data-select-item]")))).
+		Expect(spec.ExpectStep(spec.ConsoleClean())).
+		Run()
 }

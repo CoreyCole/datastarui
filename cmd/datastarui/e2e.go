@@ -1,0 +1,339 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"time"
+
+	"github.com/coreycole/datastarui/e2e/appconfig"
+	"github.com/coreycole/datastarui/e2e/goldens"
+	"github.com/coreycole/datastarui/e2e/review"
+	"github.com/coreycole/datastarui/e2e/runtime"
+	"github.com/spf13/cobra"
+)
+
+type e2eRunOptions struct {
+	ConfigPath   string
+	Story        string
+	Scenario     string
+	Viewport     string
+	BaseURL      string
+	ArtifactsDir string
+	NoRestart    bool
+}
+
+type e2eReviewOptions struct {
+	RunPath      string
+	BaselineRun  string
+	BaselineRef  string
+	WorkspaceRun string
+	WorkspaceRef string
+	PlanDir      string
+}
+
+type e2eGoldensOptions struct {
+	RunPath       string
+	GoldenRoot    string
+	PlanDir       string
+	HumanApproved bool
+}
+
+func newE2ECommand(ctx context.Context) *cobra.Command {
+	cmd := &cobra.Command{Use: "e2e", Short: "Run Go Story E2E tests"}
+	cmd.AddCommand(newE2ERunCommand(ctx), newE2EReviewCommand(ctx), newE2EGoldensCommand(ctx))
+	return cmd
+}
+
+func newE2ERunCommand(ctx context.Context) *cobra.Command {
+	opts := e2eRunOptions{}
+	cmd := &cobra.Command{
+		Use:   "run",
+		Short: "Run configured Go Story E2E tests",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			if ctx == nil {
+				ctx = cmd.Context()
+			}
+			if ctx == nil {
+				ctx = context.Background()
+			}
+			return runE2E(ctx, opts)
+		},
+	}
+	cmd.Flags().StringVar(&opts.ConfigPath, "config", "", "E2E YAML config path (defaults to datastarui-e2e.yml discovery)")
+	cmd.Flags().StringVar(&opts.Story, "story", "", "story slug to run")
+	cmd.Flags().StringVar(&opts.Scenario, "scenario", "", "scenario slug to run")
+	cmd.Flags().StringVar(&opts.Viewport, "viewport", "", "viewport class or comma-separated viewport classes to run")
+	cmd.Flags().StringVar(&opts.BaseURL, "base-url", "", "base URL for browser E2E")
+	cmd.Flags().StringVar(&opts.ArtifactsDir, "artifacts-dir", "", "directory for run artifacts")
+	cmd.Flags().BoolVar(&opts.NoRestart, "no-restart", false, "skip configured server command before running")
+	return cmd
+}
+
+func newE2EReviewCommand(ctx context.Context) *cobra.Command {
+	opts := e2eReviewOptions{}
+	cmd := &cobra.Command{
+		Use:   "review",
+		Short: "Write neutral E2E visual review artifacts",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			if ctx == nil {
+				ctx = cmd.Context()
+			}
+			result, err := review.Run(ctx, review.ReviewInput{
+				RunPath:      opts.RunPath,
+				BaselineRun:  opts.BaselineRun,
+				BaselineRef:  opts.BaselineRef,
+				WorkspaceRun: opts.WorkspaceRun,
+				WorkspaceRef: opts.WorkspaceRef,
+				PlanDir:      opts.PlanDir,
+			})
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(os.Stdout, "E2E review outcome: %s\n", result.Outcome)
+			if result.MarkdownPath != "" {
+				fmt.Fprintf(os.Stdout, "E2E review markdown: %s\n", result.MarkdownPath)
+			}
+			return nil
+		},
+	}
+	cmd.Flags().StringVar(&opts.RunPath, "run", "", "E2E run directory or manifest path")
+	cmd.Flags().StringVar(&opts.BaselineRun, "baseline-run", "", "baseline run directory or manifest path")
+	cmd.Flags().StringVar(&opts.BaselineRef, "baseline-ref", "", "baseline git ref")
+	cmd.Flags().StringVar(&opts.WorkspaceRun, "workspace-run", "", "workspace run directory or manifest path")
+	cmd.Flags().StringVar(&opts.WorkspaceRef, "workspace-ref", "", "workspace git ref")
+	cmd.Flags().StringVar(&opts.PlanDir, "plan-dir", "", "optional plan directory for Markdown/JSON outputs")
+	return cmd
+}
+
+func newE2EGoldensCommand(ctx context.Context) *cobra.Command {
+	cmd := &cobra.Command{Use: "goldens", Short: "Compare or accept E2E golden screenshots"}
+	cmd.AddCommand(newE2EGoldensCompareCommand(ctx), newE2EGoldensAcceptCommand(ctx))
+	return cmd
+}
+
+func newE2EGoldensCompareCommand(ctx context.Context) *cobra.Command {
+	opts := e2eGoldensOptions{}
+	cmd := &cobra.Command{
+		Use:   "compare",
+		Short: "Compare a run against golden screenshots",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			if ctx == nil {
+				ctx = cmd.Context()
+			}
+			result, err := goldens.Compare(ctx, goldens.GoldenInput{RunPath: opts.RunPath, GoldenRoot: opts.GoldenRoot, PlanDir: opts.PlanDir})
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(os.Stdout, "E2E goldens outcome: %s\n", result.Outcome)
+			return nil
+		},
+	}
+	cmd.Flags().StringVar(&opts.RunPath, "run", "", "E2E run directory")
+	cmd.Flags().StringVar(&opts.GoldenRoot, "golden-root", "", "golden screenshot root")
+	cmd.Flags().StringVar(&opts.PlanDir, "plan-dir", "", "optional plan directory for Markdown/JSON outputs")
+	return cmd
+}
+
+func newE2EGoldensAcceptCommand(ctx context.Context) *cobra.Command {
+	opts := e2eGoldensOptions{}
+	cmd := &cobra.Command{
+		Use:   "accept",
+		Short: "Accept run screenshots as goldens after human approval",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			if ctx == nil {
+				ctx = cmd.Context()
+			}
+			return goldens.Accept(ctx, goldens.GoldenInput{RunPath: opts.RunPath, GoldenRoot: opts.GoldenRoot, HumanApproved: opts.HumanApproved})
+		},
+	}
+	cmd.Flags().StringVar(&opts.RunPath, "run", "", "E2E run directory")
+	cmd.Flags().StringVar(&opts.GoldenRoot, "golden-root", "", "golden screenshot root")
+	cmd.Flags().BoolVar(&opts.HumanApproved, "human-approved", false, "confirm a human approved accepting goldens")
+	return cmd
+}
+
+func runE2E(ctx context.Context, opts e2eRunOptions) error {
+	cfg, err := loadE2EConfig(opts)
+	if err != nil {
+		return err
+	}
+	if opts.BaseURL != "" {
+		cfg.BaseURL = opts.BaseURL
+	}
+	artifactRoot := cfg.ResolvePath(cfg.ArtifactsDir)
+	if opts.ArtifactsDir != "" {
+		artifactRoot = opts.ArtifactsDir
+	}
+	runDir := filepath.Join(artifactRoot, time.Now().Format("20060102-150405"))
+	if err := os.MkdirAll(runDir, 0o755); err != nil {
+		return err
+	}
+	viewportEnv := selectedE2EViewportEnv(opts)
+	if err := setE2EEnvironment(cfg, runDir, viewportEnv); err != nil {
+		return err
+	}
+	if command := buildE2EServerCommand(opts, cfg); len(command) > 0 {
+		server := exec.CommandContext(ctx, command[0], command[1:]...)
+		server.Stdout = os.Stdout
+		server.Stderr = os.Stderr
+		server.Dir = cfg.RootDir
+		if err := server.Run(); err != nil {
+			return fmt.Errorf("%s: %w", strings.Join(command, " "), err)
+		}
+	}
+	args := buildE2EGoTestArgs(opts, cfg)
+	if err := ensureE2ETestsExist(ctx, args, cfg.RootDir); err != nil {
+		return err
+	}
+	cmd := exec.CommandContext(ctx, "go", args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Dir = cfg.RootDir
+	cmd.Env = append(os.Environ(),
+		"E2E_CONFIG="+cfg.ConfigPath,
+		"E2E_BASE_URL="+strings.TrimRight(cfg.BaseURL, "/"),
+		"E2E_ARTIFACTS_DIR="+runDir,
+		"E2E_CAPTURE_SUCCESS=1",
+		"E2E_VIEWPORTS="+viewportEnv,
+		"E2E_RUN_BROWSER=1",
+	)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("go %v: %w", args, err)
+	}
+	fmt.Fprintf(os.Stdout, "E2E artifacts: %s\n", runDir)
+	return nil
+}
+
+func loadE2EConfig(opts e2eRunOptions) (appconfig.Config, error) {
+	path := opts.ConfigPath
+	if path == "" {
+		path = os.Getenv("E2E_CONFIG")
+	}
+	return appconfig.Load(path, ".")
+}
+
+func setE2EEnvironment(cfg appconfig.Config, runDir, viewportEnv string) error {
+	values := map[string]string{
+		"E2E_CONFIG":          cfg.ConfigPath,
+		"E2E_BASE_URL":        strings.TrimRight(cfg.BaseURL, "/"),
+		"E2E_ARTIFACTS_DIR":   runDir,
+		"E2E_CAPTURE_SUCCESS": "1",
+		"E2E_VIEWPORTS":       viewportEnv,
+		"E2E_RUN_BROWSER":     "1",
+	}
+	for key, value := range values {
+		if err := os.Setenv(key, value); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func buildE2EServerCommand(opts e2eRunOptions, cfg appconfig.Config) []string {
+	if opts.NoRestart {
+		return nil
+	}
+	if cfg.Server.SkipWhenBaseURLSet && (opts.BaseURL != "" || os.Getenv("E2E_BASE_URL") != "") {
+		return nil
+	}
+	command := strings.TrimSpace(cfg.Server.Command)
+	if command == "" {
+		return nil
+	}
+	return strings.Fields(command)
+}
+
+func selectedE2EViewportEnv(opts e2eRunOptions) string {
+	if viewport := strings.TrimSpace(opts.Viewport); viewport != "" {
+		return viewport
+	}
+	defaults := runtime.DefaultVerifyViewports()
+	parts := make([]string, 0, len(defaults))
+	for _, viewport := range defaults {
+		parts = append(parts, string(viewport))
+	}
+	return strings.Join(parts, ",")
+}
+
+func buildE2EGoTestArgs(opts e2eRunOptions, cfg appconfig.Config) []string {
+	runPackage := strings.TrimSpace(cfg.RunPackage)
+	if runPackage == "" {
+		runPackage = "./tests/e2e"
+	}
+	args := []string{"test", runPackage}
+	if opts.Story != "" || opts.Scenario != "" {
+		pattern := slugToTestFragment(opts.Story)
+		if opts.Scenario != "" {
+			pattern += ".*" + slugToTestFragment(opts.Scenario)
+		}
+		args = append(args, "-run", pattern)
+	}
+	return args
+}
+
+func ensureE2ETestsExist(ctx context.Context, args []string, dir string) error {
+	pattern := ""
+	for i := 0; i < len(args)-1; i++ {
+		if args[i] == "-run" {
+			pattern = args[i+1]
+			break
+		}
+	}
+	if pattern == "" {
+		return nil
+	}
+	if len(args) < 2 {
+		return fmt.Errorf("go test package argument missing")
+	}
+	listArgs := []string{"test", args[1], "-list", pattern}
+	cmd := exec.CommandContext(ctx, "go", listArgs...)
+	cmd.Dir = repoRootForCommand(dir)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("go %v: %w\n%s", listArgs, err, strings.TrimSpace(string(out)))
+	}
+	for _, line := range strings.Split(string(out), "\n") {
+		if strings.HasPrefix(strings.TrimSpace(line), "Test") {
+			return nil
+		}
+	}
+	return fmt.Errorf("no E2E tests matched -run %q", pattern)
+}
+
+func repoRootForCommand(cwd string) string {
+	abs, err := filepath.Abs(cwd)
+	if err != nil {
+		return cwd
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(abs, "go.mod")); err == nil {
+			return abs
+		}
+		parent := filepath.Dir(abs)
+		if parent == abs {
+			return cwd
+		}
+		abs = parent
+	}
+}
+
+func slugToTestFragment(slug string) string {
+	parts := strings.FieldsFunc(slug, func(r rune) bool {
+		return r == '-' || r == '_' || r == ' ' || r == '/' || r == '.'
+	})
+	for i, part := range parts {
+		if part == "" {
+			continue
+		}
+		parts[i] = strings.ToUpper(part[:1]) + part[1:]
+	}
+	return strings.Join(parts, "")
+}

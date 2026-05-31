@@ -60,8 +60,11 @@ templ Select(args SelectArgs) {
 			LastValue:   initialValue,
 		})
 
-		// Click outside handler - use conditional pattern from Datastar docs
-		clickOutsideHandler := signals.Signal("open") + " ? " + signals.Set("open", "false") + " : null"
+		// Click outside handler must ignore clicks inside the select root. Datastar's
+		// click__outside handler can evaluate after the trigger opens the menu; without
+		// this guard the same trigger click immediately closes the menu again.
+		selectRootSelector := fmt.Sprintf("[data-select-id=%q]", selectID)
+		clickOutsideHandler := signals.Signal("open") + " && !evt.target.closest('" + selectRootSelector + "') ? " + signals.Set("open", "false") + " : null"
 
 		// Create a data-effect handler that watches for value changes.
 		effectHandler := selectOnChangeEffect(selectID, args.OnChange)

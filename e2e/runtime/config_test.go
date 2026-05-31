@@ -14,12 +14,10 @@ func TestLoadConfigBuildsRuntimeConfig(t *testing.T) {
 		BaseURL:      "http://localhost:4242/",
 		ArtifactsDir: ".e2e-runs",
 		RootDir:      root,
-		Selectors:    map[string]string{"select.trigger": "[data-slot='select-trigger']"},
-		Pages:        map[string]string{"SelectComponent": "/components/select"},
 		Viewports:    []string{"desktop-full"},
 	}
 
-	runtimeCfg, err := LoadConfig(root, cfg, nil)
+	runtimeCfg, err := LoadConfig(root, cfg, App{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,11 +30,8 @@ func TestLoadConfigBuildsRuntimeConfig(t *testing.T) {
 	if runtimeCfg.ArtifactsDir != filepath.Join(root, ".e2e-runs") {
 		t.Fatalf("ArtifactsDir = %q", runtimeCfg.ArtifactsDir)
 	}
-	if _, err := runtimeCfg.Selectors.Resolve("select.trigger"); err != nil {
-		t.Fatal(err)
-	}
-	if runtimeCfg.App == nil {
-		t.Fatal("expected default app runtime")
+	if runtimeCfg.App.Name != "datastarui" {
+		t.Fatalf("App.Name = %q", runtimeCfg.App.Name)
 	}
 }
 
@@ -52,7 +47,7 @@ func TestLoadConfigEnvOverridesBaseURLArtifactsAndViewports(t *testing.T) {
 		Viewports:    []string{"desktop-full"},
 	}
 
-	runtimeCfg, err := LoadConfig(".", cfg, nil)
+	runtimeCfg, err := LoadConfig(".", cfg, App{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,19 +62,12 @@ func TestLoadConfigEnvOverridesBaseURLArtifactsAndViewports(t *testing.T) {
 	}
 }
 
-func TestPagePathResolvesAliasAndLiteralPath(t *testing.T) {
-	cfg := Config{Pages: map[string]string{"SelectComponent": "/components/select"}}
-	if got, err := cfg.PagePath("SelectComponent"); err != nil || got != "/components/select" {
-		t.Fatalf("alias PagePath() = %q, %v", got, err)
-	}
+func TestPagePathAllowsOnlyLiteralPaths(t *testing.T) {
+	cfg := Config{}
 	if got, err := cfg.PagePath("/literal"); err != nil || got != "/literal" {
 		t.Fatalf("literal PagePath() = %q, %v", got, err)
 	}
-}
-
-func TestPagePathRejectsUnknownAlias(t *testing.T) {
-	cfg := Config{Pages: map[string]string{}}
-	if _, err := cfg.PagePath("Missing"); err == nil {
+	if _, err := cfg.PagePath("SelectComponent"); err == nil {
 		t.Fatal("expected unknown alias error")
 	}
 }

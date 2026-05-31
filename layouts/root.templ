@@ -124,14 +124,28 @@ templ Root(args RootArgs) {
 				initTheme();
 			</script>
 			<!-- Datastar -->
-			if args.DatastarProAvailable {
-				<!-- Datastar Pro (local) -->
-				<!-- <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script> -->
-				<script type="module" src="/js/datastar-pro-rc5.js"></script>
-			} else {
-				<!-- Datastar from CDN (fallback) -->
-				<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@main/bundles/datastar.js"></script>
-			}
+			<script type="module">
+				// Datastar v1 uses keyed attributes like data-on:click and
+				// data-attr:aria-expanded. Existing DatastarUI components still emit the
+				// older dash form, so mirror those attributes before Datastar scans.
+				for (const el of document.querySelectorAll('*')) {
+					for (const attr of [...el.attributes]) {
+						if (attr.name.startsWith('data-on-')) {
+							el.setAttribute('data-on:' + attr.name.slice('data-on-'.length), attr.value);
+						}
+						if (attr.name.startsWith('data-attr-')) {
+							el.setAttribute('data-attr:' + attr.name.slice('data-attr-'.length), attr.value);
+						}
+					}
+				}
+			</script>
+			<!-- Datastar library for reactive components -->
+			<script type="module">
+				import('/js/datastar-pro-v1.js').catch((error) => {
+					console.warn('Datastar Pro asset unavailable; falling back to public Datastar bundle', error);
+					return import('https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.1/bundles/datastar.js');
+				});
+			</script>
 			if args.InspectorEnabled {
 				<script type="module" src="/js/datastar-inspector.js"></script>
 			}

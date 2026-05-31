@@ -7,13 +7,10 @@ import (
 )
 
 func TestTabsComponent(t *testing.T) {
-	spec.Feature("Tabs component").
-		Scenario("renders tab triggers and panels").
-		Given(spec.OpenPage("TabsComponent")).
-		Then(
-			spec.Visible(spec.SelectorAlias("tabs.first_trigger")),
-			spec.Visible(spec.SelectorAlias("tabs.content")),
-			spec.ConsoleClean(),
-		).
-		Run(t)
+	spec.Story(t, "tabs component renders tab triggers and panels").
+		Visit(spec.Path("/components/tabs")).
+		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-slot='tabs-trigger'][data-value], [data-slot='tabs-list'] button[role='tab']")))).
+		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-slot='tabs-content'][data-value]")))).
+		Expect(spec.ExpectStep(spec.ConsoleClean())).
+		Run()
 }

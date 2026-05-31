@@ -34,7 +34,7 @@ watch:
 install:
   @pnpm install
   @go install github.com/air-verse/air@latest
-  @go install github.com/a-h/templ/cmd/templ@latest
+  @go install github.com/a-h/templ/cmd/templ@v0.3.977
   @go install github.com/bufbuild/buf/cmd/buf@latest
   @go get ./...
   @go mod tidy
@@ -69,3 +69,7 @@ docker-tail service lines="50":
   @echo "📋 Last {{lines}} lines for {{service}} service..."
   @docker logs --tail {{lines}} datastarui-local-{{service}}-1
 
+
+# Run Go Story E2E tests through the launcher-managed latest CLI runtime.
+e2e *args:
+  @scripts/datastarui.sh e2e run {{args}}

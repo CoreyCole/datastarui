@@ -9,35 +9,22 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const DefaultConfigFile = "vamos-e2e.yaml"
+const DefaultConfigFile = "datastarui-e2e.yml"
 
 type Config struct {
-	App          string            `yaml:"app"`
-	BaseURL      string            `yaml:"base_url"`
-	RunPackage   string            `yaml:"run_package"`
-	ArtifactsDir string            `yaml:"artifacts_dir"`
-	Server       ServerConfig      `yaml:"server"`
-	Auth         AuthConfig        `yaml:"auth"`
-	Preflight    PreflightConfig   `yaml:"preflight"`
-	Selectors    map[string]string `yaml:"selectors"`
-	SelectorFile string            `yaml:"selectors_file"`
-	Pages        map[string]string `yaml:"pages"`
-	Viewports    []string          `yaml:"viewports"`
-	ConfigPath   string            `yaml:"-"`
-	RootDir      string            `yaml:"-"`
+	App          string       `yaml:"app"`
+	BaseURL      string       `yaml:"base_url"`
+	RunPackage   string       `yaml:"run_package"`
+	ArtifactsDir string       `yaml:"artifacts_dir"`
+	Server       ServerConfig `yaml:"server"`
+	Viewports    []string     `yaml:"viewports"`
+	ConfigPath   string       `yaml:"-"`
+	RootDir      string       `yaml:"-"`
 }
 
 type ServerConfig struct {
 	Command            string `yaml:"command"`
 	SkipWhenBaseURLSet bool   `yaml:"skip_when_base_url_set"`
-}
-
-type AuthConfig struct {
-	Mode string `yaml:"mode"`
-}
-
-type PreflightConfig struct {
-	Mode string `yaml:"mode"`
 }
 
 func Find(cwd string) (string, bool, error) {
@@ -105,20 +92,8 @@ func (c *Config) applyDefaults() {
 	if c.RunPackage == "" {
 		c.RunPackage = "./tests/e2e"
 	}
-	if c.Auth.Mode == "" {
-		c.Auth.Mode = "none"
-	}
-	if c.Preflight.Mode == "" {
-		c.Preflight.Mode = "none"
-	}
 	if len(c.Viewports) == 0 {
 		c.Viewports = []string{"desktop-full"}
-	}
-	if c.Selectors == nil {
-		c.Selectors = map[string]string{}
-	}
-	if c.Pages == nil {
-		c.Pages = map[string]string{}
 	}
 }
 

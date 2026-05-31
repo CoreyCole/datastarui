@@ -41,6 +41,7 @@ func newRootCommand(ctx context.Context, stdout, stderr io.Writer) *cobra.Comman
 		newCopyCommand(ctx, "update", "Refresh copied DatastarUI source", opts, copycmd.Update),
 		newDiffCommand(ctx, opts),
 		newDoctorCommand(ctx, opts),
+		newE2ECommand(ctx),
 	)
 	return cmd
 }
