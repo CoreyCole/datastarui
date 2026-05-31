@@ -1,0 +1,25 @@
+app: datastarui
+base_url: http://localhost:4242
+run_package: ./tests/e2e
+artifacts_dir: .e2e-runs
+server:
+  command: just build-local
+  skip_when_base_url_set: true
+auth:
+  mode: none
+preflight:
+  mode: none
+viewports:
+  - desktop-full
+pages:
+  SelectComponent: /components/select
+  DatePickerComponent: /components/datepicker
+  TabsComponent: /components/tabs
+selectors:
+  select.trigger: "[data-select-id='slice_theme_select'] [data-slot='select-trigger'], [data-slot='select-trigger']"
+  select.content: "[data-select-id='slice_theme_select'] [data-slot='select-content'], [data-slot='select-content']"
+  select.first_item: "[data-slot='select-item'], [data-select-item]"
+  datepicker.single.trigger: "[data-datepicker-id='single_date'] button[data-on-click*='open']"
+  datepicker.single.popover: "[data-datepicker-id='single_date'] [data-slot='datepicker-popover']"
+  tabs.first_trigger: "[data-slot='tabs-trigger'][data-value], [data-slot='tabs-list'] button[role='tab']"
+  tabs.content: "[data-slot='tabs-content'][data-value]"
