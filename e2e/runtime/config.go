@@ -20,7 +20,17 @@ type AppRuntime interface {
 
 type noopAppRuntime struct{}
 
+var defaultAppRuntime AppRuntime = noopAppRuntime{}
+
 func NoopAppRuntime() AppRuntime { return noopAppRuntime{} }
+
+func SetDefaultAppRuntime(app AppRuntime) {
+	if app == nil {
+		defaultAppRuntime = noopAppRuntime{}
+		return
+	}
+	defaultAppRuntime = app
+}
 
 func (noopAppRuntime) Authenticate(context.Context, playwright.Page, Config, string) error {
 	return nil
@@ -61,7 +71,7 @@ func LoadConfig(cwd string, cfg appconfig.Config, app AppRuntime) (Config, error
 	}
 
 	if app == nil {
-		app = NoopAppRuntime()
+		app = defaultAppRuntime
 	}
 	root := cfg.RootDir
 	if root == "" {
