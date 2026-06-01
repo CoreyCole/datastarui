@@ -2,6 +2,7 @@ package dropdown_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/coreycole/datastarui/e2e/runtime"
@@ -33,14 +34,15 @@ func NestedThemeSelect() SelectControl        { return SelectControl{id: "nested
 func ManualSyntaxSelect() SelectControl       { return SelectControl{id: "manual_syntax_select"} }
 
 func (d DropdownDemo) Root() spec.Locator {
-	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu']:has([data-slot='dropdown-menu-trigger'][data-on-click*='%s'])", d.id))
+	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu']:has([data-slot='dropdown-menu-trigger'][data-on-click*='%s'])", d.signalID()))
 }
 func (d DropdownDemo) Trigger() spec.Locator {
-	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-trigger'][data-on-click*='%s']", d.id))
+	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-trigger'][data-on-click*='%s']", d.signalID()))
 }
 func (d DropdownDemo) Content() spec.Locator {
-	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-content'][data-show='$%s.open']", d.id))
+	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-content'][data-show='$%s.open']", d.signalID()))
 }
+func (d DropdownDemo) signalID() string         { return strings.ReplaceAll(d.id, "-", "_") }
 func (d DropdownDemo) Open() spec.Step          { return spec.Click(d.Trigger()) }
 func (d DropdownDemo) Opened() spec.Expectation { return spec.ExpectStep(spec.Visible(d.Content())) }
 func (d DropdownDemo) Closed() spec.Expectation { return spec.ExpectStep(spec.Hidden(d.Content())) }
