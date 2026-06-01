@@ -53,3 +53,12 @@ type E2EJob struct {
 	ArtifactsDir string
 	Reason       string
 }
+
+type JobResult struct {
+	Job        E2EJob        `json:"job"`
+	Status     string        `json:"status"`
+	Duration   time.Duration `json:"duration"`
+	StdoutPath string        `json:"stdoutPath,omitempty"`
+	StderrPath string        `json:"stderrPath,omitempty"`
+	Error      string        `json:"error,omitempty"`
+}
