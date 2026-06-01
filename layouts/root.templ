@@ -123,22 +123,6 @@ templ Root(args RootArgs) {
 				// Set initial theme before page renders
 				initTheme();
 			</script>
-			<!-- Datastar -->
-			<script type="module">
-				// Datastar v1 uses keyed attributes like data-on:click and
-				// data-attr:aria-expanded. Existing DatastarUI components still emit the
-				// older dash form, so mirror those attributes before Datastar scans.
-				for (const el of document.querySelectorAll('*')) {
-					for (const attr of [...el.attributes]) {
-						if (attr.name.startsWith('data-on-')) {
-							el.setAttribute('data-on:' + attr.name.slice('data-on-'.length), attr.value);
-						}
-						if (attr.name.startsWith('data-attr-')) {
-							el.setAttribute('data-attr:' + attr.name.slice('data-attr-'.length), attr.value);
-						}
-					}
-				}
-			</script>
 			<!-- Datastar library for reactive components -->
 			<script type="module">
 				import('/js/datastar-pro-v1.js').catch((error) => {

@@ -29,7 +29,7 @@ templ ThemeToggle(args ThemeToggleArgs) {
 	<div>
 		<button
 			class={ "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground text-foreground h-8 w-8 px-0", args.Class }
-			data-on-click={ toggleExpr }
+			data-on:click={ toggleExpr }
 			{ args.Attributes... }
 		>
 			<!-- Sun icon (visible in light mode, hidden in dark mode) -->

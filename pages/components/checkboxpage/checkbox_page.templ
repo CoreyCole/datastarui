@@ -309,7 +309,7 @@ templ CheckboxPage(rootArgs l.RootArgs) {
 										@button.Button(button.ButtonArgs{
 											Type: "submit",
 											Attributes: templ.Attributes{
-												"data-attr-disabled": "$fetching",
+												"data-attr:disabled": "$fetching",
 												"data-text":          "$fetching ? 'Creating...' : 'Create Account'",
 											},
 										}) {

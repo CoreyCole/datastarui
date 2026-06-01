@@ -49,7 +49,7 @@ func TestDropdownMenuFormItemRendersFormWithSubmitButton(t *testing.T) {
 
 func TestDropdownMenuCustomItemUsesFlowContainer(t *testing.T) {
 	html := renderWithText(t, DropdownMenuCustomItem(DropdownMenuCustomItemArgs{ID: "workspace_actions", CloseOnClick: true}), "Custom")
-	for _, want := range []string{`<div`, `data-slot="dropdown-menu-item"`, `role="menuitem"`, `data-on-click`, `Custom`} {
+	for _, want := range []string{`<div`, `data-slot="dropdown-menu-item"`, `role="menuitem"`, `data-on:click`, `Custom`} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("missing %q: %s", want, html)
 		}

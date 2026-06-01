@@ -34,10 +34,10 @@ func NestedThemeSelect() SelectControl        { return SelectControl{id: "nested
 func ManualSyntaxSelect() SelectControl       { return SelectControl{id: "manual_syntax_select"} }
 
 func (d DropdownDemo) Root() spec.Locator {
-	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu']:has([data-slot='dropdown-menu-trigger'][data-on-click*='%s'])", d.signalID()))
+	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu']:has([data-slot='dropdown-menu-trigger'][data-on\\:click*='%s'])", d.signalID()))
 }
 func (d DropdownDemo) Trigger() spec.Locator {
-	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-trigger'][data-on-click*='%s']", d.signalID()))
+	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-trigger'][data-on\\:click*='%s']", d.signalID()))
 }
 func (d DropdownDemo) Content() spec.Locator {
 	return spec.CSS(fmt.Sprintf("[data-slot='dropdown-menu-content'][data-show='$%s.open']", d.signalID()))

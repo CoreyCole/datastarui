@@ -73,7 +73,7 @@ templ Sheet(args SheetArgs) {
 				data-show={ signals.Signal("open") }
 				class={ backdropClasses }
 				data-class={ backdropDataClass }
-				data-on-click={ backdropClickHandler }
+				data-on:click={ backdropClickHandler }
 				if !args.DefaultOpen {
 					style="display: none;"
 				}
@@ -90,8 +90,8 @@ templ Sheet(args SheetArgs) {
 				aria-modal="true"
 			}
 			tabindex="-1"
-			data-on-keydown__window={ escapeHandler }
-			data-on-mount="evt.target.focus()"
+			data-on:keydown__window={ escapeHandler }
+			data-on:mount="evt.target.focus()"
 			if !args.DefaultOpen {
 				style="display: none;"
 			}
@@ -112,7 +112,7 @@ templ SheetTrigger(args SheetTriggerArgs) {
 	if args.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
 		<div
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>
@@ -121,7 +121,7 @@ templ SheetTrigger(args SheetTriggerArgs) {
 	} else {
 		<button
 			type="button"
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>
@@ -226,7 +226,7 @@ templ SheetClose(args SheetCloseArgs) {
 	}}
 	if args.AsChild {
 		<div
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>
@@ -235,7 +235,7 @@ templ SheetClose(args SheetCloseArgs) {
 	} else {
 		<button
 			type="button"
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>

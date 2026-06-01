@@ -93,7 +93,7 @@ templ ButtonPage(rootArgs l.RootArgs) {
 								<div data-signals="{count: 0}">
 									@button.Button(button.ButtonArgs{
 										Attributes: templ.Attributes{
-											"data-on-click": "$count++",
+											"data-on:click": "$count++",
 										},
 									}) {
 										Clicked <span data-text="$count">0</span> times
@@ -102,7 +102,7 @@ templ ButtonPage(rootArgs l.RootArgs) {
 								@button.Button(button.ButtonArgs{
 									Variant: "outline",
 									Attributes: templ.Attributes{
-										"data-on-click": "alert('Hello from DatastarUI!')",
+										"data-on:click": "alert('Hello from DatastarUI!')",
 									},
 								}) {
 									Show Alert

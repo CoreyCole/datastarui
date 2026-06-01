@@ -62,7 +62,7 @@ templ calendarIconButton(onClickHandler string) {
 		type="button"
 		class="text-muted-foreground hover:text-foreground"
 		tabindex="-1"
-		data-on-click={ onClickHandler }
+		data-on:click={ onClickHandler }
 	>
 		<svg
 			class="h-4 w-4"
@@ -196,7 +196,7 @@ templ DatePicker(args DatePickerArgs) {
 		data-slot="datepicker"
 		data-datepicker-id={ datePickerID }
 		data-signals={ signals.DataSignals }
-		data-on-click__outside={ clickOutsideHandler }
+		data-on:click__outside={ clickOutsideHandler }
 		class={ containerClasses }
 		{ args.Attributes... }
 	>
@@ -253,7 +253,7 @@ templ DatePicker(args DatePickerArgs) {
 			<div
 				class="relative flex items-center gap-2"
 				if args.OpenOnFocus || !args.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
+					data-on:focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				<!-- DateInput without postfix -->
@@ -271,7 +271,7 @@ templ DatePicker(args DatePickerArgs) {
 						Required:   args.Required,
 						Class:      args.InputClass,
 						Attributes: map[string]any{
-							"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
+							"data-on:keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 						},
 					})
 				</div>
@@ -281,7 +281,7 @@ templ DatePicker(args DatePickerArgs) {
 						type="button"
 						class="text-muted-foreground hover:text-foreground"
 						tabindex="-1"
-						data-on-click={ calendarIconClickHandler }
+						data-on:click={ calendarIconClickHandler }
 					>
 						<svg
 							class="h-4 w-4"
@@ -310,7 +310,7 @@ templ DatePicker(args DatePickerArgs) {
 			}}
 			<div
 				if args.OpenOnFocus || !args.DisablePopoverOpenOnFocus {
-					data-on-focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
+					data-on:focus__capture={ "evt.target.tagName.toLowerCase() === 'input' ? " + signals.Set("open", "true") + " : null" }
 				}
 			>
 				@dateinput.DateInput(dateinput.DateInputArgs{
@@ -323,7 +323,7 @@ templ DatePicker(args DatePickerArgs) {
 					Required:    args.Required,
 					Class:       args.InputClass,
 					Attributes: map[string]any{
-						"data-on-keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
+						"data-on:keydown": "evt.key === 'Escape' ? " + signals.Set("open", "false") + " : null",
 					},
 				})
 				<!-- Calendar icon button positioned separately to maintain signal scope -->
@@ -331,7 +331,7 @@ templ DatePicker(args DatePickerArgs) {
 					type="button"
 					class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
 					tabindex="-1"
-					data-on-click={ calendarIconClickHandler }
+					data-on:click={ calendarIconClickHandler }
 				>
 					<svg
 						class="h-4 w-4"
@@ -474,7 +474,7 @@ templ DatePickerPopover(args DatePickerPopoverArgs) {
 		data-slot="datepicker-popover"
 		class={ positionClasses }
 		data-show={ showExpr }
-		data-on-keydown__window={ keyHandler }
+		data-on:keydown__window={ keyHandler }
 		style="width: max-content; display: none;"
 	>
 		<div class={ "rounded-md border bg-popover p-4 text-popover-foreground shadow-md " + args.Class }>
@@ -492,8 +492,8 @@ templ DatePickerPopover(args DatePickerPopoverArgs) {
 				MinDate:            args.MinDate,
 				MaxDate:            args.MaxDate,
 				Attributes: map[string]any{
-					"data-on-date-select":  dateSelectHandler,
-					"data-on-month-change": monthChangeHandler,
+					"data-on:date-select":  dateSelectHandler,
+					"data-on:month-change": monthChangeHandler,
 				},
 			})
 		</div>

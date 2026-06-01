@@ -47,11 +47,11 @@ templ Checkbox(args CheckboxArgs) {
 			class={ allClasses }
 			data-class={ dataClass }
 			role="checkbox"
-			data-on-click={ toggleExpr }
-			data-attr-aria-checked={ signals.Conditional("checked", "'true'", "'false'") }
-			data-attr-data-state={ signals.Conditional("checked", "'checked'", "'unchecked'") }
-			data-attr-disabled={ signals.Signal("disabled") }
-			data-attr-aria-disabled={ signals.Signal("disabled") }
+			data-on:click={ toggleExpr }
+			data-attr:aria-checked={ signals.Conditional("checked", "'true'", "'false'") }
+			data-attr:data-state={ signals.Conditional("checked", "'checked'", "'unchecked'") }
+			data-attr:disabled={ signals.Signal("disabled") }
+			data-attr:aria-disabled={ signals.Signal("disabled") }
 			{ args.Attributes... }
 		>
 			<!-- Checkmark icon -->
@@ -64,7 +64,7 @@ templ Checkbox(args CheckboxArgs) {
 				stroke-linecap="round"
 				stroke-linejoin="round"
 				class="h-4 w-4"
-				data-attr-style={ signals.TernaryStyle("checked", "opacity: 1", "opacity: 0") }
+				data-attr:style={ signals.TernaryStyle("checked", "opacity: 1", "opacity: 0") }
 			>
 				<path d="M20 6 9 17l-5-5"></path>
 			</svg>
@@ -74,9 +74,9 @@ templ Checkbox(args CheckboxArgs) {
 			type="checkbox"
 			name={ args.Name }
 			class="sr-only"
-			data-attr-checked={ signalRef }
-			data-attr-value={ signals.Conditional("checked", "'true'", "'false'") }
-			data-attr-disabled={ signals.Signal("disabled") }
+			data-attr:checked={ signalRef }
+			data-attr:value={ signals.Conditional("checked", "'true'", "'false'") }
+			data-attr:disabled={ signals.Signal("disabled") }
 			tabindex="-1"
 		/>
 	</div>

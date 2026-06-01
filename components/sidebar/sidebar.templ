@@ -37,15 +37,15 @@ templ SidebarMobile(args SidebarMobileArgs) {
 		class={ backdropClasses }
 		data-class={ backdropDataClass }
 		data-show={ parentSignals.Signal("mobileOpen") }
-		data-on-click={ closeHandler }
-		data-on-keydown={ escapeHandler }
+		data-on:click={ closeHandler }
+		data-on:keydown={ escapeHandler }
 		style="display: none;"
 	>
 		<!-- Sheet content -->
 		<div
 			class={ sheetClasses + " w-72 p-0 bg-sidebar", args.Class }
 			data-class={ sheetDataClass }
-			data-on-click="evt.stopPropagation()"
+			data-on:click="evt.stopPropagation()"
 			role="dialog"
 			aria-modal="true"
 			{ args.Attributes... }
@@ -82,7 +82,7 @@ templ SidebarTrigger(args SidebarTriggerArgs) {
 	<button
 		type="button"
 		class={ classes }
-		data-on-click={ clickHandler }
+		data-on:click={ clickHandler }
 		aria-expanded={ signals.Signal("mobileOpen") }
 		{ args.Attributes... }
 	>
@@ -108,7 +108,7 @@ templ SidebarCloseButton(args SidebarCloseButtonArgs) {
 	<button
 		type="button"
 		class={ classes }
-		data-on-click={ clickHandler }
+		data-on:click={ clickHandler }
 		{ args.Attributes... }
 	>
 		<!-- X icon -->
@@ -237,7 +237,7 @@ templ SidebarNavLinkMobile(args SidebarNavLinkArgs) {
 	<a
 		class={ classes }
 		href={ templ.SafeURL(args.Item.Href) }
-		data-on-click={ clickHandler }
+		data-on:click={ clickHandler }
 	>
 		{ args.Item.Title }
 		if args.Item.Label != "" {

@@ -94,10 +94,10 @@ templ TabsTrigger(args TabsTriggerArgs) {
 		data-class={ activeClassesObj }
 		role="tab"
 		data-value={ args.Value }
-		data-on-click={ clickExpr }
-		data-attr-data-state={ stateAttr }
-		data-attr-aria-selected={ ariaSelected }
-		data-attr-tabindex={ tabIndex }
+		data-on:click={ clickExpr }
+		data-attr:data-state={ stateAttr }
+		data-attr:aria-selected={ ariaSelected }
+		data-attr:tabindex={ tabIndex }
 		disabled?={ args.Disabled }
 		{ args.Attributes... }
 	>
@@ -123,7 +123,7 @@ templ TabsContent(args TabsContentArgs) {
 		role="tabpanel"
 		data-value={ args.Value }
 		data-show={ tabsHandler.BuildContentShowExpression(args.Value) }
-		data-attr-aria-hidden={ tabsHandler.BuildContentAriaHidden(args.Value) }
+		data-attr:aria-hidden={ tabsHandler.BuildContentAriaHidden(args.Value) }
 		tabindex="0"
 		{ args.Attributes... }
 	>

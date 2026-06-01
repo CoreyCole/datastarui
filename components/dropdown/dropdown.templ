@@ -41,7 +41,7 @@ templ DropdownMenu(args DropdownMenuArgs) {
 	<div
 		data-slot="dropdown-menu"
 		data-signals={ signals.DataSignals }
-		data-on-click__outside={ clickOutsideHandler }
+		data-on:click__outside={ clickOutsideHandler }
 		class={ dropdownMenuVariants(args.Class) }
 		{ args.Attributes... }
 	>
@@ -60,7 +60,7 @@ templ DropdownMenuTrigger(args DropdownMenuTriggerArgs) {
 		<span
 			data-slot="dropdown-menu-trigger"
 			class={ dropdownMenuTriggerVariants(args.Class) }
-			data-on-click={ toggleExpr }
+			data-on:click={ toggleExpr }
 			if args.Disabled {
 				aria-disabled="true"
 			}
@@ -73,7 +73,7 @@ templ DropdownMenuTrigger(args DropdownMenuTriggerArgs) {
 			data-slot="dropdown-menu-trigger"
 			type="button"
 			class={ dropdownMenuTriggerVariants(args.Class) }
-			data-on-click={ toggleExpr }
+			data-on:click={ toggleExpr }
 			disabled?={ args.Disabled }
 			{ args.Attributes... }
 		>
@@ -112,7 +112,7 @@ templ DropdownMenuContent(args DropdownMenuContentArgs) {
 		data-slot="dropdown-menu-content"
 		class={ utils.TwMerge(dropdownMenuContentVariants(args.Class), "absolute", sideClass, alignClass) }
 		data-show={ showExpr }
-		data-on-keydown__window={ escapeHandler }
+		data-on:keydown__window={ escapeHandler }
 		role="menu"
 		style="display: none;"
 		{ args.Attributes... }
@@ -147,7 +147,7 @@ templ DropdownMenuItem(args DropdownMenuItemArgs) {
 			class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
 			role="menuitem"
 			tabindex="0"
-			data-on-click={ clickExpr }
+			data-on:click={ clickExpr }
 			if args.Disabled {
 				aria-disabled="true"
 			}
@@ -178,7 +178,7 @@ templ DropdownMenuLinkItem(args DropdownMenuLinkItemArgs) {
 			rel={ args.Rel }
 		}
 		if !args.Disabled {
-			data-on-click={ clickExpr }
+			data-on:click={ clickExpr }
 		}
 		if args.Disabled {
 			aria-disabled="true"
@@ -240,7 +240,7 @@ templ DropdownMenuCustomItem(args DropdownMenuCustomItemArgs) {
 		class={ dropdownMenuItemVariants(args.Variant, args.Class, args.Inset, args.Disabled) }
 		role="menuitem"
 		if !args.Disabled && clickExpr != "" {
-			data-on-click={ clickExpr }
+			data-on:click={ clickExpr }
 		}
 		if args.Disabled {
 			aria-disabled="true"

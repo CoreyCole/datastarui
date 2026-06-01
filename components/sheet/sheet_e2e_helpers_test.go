@@ -47,7 +47,7 @@ func (s SheetDemo) Trigger() spec.Locator {
 	case "non_modal_sheet":
 		return spec.Role("button", "Open Format Panel")
 	default:
-		return spec.CSS("[data-on-click*='$" + s.id + ".open']")
+		return spec.CSS("[data-on\\:click*='$" + s.id + ".open']")
 	}
 }
 func (s SheetDemo) Content() spec.Locator { return spec.CSS("#" + s.id) }
@@ -55,7 +55,7 @@ func (s SheetDemo) Backdrop() spec.Locator {
 	return spec.CSS("[data-signals*='\"" + s.id + "\"'] > div[data-show='$" + s.id + ".open']")
 }
 func (s SheetDemo) CloseButton() spec.Locator {
-	return spec.CSS("#" + s.id + " [data-slot='sheet-content'] button[data-on-click]")
+	return spec.CSS("#" + s.id + " [data-slot='sheet-content'] button[data-on\\:click]")
 }
 func (s SheetDemo) Open() spec.Step { return spec.Click(s.Trigger()) }
 func (s SheetDemo) Close(method CloseMethod) spec.Step {

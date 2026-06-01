@@ -155,14 +155,14 @@ templ TabsPage(rootArgs l.RootArgs) {
 										@button.Button(button.ButtonArgs{
 											Variant: "outline",
 											Attributes: templ.Attributes{
-												"data-on-click": "$count--",
+												"data-on:click": "$count--",
 											},
 										}) {
 											Decrement
 										}
 										@button.Button(button.ButtonArgs{
 											Attributes: templ.Attributes{
-												"data-on-click": "$count++",
+												"data-on:click": "$count++",
 											},
 										}) {
 											Increment
@@ -173,7 +173,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 											Variant: "secondary",
 											Size:    "sm",
 											Attributes: templ.Attributes{
-												"data-on-click": "$count = 0",
+												"data-on:click": "$count = 0",
 											},
 										}) {
 											Reset
@@ -188,12 +188,12 @@ templ TabsPage(rootArgs l.RootArgs) {
 											Placeholder: "Add a new todo...",
 											Attributes: templ.Attributes{
 												"data-bind":       "newTodo",
-												"data-on-keydown": "evt.key === 'Enter' && $newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
+												"data-on:keydown": "evt.key === 'Enter' && $newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
 											},
 										})
 										@button.Button(button.ButtonArgs{
 											Attributes: templ.Attributes{
-												"data-on-click": "$newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
+												"data-on:click": "$newTodo.trim() && ($todos.push($newTodo.trim()), $newTodo = '')",
 											},
 										}) {
 											Add
@@ -207,7 +207,7 @@ templ TabsPage(rootArgs l.RootArgs) {
 													Variant: "ghost",
 													Size:    "sm",
 													Attributes: templ.Attributes{
-														"data-on-click": "$todos.splice(index, 1)",
+														"data-on:click": "$todos.splice(index, 1)",
 													},
 												}) {
 													Remove

@@ -56,12 +56,12 @@ templ TooltipTrigger(args TooltipTriggerArgs) {
 		id={ args.ID }
 		data-signals={ signals.DataSignals }
 		data-tooltip-id={ args.TooltipID }
-		data-on-mouseenter={ showHandler }
-		data-on-mouseleave={ hideHandler }
-		data-on-focus={ showHandler }
-		data-on-blur={ hideHandler }
-		data-on-touchstart={ touchStartHandler }
-		data-on-touchend={ touchEndHandler }
+		data-on:mouseenter={ showHandler }
+		data-on:mouseleave={ hideHandler }
+		data-on:focus={ showHandler }
+		data-on:blur={ hideHandler }
+		data-on:touchstart={ touchStartHandler }
+		data-on:touchend={ touchEndHandler }
 		tabindex="0"
 		if style != "" {
 			style={ style }
@@ -116,7 +116,7 @@ templ TooltipContent(args TooltipContentArgs) {
 		popover="auto"
 		class={ contentClasses }
 		style={ positioningStyle }
-		data-on-click__outside={ clickOutsideHandler }
+		data-on:click__outside={ clickOutsideHandler }
 		{ args.Attributes... }
 	>
 		{ children... }

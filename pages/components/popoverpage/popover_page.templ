@@ -446,7 +446,7 @@ templ PopoverPage(rootArgs l.RootArgs) {
 									Variant: "ghost",
 									Class:   "shrink-0",
 									Attributes: templ.Attributes{
-										"data-on-click": "if (!$demo_comment || !$demo_comment.trim()) return; console.log('Comment submitted:', $demo_comment); $demo_comment = ''; document.getElementById('notion_comment_popover').hidePopover()",
+										"data-on:click": "if (!$demo_comment || !$demo_comment.trim()) return; console.log('Comment submitted:', $demo_comment); $demo_comment = ''; document.getElementById('notion_comment_popover').hidePopover()",
 									},
 								}) {
 									<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

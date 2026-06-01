@@ -19,10 +19,10 @@ func RangeDatePopover() spec.Locator {
 }
 
 func OpenSingleDate() spec.Step {
-	return spec.Click(spec.CSS("[data-datepicker-id='single_date'] button[data-on-click*='open']"))
+	return spec.Click(spec.CSS("[data-datepicker-id='single_date'] button[data-on\\:click*='open']"))
 }
 func OpenRangeDate() spec.Step {
-	return spec.Click(spec.CSS("[data-datepicker-id='range_date'] button[data-on-click*='open']"))
+	return spec.Click(spec.CSS("[data-datepicker-id='range_date'] button[data-on\\:click*='open']"))
 }
 
 func FillDateInput(locator spec.Locator, value string) spec.Step {

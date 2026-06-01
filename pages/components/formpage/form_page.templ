@@ -57,7 +57,7 @@ templ FormPage(rootArgs l.RootArgs) {
 								@button.Button(button.ButtonArgs{
 									Type: "submit",
 									Attributes: templ.Attributes{
-										"data-attr-disabled": "$fetching",
+										"data-attr:disabled": "$fetching",
 										"data-text":          "$fetching ? 'Submitting...' : 'Submit'",
 									},
 								}) {
@@ -129,7 +129,7 @@ templ FormPage(rootArgs l.RootArgs) {
 										Type: "submit",
 										Attributes: templ.Attributes{
 											"data-indicator-fetching": "",
-											"data-attr-disabled":      "$fetching",
+											"data-attr:disabled":      "$fetching",
 											"data-text":               "$fetching ? 'Submitting...' : 'Submit'",
 										},
 									}) {
@@ -227,7 +227,7 @@ templ FormPage(rootArgs l.RootArgs) {
 										Type:    "submit",
 										Variant: "default",
 										Attributes: templ.Attributes{
-											"data-attr-disabled": "$fetching",
+											"data-attr:disabled": "$fetching",
 											"data-text":          "$fetching ? 'Sending...' : 'Send Message'",
 										},
 									}) {
@@ -237,8 +237,8 @@ templ FormPage(rootArgs l.RootArgs) {
 										Type:    "button",
 										Variant: "outline",
 										Attributes: templ.Attributes{
-											"data-on-click":      "$contact = {name: '', email: '', subject: '', message: ''}",
-											"data-attr-disabled": "$fetching",
+											"data-on:click":      "$contact = {name: '', email: '', subject: '', message: ''}",
+											"data-attr:disabled": "$fetching",
 										},
 									}) {
 										Clear

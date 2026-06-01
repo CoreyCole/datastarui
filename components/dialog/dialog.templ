@@ -34,8 +34,8 @@ templ Dialog(args DialogArgs) {
 		<div
 			data-show={ signals.Signal("open") }
 			class={ backdropClasses }
-			data-on-click={ backdropClickHandler }
-			data-on-keydown__window={ escapeHandler }
+			data-on:click={ backdropClickHandler }
+			data-on:keydown__window={ escapeHandler }
 			if !args.DefaultOpen {
 				style="display: none;"
 			}
@@ -47,8 +47,8 @@ templ Dialog(args DialogArgs) {
 				role="dialog"
 				aria-modal="true"
 				tabindex="-1"
-				data-on-click="evt.stopPropagation()"
-				data-on-mount="evt.target.focus()"
+				data-on:click="evt.stopPropagation()"
+				data-on:mount="evt.target.focus()"
 			>
 				<div class={ containerClasses }>
 					{ children... }
@@ -68,7 +68,7 @@ templ DialogTrigger(args DialogTriggerArgs) {
 	if args.AsChild {
 		// When AsChild is true, we apply the click handler to the child element
 		<div
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>
@@ -77,7 +77,7 @@ templ DialogTrigger(args DialogTriggerArgs) {
 	} else {
 		<button
 			type="button"
-			data-on-click={ clickHandler }
+			data-on:click={ clickHandler }
 			{ args.Attributes... }
 			class={ args.Class }
 		>
@@ -212,7 +212,7 @@ templ DialogClose(args DialogCloseArgs) {
 	}}
 	<button
 		type="button"
-		data-on-click={ clickHandler }
+		data-on:click={ clickHandler }
 		{ args.Attributes... }
 		class={ buttonClasses }
 	>

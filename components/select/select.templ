@@ -76,7 +76,7 @@ templ Select(args SelectArgs) {
 		if effectHandler != "" {
 			data-effect={ effectHandler }
 		}
-		data-on-click__outside={ clickOutsideHandler }
+		data-on:click__outside={ clickOutsideHandler }
 		class={ selectVariants(args.Class) }
 		{ args.Attributes... }
 	>
@@ -192,11 +192,11 @@ templ SelectTrigger(args SelectTriggerArgs) {
 		data-slot="select-trigger"
 		type="button"
 		role="combobox"
-		data-attr-aria-expanded={ signals.Signal("open") }
+		data-attr:aria-expanded={ signals.Signal("open") }
 		class={ classes }
 		disabled?={ args.Disabled }
-		data-on-click={ clickExpr }
-		data-on-keydown={ triggerKeyHandler }
+		data-on:click={ clickExpr }
+		data-on:keydown={ triggerKeyHandler }
 		{ args.Attributes... }
 	>
 		{ children... }
@@ -262,7 +262,7 @@ templ SelectContent(args SelectContentArgs) {
 		data-slot="select-content"
 		class={ classes }
 		data-show={ showExpr }
-		data-on-keydown__window={ keyHandler }
+		data-on:keydown__window={ keyHandler }
 		role="listbox"
 		tabindex="-1"
 		style="position: absolute; top: 100%; left: 0; right: 0; z-index: 50; display: none;"
@@ -302,8 +302,8 @@ templ SelectItem(args SelectItemArgs) {
 		data-index={ fmt.Sprintf("%d", args.Index) }
 		tabindex="0"
 		if !args.Disabled {
-			data-on-click={ selectExpr }
-			data-on-keydown={ itemKeyHandler }
+			data-on:click={ selectExpr }
+			data-on:keydown={ itemKeyHandler }
 		}
 		if args.Disabled {
 			data-disabled="true"
