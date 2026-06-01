@@ -12,18 +12,24 @@ import (
 	"github.com/coreycole/datastarui/e2e/appconfig"
 	"github.com/coreycole/datastarui/e2e/goldens"
 	"github.com/coreycole/datastarui/e2e/review"
+	"github.com/coreycole/datastarui/e2e/runner"
 	"github.com/coreycole/datastarui/e2e/runtime"
 	"github.com/spf13/cobra"
 )
 
 type e2eRunOptions struct {
-	ConfigPath   string
-	Story        string
-	Scenario     string
-	Viewport     string
-	BaseURL      string
-	ArtifactsDir string
-	NoRestart    bool
+	ConfigPath       string
+	Story            string
+	Scenario         string
+	Viewport         string
+	BaseURL          string
+	ArtifactsDir     string
+	NoRestart        bool
+	All              bool
+	BaseRef          string
+	Jobs             int
+	ReadinessPath    string
+	ReadinessTimeout time.Duration
 }
 
 type e2eReviewOptions struct {
@@ -71,6 +77,11 @@ func newE2ERunCommand(ctx context.Context) *cobra.Command {
 	cmd.Flags().StringVar(&opts.BaseURL, "base-url", "", "base URL for browser E2E")
 	cmd.Flags().StringVar(&opts.ArtifactsDir, "artifacts-dir", "", "directory for run artifacts")
 	cmd.Flags().BoolVar(&opts.NoRestart, "no-restart", false, "skip configured server command before running")
+	cmd.Flags().BoolVar(&opts.All, "all", false, "run all configured E2E tests instead of changed-only default")
+	cmd.Flags().StringVar(&opts.BaseRef, "base-ref", "main", "git ref for changed-only E2E selection")
+	cmd.Flags().IntVar(&opts.Jobs, "jobs", 0, "parallel E2E jobs; defaults conservatively from CPU")
+	cmd.Flags().StringVar(&opts.ReadinessPath, "readiness-path", "", "override configured readiness path")
+	cmd.Flags().DurationVar(&opts.ReadinessTimeout, "readiness-timeout", 0, "override configured readiness timeout")
 	return cmd
 }
 
@@ -326,14 +337,5 @@ func repoRootForCommand(cwd string) string {
 }
 
 func slugToTestFragment(slug string) string {
-	parts := strings.FieldsFunc(slug, func(r rune) bool {
-		return r == '-' || r == '_' || r == ' ' || r == '/' || r == '.'
-	})
-	for i, part := range parts {
-		if part == "" {
-			continue
-		}
-		parts[i] = strings.ToUpper(part[:1]) + part[1:]
-	}
-	return strings.Join(parts, "")
+	return runner.SlugToTestFragment(slug)
 }

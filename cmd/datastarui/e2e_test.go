@@ -63,3 +63,19 @@ func TestBuildE2EServerCommandSkipsWhenBaseURLSet(t *testing.T) {
 		t.Fatalf("server command = %#v, want nil", cmd)
 	}
 }
+
+func TestE2ERunCommandIncludesRunnerFlags(t *testing.T) {
+	cmd := newE2ERunCommand(context.Background())
+	for _, name := range []string{"all", "base-ref", "jobs", "readiness-path", "readiness-timeout"} {
+		if cmd.Flags().Lookup(name) == nil {
+			t.Fatalf("missing --%s flag", name)
+		}
+	}
+	baseRef, err := cmd.Flags().GetString("base-ref")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if baseRef != "main" {
+		t.Fatalf("base-ref default = %q, want main", baseRef)
+	}
+}
