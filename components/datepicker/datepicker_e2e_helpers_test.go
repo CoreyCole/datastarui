@@ -7,6 +7,7 @@ import (
 	"github.com/coreycole/datastarui/e2e/spec"
 )
 
+func DatepickerPage() spec.Page     { return spec.Path("/components/datepicker") }
 func SingleDateInput() spec.Locator { return spec.CSS("#single_date") }
 func RangeStartInput() spec.Locator { return spec.CSS("#range_date_start") }
 func RangeEndInput() spec.Locator   { return spec.CSS("#range_date_end") }

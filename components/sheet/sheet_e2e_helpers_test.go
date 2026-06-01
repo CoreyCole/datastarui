@@ -1,6 +1,11 @@
 package sheet_test
 
-import "github.com/coreycole/datastarui/e2e/spec"
+import (
+	"testing"
+
+	"github.com/coreycole/datastarui/e2e/runtime"
+	"github.com/coreycole/datastarui/e2e/spec"
+)
 
 type CloseMethod int
 
@@ -58,7 +63,12 @@ func (s SheetDemo) Close(method CloseMethod) spec.Step {
 	case CloseByEscape:
 		return spec.PressPage(spec.KeyEscape)
 	case CloseByBackdrop:
-		return spec.Click(s.Backdrop())
+		return spec.Custom("click backdrop for "+s.id, func(t testing.TB, ctx *runtime.Context) {
+			t.Helper()
+			if err := ctx.Page.Mouse().Click(10, 10); err != nil {
+				t.Fatal(err)
+			}
+		})
 	case CloseByButton:
 		return spec.Click(s.CloseButton())
 	default:

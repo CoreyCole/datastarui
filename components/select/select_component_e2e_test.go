@@ -9,11 +9,30 @@ import (
 func SelectPage() spec.Page { return spec.Path("/components/select") }
 
 func TestSelectComponent(t *testing.T) {
+	selectControl := SliceThemeSelect()
+
 	spec.Story(t, "select component opens options").
 		Visit(SelectPage()).
-		Do(spec.Click(spec.CSS("[data-select-id='slice_theme_select'] [data-slot='select-trigger']"))).
-		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-select-id='slice_theme_select'] [data-slot='select-content']")))).
-		Expect(spec.ExpectStep(spec.Visible(spec.CSS("[data-select-id='slice_theme_select'] [data-select-item]")))).
+		Do(selectControl.Open()).
+		Expect(selectControl.Opened()).
+		Expect(spec.ExpectStep(spec.Visible(selectControl.Option(string(ThemeDark))))).
+		Expect(spec.ExpectStep(spec.ConsoleClean())).
+		Run()
+}
+
+func TestSelectTabNavigation(t *testing.T) {
+	spec.Story(t, "select tab navigation follows form order").
+		Visit(SelectPage()).
+		Do(spec.Click(TabNameInput())).
+		Expect(spec.Focused(TabNameInput())).
+		Do(spec.PressPage(spec.KeyTab)).
+		Expect(TabCategorySelect().Focused()).
+		Do(spec.PressPage(spec.KeyTab)).
+		Expect(TabPrioritySelect().Focused()).
+		Do(spec.PressPage(spec.KeyTab)).
+		Expect(spec.Focused(TabEmailInput())).
+		Do(spec.PressPage(spec.KeyTab)).
+		Expect(spec.Focused(SubmitButton())).
 		Expect(spec.ExpectStep(spec.ConsoleClean())).
 		Run()
 }
