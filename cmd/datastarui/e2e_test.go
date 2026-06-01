@@ -20,12 +20,23 @@ func TestRootCommandIncludesE2E(t *testing.T) {
 func TestBuildE2EGoTestArgsUsesConfiguredRunPackage(t *testing.T) {
 	args := buildE2EGoTestArgs(e2eRunOptions{Story: "select-component"}, appconfig.Config{RunPackage: "./custom/e2e"})
 	want := []string{"test", "./custom/e2e", "-run", "SelectComponent"}
-	if len(args) != len(want) {
-		t.Fatalf("args len = %d, want %d: %#v", len(args), len(want), args)
+	assertStringSliceEqual(t, args, want)
+}
+
+func TestBuildE2EGoTestArgsSupportsPackagePattern(t *testing.T) {
+	args := buildE2EGoTestArgs(e2eRunOptions{Story: "select-component"}, appconfig.Config{RunPackage: "./components/..."})
+	want := []string{"test", "./components/...", "-run", "SelectComponent"}
+	assertStringSliceEqual(t, args, want)
+}
+
+func assertStringSliceEqual(t *testing.T, got, want []string) {
+	t.Helper()
+	if len(got) != len(want) {
+		t.Fatalf("args len = %d, want %d: %#v", len(got), len(want), got)
 	}
 	for i := range want {
-		if args[i] != want[i] {
-			t.Fatalf("args[%d] = %q, want %q (all %#v)", i, args[i], want[i], args)
+		if got[i] != want[i] {
+			t.Fatalf("args[%d] = %q, want %q (all %#v)", i, got[i], want[i], got)
 		}
 	}
 }
