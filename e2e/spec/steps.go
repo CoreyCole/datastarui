@@ -258,15 +258,52 @@ func NotClippedBy(child Locator, ancestor Locator) Expectation {
 		if childBox == nil || ancestorBox == nil {
 			t.Fatalf("missing bounding box: child=%+v ancestor=%+v", childBox, ancestorBox)
 		}
+
 		childBottom := childBox.Y + childBox.Height
 		ancestorBottom := ancestorBox.Y + ancestorBox.Height
 		childRight := childBox.X + childBox.Width
 		ancestorRight := ancestorBox.X + ancestorBox.Width
-		if childBottom > ancestorBottom || childRight > ancestorRight || childBox.Y < ancestorBox.Y || childBox.X < ancestorBox.X {
+		points := clippedCheckPoints(childBox, ancestorBox)
+		if len(points) == 0 {
+			t.Fatalf("%s appears fully constrained inside %s: child=%+v ancestor=%+v", locatorName(child), locatorName(ancestor), childBox, ancestorBox)
+		}
+		visible, err := childResolved.First().Evaluate(`(el, points) => points.some((point) => {
+			const x = point.x ?? point.X;
+			const y = point.y ?? point.Y;
+			const hit = document.elementFromPoint(x, y);
+			return hit && (hit === el || el.contains(hit));
+		})`, points)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if ok, _ := visible.(bool); ok {
 			return
 		}
-		t.Fatalf("%s appears fully constrained inside %s: child=%+v ancestor=%+v", locatorName(child), locatorName(ancestor), childBox, ancestorBox)
+		t.Fatalf("%s extends outside %s but outside points are clipped: child=%+v ancestor=%+v childBottom=%v ancestorBottom=%v childRight=%v ancestorRight=%v", locatorName(child), locatorName(ancestor), childBox, ancestorBox, childBottom, ancestorBottom, childRight, ancestorRight)
 	}))
+}
+
+func clippedCheckPoints(childBox, ancestorBox *playwright.Rect) []map[string]interface{} {
+	childBottom := childBox.Y + childBox.Height
+	ancestorBottom := ancestorBox.Y + ancestorBox.Height
+	childRight := childBox.X + childBox.Width
+	ancestorRight := ancestorBox.X + ancestorBox.Width
+	midX := childBox.X + childBox.Width/2
+	midY := childBox.Y + childBox.Height/2
+	points := []map[string]interface{}{}
+	if childBottom > ancestorBottom {
+		points = append(points, map[string]interface{}{"x": midX, "y": (ancestorBottom + childBottom) / 2})
+	}
+	if childRight > ancestorRight {
+		points = append(points, map[string]interface{}{"x": (ancestorRight + childRight) / 2, "y": midY})
+	}
+	if childBox.Y < ancestorBox.Y {
+		points = append(points, map[string]interface{}{"x": midX, "y": (childBox.Y + ancestorBox.Y) / 2})
+	}
+	if childBox.X < ancestorBox.X {
+		points = append(points, map[string]interface{}{"x": (childBox.X + ancestorBox.X) / 2, "y": midY})
+	}
+	return points
 }
 
 func Visible(locator Locator) Step {

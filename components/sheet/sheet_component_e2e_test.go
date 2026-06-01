@@ -33,15 +33,15 @@ func TestModalSheetClosesWithBackdrop(t *testing.T) {
 }
 
 func TestNonModalSheetAllowsMainInteraction(t *testing.T) {
-	sheet := NonModalSheet()
+	nonModal := NonModalSheet()
+	modal := RightModalSheet()
 
 	spec.Story(t, "non modal sheet allows main interaction").
 		Visit(SheetPage()).
-		Do(sheet.Open()).
-		Expect(sheet.Opened()).
-		Expect(spec.ExpectStep(spec.Visible(spec.Role("heading", "Sheet")))).
-		Do(sheet.Close(CloseByEscape)).
-		Expect(sheet.Closed()).
+		Do(nonModal.Open()).
+		Expect(nonModal.Opened()).
+		Do(modal.Open()).
+		Expect(modal.Opened()).
 		Expect(spec.ExpectStep(spec.ConsoleClean())).
 		Run()
 }
