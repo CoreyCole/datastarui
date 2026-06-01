@@ -37,11 +37,10 @@ import (
 	authconnect "github.com/coreycole/datastarui/pkg/proto/com/datastarui/v1/auth/authconnect"
 )
 
-const port = "4242"
-
 // Config holds environment configuration
 type Config struct {
-	DatastarInspectorEnabled bool `envconfig:"DATASTAR_INSPECTOR_ENABLED" default:"false"`
+	Port                     string `envconfig:"PORT" default:"4242"`
+	DatastarInspectorEnabled bool   `envconfig:"DATASTAR_INSPECTOR_ENABLED" default:"false"`
 	DatastarProAvailable     bool
 }
 
@@ -111,7 +110,7 @@ func main() {
 	// Create Connect RPC client for internal use by HTTP form handlers
 	authClient := authconnect.NewAuthServiceClient(
 		http.DefaultClient,
-		"http://localhost:"+port+"/connect",
+		"http://localhost:"+cfg.Port+"/connect",
 	)
 
 	// Create HTTP form handlers
@@ -219,7 +218,7 @@ func main() {
 	e.Static("/", "static/")
 
 	// Start the server
-	if err := e.Start(":" + port); err != http.ErrServerClosed {
+	if err := e.Start(":" + cfg.Port); err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }

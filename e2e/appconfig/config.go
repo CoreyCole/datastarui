@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -24,7 +25,11 @@ type Config struct {
 
 type ServerConfig struct {
 	Command            string `yaml:"command"`
+	ManagedCommand     string `yaml:"managed_command"`
 	SkipWhenBaseURLSet bool   `yaml:"skip_when_base_url_set"`
+	ReadinessPath      string `yaml:"readiness_path"`
+	ReadinessTimeout   string `yaml:"readiness_timeout"`
+	PortEnv            string `yaml:"port_env"`
 }
 
 func Find(cwd string) (string, bool, error) {
@@ -122,4 +127,28 @@ func (c Config) ResolvePath(path string) string {
 		root = "."
 	}
 	return filepath.Clean(filepath.Join(root, path))
+}
+
+func (c Config) ReadinessTimeout() time.Duration {
+	raw := strings.TrimSpace(c.Server.ReadinessTimeout)
+	if raw == "" {
+		return 30 * time.Second
+	}
+	duration, err := time.ParseDuration(raw)
+	if err != nil {
+		return 30 * time.Second
+	}
+	return duration
+}
+
+func (c Config) ReadinessURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	path := strings.TrimSpace(c.Server.ReadinessPath)
+	if path == "" || path == "/" {
+		return base + "/"
+	}
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	return base + path
 }

@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 func TestDefaultConfigFileIsGenericDatastarUIName(t *testing.T) {
@@ -77,5 +78,51 @@ func TestResolvePathUsesConfigRoot(t *testing.T) {
 	}
 	if got := cfg.ResolvePath("/already/absolute"); got != "/already/absolute" {
 		t.Fatalf("absolute ResolvePath() = %q", got)
+	}
+}
+
+func TestLoadParsesManagedServerConfig(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, DefaultConfigFile)
+	data := []byte(`app: datastarui
+base_url: http://localhost:4242
+run_package: ./components/...
+artifacts_dir: .e2e-runs
+server:
+  command: just build-local
+  managed_command: ./datastarui
+  skip_when_base_url_set: true
+  readiness_path: /components/select
+  readiness_timeout: 45s
+  port_env: PORT
+viewports:
+  - desktop-full
+`)
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	cfg, err := Load(path, dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Server.ManagedCommand != "./datastarui" || cfg.Server.PortEnv != "PORT" {
+		t.Fatalf("server config = %#v", cfg.Server)
+	}
+	if got := cfg.ReadinessURL("http://127.0.0.1:9999"); got != "http://127.0.0.1:9999/components/select" {
+		t.Fatalf("readiness URL = %q", got)
+	}
+	if got := cfg.ReadinessTimeout(); got != 45*time.Second {
+		t.Fatalf("timeout = %s", got)
+	}
+}
+
+func TestReadinessHelpersDefaultAndNormalize(t *testing.T) {
+	cfg := Config{Server: ServerConfig{ReadinessPath: "components/select", ReadinessTimeout: "bogus"}}
+	if got := cfg.ReadinessURL("http://127.0.0.1:9999/"); got != "http://127.0.0.1:9999/components/select" {
+		t.Fatalf("readiness URL = %q", got)
+	}
+	if got := cfg.ReadinessTimeout(); got != 30*time.Second {
+		t.Fatalf("default timeout = %s", got)
 	}
 }
