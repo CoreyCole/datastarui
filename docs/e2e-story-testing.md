@@ -9,7 +9,7 @@ DatastarUI owns the reusable Go Story E2E library for templ + DatastarUI apps. A
 ```yaml
 app: datastarui
 base_url: http://localhost:4242
-run_package: ./tests/e2e
+run_package: ./components/...
 artifacts_dir: .e2e-runs
 server:
   command: just build-local
@@ -20,7 +20,7 @@ viewports:
 
 ## Story API
 
-Write normal Go tests under `tests/e2e` with the flat Story builder:
+Write component stories beside the component package, for example `components/select/select_component_e2e_test.go`, with an external `_test` package when possible. Use the flat Story builder:
 
 ```go
 func TestSelectComponent(t *testing.T) {
@@ -35,10 +35,12 @@ func TestSelectComponent(t *testing.T) {
 
 Prefer app/component packages that expose typed page, fixture, actor, and expectation objects when selectors repeat. Avoid YAML page/selector registries for app behavior.
 
+Demo pages should document usage and component behavior, not manual QA scripts. When a page needs regression coverage, add a Go Story and keep page copy product/demo oriented.
+
 ## Commands
 
 ```bash
-go test ./e2e/... ./tests/e2e -list Test
+go test ./e2e/... ./components/... -list Test
 just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select-component
 scripts/datastarui.sh e2e review --run .e2e-runs/<run-id> --plan-dir <plan-dir>
 scripts/datastarui.sh e2e goldens compare --run .e2e-runs/<run-id> --plan-dir <plan-dir>

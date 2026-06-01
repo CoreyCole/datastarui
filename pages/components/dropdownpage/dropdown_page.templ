@@ -267,14 +267,14 @@ templ DropdownPage(rootArgs l.RootArgs) {
 						</div>
 					}
 				}
-				<!-- Dropdown with Select (Overflow Test) -->
+				<!-- Dropdown with Select -->
 				@card.Card(card.CardArgs{}) {
 					@card.CardHeader(card.CardHeaderArgs{}) {
 						@card.CardTitle(card.CardTitleArgs{}) {
 							Dropdown with Select
 						}
 						@card.CardDescription(card.CardDescriptionArgs{}) {
-							Test that a select component inside a dropdown doesn't get clipped when it extends below the dropdown's edge.
+							A select component can be composed inside dropdown content without layout clipping.
 						}
 					}
 					@card.CardContent(card.CardContentArgs{}) {
@@ -326,18 +326,18 @@ templ DropdownPage(rootArgs l.RootArgs) {
 							}
 						</div>
 						<p class="mt-4 text-sm text-muted-foreground">
-							The select options should extend below the dropdown edge without being clipped.
+							Select options extend beyond the dropdown panel when space is needed.
 						</p>
 					}
 				}
-				<!-- Multiple Dropdowns Test -->
+				<!-- Multiple Dropdowns -->
 				@card.Card(card.CardArgs{}) {
 					@card.CardHeader(card.CardHeaderArgs{}) {
 						@card.CardTitle(card.CardTitleArgs{}) {
 							Multiple Dropdowns
 						}
 						@card.CardDescription(card.CardDescriptionArgs{}) {
-							Test that multiple dropdowns work independently with namespaced signals.
+							Multiple dropdowns keep independent namespaced state.
 						}
 					}
 					@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
@@ -452,19 +452,19 @@ templ DropdownPage(rootArgs l.RootArgs) {
 							}
 						</div>
 						<p class="text-sm text-muted-foreground">
-							Each dropdown should open and close independently. Before the fix, all dropdowns would open/close together.
+							Each dropdown opens and closes independently.
 						</p>
 					}
 				}
 			</div>
-			<!-- Nested Dropdown/Select Test (User Profile Scenario) -->
+			<!-- Nested Dropdown/Select -->
 			@card.Card(card.CardArgs{}) {
 				@card.CardHeader(card.CardHeaderArgs{}) {
 					@card.CardTitle(card.CardTitleArgs{}) {
 						Nested Dropdown + Select (User Profile)
 					}
 					@card.CardDescription(card.CardDescriptionArgs{}) {
-						Test that a select component inside a dropdown menu doesn't close the dropdown when interacted with. This reproduces the user profile menu scenario.
+						A user menu can include a nested select without closing the parent dropdown.
 					}
 				}
 				@card.CardContent(card.CardContentArgs{}) {
@@ -516,14 +516,14 @@ templ DropdownPage(rootArgs l.RootArgs) {
 					</div>
 				}
 			}
-			<!-- Manual Composition Select (Syntax Theme Repro) -->
+			<!-- Manual Composition Select -->
 			@card.Card(card.CardArgs{}) {
 				@card.CardHeader(card.CardHeaderArgs{}) {
 					@card.CardTitle(card.CardTitleArgs{}) {
-						Manual Composition Select (Syntax Theme Repro)
+						Manual Composition Select
 					}
 					@card.CardDescription(card.CardDescriptionArgs{}) {
-						Reproducing the exact syntax theme selector structure to test if manual composition causes the dropdown to close.
+						Manual Select composition supports grouped theme choices inside dropdown content.
 					}
 				}
 				@card.CardContent(card.CardContentArgs{}) {
@@ -547,7 +547,7 @@ templ DropdownPage(rootArgs l.RootArgs) {
 								@dropdown.DropdownMenuLabel(dropdown.DropdownMenuLabelArgs{
 									ID: "manual_composition_test",
 								}) {
-									<!-- Exact structure from syntax theme selector -->
+									<!-- Manual grouped select composition -->
 									<div class="flex items-center gap-2">
 										<span class="text-sm text-muted-foreground whitespace-nowrap">Syntax:</span>
 										@selectcomponent.Select(selectcomponent.SelectArgs{
@@ -630,8 +630,7 @@ templ DropdownPage(rootArgs l.RootArgs) {
 						}
 					</div>
 					<p class="mt-4 text-sm text-muted-foreground">
-						This test case uses manual Select composition (SelectTrigger/SelectContent/SelectGroup) exactly like the syntax theme selector.
-						If this fails the same way, it confirms the issue is in the manual composition pattern, not the SyntaxThemeSelector component.
+						Manual composition is useful when grouped options need custom structure.
 					</p>
 				}
 			}

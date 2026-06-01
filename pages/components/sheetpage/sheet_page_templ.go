@@ -124,7 +124,7 @@ func SheetPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Opens from the right side. Click outside or press Escape to close.")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Opens from the right side with modal dismissal behavior.")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}

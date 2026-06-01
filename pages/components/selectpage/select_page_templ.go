@@ -2549,7 +2549,7 @@ func SelectPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 147, "<p class=\"text-sm text-muted-foreground mt-2\">This example uses <code class=\"text-xs bg-muted px-1 py-0.5 rounded\">Class: \"max-h-[300px]\"</code> on SelectContent to enable scrolling.</p></div></section><!-- Tab Navigation Test --><section class=\"space-y-6\"><h2 class=\"text-2xl font-semibold\">Tab Navigation Test</h2><p class=\"text-muted-foreground\">Use the Tab key to navigate through these form elements and test focus behavior.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 147, "<p class=\"text-sm text-muted-foreground mt-2\">This example uses <code class=\"text-xs bg-muted px-1 py-0.5 rounded\">Class: \"max-h-[300px]\"</code> on SelectContent to enable scrolling.</p></div></section><!-- Keyboard Navigation --><section class=\"space-y-6\"><h2 class=\"text-2xl font-semibold\">Keyboard Navigation</h2><p class=\"text-muted-foreground\">Form controls participate in normal keyboard focus order.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

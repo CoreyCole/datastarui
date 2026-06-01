@@ -56,7 +56,7 @@ func Page(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Datepicker</h1><p class=\"text-muted-foreground\">Test bidirectional signal coordination between date inputs and calendar components.</p></div><div class=\"space-y-12\"><!-- Combined DatePicker Testing Section --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Datepicker</h1><p class=\"text-muted-foreground\">Date inputs and calendar popovers stay coordinated through Datastar signals.</p></div><div class=\"space-y-12\"><!-- DatePicker Examples --><div><h2 class=\"text-2xl font-semibold mb-4\">DatePicker Components</h2><div class=\"space-y-8\"><!-- Single Date Picker -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

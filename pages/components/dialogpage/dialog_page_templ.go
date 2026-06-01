@@ -57,7 +57,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports backdrop click and ESC key closing.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals - ESC key closes, backdrop click closes.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Header --><div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Dialog</h1><p class=\"text-muted-foreground\">A modal dialog using Datastar signals for reactivity. Supports standard modal dismissal patterns.</p></div><!-- Modal Dialog --><div class=\"space-y-4 p-4 border rounded-lg\"><h3 class=\"font-medium\">Modal Dialog</h3><p class=\"text-sm text-muted-foreground\">Uses Datastar signals for modal visibility and dismissal.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -155,7 +155,7 @@ func DialogPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p class=\"text-sm\">Try pressing ESC or clicking outside to close this dialog.</p><!-- Show dialog state inside the dialog --> <div class=\"mt-4 p-3 bg-blue-50 rounded border\"><p class=\"text-sm font-medium text-blue-900\">Dialog State (from inside):</p><p class=\"text-xs text-blue-700\">Open: <span data-text=\"$modal_demo.open ? 'Yes' : 'No'\"></span></p></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p class=\"text-sm\">Dismiss with the close button, Escape, or the backdrop.</p><!-- Show dialog state inside the dialog --> <div class=\"mt-4 p-3 bg-blue-50 rounded border\"><p class=\"text-sm font-medium text-blue-900\">Dialog State (from inside):</p><p class=\"text-xs text-blue-700\">Open: <span data-text=\"$modal_demo.open ? 'Yes' : 'No'\"></span></p></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
