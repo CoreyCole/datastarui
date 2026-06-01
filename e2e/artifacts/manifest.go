@@ -28,10 +28,27 @@ type RunManifest struct {
 	ConfigPath     string          `json:"configPath,omitempty"`
 	ArtifactsDir   string          `json:"artifactsDir,omitempty"`
 	ViewportFilter string          `json:"viewportFilter,omitempty"`
+	BaseRef        string          `json:"baseRef,omitempty"`
+	ChangedFiles   []string        `json:"changedFiles,omitempty"`
+	ServerMode     string          `json:"serverMode,omitempty"`
+	ServerLog      string          `json:"serverLog,omitempty"`
+	Jobs           []JobSummary    `json:"jobs,omitempty"`
 	Artifacts      []ArtifactEntry `json:"artifacts,omitempty"`
 	Screenshots    []string        `json:"screenshots,omitempty"`
 	HTMLSnapshots  []string        `json:"htmlSnapshots,omitempty"`
 	Traces         []string        `json:"traces,omitempty"`
+}
+
+type JobSummary struct {
+	ID         string `json:"id"`
+	Package    string `json:"package"`
+	RunPattern string `json:"runPattern,omitempty"`
+	Component  string `json:"component,omitempty"`
+	Status     string `json:"status"`
+	Duration   string `json:"duration,omitempty"`
+	StdoutPath string `json:"stdoutPath,omitempty"`
+	StderrPath string `json:"stderrPath,omitempty"`
+	Error      string `json:"error,omitempty"`
 }
 
 type ScenarioResult struct {
