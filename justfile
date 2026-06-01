@@ -9,6 +9,11 @@ build-local:
   @go build -o datastarui main.go
   @just build-tailwind
 
+# Build the supervised binary used by Go Story E2E runs.
+build-e2e-server:
+  @templ generate
+  @go build -o datastarui main.go
+
 # Generate proto files only
 proto:
   @buf generate

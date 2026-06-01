@@ -198,9 +198,6 @@ func runE2E(ctx context.Context, opts e2eRunOptions) error {
 	if err := os.MkdirAll(runDir, 0o755); err != nil {
 		return err
 	}
-	if err := setE2EEnvironment(cfg, runDir, strings.Join(cfg.Viewports, ",")); err != nil {
-		return err
-	}
 
 	if command := buildE2EServerCommand(opts, cfg); len(command) > 0 {
 		setup := exec.CommandContext(ctx, command[0], command[1:]...)
@@ -210,6 +207,9 @@ func runE2E(ctx context.Context, opts e2eRunOptions) error {
 		if err := setup.Run(); err != nil {
 			return fmt.Errorf("%s: %w", strings.Join(command, " "), err)
 		}
+	}
+	if err := setE2EEnvironment(cfg, runDir, strings.Join(cfg.Viewports, ",")); err != nil {
+		return err
 	}
 
 	changed, err := changedFilesForRun(ctx, cfg, opts)

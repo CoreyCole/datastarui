@@ -12,7 +12,7 @@ base_url: http://localhost:4242
 run_package: ./components/...
 artifacts_dir: .e2e-runs
 server:
-  command: just build-local
+  command: just build-e2e-server
   managed_command: ./datastarui
   skip_when_base_url_set: true
   readiness_path: /components/select

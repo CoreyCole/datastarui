@@ -58,11 +58,20 @@ func TestE2ECommandIncludesReviewAndGoldens(t *testing.T) {
 func TestBuildE2EServerCommandSkipsWhenBaseURLSet(t *testing.T) {
 	cmd := buildE2EServerCommand(
 		e2eRunOptions{BaseURL: "http://localhost:4242"},
-		appconfig.Config{Server: appconfig.ServerConfig{Command: "just build-local", SkipWhenBaseURLSet: true}},
+		appconfig.Config{Server: appconfig.ServerConfig{Command: "just build-e2e-server", SkipWhenBaseURLSet: true}},
 	)
 	if len(cmd) != 0 {
 		t.Fatalf("server command = %#v, want nil", cmd)
 	}
+}
+
+func TestBuildE2EServerCommandRunsSetupForManagedDefault(t *testing.T) {
+	t.Setenv("E2E_BASE_URL", "")
+	cmd := buildE2EServerCommand(
+		e2eRunOptions{},
+		appconfig.Config{Server: appconfig.ServerConfig{Command: "just build-e2e-server", SkipWhenBaseURLSet: true}},
+	)
+	assertStringSliceEqual(t, cmd, []string{"just", "build-e2e-server"})
 }
 
 func TestE2ERunCommandIncludesRunnerFlags(t *testing.T) {
