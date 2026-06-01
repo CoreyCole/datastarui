@@ -107,7 +107,9 @@ func (s *ManagedServer) Start(ctx context.Context) error {
 }
 
 func (s *ManagedServer) WaitReady(ctx context.Context) error {
-	return ProbeReady(ctx, s.cfg.ReadinessURL(s.BaseURL()), 250*time.Millisecond)
+	readyCtx, cancel := context.WithTimeout(ctx, s.cfg.ReadinessTimeout())
+	defer cancel()
+	return ProbeReady(readyCtx, s.cfg.ReadinessURL(s.BaseURL()), 250*time.Millisecond)
 }
 
 func (s *ManagedServer) Cleanup(ctx context.Context) error {

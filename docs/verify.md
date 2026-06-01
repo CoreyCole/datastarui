@@ -4,7 +4,7 @@ Use this as the DatastarUI verification entrypoint for QRSPI `/q-verify`.
 
 ## E2E story testing
 
-Read `docs/e2e-story-testing.md` for the full Go Story E2E contract, config shape, server setup, artifact locations, visual review, and goldens commands.
+Read `docs/e2e-story-testing.md` for the full Go Story E2E contract, config shape, managed server setup, artifact locations, visual review, and goldens commands.
 
 ## Standard commands
 
@@ -16,26 +16,32 @@ templ generate && go build
 
 ## Browser story verification
 
-DatastarUI component stories need the demo app at `http://localhost:4242`. Prefer the existing Docker/live-reload server:
+Normal changed-only path:
+
+```bash
+just e2e
+```
+
+This starts a supervised demo server on a free local port, waits for configured readiness, runs changed component/story jobs vs `main`, writes `.e2e-runs/<run-id>/manifest.json`, `summary.json`, `index.html`, `server.log`, and per-job artifacts, then cleans up the server.
+
+Full suite:
+
+```bash
+just e2e --all --jobs 2
+```
+
+Targeted story:
+
+```bash
+just e2e --story select-component --viewport desktop-full
+```
+
+External server escape hatch:
 
 ```bash
 just up
-just docker-tail app
 curl -f http://localhost:4242/components/select
-```
-
-Run targeted browser stories with the DatastarUI E2E config:
-
-```bash
-just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select --viewport desktop-full
-```
-
-For DSUI component-page coverage, run the current required story set:
-
-```bash
-for story in dropdown select dialog sheet datepicker; do
-  just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story "$story" --viewport desktop-full
-done
+just e2e --base-url http://localhost:4242 --no-restart --story select --viewport desktop-full
 ```
 
 Record `.e2e-runs/<run-id>` artifact paths in the QRSPI `verify.md`.

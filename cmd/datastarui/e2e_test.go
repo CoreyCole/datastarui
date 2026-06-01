@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/coreycole/datastarui/e2e/appconfig"
@@ -77,5 +78,14 @@ func TestE2ERunCommandIncludesRunnerFlags(t *testing.T) {
 	}
 	if baseRef != "main" {
 		t.Fatalf("base-ref default = %q, want main", baseRef)
+	}
+}
+
+func TestE2ERunCommandRejectsUnexpectedArgsWithoutStory(t *testing.T) {
+	cmd := newE2ERunCommand(context.Background())
+	cmd.SetArgs([]string{"unexpected"})
+	err := cmd.Execute()
+	if err == nil || !strings.Contains(err.Error(), "unexpected e2e run arguments") {
+		t.Fatalf("err = %v, want unexpected arguments error", err)
 	}
 }

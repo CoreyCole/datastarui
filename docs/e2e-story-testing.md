@@ -1,6 +1,6 @@
 # E2E Story Testing
 
-DatastarUI owns the reusable Go Story E2E library for templ + DatastarUI apps. Authored Go tests are the source of truth; YAML is run/environment wiring only: app name, base URL, run package, artifacts, server command, and viewports. App behavior belongs in Go helpers.
+DatastarUI owns the reusable Go Story E2E library for templ + DatastarUI apps. Authored Go tests are the source of truth; YAML is run/environment wiring only: app name, base URL, run package, artifacts, managed server command, readiness, port env, and viewports. App behavior belongs in Go helpers.
 
 ## Config
 
@@ -13,10 +13,23 @@ run_package: ./components/...
 artifacts_dir: .e2e-runs
 server:
   command: just build-local
+  managed_command: ./datastarui
   skip_when_base_url_set: true
+  readiness_path: /components/select
+  readiness_timeout: 30s
+  port_env: PORT
 viewports:
   - desktop-full
 ```
+
+Consumer contract for another DSUI-style app:
+
+- `server.command` is synchronous setup/build.
+- `server.managed_command` is the long-running app command supervised by the runner.
+- `server.port_env` receives the runner-assigned port; the app must listen on it.
+- `server.readiness_path` is probed before browser stories run.
+- Tests receive `E2E_BASE_URL`, `E2E_ARTIFACTS_DIR`, `E2E_VIEWPORTS`, and `E2E_RUN_BROWSER=1`.
+- Changed-only default uses DatastarUI's built-in `components/<name>` and `pages/components/<name>page` classifier. Other layouts should use `--all` or explicit `--story` until a custom classifier seam exists.
 
 ## Story API
 
@@ -41,7 +54,9 @@ Demo pages should document usage and component behavior, not manual QA scripts. 
 
 ```bash
 go test ./e2e/... ./components/... -list Test
-just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select-component
+just e2e
+just e2e --all --jobs 2
+just e2e --story select-component --viewport desktop-full
 scripts/datastarui.sh e2e review --run .e2e-runs/<run-id> --plan-dir <plan-dir>
 scripts/datastarui.sh e2e goldens compare --run .e2e-runs/<run-id> --plan-dir <plan-dir>
 scripts/datastarui.sh e2e goldens accept --run .e2e-runs/<run-id> --human-approved --golden-root ./testdata/goldens
@@ -49,28 +64,22 @@ scripts/datastarui.sh e2e goldens accept --run .e2e-runs/<run-id> --human-approv
 
 `just e2e` calls `scripts/datastarui.sh`, which rebuilds the stable launcher `bin/datastarui` only when launcher sources change. The launcher builds `bin/datastarui-runtime-<hash>` when CLI/E2E sources change, then execs that runtime.
 
-## Running the demo server for browser E2E
+## Runner-owned demo server
 
-DatastarUI component stories need the demo app at `http://localhost:4242`. Do not run `go run main.go`; use the existing Docker/live-reload server or an explicitly managed process.
+The normal path does not require manual `just up`:
 
-Preferred local path:
+```bash
+just e2e
+```
+
+The runner allocates a free localhost port, runs `server.command`, starts `server.managed_command` with `server.port_env`, waits for `server.readiness_path`, runs jobs, writes manifest/summary/index/server logs, and cleans the process up on success or failure.
+
+External server escape hatch:
 
 ```bash
 just up
-just docker-tail app
 curl -f http://localhost:4242/components/select
-just e2e --config datastarui-e2e.yml --base-url http://localhost:4242 --no-restart --story select-component --viewport desktop-full
+just e2e --base-url http://localhost:4242 --no-restart --story select --viewport desktop-full
 ```
 
-If Docker is unavailable and a human explicitly wants a local one-off process, build first and run the compiled binary in a supervised shell/tmux outside normal verification:
-
-```bash
-just build-local
-./datastarui
-```
-
-Stop the one-off process after testing. Do not leave unmanaged DatastarUI servers running as verification evidence.
-
-## Vamos-managed app processes
-
-Long term, feature-branch browser verification should be owned by Vamos workspace management, not ad hoc ports. Vamos should start app child processes, record their checkout, branch, commit, port, public URL, and latest E2E review index, then expose those links from the main `/workspaces` detail page. Until DatastarUI is registered as a Vamos-managed app, record the demo URL/port and run artifact path manually in verification notes.
+Do not leave unmanaged DatastarUI servers running as verification evidence. Managed `e2e run` child processes are allowed because the runner owns cleanup.
