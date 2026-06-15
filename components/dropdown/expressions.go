@@ -29,6 +29,17 @@ func (d *DropdownHandler) buildEscapeHandler() string {
 	return d.signals.ConditionalAction(condition, "open", "false")
 }
 
+func dropdownMenuContentID(id string) string {
+	return id + "-content"
+}
+
+func dropdownMenuTriggerClickExpr(id string) string {
+	signals := utils.Signals(id, DropdownSignals{})
+	contentID := dropdownMenuContentID(id)
+	positionExpr := fmt.Sprintf(`(function(){const c=document.getElementById(%q);if(c){const r=el.getBoundingClientRect();c.style.setProperty('--dui-dropdown-trigger-top',r.top+'px');c.style.setProperty('--dui-dropdown-trigger-right',r.right+'px');c.style.setProperty('--dui-dropdown-trigger-bottom',r.bottom+'px');c.style.setProperty('--dui-dropdown-trigger-left',r.left+'px');c.style.setProperty('--dui-dropdown-trigger-center-x',(r.left+r.width/2)+'px');c.style.setProperty('--dui-dropdown-trigger-center-y',(r.top+r.height/2)+'px');}})()`, contentID)
+	return positionExpr + "; " + signals.Toggle("open")
+}
+
 func dropdownMenuItemClickExpr(id, onClick string) string {
 	signals := utils.Signals(id, DropdownSignals{})
 	hideExpr := signals.Set("open", "false")
@@ -38,22 +49,62 @@ func dropdownMenuItemClickExpr(id, onClick string) string {
 	return hideExpr + "; " + onClick
 }
 
-// CreateSideClasses generates positioning classes for dropdown sides
-func createSideClasses(side string, offset int) string {
+func dropdownMenuContentPositionStyle(side, align string, offset int) string {
 	if offset == 0 {
-		offset = 4 // Default offset like shadcn/ui
+		offset = 4 // Default offset like shadcn/ui spacing units.
 	}
+	offsetCSS := fmt.Sprintf("%.2frem", float64(offset)*0.25)
+
+	var top, left string
+	transforms := make([]string, 0, 2)
 
 	switch side {
 	case "top":
-		return fmt.Sprintf("bottom-full mb-%d", offset)
-	case "bottom":
-		return fmt.Sprintf("top-full mt-%d", offset)
+		top = fmt.Sprintf("calc(var(--dui-dropdown-trigger-top, 0px) - %s)", offsetCSS)
+		transforms = append(transforms, "translateY(-100%)")
 	case "left":
-		return fmt.Sprintf("right-full mr-%d", offset)
+		left = fmt.Sprintf("calc(var(--dui-dropdown-trigger-left, 0px) - %s)", offsetCSS)
+		transforms = append(transforms, "translateX(-100%)")
 	case "right":
-		return fmt.Sprintf("left-full ml-%d", offset)
+		left = fmt.Sprintf("calc(var(--dui-dropdown-trigger-right, 0px) + %s)", offsetCSS)
 	default:
-		return fmt.Sprintf("top-full mt-%d", offset)
+		top = fmt.Sprintf("calc(var(--dui-dropdown-trigger-bottom, 0px) + %s)", offsetCSS)
 	}
+
+	if side == "left" || side == "right" {
+		switch align {
+		case "end":
+			top = "var(--dui-dropdown-trigger-bottom, 0px)"
+			transforms = append(transforms, "translateY(-100%)")
+		case "center":
+			top = "var(--dui-dropdown-trigger-center-y, 0px)"
+			transforms = append(transforms, "translateY(-50%)")
+		default:
+			top = "var(--dui-dropdown-trigger-top, 0px)"
+		}
+	} else {
+		switch align {
+		case "end":
+			left = "var(--dui-dropdown-trigger-right, 0px)"
+			transforms = append(transforms, "translateX(-100%)")
+		case "center":
+			left = "var(--dui-dropdown-trigger-center-x, 0px)"
+			transforms = append(transforms, "translateX(-50%)")
+		default:
+			left = "var(--dui-dropdown-trigger-left, 0px)"
+		}
+	}
+
+	style := fmt.Sprintf("display: none; top: %s; left: %s;", top, left)
+	if len(transforms) > 0 {
+		style += " transform: "
+		for i, transform := range transforms {
+			if i > 0 {
+				style += " "
+			}
+			style += transform
+		}
+		style += ";"
+	}
+	return style
 }

@@ -23,6 +23,24 @@ func renderWithText(t *testing.T, component templ.Component, text string) string
 	return body.String()
 }
 
+func TestDropdownMenuContentUsesFixedViewportPositioning(t *testing.T) {
+	html := renderWithText(t, DropdownMenuContent(DropdownMenuContentArgs{ID: "workspace_actions", Align: "start", Side: "bottom", SideOffset: 2}), "Menu")
+	for _, want := range []string{`id="workspace_actions-content"`, `class="`, `fixed`, `data-side="bottom"`, `data-align="start"`, `top: calc(var(--dui-dropdown-trigger-bottom, 0px) + 0.50rem)`, `left: var(--dui-dropdown-trigger-left, 0px)`} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("missing %q: %s", want, html)
+		}
+	}
+}
+
+func TestDropdownMenuTriggerPositionsContentBeforeToggle(t *testing.T) {
+	html := renderWithText(t, DropdownMenuTrigger(DropdownMenuTriggerArgs{ID: "workspace_actions"}), "Actions")
+	for _, want := range []string{`document.getElementById(&#34;workspace_actions-content&#34;)`, `--dui-dropdown-trigger-top`, `$workspace_actions.open = !$workspace_actions.open`} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("missing %q: %s", want, html)
+		}
+	}
+}
+
 func TestDropdownMenuLinkItemRendersAnchor(t *testing.T) {
 	html := renderWithText(t, DropdownMenuLinkItem(DropdownMenuLinkItemArgs{ID: "workspace_actions", Href: "/docs", Target: "_blank", Rel: "noreferrer"}), "Docs")
 	for _, want := range []string{`<a`, `role="menuitem"`, `href="/docs"`, `target="_blank"`, `rel="noreferrer"`, `Docs`} {

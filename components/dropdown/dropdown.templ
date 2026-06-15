@@ -51,11 +51,7 @@ templ DropdownMenu(args DropdownMenuArgs) {
 
 // DropdownMenuTrigger renders the trigger button that opens/closes the dropdown
 templ DropdownMenuTrigger(args DropdownMenuTriggerArgs) {
-	{{
-		// Create signals manager for this dropdown
-		signals := utils.Signals(args.ID, DropdownSignals{})
-		toggleExpr := signals.Toggle("open")
-	}}
+	{{ toggleExpr := dropdownMenuTriggerClickExpr(args.ID) }}
 	if args.AsChild {
 		<span
 			data-slot="dropdown-menu-trigger"
@@ -85,21 +81,6 @@ templ DropdownMenuTrigger(args DropdownMenuTriggerArgs) {
 // DropdownMenuContent renders the dropdown content panel
 templ DropdownMenuContent(args DropdownMenuContentArgs) {
 	{{
-		// Calculate positioning classes based on args
-		alignClass := ""
-		switch args.Align {
-		case "start":
-			alignClass = "left-0"
-		case "end":
-			alignClass = "right-0"
-		case "center":
-			alignClass = "left-1/2 -translate-x-1/2"
-		default:
-			alignClass = "left-0"
-		}
-
-		// Generate positioning classes using expression builder helper
-		sideClass := createSideClasses(args.Side, args.SideOffset)
 		// Create signals manager for this dropdown
 		signals := utils.Signals(args.ID, DropdownSignals{})
 		showExpr := signals.Signal("open")
@@ -109,12 +90,15 @@ templ DropdownMenuContent(args DropdownMenuContentArgs) {
 		escapeHandler := dropdownHandler.buildEscapeHandler()
 	}}
 	<div
+		id={ dropdownMenuContentID(args.ID) }
 		data-slot="dropdown-menu-content"
-		class={ utils.TwMerge(dropdownMenuContentVariants(args.Class), "absolute", sideClass, alignClass) }
+		data-side={ args.Side }
+		data-align={ args.Align }
+		class={ utils.TwMerge(dropdownMenuContentVariants(args.Class), "fixed") }
 		data-show={ showExpr }
 		data-on:keydown__window={ escapeHandler }
 		role="menu"
-		style="display: none;"
+		style={ dropdownMenuContentPositionStyle(args.Side, args.Align, args.SideOffset) }
 		{ args.Attributes... }
 	>
 		{ children... }
