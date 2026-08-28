@@ -5,8 +5,6 @@ import (
 	"github.com/coreycole/datastarui/utils"
 )
 
-const defaultSideOffset = 4
-
 // TooltipHandler provides methods for building tooltip-related expressions
 type TooltipHandler struct {
 	tooltipID string

@@ -46,14 +46,6 @@ func selectValueEqualsExpression(signalExpr, value string) string {
 	return fmt.Sprintf("%s === %s", signalExpr, jsStringLiteral(value))
 }
 
-func selectedItem(signalPath, value string) string {
-	expr := selectValueEqualsExpression("$"+signalPath, value)
-	return utils.NewDataClass().
-		Add("bg-primary", expr).
-		Add("text-primary-foreground", expr).
-		Build()
-}
-
 // SelectTriggerHandler creates handlers for select trigger functionality
 type SelectTriggerHandler struct {
 	selectID string
