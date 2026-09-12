@@ -51,6 +51,10 @@ templ InfiniteScrollPage(rootArgs l.RootArgs) {
 						A scrollable diff viewer showing file changes (PR/commit review aesthetic).
 						Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.
 					</p>
+					<p class="text-xs text-muted-foreground">
+						<strong>Note:</strong> This demo exhausts after one <code>/api/infinitescroll/more</code> batch (intentional).
+						A multi-page implementation would remint the sentinel with a cursor parameter.
+					</p>
 				</div>
 				@card.Card(card.CardArgs{}) {
 					@card.CardContent(card.CardContentArgs{Class: "p-0"}) {

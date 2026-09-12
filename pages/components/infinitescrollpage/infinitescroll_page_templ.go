@@ -57,7 +57,7 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Infinite Scroll</h1><p class=\"text-lg text-muted-foreground\">Load content progressively as the user scrolls using Datastar's <code class=\"text-sm\">data-on:intersect</code> attribute.</p></div><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Pattern A: Intersection-Based Paging</h2><div class=\"text-sm text-muted-foreground space-y-2\"><p>This component implements <strong>Pattern A</strong>: intersection-based progressive loading. A sentinel element at the edge triggers a fetch when scrolled into view. The backend responds with SSE patches that append or prepend new items into Items.</p><p><strong>Key principles:</strong></p><ul class=\"list-disc list-inside space-y-1\"><li><strong>Host stability:</strong> The Host container is never remorphed</li><li><strong>Chunk patches:</strong> View Transitions OFF for content chunks</li><li><strong>Loading SoT:</strong> Same-id DOM replace on sentinel ID</li><li><strong>Sentinel intersect:</strong> Uses <code>data-on:intersect</code> (colon form)</li><li><strong>Exhaustion:</strong> Remove sentinel when no more content</li></ul><p><strong>Pattern B (out of scope):</strong> DSUI ships Pattern A only. Pattern B tape virtualization (e.g. largediff) is app-owned and not implemented here.</p></div></div></section><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Demo: Git Diff Viewer</h2><p class=\"text-sm text-muted-foreground\">A scrollable diff viewer showing file changes (PR/commit review aesthetic). Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Infinite Scroll</h1><p class=\"text-lg text-muted-foreground\">Load content progressively as the user scrolls using Datastar's <code class=\"text-sm\">data-on:intersect</code> attribute.</p></div><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Pattern A: Intersection-Based Paging</h2><div class=\"text-sm text-muted-foreground space-y-2\"><p>This component implements <strong>Pattern A</strong>: intersection-based progressive loading. A sentinel element at the edge triggers a fetch when scrolled into view. The backend responds with SSE patches that append or prepend new items into Items.</p><p><strong>Key principles:</strong></p><ul class=\"list-disc list-inside space-y-1\"><li><strong>Host stability:</strong> The Host container is never remorphed</li><li><strong>Chunk patches:</strong> View Transitions OFF for content chunks</li><li><strong>Loading SoT:</strong> Same-id DOM replace on sentinel ID</li><li><strong>Sentinel intersect:</strong> Uses <code>data-on:intersect</code> (colon form)</li><li><strong>Exhaustion:</strong> Remove sentinel when no more content</li></ul><p><strong>Pattern B (out of scope):</strong> DSUI ships Pattern A only. Pattern B tape virtualization (e.g. largediff) is app-owned and not implemented here.</p></div></div></section><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Demo: Git Diff Viewer</h2><p class=\"text-sm text-muted-foreground\">A scrollable diff viewer showing file changes (PR/commit review aesthetic). Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.</p><p class=\"text-xs text-muted-foreground\"><strong>Note:</strong> This demo exhausts after one <code>/api/infinitescroll/more</code> batch (intentional). A multi-page implementation would remint the sentinel with a cursor parameter.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -306,7 +306,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("diff-file-%d", index))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 201, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 205, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -319,7 +319,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(file.Path)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 204, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 208, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -333,7 +333,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("-%d", file.OldLines))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 207, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 211, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -348,7 +348,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("+%d", file.NewLines))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 210, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 214, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -367,7 +367,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(hunk.Header)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 217, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 221, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -478,7 +478,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", line.Number))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 249, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 253, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -513,7 +513,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(prefix)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 251, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 255, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -526,7 +526,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(line.Content)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 251, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 255, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {

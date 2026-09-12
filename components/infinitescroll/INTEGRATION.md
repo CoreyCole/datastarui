@@ -14,10 +14,28 @@ The Host container is **never remorphed**. Only the Items container and Loading 
 ### 2. Items = Stable History Only
 The Items container holds **loaded content history**. Live, working, or latest content that shouldn't be part of the scrollable history should stay OUTSIDE the Items container as siblings.
 
+**Sibling order is app-owned.** Place live content before or after Items based on your UX needs.
+
 For example, in a chat application:
 ```go
+// Live content as bottom anchor (after Items)
 @infinitescroll.Host(...) {
+  @infinitescroll.Items(...) {
+    // Historical messages here (stable history)
+  }
+  @infinitescroll.Sentinel(...)
+  
   <!-- Live content OUTSIDE Items -->
+  <div id="chat-latest" class="p-4 border-t">
+    <span>User is typing...</span>
+  </div>
+}
+```
+
+Or place live content at the top:
+```go
+// Live content at top (before Items)
+@infinitescroll.Host(...) {
   <div id="chat-latest" class="p-4 border-b">
     <span>User is typing...</span>
   </div>
@@ -29,7 +47,7 @@ For example, in a chat application:
 }
 ```
 
-Or place live content beside Host:
+Or beside Host:
 ```go
 <div>
   <div id="live-status">Current status...</div>
@@ -184,7 +202,7 @@ The component automatically creates:
 - Items container: `my_list-items`
 - Below sentinel: `my_list-sentinel-below`
 
-**Note:** LoadingAboveID and LoadingBelowID default to the corresponding sentinel IDs for same-id DOM replace. No separate loading node on first paint.
+**Note:** `LoadingAboveID` and `LoadingBelowID` default to the corresponding sentinel IDs for same-id DOM replace. Leave them empty (recommended) or explicitly set them equal to the sentinel ID. Setting a different ID breaks the same-id SoT pattern. No separate loading node exists on first paint.
 
 ### Advanced Composition with Custom IDs
 
