@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"fmt"
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/infinitescroll"
 	l "github.com/coreycole/datastarui/layouts"
@@ -35,6 +36,7 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		patchMoreExpr := "@get('/api/infinitescroll/more')"
 		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -55,7 +57,7 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Infinite Scroll</h1><p class=\"text-lg text-muted-foreground\">Load content progressively as the user scrolls.</p></div><div class=\"grid gap-8\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"space-y-2\"><h1 class=\"text-3xl font-bold tracking-tight\">Infinite Scroll</h1><p class=\"text-lg text-muted-foreground\">Load content progressively as the user scrolls using Datastar's <code class=\"text-sm\">data-on:intersect</code> attribute.</p></div><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Pattern A: Intersection-Based Paging</h2><div class=\"text-sm text-muted-foreground space-y-2\"><p>This component implements <strong>Pattern A</strong>: intersection-based progressive loading. A sentinel element at the edge triggers a fetch when scrolled into view. The backend responds with SSE patches that append or prepend new items into Items.</p><p><strong>Key principles:</strong></p><ul class=\"list-disc list-inside space-y-1\"><li><strong>Host stability:</strong> The Host container is never remorphed</li><li><strong>Chunk patches:</strong> View Transitions OFF for content chunks</li><li><strong>Loading SoT:</strong> Same-id DOM replace on sentinel ID</li><li><strong>Sentinel intersect:</strong> Uses <code>data-on:intersect</code> (colon form)</li><li><strong>Exhaustion:</strong> Remove sentinel when no more content</li></ul><p><strong>Pattern B (out of scope):</strong> DSUI ships Pattern A only. Pattern B tape virtualization (e.g. largediff) is app-owned and not implemented here.</p></div></div></section><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Demo: Git Diff Viewer</h2><p class=\"text-sm text-muted-foreground\">A scrollable diff viewer showing file changes (PR/commit review aesthetic). Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -83,6 +85,10 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"border rounded-lg overflow-hidden\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 					templ_7745c5c3_Var5 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -95,52 +101,123 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Infinite Scroll Demo")
+						templ_7745c5c3_Err = DiffFileCard(DiffFile{
+							Path:     "components/infinitescroll/infinitescroll.templ",
+							OldLines: 0,
+							NewLines: 152,
+							Hunks: []DiffHunk{
+								{
+									Header: "@@ -0,0 +1,152 @@",
+									Lines: []DiffLine{
+										{Type: "add", Content: "package infinitescroll", Number: 1},
+										{Type: "add", Content: "", Number: 2},
+										{Type: "add", Content: "// InfiniteScroll creates a complete infinite scroll container", Number: 3},
+										{Type: "add", Content: "templ InfiniteScroll(args InfiniteScrollArgs) {", Number: 4},
+										{Type: "context", Content: "\t...", Number: 5},
+										{Type: "add", Content: "}", Number: 6},
+									},
+								},
+							},
+						}, 0).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = DiffFileCard(DiffFile{
+							Path:     "components/infinitescroll/args.go",
+							OldLines: 0,
+							NewLines: 71,
+							Hunks: []DiffHunk{
+								{
+									Header: "@@ -0,0 +1,71 @@",
+									Lines: []DiffLine{
+										{Type: "add", Content: "package infinitescroll", Number: 1},
+										{Type: "add", Content: "", Number: 2},
+										{Type: "add", Content: "import \"github.com/a-h/templ\"", Number: 3},
+										{Type: "add", Content: "", Number: 4},
+										{Type: "add", Content: "// InfiniteScrollArgs defines the properties", Number: 5},
+										{Type: "add", Content: "type InfiniteScrollArgs struct {", Number: 6},
+										{Type: "context", Content: "\t...", Number: 7},
+										{Type: "add", Content: "}", Number: 8},
+									},
+								},
+							},
+						}, 1).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = DiffFileCard(DiffFile{
+							Path:     "components/infinitescroll/variants.go",
+							OldLines: 0,
+							NewLines: 51,
+							Hunks: []DiffHunk{
+								{
+									Header: "@@ -0,0 +1,51 @@",
+									Lines: []DiffLine{
+										{Type: "add", Content: "package infinitescroll", Number: 1},
+										{Type: "add", Content: "", Number: 2},
+										{Type: "add", Content: "import \"github.com/coreycole/datastarui/utils\"", Number: 3},
+										{Type: "add", Content: "", Number: 4},
+										{Type: "add", Content: "// InfiniteScrollVariants generates CSS classes", Number: 5},
+										{Type: "add", Content: "func InfiniteScrollVariants(args InfiniteScrollArgs) string {", Number: 6},
+										{Type: "context", Content: "\t...", Number: 7},
+										{Type: "add", Content: "}", Number: 8},
+									},
+								},
+							},
+						}, 2).Render(ctx, templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						return nil
 					})
-					templ_7745c5c3_Err = card.CardTitle(card.CardTitleArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
+						ID:             "diff_viewer",
+						PatchBelowExpr: patchMoreExpr,
+						Class:          "max-h-[600px]",
+					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Scroll to load more content using <code>data-on:intersect</code>")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = card.CardDescription(card.CardDescriptionArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div class=\"p-4 text-xs text-muted-foreground\"><p><strong>Compose note:</strong> Items container holds stable file history. Live/working content (e.g. <code>#chat-latest</code> in a chat app) should stay <strong>outside Items</strong> as siblings, either inside Host or beside it.</p></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardHeader(card.CardHeaderArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{Class: "p-0"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
+				return nil
+			})
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</section><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Basic Usage</h2><p class=\"text-sm text-muted-foreground\">The simplest form: provide an ID and a PatchBelowExpr to load more content. PatchBelowExpr should be a Datastar fetch expression.</p></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
 				}
+				ctx = templ.InitializeContext(ctx)
 				templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -153,90 +230,309 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"border rounded-lg overflow-hidden\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Var8 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-							templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-							templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-							if !templ_7745c5c3_IsBuffer {
-								defer func() {
-									templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-									if templ_7745c5c3_Err == nil {
-										templ_7745c5c3_Err = templ_7745c5c3_BufErr
-									}
-								}()
-							}
-							ctx = templ.InitializeContext(ctx)
-							templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"p-4 border-b\">Item 1</div><div class=\"p-4 border-b\">Item 2</div><div class=\"p-4 border-b\">Item 3</div>")
-							if templ_7745c5c3_Err != nil {
-								return templ_7745c5c3_Err
-							}
-							return nil
-						})
-						templ_7745c5c3_Err = infinitescroll.Items(infinitescroll.ItemsArgs{
-							ID: "demo_items",
-						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " ")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						templ_7745c5c3_Err = infinitescroll.Sentinel(infinitescroll.SentinelArgs{
-							ID:        "demo_sentinel",
-							Direction: infinitescroll.DirectionBelow,
-							PatchExpr: "@get('/api/infinitescroll/more')",
-						}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = infinitescroll.Host(infinitescroll.HostArgs{
-						ID:    "demo_host",
-						Class: "max-h-[400px]",
-					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"text-sm text-muted-foreground\"><p>Backend SSE response appends new items to the items container. Remove sentinel when exhausted.</p></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{Class: "p-0"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = card.CardContent(card.CardContentArgs{Class: "p-6 space-y-4"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = card.Card(card.CardArgs{}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</section><section class=\"space-y-6\"><div class=\"space-y-2\"><h2 class=\"text-2xl font-semibold tracking-tight\">Integration Notes</h2><div class=\"text-sm text-muted-foreground space-y-2\"><p><strong>Items = stable history only.</strong> The Items container holds loaded content history. Live content should stay outside Items as siblings.</p><p><strong>MorphMap overrides:</strong> Override HostID, ItemsID, SentinelAboveID, SentinelBelowID, LoadingAboveID, LoadingBelowID for custom IDs. LoadingAboveID and LoadingBelowID default to the corresponding sentinel IDs (same-id DOM replace).</p><p><strong>Chunk patches:</strong> Backend SSE responses should patch Items in append or prepend mode and replace Loading elements by ID. View Transitions OFF for chunk patches.</p><p><strong>Exhaustion handling:</strong> Remove the sentinel element when no more content is available.</p><p>See components/infinitescroll/INTEGRATION.md for detailed backend examples.</p></div></div></section></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
 		templ_7745c5c3_Err = l.Root(rootArgs).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+type DiffFile struct {
+	Path     string
+	OldLines int
+	NewLines int
+	Hunks    []DiffHunk
+}
+
+type DiffHunk struct {
+	Header string
+	Lines  []DiffLine
+}
+
+type DiffLine struct {
+	Type    string
+	Content string
+	Number  int
+}
+
+func DiffFileCard(file DiffFile, index int) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var8 == nil {
+			templ_7745c5c3_Var8 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div id=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("diff-file-%d", index))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 201, Col: 45}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"border-b border-border last:border-b-0\"><div class=\"bg-muted px-4 py-2 font-mono text-sm font-semibold\"><div class=\"flex items-center justify-between\"><span>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var10 string
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(file.Path)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 204, Col: 21}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span> <span class=\"text-xs text-muted-foreground\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if file.OldLines > 0 {
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("-%d", file.OldLines))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 207, Col: 41}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if file.NewLines > 0 {
+			var templ_7745c5c3_Var12 string
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("+%d", file.NewLines))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 210, Col: 41}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, hunk := range file.Hunks {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"bg-muted/50 px-4 py-1 font-mono text-xs text-muted-foreground\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var13 string
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(hunk.Header)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 217, Col: 17}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			for _, line := range hunk.Lines {
+				templ_7745c5c3_Err = renderDiffLine(line).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func renderDiffLine(line DiffLine) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var14 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var14 == nil {
+			templ_7745c5c3_Var14 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		var bgClass, textClass, prefix string
+		switch line.Type {
+		case "add":
+			bgClass = "bg-green-500/10"
+			textClass = "text-green-600 dark:text-green-400"
+			prefix = "+"
+		case "remove":
+			bgClass = "bg-red-500/10"
+			textClass = "text-red-600 dark:text-red-400"
+			prefix = "-"
+		default:
+			bgClass = ""
+			textClass = "text-foreground"
+			prefix = " "
+		}
+		lineClasses := "px-4 py-0.5 font-mono text-xs " + bgClass
+		numberClasses := "inline-block w-8 select-none text-right text-muted-foreground " + textClass
+		contentClasses := "ml-4 " + textClass
+		var templ_7745c5c3_Var15 = []any{lineClasses}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var15...)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var15).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var17 = []any{numberClasses}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var17...)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<span class=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var17).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var19 string
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", line.Number))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 249, Col: 35}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</span> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var20 = []any{contentClasses}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var20...)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<span class=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var21 string
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var20).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(prefix)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 251, Col: 41}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, " ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(line.Content)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 251, Col: 58}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</span></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,54 +1,253 @@
 package infinitescrollpage
 
 import (
+	"fmt"
 	"github.com/coreycole/datastarui/components/card"
 	"github.com/coreycole/datastarui/components/infinitescroll"
 	l "github.com/coreycole/datastarui/layouts"
 )
 
 templ InfiniteScrollPage(rootArgs l.RootArgs) {
+	{{
+		patchMoreExpr := "@get('/api/infinitescroll/more')"
+	}}
 	@l.Root(rootArgs) {
 		<div class="space-y-8">
 			@l.ComponentPageBreadcrumbs("Infinite Scroll")
 			<div class="space-y-2">
 				<h1 class="text-3xl font-bold tracking-tight">Infinite Scroll</h1>
 				<p class="text-lg text-muted-foreground">
-					Load content progressively as the user scrolls.
+					Load content progressively as the user scrolls using Datastar's <code class="text-sm">data-on:intersect</code> attribute.
 				</p>
 			</div>
-			<div class="grid gap-8">
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Pattern A: Intersection-Based Paging</h2>
+					<div class="text-sm text-muted-foreground space-y-2">
+						<p>
+							This component implements <strong>Pattern A</strong>: intersection-based progressive loading.
+							A sentinel element at the edge triggers a fetch when scrolled into view.
+							The backend responds with SSE patches that append or prepend new items into Items.
+						</p>
+						<p><strong>Key principles:</strong></p>
+						<ul class="list-disc list-inside space-y-1">
+							<li><strong>Host stability:</strong> The Host container is never remorphed</li>
+							<li><strong>Chunk patches:</strong> View Transitions OFF for content chunks</li>
+							<li><strong>Loading SoT:</strong> Same-id DOM replace on sentinel ID</li>
+							<li><strong>Sentinel intersect:</strong> Uses <code>data-on:intersect</code> (colon form)</li>
+							<li><strong>Exhaustion:</strong> Remove sentinel when no more content</li>
+						</ul>
+						<p>
+							<strong>Pattern B (out of scope):</strong> DSUI ships Pattern A only.
+							Pattern B tape virtualization (e.g. largediff) is app-owned and not implemented here.
+						</p>
+					</div>
+				</div>
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Demo: Git Diff Viewer</h2>
+					<p class="text-sm text-muted-foreground">
+						A scrollable diff viewer showing file changes (PR/commit review aesthetic).
+						Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.
+					</p>
+				</div>
 				@card.Card(card.CardArgs{}) {
-					@card.CardHeader(card.CardHeaderArgs{}) {
-						@card.CardTitle(card.CardTitleArgs{}) {
-							Infinite Scroll Demo
-						}
-						@card.CardDescription(card.CardDescriptionArgs{}) {
-							Scroll to load more content using <code>data-on:intersect</code>
-						}
-					}
 					@card.CardContent(card.CardContentArgs{Class: "p-0"}) {
 						<div class="border rounded-lg overflow-hidden">
-							@infinitescroll.Host(infinitescroll.HostArgs{
-								ID:    "demo_host",
-								Class: "max-h-[400px]",
+							@infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
+								ID:             "diff_viewer",
+								PatchBelowExpr: patchMoreExpr,
+								Class:          "max-h-[600px]",
 							}) {
-								@infinitescroll.Items(infinitescroll.ItemsArgs{
-									ID: "demo_items",
-								}) {
-									<div class="p-4 border-b">Item 1</div>
-									<div class="p-4 border-b">Item 2</div>
-									<div class="p-4 border-b">Item 3</div>
-								}
-								@infinitescroll.Sentinel(infinitescroll.SentinelArgs{
-									ID:        "demo_sentinel",
-									Direction: infinitescroll.DirectionBelow,
-									PatchExpr: "@get('/api/infinitescroll/more')",
-								})
+								@DiffFileCard(DiffFile{
+									Path:     "components/infinitescroll/infinitescroll.templ",
+									OldLines: 0,
+									NewLines: 152,
+									Hunks: []DiffHunk{
+										{
+											Header: "@@ -0,0 +1,152 @@",
+											Lines: []DiffLine{
+												{Type: "add", Content: "package infinitescroll", Number: 1},
+												{Type: "add", Content: "", Number: 2},
+												{Type: "add", Content: "// InfiniteScroll creates a complete infinite scroll container", Number: 3},
+												{Type: "add", Content: "templ InfiniteScroll(args InfiniteScrollArgs) {", Number: 4},
+												{Type: "context", Content: "\t...", Number: 5},
+												{Type: "add", Content: "}", Number: 6},
+											},
+										},
+									},
+								}, 0)
+								@DiffFileCard(DiffFile{
+									Path:     "components/infinitescroll/args.go",
+									OldLines: 0,
+									NewLines: 71,
+									Hunks: []DiffHunk{
+										{
+											Header: "@@ -0,0 +1,71 @@",
+											Lines: []DiffLine{
+												{Type: "add", Content: "package infinitescroll", Number: 1},
+												{Type: "add", Content: "", Number: 2},
+												{Type: "add", Content: "import \"github.com/a-h/templ\"", Number: 3},
+												{Type: "add", Content: "", Number: 4},
+												{Type: "add", Content: "// InfiniteScrollArgs defines the properties", Number: 5},
+												{Type: "add", Content: "type InfiniteScrollArgs struct {", Number: 6},
+												{Type: "context", Content: "\t...", Number: 7},
+												{Type: "add", Content: "}", Number: 8},
+											},
+										},
+									},
+								}, 1)
+								@DiffFileCard(DiffFile{
+									Path:     "components/infinitescroll/variants.go",
+									OldLines: 0,
+									NewLines: 51,
+									Hunks: []DiffHunk{
+										{
+											Header: "@@ -0,0 +1,51 @@",
+											Lines: []DiffLine{
+												{Type: "add", Content: "package infinitescroll", Number: 1},
+												{Type: "add", Content: "", Number: 2},
+												{Type: "add", Content: "import \"github.com/coreycole/datastarui/utils\"", Number: 3},
+												{Type: "add", Content: "", Number: 4},
+												{Type: "add", Content: "// InfiniteScrollVariants generates CSS classes", Number: 5},
+												{Type: "add", Content: "func InfiniteScrollVariants(args InfiniteScrollArgs) string {", Number: 6},
+												{Type: "context", Content: "\t...", Number: 7},
+												{Type: "add", Content: "}", Number: 8},
+											},
+										},
+									},
+								}, 2)
 							}
+						</div>
+						<div class="p-4 text-xs text-muted-foreground">
+							<p>
+								<strong>Compose note:</strong> Items container holds stable file history.
+								Live/working content (e.g. <code>#chat-latest</code> in a chat app) should stay
+								<strong>outside Items</strong> as siblings, either inside Host or beside it.
+							</p>
 						</div>
 					}
 				}
-			</div>
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Basic Usage</h2>
+					<p class="text-sm text-muted-foreground">
+						The simplest form: provide an ID and a PatchBelowExpr to load more content.
+						PatchBelowExpr should be a Datastar fetch expression.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "p-6 space-y-4"}) {
+						<div class="text-sm text-muted-foreground">
+							<p>
+								Backend SSE response appends new items to the items container.
+								Remove sentinel when exhausted.
+							</p>
+						</div>
+					}
+				}
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Integration Notes</h2>
+					<div class="text-sm text-muted-foreground space-y-2">
+						<p>
+							<strong>Items = stable history only.</strong> The Items container holds loaded content history.
+							Live content should stay outside Items as siblings.
+						</p>
+						<p>
+							<strong>MorphMap overrides:</strong> Override HostID, ItemsID, SentinelAboveID, SentinelBelowID,
+							LoadingAboveID, LoadingBelowID for custom IDs. LoadingAboveID and LoadingBelowID default to
+							the corresponding sentinel IDs (same-id DOM replace).
+						</p>
+						<p>
+							<strong>Chunk patches:</strong> Backend SSE responses should patch Items in append or prepend mode
+							and replace Loading elements by ID. View Transitions OFF for chunk patches.
+						</p>
+						<p>
+							<strong>Exhaustion handling:</strong> Remove the sentinel element when no more content is available.
+						</p>
+						<p>
+							See components/infinitescroll/INTEGRATION.md for detailed backend examples.
+						</p>
+					</div>
+				</div>
+			</section>
 		</div>
 	}
+}
+
+type DiffFile struct {
+	Path     string
+	OldLines int
+	NewLines int
+	Hunks    []DiffHunk
+}
+
+type DiffHunk struct {
+	Header string
+	Lines  []DiffLine
+}
+
+type DiffLine struct {
+	Type    string
+	Content string
+	Number  int
+}
+
+templ DiffFileCard(file DiffFile, index int) {
+	<div id={ fmt.Sprintf("diff-file-%d", index) } class="border-b border-border last:border-b-0">
+		<div class="bg-muted px-4 py-2 font-mono text-sm font-semibold">
+			<div class="flex items-center justify-between">
+				<span>{ file.Path }</span>
+				<span class="text-xs text-muted-foreground">
+					if file.OldLines > 0 {
+						{ fmt.Sprintf("-%d", file.OldLines) }
+					}
+					if file.NewLines > 0 {
+						{ fmt.Sprintf("+%d", file.NewLines) }
+					}
+				</span>
+			</div>
+		</div>
+		for _, hunk := range file.Hunks {
+			<div class="bg-muted/50 px-4 py-1 font-mono text-xs text-muted-foreground">
+				{ hunk.Header }
+			</div>
+			for _, line := range hunk.Lines {
+				@renderDiffLine(line)
+			}
+		}
+	</div>
+}
+
+templ renderDiffLine(line DiffLine) {
+	{{
+		var bgClass, textClass, prefix string
+		switch line.Type {
+		case "add":
+			bgClass = "bg-green-500/10"
+			textClass = "text-green-600 dark:text-green-400"
+			prefix = "+"
+		case "remove":
+			bgClass = "bg-red-500/10"
+			textClass = "text-red-600 dark:text-red-400"
+			prefix = "-"
+		default:
+			bgClass = ""
+			textClass = "text-foreground"
+			prefix = " "
+		}
+		lineClasses := "px-4 py-0.5 font-mono text-xs " + bgClass
+		numberClasses := "inline-block w-8 select-none text-right text-muted-foreground " + textClass
+		contentClasses := "ml-4 " + textClass
+	}}
+	<div class={ lineClasses }>
+		<span class={ numberClasses }>
+			{ fmt.Sprintf("%d", line.Number) }
+		</span>
+		<span class={ contentClasses }>{ prefix } { line.Content }</span>
+	</div>
 }

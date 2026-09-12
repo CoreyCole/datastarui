@@ -2,7 +2,8 @@ package infinitescroll
 
 // InfiniteScroll creates a complete infinite scroll container with configurable edges
 // This is the happy path: one root call; children = first-page items.
-// Root mints Host/Items/Sentinel/Loading with derived IDs.
+// Root mints Host/Items/Sentinel with derived IDs.
+// Loading elements are patched onto sentinel IDs via same-id DOM replace.
 templ InfiniteScroll(args InfiniteScrollArgs) {
 	{{
 		// Derive MorphMap IDs if not provided
@@ -22,13 +23,14 @@ templ InfiniteScroll(args InfiniteScrollArgs) {
 		if sentinelBelowID == "" {
 			sentinelBelowID = args.ID + "-sentinel-below"
 		}
+		// Loading IDs default to sentinel IDs (same-id DOM replace)
 		loadingAboveID := args.LoadingAboveID
 		if loadingAboveID == "" {
-			loadingAboveID = args.ID + "-loading-above"
+			loadingAboveID = sentinelAboveID
 		}
 		loadingBelowID := args.LoadingBelowID
 		if loadingBelowID == "" {
-			loadingBelowID = args.ID + "-loading-below"
+			loadingBelowID = sentinelBelowID
 		}
 
 		classes := InfiniteScrollVariants(args)
@@ -129,17 +131,14 @@ templ Loading(args LoadingArgs) {
 }
 
 // LoadingSentinel combines a sentinel and loading indicator for convenience
-// The sentinel triggers loading, which is then replaced by a Loading element,
-// then by new content items + a new sentinel
+// First paint: Sentinel only. Backend patches Loading onto the same ID (same-id DOM replace).
+// The LoadingID arg exists for advanced use; default is sentinel ID.
 templ LoadingSentinel(args LoadingSentinelArgs) {
 	{{
+		// LoadingID defaults to sentinel ID for same-id DOM replace
 		loadingID := args.LoadingID
 		if loadingID == "" {
-			if args.Direction == DirectionAbove {
-				loadingID = args.ID + "-loading-above"
-			} else {
-				loadingID = args.ID + "-loading-below"
-			}
+			loadingID = args.ID
 		}
 	}}
 	@Sentinel(SentinelArgs{

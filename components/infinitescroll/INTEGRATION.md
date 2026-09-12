@@ -17,19 +17,35 @@ The Items container holds **loaded content history**. Live, working, or latest c
 For example, in a chat application:
 ```go
 @infinitescroll.Host(...) {
-  <div id="live-typing-indicator">User is typing...</div>  // OUTSIDE Items
+  <!-- Live content OUTSIDE Items -->
+  <div id="chat-latest" class="p-4 border-b">
+    <span>User is typing...</span>
+  </div>
+  
   @infinitescroll.Items(...) {
-    // Historical messages here
+    // Historical messages here (stable history)
   }
   @infinitescroll.Sentinel(...)
 }
+```
+
+Or place live content beside Host:
+```go
+<div>
+  <div id="live-status">Current status...</div>
+  @infinitescroll.Host(...) {
+    @infinitescroll.Items(...) { /* history */ }
+  }
+</div>
 ```
 
 ### 3. Chunk Patches Without View Transitions
 Backend SSE responses that patch new content chunks should have View Transitions **OFF**. Use the datastar-go SDK's patch methods without view transition flags.
 
 ### 4. Loading State as Primary SoT
-Loading indicators use **same-id DOM replace** as the primary source of truth. When loading starts, replace the sentinel with a Loading component using the same ID. When content arrives, replace the Loading component with the new items + a new sentinel.
+Loading indicators use **same-id DOM replace** on the sentinel ID. When loading starts, backend patches a Loading component onto the sentinel's ID. When content arrives, patch new items + a new sentinel (or remove if exhausted).
+
+First paint: Sentinel only. Loading templ is for SSE patches from the backend.
 
 ## Backend Implementation
 
@@ -167,7 +183,8 @@ The component automatically creates:
 - Host container: `my_list-host`
 - Items container: `my_list-items`
 - Below sentinel: `my_list-sentinel-below`
-- Loading indicator: `my_list-loading-below`
+
+**Note:** LoadingAboveID and LoadingBelowID default to the corresponding sentinel IDs for same-id DOM replace. No separate loading node on first paint.
 
 ### Advanced Composition with Custom IDs
 
@@ -306,9 +323,10 @@ if len(items) == 0 {
 
 1. **Batch Size**: Load 10-50 items per request depending on item complexity
 2. **Preload**: Consider preloading the next page when user is 80% through current content
-3. **Virtual Scrolling**: For extremely large datasets (1000+ items), consider Pattern B with virtualization
-4. **Image Lazy Loading**: Use native `loading="lazy"` on images within items
-5. **Memory Management**: Consider removing items far from viewport if memory becomes an issue
+3. **Image Lazy Loading**: Use native `loading="lazy"` on images within items
+4. **Memory Management**: Consider removing items far from viewport if memory becomes an issue
+
+**Pattern B (out of scope):** DSUI ships Pattern A only. Pattern B tape virtualization (e.g. largediff pixel tape, ~2 live files of 200k lines, POST 204 + warm SSE, fat morph `#app`) is app-owned and not implemented in this component.
 
 ## Testing
 
@@ -332,15 +350,3 @@ Use Go Story tests (see `components/infinitescroll/infinitescroll_component_e2e_
 - Host container remains stable (ID unchanged across patches)
 - Items container receives appended/prepended content
 - Console remains clean (no JavaScript errors)
-
-## Migration from Pattern B
-
-If you have an existing implementation using Pattern B (pixel tape virtualization), here's how to migrate to Pattern A:
-
-1. **Remove virtualization logic**: Pattern A doesn't use viewport-based rendering
-2. **Keep all loaded items in DOM**: Pattern A maintains full history in Items container
-3. **Simplify state management**: No need to track viewport position or visible range
-4. **Use intersection observer**: Replace scroll event listeners with `data-on:intersect`
-5. **Update SSE patches**: Use append/prepend modes instead of full replace
-
-Pattern A is simpler and sufficient for most use cases (up to ~1000 items). Consider Pattern B only for extreme scale (10,000+ items).

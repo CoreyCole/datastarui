@@ -10,7 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 // InfiniteScroll creates a complete infinite scroll container with configurable edges
 // This is the happy path: one root call; children = first-page items.
-// Root mints Host/Items/Sentinel/Loading with derived IDs.
+// Root mints Host/Items/Sentinel with derived IDs.
+// Loading elements are patched onto sentinel IDs via same-id DOM replace.
 func InfiniteScroll(args InfiniteScrollArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -49,13 +50,14 @@ func InfiniteScroll(args InfiniteScrollArgs) templ.Component {
 		if sentinelBelowID == "" {
 			sentinelBelowID = args.ID + "-sentinel-below"
 		}
+		// Loading IDs default to sentinel IDs (same-id DOM replace)
 		loadingAboveID := args.LoadingAboveID
 		if loadingAboveID == "" {
-			loadingAboveID = args.ID + "-loading-above"
+			loadingAboveID = sentinelAboveID
 		}
 		loadingBelowID := args.LoadingBelowID
 		if loadingBelowID == "" {
-			loadingBelowID = args.ID + "-loading-below"
+			loadingBelowID = sentinelBelowID
 		}
 
 		classes := InfiniteScrollVariants(args)
@@ -211,7 +213,7 @@ func Host(args HostArgs) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 75, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 77, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -290,7 +292,7 @@ func Items(args ItemsArgs) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 90, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 92, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -369,7 +371,7 @@ func Sentinel(args SentinelArgs) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 105, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 107, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -395,7 +397,7 @@ func Sentinel(args SentinelArgs) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(args.PatchExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 107, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 109, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -453,7 +455,7 @@ func Loading(args LoadingArgs) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(args.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 119, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/infinitescroll/infinitescroll.templ`, Line: 121, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -504,8 +506,8 @@ func Loading(args LoadingArgs) templ.Component {
 }
 
 // LoadingSentinel combines a sentinel and loading indicator for convenience
-// The sentinel triggers loading, which is then replaced by a Loading element,
-// then by new content items + a new sentinel
+// First paint: Sentinel only. Backend patches Loading onto the same ID (same-id DOM replace).
+// The LoadingID arg exists for advanced use; default is sentinel ID.
 func LoadingSentinel(args LoadingSentinelArgs) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -527,13 +529,10 @@ func LoadingSentinel(args LoadingSentinelArgs) templ.Component {
 			templ_7745c5c3_Var23 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		// LoadingID defaults to sentinel ID for same-id DOM replace
 		loadingID := args.LoadingID
 		if loadingID == "" {
-			if args.Direction == DirectionAbove {
-				loadingID = args.ID + "-loading-above"
-			} else {
-				loadingID = args.ID + "-loading-below"
-			}
+			loadingID = args.ID
 		}
 		templ_7745c5c3_Err = Sentinel(SentinelArgs{
 			ID:         args.ID,

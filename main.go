@@ -37,6 +37,11 @@ import (
 	"github.com/coreycole/datastarui/api/services/auth"
 	loginform "github.com/coreycole/datastarui/forms/login"
 	authconnect "github.com/coreycole/datastarui/pkg/proto/com/datastarui/v1/auth/authconnect"
+
+	"context"
+	"strings"
+	"github.com/starfederation/datastar-go/datastar"
+	"github.com/coreycole/datastarui/components/infinitescroll"
 )
 
 // Config holds environment configuration
@@ -54,6 +59,99 @@ func componentRootArgs(path string, cfg Config) l.RootArgs {
 		InspectorEnabled:     cfg.DatastarInspectorEnabled,
 		DatastarProAvailable: cfg.DatastarProAvailable,
 	}
+}
+
+// handleInfiniteScrollMore demonstrates Pattern A infinite scroll with SSE patches.
+// Backend patches: (1) Loading replace on sentinel ID, (2) append items to Items,
+// (3) new sentinel or remove when exhausted. View Transitions OFF for chunk patches.
+func handleInfiniteScrollMore(c echo.Context) error {
+	w := c.Response().Writer
+	r := c.Request()
+
+	// Set SSE headers
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	sse := datastar.NewSSE(w, r)
+
+	// 1. Show loading indicator (same-id DOM replace on sentinel)
+	loadingComponent := infinitescroll.Loading(infinitescroll.LoadingArgs{
+		ID:        "diff_viewer-sentinel-below",
+		Direction: infinitescroll.DirectionBelow,
+	})
+	sse.PatchElementTempl(loadingComponent)
+
+	// 2. Simulate fetching more files (in real app, query database with cursor)
+	moreFiles := []infinitescrollpage.DiffFile{
+		{
+			Path:     "pages/components/infinitescrollpage/infinitescroll_page.templ",
+			OldLines: 0,
+			NewLines: 180,
+			Hunks: []infinitescrollpage.DiffHunk{
+				{
+					Header: "@@ -0,0 +1,180 @@",
+					Lines: []infinitescrollpage.DiffLine{
+						{Type: "add", Content: "package infinitescrollpage", Number: 1},
+						{Type: "add", Content: "", Number: 2},
+						{Type: "add", Content: "import (", Number: 3},
+						{Type: "add", Content: "\t\"github.com/coreycole/datastarui/components/infinitescroll\"", Number: 4},
+						{Type: "context", Content: "\t...", Number: 5},
+						{Type: "add", Content: ")", Number: 6},
+					},
+				},
+			},
+		},
+		{
+			Path:     "main.go",
+			OldLines: 222,
+			NewLines: 230,
+			Hunks: []infinitescrollpage.DiffHunk{
+				{
+					Header: "@@ -222,6 +222,14 @@",
+					Lines: []infinitescrollpage.DiffLine{
+						{Type: "context", Content: "\t})", Number: 222},
+						{Type: "context", Content: "", Number: 223},
+						{Type: "add", Content: "\t// API handlers for component demos", Number: 224},
+						{Type: "add", Content: "\te.GET(\"/api/infinitescroll/more\", func(c echo.Context) error {", Number: 225},
+						{Type: "add", Content: "\t\treturn handleInfiniteScrollMore(c)", Number: 226},
+						{Type: "add", Content: "\t})", Number: 227},
+						{Type: "add", Content: "", Number: 228},
+						{Type: "context", Content: "\t// Serve static files", Number: 229},
+						{Type: "context", Content: "\te.Static(\"/\", \"static/\")", Number: 230},
+					},
+				},
+			},
+		},
+	}
+
+	// 3. Build HTML for new file cards
+	var itemsHTML strings.Builder
+	for i, file := range moreFiles {
+		fileCard := infinitescrollpage.DiffFileCard(file, 3+i)
+		if err := fileCard.Render(context.Background(), &itemsHTML); err != nil {
+			return err
+		}
+	}
+
+	// 4. Append new items to Items container (View Transitions OFF - default for PatchElements)
+	sse.PatchElements(itemsHTML.String(),
+		datastar.WithSelectorID("diff_viewer-items"),
+		datastar.WithModeAppend(),
+		datastar.WithoutViewTransitions(),
+	)
+
+	// 5. Exhausted - remove sentinel (in real app, check if hasMore from database)
+	// For demo, we'll remove it after this batch
+	return sse.RemoveElementByID("diff_viewer-sentinel-below")
+
+	// 5. Alternative: If more content available, remint sentinel
+	// newSentinel := infinitescroll.Sentinel(infinitescroll.SentinelArgs{
+	// 	ID:        "diff_viewer-sentinel-below",
+	// 	Direction: infinitescroll.DirectionBelow,
+	// 	PatchExpr: "@get('/api/infinitescroll/more?cursor=xyz')",
+	// })
+	// return sse.PatchElementTempl(newSentinel)
 }
 
 func main() {
@@ -220,6 +318,11 @@ func main() {
 			DatastarProAvailable: cfg.DatastarProAvailable,
 		}
 		return login.LoginPage(rootArgs).Render(c.Request().Context(), c.Response().Writer)
+	})
+
+	// API handlers for component demos
+	e.GET("/api/infinitescroll/more", func(c echo.Context) error {
+		return handleInfiniteScrollMore(c)
 	})
 
 	// Serve static files
