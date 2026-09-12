@@ -82,8 +82,8 @@ func ToastPage(rootArgs l.RootArgs) templ.Component {
 				}
 				templ_7745c5c3_Err = toast.ToastItem(toast.ToastItemArgs{
 					ID:          "success_toast",
-					Title:       "Copied!",
-					Description: "Link copied to clipboard.",
+					Title:       "Copied to clipboard",
+					Description: "",
 					Variant:     toast.ToastVariantSuccess,
 				}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
@@ -191,7 +191,7 @@ func ToastPage(rootArgs l.RootArgs) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><!-- Success Toast (Clipboard Example) --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibend tracking-tight\">Success (Clipboard Example)</h2><div class=\"flex items-center justify-center p-10 border rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><!-- Success Toast (Clipboard Example) --><div class=\"space-y-4\"><h2 class=\"text-2xl font-semibold tracking-tight\">Success (Clipboard Example)</h2><p class=\"text-sm text-muted-foreground\">Primary use case: show \"Copied to clipboard\" after clipboard write</p><div class=\"flex items-center justify-center p-10 border rounded-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

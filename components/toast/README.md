@@ -41,21 +41,20 @@ A shadcn/ui-parity Toast (Sonner-style) component for DatastarUI providing ephem
 ### Clipboard Example (Primary Use Case)
 
 ```go
-// In your page/component
+// In your root layout (once)
 @toast.ToastContainer(toast.ToastContainerArgs{
-    ID:       "clipboard_toasts",
+    ID:       "app_toasts",
     Position: toast.ToastPositionTopRight,
 }) {
     @toast.ToastItem(toast.ToastItemArgs{
-        ID:          "copy_success",
-        Title:       "Copied!",
-        Description: "Link copied to clipboard.",
-        Variant:     toast.ToastVariantSuccess,
+        ID:      "clipboard_success",
+        Title:   "Copied to clipboard",
+        Variant: toast.ToastVariantSuccess,
     })
 }
 
-// In your share menu or copy button
-@toast.ToastTrigger("copy_success", 2000) {
+// In your share menu or copy button (anywhere)
+@toast.ToastTrigger("clipboard_success", 2000) {
     @button.Button(button.ButtonArgs{
         Variant: "ghost",
         Size:    "sm",

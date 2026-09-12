@@ -22,8 +22,8 @@ templ ToastPage(rootArgs l.RootArgs) {
 			})
 			@toast.ToastItem(toast.ToastItemArgs{
 				ID:          "success_toast",
-				Title:       "Copied!",
-				Description: "Link copied to clipboard.",
+				Title:       "Copied to clipboard",
+				Description: "",
 				Variant:     toast.ToastVariantSuccess,
 			})
 			@toast.ToastItem(toast.ToastItemArgs{
@@ -69,7 +69,8 @@ templ ToastPage(rootArgs l.RootArgs) {
 			</div>
 			<!-- Success Toast (Clipboard Example) -->
 			<div class="space-y-4">
-				<h2 class="text-2xl font-semibend tracking-tight">Success (Clipboard Example)</h2>
+				<h2 class="text-2xl font-semibold tracking-tight">Success (Clipboard Example)</h2>
+				<p class="text-sm text-muted-foreground">Primary use case: show "Copied to clipboard" after clipboard write</p>
 				<div class="flex items-center justify-center p-10 border rounded-lg">
 					@toast.ToastTrigger("success_toast", 2000) {
 						@button.Button(button.ButtonArgs{

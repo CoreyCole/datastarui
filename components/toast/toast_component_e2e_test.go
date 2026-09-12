@@ -70,11 +70,11 @@ func TestMultipleToastsCanBeShown(t *testing.T) {
 func TestSuccessToastShowsCopiedMessage(t *testing.T) {
 	toast := SuccessToast()
 
-	spec.Story(t, "success toast shows copied message").
+	spec.Story(t, "success toast shows copied to clipboard message").
 		Visit(ToastPage()).
 		Do(toast.Show()).
 		Expect(toast.Visible()).
-		Expect(spec.TextContains(toast.Content(), "Copied!")).
+		Expect(spec.TextContains(toast.Content(), "Copied to clipboard")).
 		Expect(spec.ExpectStep(spec.ConsoleClean())).
 		Run()
 }
