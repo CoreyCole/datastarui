@@ -4,13 +4,10 @@ import (
 	"github.com/coreycole/datastarui/utils"
 )
 
-// InfiniteScrollVariants generates CSS classes for the InfiniteScroll component
+// InfiniteScrollVariants generates CSS classes for the InfiniteScroll root wrapper
 func InfiniteScrollVariants(args InfiniteScrollArgs) string {
-	baseClasses := "relative"
-	if args.Class != "" {
-		return utils.TwMerge(baseClasses, args.Class)
-	}
-	return baseClasses
+	// Root wrapper is always just 'relative' - args.Class goes to Host, not here
+	return "relative"
 }
 
 // HostVariants generates CSS classes for the Host container

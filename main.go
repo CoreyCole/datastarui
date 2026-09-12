@@ -93,13 +93,13 @@ func handleInfiniteScrollMore(c echo.Context) error {
 	// 2. Add delay for visible loading (250-400ms)
 	time.Sleep(300 * time.Millisecond)
 
-	// 3. Fetch more files based on cursor
+	// 3. Fetch more files based on cursor (2 content fetches, then exhaust)
 	var moreFiles []infinitescrollpage.DiffFile
 	var nextCursor string
 	var hasMore bool
 
 	switch cursor {
-	case "0": // Page 1
+	case "0": // Page 1 (first fetch)
 		moreFiles = []infinitescrollpage.DiffFile{
 			{
 				Path:     "components/infinitescroll/args.go",
@@ -157,7 +157,7 @@ func handleInfiniteScrollMore(c echo.Context) error {
 		}
 		nextCursor = "1"
 		hasMore = true
-	case "1": // Page 2
+	case "1": // Page 2 (last content fetch - exhaust after this)
 		moreFiles = []infinitescrollpage.DiffFile{
 			{
 				Path:     "components/infinitescroll/variants.go",
@@ -250,9 +250,8 @@ func handleInfiniteScrollMore(c echo.Context) error {
 				},
 			},
 		}
-		nextCursor = "2"
-		hasMore = true
-	default: // Page 3+ - exhausted
+		hasMore = false // Exhaust after this page (no remint)
+	default: // Should not reach here
 		hasMore = false
 	}
 

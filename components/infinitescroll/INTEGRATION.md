@@ -225,7 +225,7 @@ The component automatically creates:
 
 ### Advanced Composition with Custom IDs
 
-Override MorphMap IDs when you need custom targeting:
+Override MorphMap IDs when you need custom targeting. **Note:** `LoadingAboveID` and `LoadingBelowID` should be left empty (they default to the corresponding sentinel IDs) or explicitly set equal to the sentinel IDs for proper same-id DOM replace. Setting them to different IDs breaks the SoT pattern.
 
 ```go
 @infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
@@ -234,7 +234,8 @@ Override MorphMap IDs when you need custom targeting:
 	HostID:         "custom-scroll-host",
 	ItemsID:        "custom-items-container",
 	SentinelBelowID: "custom-sentinel",
-	LoadingBelowID:  "custom-loading",
+	// LoadingBelowID: leave empty (defaults to SentinelBelowID)
+	// OR set explicitly: LoadingBelowID: "custom-sentinel"
 }) {
 	// Initial items
 }
