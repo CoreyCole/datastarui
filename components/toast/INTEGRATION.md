@@ -93,6 +93,27 @@ templ Root(args RootArgs) {
 )
 ```
 
+### 4. ShowToastExpr (Direct Expression - for ClientActions)
+
+```go
+toast.ShowToastExpr(toastID string, durationMs int) string
+```
+
+Returns a Datastar expression string for direct use in `data-on:click` or ClientActions. Use this when you need to compose toast display with other operations (e.g., clipboard write).
+
+**Example - Overflow menu with clipboard:**
+```go
+<button
+	data-on:click={ 
+		"navigator.clipboard.writeText('https://example.com').then(() => {" +
+		toast.ShowToastExpr("clipboard_success", 2000) +
+		"})" 
+	}
+>
+	Copy Link
+</button>
+```
+
 ## Usage Example: Clipboard
 
 ```go
@@ -118,19 +139,32 @@ templ Root(args RootArgs) {
 }
 ```
 
-## Direct Signal Access (Advanced)
+## Advanced Usage
 
-If you need to trigger toasts from backend SSE or JavaScript:
+### Compose with Clipboard Operations
+
+Use `ShowToastExpr()` to show toast after successful clipboard write:
+
+```go
+import "github.com/coreycole/datastarui/components/toast"
+
+// In overflow menu or share button
+<button
+	data-on:click={ 
+		"navigator.clipboard.writeText('" + shareURL + "')" +
+		".then(() => {" + toast.ShowToastExpr("clipboard_success", 2000) + "})" +
+		".catch(() => {" + toast.ShowToastExpr("clipboard_error", 3000) + "})"
+	}
+>
+	Copy Link
+</button>
+```
+
+### Backend SSE Trigger
 
 ```go
 // Backend SSE handler
 sse.ExecuteScript("$clipboard_success.open = true; setTimeout(() => { $clipboard_success.open = false }, 2000)")
-```
-
-```javascript
-// Client-side JavaScript (if needed)
-window.$clipboard_success.open = true;
-setTimeout(() => { window.$clipboard_success.open = false; }, 2000);
 ```
 
 ## No Local Toast API Required
