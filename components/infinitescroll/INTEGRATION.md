@@ -127,13 +127,13 @@ func HandleLoadMore(c echo.Context) error {
 
 	// 6. Either remint sentinel with next cursor or exhaust
 	if hasMore {
-		// Remint sentinel with next cursor
+		// Remint sentinel with next cursor (VT OFF for consistency)
 		newSentinel := infinitescroll.Sentinel(infinitescroll.SentinelArgs{
 			ID:        "my_list-sentinel-below",
 			Direction: infinitescroll.DirectionBelow,
 			PatchExpr: fmt.Sprintf("@get('/api/items/more?cursor=%s')", nextCursor),
 		})
-		return sse.PatchElementTempl(newSentinel)
+		return sse.PatchElementTempl(newSentinel, datastar.WithoutViewTransitions())
 	} else {
 		// Exhausted - remove sentinel
 		return sse.RemoveElementByID("my_list-sentinel-below")
@@ -193,7 +193,7 @@ func HandleLoadBefore(c echo.Context) error {
 			Direction: infinitescroll.DirectionAbove,
 			PatchExpr: fmt.Sprintf("@get('/api/items/before?cursor=%s')", nextCursor),
 		})
-		return sse.PatchElementTempl(newSentinel)
+		return sse.PatchElementTempl(newSentinel, datastar.WithoutViewTransitions())
 	}
 
 	return sse.RemoveElementByID("my_list-sentinel-above")

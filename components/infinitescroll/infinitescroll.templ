@@ -38,7 +38,7 @@ templ InfiniteScroll(args InfiniteScrollArgs) {
 	<div class={ classes } { args.Attributes... }>
 		@Host(HostArgs{
 			ID:    hostID,
-			Class: "h-[600px]",
+			Class: args.Class,
 		}) {
 			<!-- Above edge (inverse/scrollback) -->
 			if args.PatchAboveExpr != "" {

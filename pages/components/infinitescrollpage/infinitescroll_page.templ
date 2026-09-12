@@ -62,6 +62,7 @@ templ InfiniteScrollPage(rootArgs l.RootArgs) {
 						@infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
 							ID:             "diff_viewer",
 							PatchBelowExpr: patchMoreExpr,
+							Class:          "h-[600px]",
 						}) {
 							@DiffFileCard(DiffFile{
 								Path:     "components/infinitescroll/infinitescroll.templ",

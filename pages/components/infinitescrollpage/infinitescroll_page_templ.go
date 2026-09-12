@@ -186,6 +186,7 @@ func InfiniteScrollPage(rootArgs l.RootArgs) templ.Component {
 					templ_7745c5c3_Err = infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
 						ID:             "diff_viewer",
 						PatchBelowExpr: patchMoreExpr,
+						Class:          "h-[600px]",
 					}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -310,7 +311,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("diff-file-%d", index))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 223, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 224, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -323,7 +324,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(file.Path)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 226, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 227, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -337,7 +338,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("-%d", file.OldLines))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 229, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 230, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -352,7 +353,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("+%d", file.NewLines))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 232, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 233, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -371,7 +372,7 @@ func DiffFileCard(file DiffFile, index int) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(hunk.Header)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 239, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 240, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -482,7 +483,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", line.Number))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 271, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 272, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -517,7 +518,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(prefix)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 273, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 274, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -530,7 +531,7 @@ func renderDiffLine(line DiffLine) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(line.Content)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 273, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pages/components/infinitescrollpage/infinitescroll_page.templ`, Line: 274, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {

@@ -165,7 +165,7 @@ func InfiniteScroll(args InfiniteScrollArgs) templ.Component {
 		})
 		templ_7745c5c3_Err = Host(HostArgs{
 			ID:    hostID,
-			Class: "h-[600px]",
+			Class: args.Class,
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
