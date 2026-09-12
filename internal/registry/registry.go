@@ -35,6 +35,7 @@ func Default() Registry {
 		"sheet":      component("sheet", []string{"args.go", "expressions.go", "sheet.templ", "variants.go"}, "utils"),
 		"tabs":       component("tabs", []string{"args.go", "expressions.go", "tabs.templ", "variants.go"}, "utils"),
 		"textarea":   component("textarea", []string{"args.go", "textarea.templ", "variants.go"}),
+		"toast":      component("toast", []string{"args.go", "expressions.go", "toast.templ", "variants.go"}, "utils"),
 		"tooltip":    component("tooltip", []string{"args.go", "expressions.go", "tooltip.templ", "variants.go"}, "utils"),
 		"utils": {
 			Name: "utils",
