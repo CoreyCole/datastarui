@@ -1,0 +1,276 @@
+package infinitescrollpage
+
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/infinitescroll"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ InfiniteScrollPage(rootArgs l.RootArgs) {
+	{{
+		patchMoreExpr := "@get('/api/infinitescroll/more')"
+	}}
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Infinite Scroll")
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Infinite Scroll</h1>
+				<p class="text-lg text-muted-foreground">
+					Load content progressively as the user scrolls using Datastar's <code class="text-sm">data-on:intersect</code> attribute.
+				</p>
+			</div>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Pattern A: Intersection-Based Paging</h2>
+					<div class="text-sm text-muted-foreground space-y-2">
+						<p>
+							This component implements <strong>Pattern A</strong>: intersection-based progressive loading.
+							A sentinel element at the edge triggers a fetch when scrolled into view.
+							The backend responds with SSE patches that append or prepend new items into Items.
+						</p>
+						<p><strong>Key principles:</strong></p>
+						<ul class="list-disc list-inside space-y-1">
+							<li><strong>Host stability:</strong> The Host container is never remorphed</li>
+							<li><strong>Chunk patches:</strong> View Transitions OFF for content chunks</li>
+							<li><strong>Loading SoT:</strong> Same-id DOM replace on sentinel ID</li>
+							<li><strong>Sentinel intersect:</strong> Uses <code>data-on:intersect</code> (colon form)</li>
+							<li><strong>Exhaustion:</strong> Remove sentinel when no more content</li>
+						</ul>
+						<p>
+							<strong>Pattern B (out of scope):</strong> DSUI ships Pattern A only.
+							Pattern B tape virtualization (e.g. largediff) is app-owned and not implemented here.
+						</p>
+					</div>
+				</div>
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Demo: Git Diff Viewer</h2>
+					<p class="text-sm text-muted-foreground">
+						A scrollable diff viewer showing file changes (PR/commit review aesthetic).
+						Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.
+					</p>
+				<p class="text-xs text-muted-foreground">
+					<strong>Note:</strong> This demo loads 2 additional pages (with visible loading states), then exhausts (intentional).
+					Each fetch remints the sentinel with a new cursor until exhaustion.
+				</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "p-0"}) {
+						<div class="border rounded-lg overflow-hidden">
+						@infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
+							ID:             "diff_viewer",
+							PatchBelowExpr: patchMoreExpr,
+							Class:          "h-[600px]",
+						}) {
+							@DiffFileCard(DiffFile{
+								Path:     "components/infinitescroll/infinitescroll.templ",
+								OldLines: 0,
+								NewLines: 152,
+								Hunks: []DiffHunk{
+									{
+										Header: "@@ -0,0 +1,65 @@",
+										Lines: []DiffLine{
+											{Type: "add", Content: "package infinitescroll", Number: 1},
+											{Type: "add", Content: "", Number: 2},
+											{Type: "add", Content: "// InfiniteScroll creates a complete infinite scroll container with configurable edges", Number: 3},
+											{Type: "add", Content: "// This is the happy path: one root call; children = first-page items.", Number: 4},
+											{Type: "add", Content: "// Root mints Host/Items/Sentinel with derived IDs.", Number: 5},
+											{Type: "add", Content: "// Loading elements are patched onto sentinel IDs via same-id DOM replace.", Number: 6},
+											{Type: "add", Content: "templ InfiniteScroll(args InfiniteScrollArgs) {", Number: 7},
+											{Type: "add", Content: "\t{{", Number: 8},
+											{Type: "add", Content: "\t\t// Derive MorphMap IDs if not provided", Number: 9},
+											{Type: "add", Content: "\t\thostID := args.HostID", Number: 10},
+											{Type: "add", Content: "\t\tif hostID == \"\" {", Number: 11},
+											{Type: "add", Content: "\t\t\thostID = args.ID + \"-host\"", Number: 12},
+											{Type: "add", Content: "\t\t}", Number: 13},
+											{Type: "add", Content: "\t\titemsID := args.ItemsID", Number: 14},
+											{Type: "add", Content: "\t\tif itemsID == \"\" {", Number: 15},
+											{Type: "add", Content: "\t\t\titemsID = args.ID + \"-items\"", Number: 16},
+											{Type: "add", Content: "\t\t}", Number: 17},
+											{Type: "add", Content: "\t\tsentinelAboveID := args.SentinelAboveID", Number: 18},
+											{Type: "add", Content: "\t\tif sentinelAboveID == \"\" {", Number: 19},
+											{Type: "add", Content: "\t\t\tsentinelAboveID = args.ID + \"-sentinel-above\"", Number: 20},
+											{Type: "add", Content: "\t\t}", Number: 21},
+											{Type: "add", Content: "\t\tsentinelBelowID := args.SentinelBelowID", Number: 22},
+											{Type: "add", Content: "\t\tif sentinelBelowID == \"\" {", Number: 23},
+											{Type: "add", Content: "\t\t\tsentinelBelowID = args.ID + \"-sentinel-below\"", Number: 24},
+											{Type: "add", Content: "\t\t}", Number: 25},
+											{Type: "add", Content: "\t\t// Loading IDs default to sentinel IDs (same-id DOM replace)", Number: 26},
+											{Type: "add", Content: "\t\tloadingAboveID := args.LoadingAboveID", Number: 27},
+											{Type: "add", Content: "\t\tif loadingAboveID == \"\" {", Number: 28},
+											{Type: "add", Content: "\t\t\tloadingAboveID = sentinelAboveID", Number: 29},
+											{Type: "add", Content: "\t\t}", Number: 30},
+											{Type: "add", Content: "\t\tloadingBelowID := args.LoadingBelowID", Number: 31},
+											{Type: "add", Content: "\t\tif loadingBelowID == \"\" {", Number: 32},
+											{Type: "add", Content: "\t\t\tloadingBelowID = sentinelBelowID", Number: 33},
+											{Type: "add", Content: "\t\t}", Number: 34},
+											{Type: "add", Content: "\t\tclasses := InfiniteScrollVariants(args)", Number: 35},
+											{Type: "add", Content: "\t}}", Number: 36},
+											{Type: "add", Content: "\t<div class={ classes } { args.Attributes... }>", Number: 37},
+											{Type: "add", Content: "\t\t@Host(HostArgs{", Number: 38},
+											{Type: "add", Content: "\t\t\tID:    hostID,", Number: 39},
+											{Type: "add", Content: "\t\t\tClass: \"h-full\",", Number: 40},
+											{Type: "add", Content: "\t\t}) {", Number: 41},
+											{Type: "add", Content: "\t\t\tif args.PatchAboveExpr != \"\" {", Number: 42},
+											{Type: "add", Content: "\t\t\t\t@LoadingSentinel(LoadingSentinelArgs{", Number: 43},
+											{Type: "add", Content: "\t\t\t\t\tID:        sentinelAboveID,", Number: 44},
+											{Type: "add", Content: "\t\t\t\t\tLoadingID: loadingAboveID,", Number: 45},
+											{Type: "add", Content: "\t\t\t\t\tDirection: DirectionAbove,", Number: 46},
+											{Type: "add", Content: "\t\t\t\t\tOnIntersect: args.PatchAboveExpr,", Number: 47},
+											{Type: "add", Content: "\t\t\t\t})", Number: 48},
+											{Type: "add", Content: "\t\t\t}", Number: 49},
+											{Type: "add", Content: "\t\t\t@Items(ItemsArgs{", Number: 50},
+											{Type: "add", Content: "\t\t\t\tID: itemsID,", Number: 51},
+											{Type: "add", Content: "\t\t\t}) {", Number: 52},
+											{Type: "add", Content: "\t\t\t\t{ children... }", Number: 53},
+											{Type: "add", Content: "\t\t\t}", Number: 54},
+											{Type: "add", Content: "\t\t\tif args.PatchBelowExpr != \"\" {", Number: 55},
+											{Type: "add", Content: "\t\t\t\t@LoadingSentinel(LoadingSentinelArgs{", Number: 56},
+											{Type: "add", Content: "\t\t\t\t\tID:        sentinelBelowID,", Number: 57},
+											{Type: "add", Content: "\t\t\t\t\tLoadingID: loadingBelowID,", Number: 58},
+											{Type: "add", Content: "\t\t\t\t\tDirection: DirectionBelow,", Number: 59},
+											{Type: "add", Content: "\t\t\t\t\tOnIntersect: args.PatchBelowExpr,", Number: 60},
+											{Type: "add", Content: "\t\t\t\t})", Number: 61},
+											{Type: "add", Content: "\t\t\t}", Number: 62},
+											{Type: "add", Content: "\t\t}", Number: 63},
+											{Type: "add", Content: "\t</div>", Number: 64},
+											{Type: "add", Content: "}", Number: 65},
+										},
+									},
+								},
+							}, 0)
+							}
+						</div>
+						<div class="p-4 text-xs text-muted-foreground">
+							<p>
+								<strong>Compose note:</strong> Items container holds stable file history.
+								Live/working content (e.g. <code>#chat-latest</code> in a chat app) should stay
+								<strong>outside Items</strong> as siblings, either inside Host or beside it.
+							</p>
+						</div>
+					}
+				}
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Basic Usage</h2>
+					<p class="text-sm text-muted-foreground">
+						The simplest form: provide an ID and a PatchBelowExpr to load more content.
+						PatchBelowExpr should be a Datastar fetch expression.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "p-6 space-y-4"}) {
+						<div class="text-sm text-muted-foreground">
+							<p>
+								Backend SSE response appends new items to the items container.
+								Remove sentinel when exhausted.
+							</p>
+						</div>
+					}
+				}
+			</section>
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Integration Notes</h2>
+					<div class="text-sm text-muted-foreground space-y-2">
+						<p>
+							<strong>Items = stable history only.</strong> The Items container holds loaded content history.
+							Live content should stay outside Items as siblings.
+						</p>
+						<p>
+							<strong>MorphMap overrides:</strong> Override HostID, ItemsID, SentinelAboveID, SentinelBelowID,
+							LoadingAboveID, LoadingBelowID for custom IDs. LoadingAboveID and LoadingBelowID default to
+							the corresponding sentinel IDs (same-id DOM replace).
+						</p>
+						<p>
+							<strong>Chunk patches:</strong> Backend SSE responses should patch Items in append or prepend mode
+							and replace Loading elements by ID. View Transitions OFF for chunk patches.
+						</p>
+						<p>
+							<strong>Exhaustion handling:</strong> Remove the sentinel element when no more content is available.
+						</p>
+						<p>
+							See components/infinitescroll/INTEGRATION.md for detailed backend examples.
+						</p>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}
+
+type DiffFile struct {
+	Path     string
+	OldLines int
+	NewLines int
+	Hunks    []DiffHunk
+}
+
+type DiffHunk struct {
+	Header string
+	Lines  []DiffLine
+}
+
+type DiffLine struct {
+	Type    string
+	Content string
+	Number  int
+}
+
+templ DiffFileCard(file DiffFile, index int) {
+	<div id={ fmt.Sprintf("diff-file-%d", index) } class="border-b border-border last:border-b-0">
+		<div class="bg-muted px-4 py-2 font-mono text-sm font-semibold">
+			<div class="flex items-center justify-between">
+				<span>{ file.Path }</span>
+				<span class="text-xs text-muted-foreground">
+					if file.OldLines > 0 {
+						{ fmt.Sprintf("-%d", file.OldLines) }
+					}
+					if file.NewLines > 0 {
+						{ fmt.Sprintf("+%d", file.NewLines) }
+					}
+				</span>
+			</div>
+		</div>
+		for _, hunk := range file.Hunks {
+			<div class="bg-muted/50 px-4 py-1 font-mono text-xs text-muted-foreground">
+				{ hunk.Header }
+			</div>
+			for _, line := range hunk.Lines {
+				@renderDiffLine(line)
+			}
+		}
+	</div>
+}
+
+templ renderDiffLine(line DiffLine) {
+	{{
+		var bgClass, textClass, prefix string
+		switch line.Type {
+		case "add":
+			bgClass = "bg-green-500/10"
+			textClass = "text-green-600 dark:text-green-400"
+			prefix = "+"
+		case "remove":
+			bgClass = "bg-red-500/10"
+			textClass = "text-red-600 dark:text-red-400"
+			prefix = "-"
+		default:
+			bgClass = ""
+			textClass = "text-foreground"
+			prefix = " "
+		}
+		lineClasses := "px-4 py-0.5 font-mono text-xs " + bgClass
+		numberClasses := "inline-block w-8 select-none text-right text-muted-foreground " + textClass
+		contentClasses := "ml-4 " + textClass
+	}}
+	<div class={ lineClasses }>
+		<span class={ numberClasses }>
+			{ fmt.Sprintf("%d", line.Number) }
+		</span>
+		<span class={ contentClasses }>{ prefix } { line.Content }</span>
+	</div>
+}

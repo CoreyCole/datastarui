@@ -1,0 +1,157 @@
+package infinitescroll
+
+// InfiniteScroll creates a complete infinite scroll container with configurable edges
+// This is the happy path: one root call; children = first-page items.
+// Root mints Host/Items/Sentinel with derived IDs.
+// Loading elements are patched onto sentinel IDs via same-id DOM replace.
+templ InfiniteScroll(args InfiniteScrollArgs) {
+	{{
+		// Derive MorphMap IDs if not provided
+		hostID := args.HostID
+		if hostID == "" {
+			hostID = args.ID + "-host"
+		}
+		itemsID := args.ItemsID
+		if itemsID == "" {
+			itemsID = args.ID + "-items"
+		}
+		sentinelAboveID := args.SentinelAboveID
+		if sentinelAboveID == "" {
+			sentinelAboveID = args.ID + "-sentinel-above"
+		}
+		sentinelBelowID := args.SentinelBelowID
+		if sentinelBelowID == "" {
+			sentinelBelowID = args.ID + "-sentinel-below"
+		}
+		// Loading IDs default to sentinel IDs (same-id DOM replace)
+		loadingAboveID := args.LoadingAboveID
+		if loadingAboveID == "" {
+			loadingAboveID = sentinelAboveID
+		}
+		loadingBelowID := args.LoadingBelowID
+		if loadingBelowID == "" {
+			loadingBelowID = sentinelBelowID
+		}
+
+		classes := InfiniteScrollVariants(args)
+	}}
+	<div class={ classes } { args.Attributes... }>
+		@Host(HostArgs{
+			ID:    hostID,
+			Class: args.Class,
+		}) {
+			<!-- Above edge (inverse/scrollback) -->
+			if args.PatchAboveExpr != "" {
+				@LoadingSentinel(LoadingSentinelArgs{
+					ID:        sentinelAboveID,
+					Direction: DirectionAbove,
+					PatchExpr: args.PatchAboveExpr,
+					LoadingID: loadingAboveID,
+				})
+			}
+			<!-- Items container (stable history) -->
+			@Items(ItemsArgs{
+				ID: itemsID,
+			}) {
+				{ children... }
+			}
+			<!-- Below edge (forward/more) -->
+			if args.PatchBelowExpr != "" {
+				@LoadingSentinel(LoadingSentinelArgs{
+					ID:        sentinelBelowID,
+					Direction: DirectionBelow,
+					PatchExpr: args.PatchBelowExpr,
+					LoadingID: loadingBelowID,
+				})
+			}
+		}
+	</div>
+}
+
+// Host is the scroll container (never remorphed - patches target Items/Loading only)
+templ Host(args HostArgs) {
+	{{
+		classes := HostVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// Items is the container for actual content items (stable history only)
+// New items are prepended (above) or appended (below) into this container
+templ Items(args ItemsArgs) {
+	{{
+		classes := ItemsVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// Sentinel is an invisible trigger element that loads more when intersected
+// Use data-on:intersect (colon form) to match other Datastar patterns
+templ Sentinel(args SentinelArgs) {
+	{{
+		classes := SentinelVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		data-on:intersect={ args.PatchExpr }
+		{ args.Attributes... }
+	></div>
+}
+
+// Loading is a visual indicator shown during fetch operations
+// This is the primary source of truth - uses same-id DOM replace
+templ Loading(args LoadingArgs) {
+	{{
+		classes := LoadingVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		if args.Direction == DirectionAbove {
+			<div class="animate-pulse p-4 space-y-3">
+				<div class="h-4 bg-muted rounded w-3/4"></div>
+				<div class="h-3 bg-muted rounded w-1/2"></div>
+			</div>
+		} else {
+			<div class="animate-pulse p-4 space-y-3">
+				<div class="h-4 bg-muted rounded w-3/4"></div>
+				<div class="h-3 bg-muted rounded w-1/2"></div>
+			</div>
+		}
+	</div>
+}
+
+// LoadingSentinel combines a sentinel and loading indicator for convenience
+// First paint: Sentinel only. Backend patches Loading onto the same ID (same-id DOM replace).
+// The LoadingID arg exists for advanced use; default is sentinel ID.
+templ LoadingSentinel(args LoadingSentinelArgs) {
+	{{
+		// LoadingID defaults to sentinel ID for same-id DOM replace
+		loadingID := args.LoadingID
+		if loadingID == "" {
+			loadingID = args.ID
+		}
+	}}
+	@Sentinel(SentinelArgs{
+		ID:         args.ID,
+		Direction:  args.Direction,
+		PatchExpr:  args.PatchExpr,
+		Class:      args.Class,
+		Attributes: args.Attributes,
+	})
+}

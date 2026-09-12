@@ -29,6 +29,7 @@ func Default() Registry {
 		"dialog":     component("dialog", []string{"args.go", "dialog.templ", "expressions.go", "variants.go"}, "utils"),
 		"dropdown":   component("dropdown", []string{"args.go", "dropdown.templ", "expressions.go", "variants.go"}, "utils"),
 		"form":       component("form", []string{"args.go", "form.templ", "variants.go"}),
+		"infinitescroll": component("infinitescroll", []string{"args.go", "infinitescroll.templ", "variants.go"}),
 		"input":      component("input", []string{"args.go", "input.templ", "variants.go"}),
 		"label":      component("label", []string{"args.go", "label.templ", "variants.go"}),
 		"select":     component("select", []string{"args.go", "expressions.go", "select.templ", "variants.go"}, "utils"),
