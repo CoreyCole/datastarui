@@ -21,6 +21,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/dialogpage"
 	"github.com/coreycole/datastarui/pages/components/dropdownpage"
 	"github.com/coreycole/datastarui/pages/components/formpage"
+	"github.com/coreycole/datastarui/pages/components/infinitescrollpage"
 	"github.com/coreycole/datastarui/pages/components/popoverpage"
 	"github.com/coreycole/datastarui/pages/components/selectpage"
 	"github.com/coreycole/datastarui/pages/components/sheetpage"
@@ -150,6 +151,9 @@ func main() {
 	})
 	e.GET("/components/form", func(c echo.Context) error {
 		return formpage.FormPage(componentRootArgs(c.Request().URL.Path, cfg)).Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/infinitescroll", func(c echo.Context) error {
+		return infinitescrollpage.InfiniteScrollPage(componentRootArgs(c.Request().URL.Path, cfg)).Render(c.Request().Context(), c.Response().Writer)
 	})
 	e.GET("/components/popover", func(c echo.Context) error {
 		return popoverpage.PopoverPage(componentRootArgs(c.Request().URL.Path, cfg)).Render(c.Request().Context(), c.Response().Writer)

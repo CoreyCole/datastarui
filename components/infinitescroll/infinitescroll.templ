@@ -1,0 +1,152 @@
+package infinitescroll
+
+// InfiniteScroll creates a complete infinite scroll container with configurable edges
+// This is the happy path: one root call; children = first-page items.
+// Root mints Host/Items/Sentinel/Loading with derived IDs.
+templ InfiniteScroll(args InfiniteScrollArgs) {
+	{{
+		// Derive MorphMap IDs if not provided
+		hostID := args.HostID
+		if hostID == "" {
+			hostID = args.ID + "-host"
+		}
+		itemsID := args.ItemsID
+		if itemsID == "" {
+			itemsID = args.ID + "-items"
+		}
+		sentinelAboveID := args.SentinelAboveID
+		if sentinelAboveID == "" {
+			sentinelAboveID = args.ID + "-sentinel-above"
+		}
+		sentinelBelowID := args.SentinelBelowID
+		if sentinelBelowID == "" {
+			sentinelBelowID = args.ID + "-sentinel-below"
+		}
+		loadingAboveID := args.LoadingAboveID
+		if loadingAboveID == "" {
+			loadingAboveID = args.ID + "-loading-above"
+		}
+		loadingBelowID := args.LoadingBelowID
+		if loadingBelowID == "" {
+			loadingBelowID = args.ID + "-loading-below"
+		}
+
+		classes := InfiniteScrollVariants(args)
+	}}
+	<div class={ classes } { args.Attributes... }>
+		@Host(HostArgs{
+			ID:    hostID,
+			Class: "h-full",
+		}) {
+			<!-- Above edge (inverse/scrollback) -->
+			if args.PatchAboveExpr != "" {
+				@LoadingSentinel(LoadingSentinelArgs{
+					ID:        sentinelAboveID,
+					Direction: DirectionAbove,
+					PatchExpr: args.PatchAboveExpr,
+					LoadingID: loadingAboveID,
+				})
+			}
+			<!-- Items container (stable history) -->
+			@Items(ItemsArgs{
+				ID: itemsID,
+			}) {
+				{ children... }
+			}
+			<!-- Below edge (forward/more) -->
+			if args.PatchBelowExpr != "" {
+				@LoadingSentinel(LoadingSentinelArgs{
+					ID:        sentinelBelowID,
+					Direction: DirectionBelow,
+					PatchExpr: args.PatchBelowExpr,
+					LoadingID: loadingBelowID,
+				})
+			}
+		}
+	</div>
+}
+
+// Host is the scroll container (never remorphed - patches target Items/Loading only)
+templ Host(args HostArgs) {
+	{{
+		classes := HostVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// Items is the container for actual content items (stable history only)
+// New items are prepended (above) or appended (below) into this container
+templ Items(args ItemsArgs) {
+	{{
+		classes := ItemsVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		{ children... }
+	</div>
+}
+
+// Sentinel is an invisible trigger element that loads more when intersected
+// Use data-on:intersect (colon form) to match other Datastar patterns
+templ Sentinel(args SentinelArgs) {
+	{{
+		classes := SentinelVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		data-on:intersect={ args.PatchExpr }
+		{ args.Attributes... }
+	></div>
+}
+
+// Loading is a visual indicator shown during fetch operations
+// This is the primary source of truth - uses same-id DOM replace
+templ Loading(args LoadingArgs) {
+	{{
+		classes := LoadingVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ classes }
+		{ args.Attributes... }
+	>
+		if args.Direction == DirectionAbove {
+			<div class="text-sm text-muted-foreground">Loading earlier items...</div>
+		} else {
+			<div class="text-sm text-muted-foreground">Loading more...</div>
+		}
+	</div>
+}
+
+// LoadingSentinel combines a sentinel and loading indicator for convenience
+// The sentinel triggers loading, which is then replaced by a Loading element,
+// then by new content items + a new sentinel
+templ LoadingSentinel(args LoadingSentinelArgs) {
+	{{
+		loadingID := args.LoadingID
+		if loadingID == "" {
+			if args.Direction == DirectionAbove {
+				loadingID = args.ID + "-loading-above"
+			} else {
+				loadingID = args.ID + "-loading-below"
+			}
+		}
+	}}
+	@Sentinel(SentinelArgs{
+		ID:         args.ID,
+		Direction:  args.Direction,
+		PatchExpr:  args.PatchExpr,
+		Class:      args.Class,
+		Attributes: args.Attributes,
+	})
+}

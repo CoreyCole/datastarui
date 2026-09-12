@@ -16,6 +16,7 @@ func GetSidebarSections() []sidebar.SidebarSection {
 				{Title: "Dialog", Href: "/components/dialog"},
 				{Title: "Dropdown", Href: "/components/dropdown"},
 				{Title: "Form", Href: "/components/form"},
+				{Title: "Infinite Scroll", Href: "/components/infinitescroll"},
 				{Title: "Popover", Href: "/components/popover"},
 				{Title: "Select", Href: "/components/select"},
 				{Title: "Sheet", Href: "/components/sheet"},

@@ -133,7 +133,7 @@ func copyComponents(ctx context.Context, opts Options) (Result, error) {
 	}
 	components := opts.Components
 	if len(components) == 0 {
-		components = []string{"avatar", "breadcrumb", "button", "card", "checkbox", "dialog", "dropdown", "form", "input", "label", "select", "sheet", "tabs", "textarea", "toast", "tooltip", "utils", "tailwind"}
+		components = []string{"avatar", "breadcrumb", "button", "card", "checkbox", "dialog", "dropdown", "form", "infinitescroll", "input", "label", "select", "sheet", "tabs", "textarea", "toast", "tooltip", "utils", "tailwind"}
 	}
 	resolved, err := registry.Default().Resolve(components)
 	if err != nil {

@@ -1,0 +1,54 @@
+package infinitescrollpage
+
+import (
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/infinitescroll"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ InfiniteScrollPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Infinite Scroll")
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Infinite Scroll</h1>
+				<p class="text-lg text-muted-foreground">
+					Load content progressively as the user scrolls.
+				</p>
+			</div>
+			<div class="grid gap-8">
+				@card.Card(card.CardArgs{}) {
+					@card.CardHeader(card.CardHeaderArgs{}) {
+						@card.CardTitle(card.CardTitleArgs{}) {
+							Infinite Scroll Demo
+						}
+						@card.CardDescription(card.CardDescriptionArgs{}) {
+							Scroll to load more content using <code>data-on:intersect</code>
+						}
+					}
+					@card.CardContent(card.CardContentArgs{Class: "p-0"}) {
+						<div class="border rounded-lg overflow-hidden">
+							@infinitescroll.Host(infinitescroll.HostArgs{
+								ID:    "demo_host",
+								Class: "max-h-[400px]",
+							}) {
+								@infinitescroll.Items(infinitescroll.ItemsArgs{
+									ID: "demo_items",
+								}) {
+									<div class="p-4 border-b">Item 1</div>
+									<div class="p-4 border-b">Item 2</div>
+									<div class="p-4 border-b">Item 3</div>
+								}
+								@infinitescroll.Sentinel(infinitescroll.SentinelArgs{
+									ID:        "demo_sentinel",
+									Direction: infinitescroll.DirectionBelow,
+									PatchExpr: "@get('/api/infinitescroll/more')",
+								})
+							}
+						</div>
+					}
+				}
+			</div>
+		</div>
+	}
+}
