@@ -15,8 +15,8 @@ func ErrorToast() ToastDemo           { return ToastDemo{id: "error_toast"} }
 func PersistentToast() ToastDemo      { return ToastDemo{id: "persistent_toast"} }
 
 func (t ToastDemo) Trigger() spec.Locator {
-	// Find the button that triggers this toast by looking for the data-on-click attribute
-	return spec.CSS("button[data-on-click*='$" + t.id + ".open']")
+	// Find the button that triggers this toast by looking for the data-on:click attribute
+	return spec.CSS("button[data-on\\:click*='$" + t.id + ".open']")
 }
 
 func (t ToastDemo) Content() spec.Locator {
@@ -31,7 +31,7 @@ func (t ToastDemo) Container() spec.Locator {
 
 func (t ToastDemo) CloseButton() spec.Locator {
 	// The close button inside the toast
-	return spec.CSS("#" + t.id + " button[data-on-click*='false']")
+	return spec.CSS("#" + t.id + " button[data-on\\:click*='false']")
 }
 
 func (t ToastDemo) Show() spec.Step {

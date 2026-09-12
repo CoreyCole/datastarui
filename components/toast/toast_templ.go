@@ -247,7 +247,7 @@ func ToastItem(args ToastItemArgs) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><!-- Close button --><button type=\"button\" class=\"absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100\" aria-label=\"Close\" data-on-click=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><!-- Close button --><button type=\"button\" class=\"absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100\" aria-label=\"Close\" data-on:click=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -266,6 +266,24 @@ func ToastItem(args ToastItemArgs) templ.Component {
 		}
 		return nil
 	})
+}
+
+// ShowToastExpr returns a Datastar expression to show a toast with optional auto-dismiss.
+// Use this directly in data-on:click or ClientActions (e.g., after clipboard operations).
+//
+// Example in overflow menu:
+//
+//	data-on:click={ toast.ShowToastExpr("clipboard_success", 2000) + "; navigator.clipboard.writeText('...')" }
+func ShowToastExpr(toastID string, durationMs int) string {
+	signals := utils.Signals(toastID, ToastSignals{})
+	showExpr := signals.Set("open", "true")
+
+	// Add auto-hide if duration is set
+	if durationMs > 0 {
+		hideExpr := signals.Set("open", "false")
+		return fmt.Sprintf("%s; setTimeout(() => { %s }, %d)", showExpr, hideExpr, durationMs)
+	}
+	return showExpr
 }
 
 // ToastTrigger creates a button that shows a toast when clicked
@@ -290,23 +308,15 @@ func ToastTrigger(toastID string, duration int) templ.Component {
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		// Build the expression to show toast and auto-hide after duration
-		signals := utils.Signals(toastID, ToastSignals{})
-		showExpr := signals.Set("open", "true")
-
-		// Add auto-hide if duration is set
-		if duration > 0 {
-			hideExpr := signals.Set("open", "false")
-			showExpr = fmt.Sprintf("%s; setTimeout(() => { %s }, %d)", showExpr, hideExpr, duration)
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<button type=\"button\" data-on-click=\"")
+		showExpr := ShowToastExpr(toastID, duration)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<button type=\"button\" data-on:click=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(showExpr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/toast/toast.templ`, Line: 95, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/toast/toast.templ`, Line: 104, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {

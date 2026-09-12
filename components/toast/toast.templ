@@ -66,7 +66,7 @@ templ ToastItem(args ToastItemArgs) {
 				type="button"
 				class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
 				aria-label="Close"
-				data-on-click={ closeHandler }
+				data-on:click={ closeHandler }
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<path d="M18 6 6 18"></path>
@@ -77,22 +77,31 @@ templ ToastItem(args ToastItemArgs) {
 	</div>
 }
 
+// ShowToastExpr returns a Datastar expression to show a toast with optional auto-dismiss.
+// Use this directly in data-on:click or ClientActions (e.g., after clipboard operations).
+//
+// Example in overflow menu:
+//   data-on:click={ toast.ShowToastExpr("clipboard_success", 2000) + "; navigator.clipboard.writeText('...')" }
+func ShowToastExpr(toastID string, durationMs int) string {
+	signals := utils.Signals(toastID, ToastSignals{})
+	showExpr := signals.Set("open", "true")
+	
+	// Add auto-hide if duration is set
+	if durationMs > 0 {
+		hideExpr := signals.Set("open", "false")
+		return fmt.Sprintf("%s; setTimeout(() => { %s }, %d)", showExpr, hideExpr, durationMs)
+	}
+	return showExpr
+}
+
 // ToastTrigger creates a button that shows a toast when clicked
 templ ToastTrigger(toastID string, duration int) {
 	{{
-		// Build the expression to show toast and auto-hide after duration
-		signals := utils.Signals(toastID, ToastSignals{})
-		showExpr := signals.Set("open", "true")
-		
-		// Add auto-hide if duration is set
-		if duration > 0 {
-			hideExpr := signals.Set("open", "false")
-			showExpr = fmt.Sprintf("%s; setTimeout(() => { %s }, %d)", showExpr, hideExpr, duration)
-		}
+		showExpr := ShowToastExpr(toastID, duration)
 	}}
 	<button
 		type="button"
-		data-on-click={ showExpr }
+		data-on:click={ showExpr }
 	>
 		{ children... }
 	</button>
