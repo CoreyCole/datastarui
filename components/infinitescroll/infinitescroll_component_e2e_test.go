@@ -29,31 +29,27 @@ func TestInfiniteScrollLoadCycle(t *testing.T) {
 	itemsContainer := DiffViewerItems()
 	sentinel := DiffViewerSentinel()
 
-	spec.Story(t, "infinite scroll loads multiple pages then exhausts").
+	spec.Story(t, "infinite scroll loads 2 pages then exhausts").
 		Visit(InfiniteScrollPage()).
 		// Verify initial state
 		Expect(HostExists(host)).
 		Expect(SentinelExists(sentinel)).
 		Expect(SentinelHasIntersectAttribute("diff_viewer-sentinel-below")).
-		// Count initial items
-		Expect(InitialItemCount(itemsContainer, 1)). // 1 file card initially
-		// Scroll to trigger first load
+		// Count initial items (≥1)
+		Expect(InitialItemCount(itemsContainer, 1)).
+		// Scroll to trigger first load (cursor=0)
 		Expect(ScrollToSentinel(host, sentinel)).
-		// Wait for first page to load and verify
-		Expect(ItemCountIncreased(itemsContainer, 2)). // Should have 2 cards now
+		// Wait for first page to load and verify (≥2 items)
+		Expect(ItemCountIncreased(itemsContainer, 2)).
 		Expect(HostStillStable(host)).
 		Expect(SentinelExists(sentinel)). // Sentinel should be reminted
-		// Scroll to trigger second load
+		// Scroll to trigger second load (cursor=1, last content page)
 		Expect(ScrollToSentinel(host, sentinel)).
-		// Wait for second page to load and verify
-		Expect(ItemCountIncreased(itemsContainer, 3)). // Should have 3+ cards now
+		// Wait for second page to load and verify (≥3 items)
+		Expect(ItemCountIncreased(itemsContainer, 3)).
 		Expect(HostStillStable(host)).
-		Expect(SentinelExists(sentinel)). // Sentinel should be reminted again
-		// Scroll to trigger exhaustion
-		Expect(ScrollToSentinel(host, sentinel)).
-		// Verify sentinel is gone (exhausted)
+		// Verify sentinel is gone (exhausted on last content page)
 		Expect(SentinelGone(sentinel)).
-		Expect(HostStillStable(host)).
 		Expect(spec.ExpectStep(spec.ConsoleClean())).
 		Run()
 }

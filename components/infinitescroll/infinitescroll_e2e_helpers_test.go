@@ -115,10 +115,9 @@ func InitialItemCount(items ItemsContainer, expectedMin int) spec.Expectation {
 func ScrollToSentinel(demo InfiniteScrollDemo, sentinel Sentinel) spec.Expectation {
 	return spec.ExpectStep(spec.Custom("scroll to sentinel: "+sentinel.sentinelID, func(t testing.TB, ctx *runtime.Context) {
 		t.Helper()
-		hostLocator := ctx.Page.Locator("#" + demo.hostID)
 		sentinelLocator := ctx.Page.Locator("#" + sentinel.sentinelID)
 		
-		// Scroll the host container to make sentinel visible
+		// Scroll the sentinel into view
 		if err := sentinelLocator.ScrollIntoViewIfNeeded(); err != nil {
 			t.Errorf("failed to scroll sentinel into view: %v", err)
 			return
