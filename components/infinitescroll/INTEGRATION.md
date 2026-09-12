@@ -71,6 +71,10 @@ First paint: Sentinel only. Loading templ is for SSE patches from the backend.
 
 ```go
 import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
 	"github.com/labstack/echo/v4"
 	"github.com/starfederation/datastar-go/datastar"
 	"github.com/coreycole/datastarui/components/infinitescroll"
@@ -79,23 +83,34 @@ import (
 func HandleLoadMore(c echo.Context) error {
 	w := c.Response().Writer
 	r := c.Request()
+
+	// Parse cursor for pagination
+	cursor := c.QueryParam("cursor")
+	if cursor == "" {
+		cursor = "0" // Default to first page
+	}
+
+	// Set SSE headers
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
 	sse := datastar.NewSSE(w, r)
 
-	// Parse cursor/offset from query params
-	cursor := c.QueryParam("cursor")
-	offset := c.QueryParam("offset")
-
-	// 1. Show loading indicator (replace sentinel with loading)
+	// 1. Show loading indicator (same-id DOM replace on sentinel) with VT OFF
 	loadingComponent := infinitescroll.Loading(infinitescroll.LoadingArgs{
-		ID:        "my_list-sentinel-below",  // Same ID as sentinel
+		ID:        "my_list-sentinel-below",
 		Direction: infinitescroll.DirectionBelow,
 	})
-	sse.PatchElementTempl(loadingComponent)
+	sse.PatchElementTempl(loadingComponent, datastar.WithoutViewTransitions())
 
-	// 2. Fetch new items from database
-	items, hasMore := fetchItems(cursor, offset, 20)
+	// 2. Add delay for visible loading (250-400ms recommended)
+	time.Sleep(300 * time.Millisecond)
 
-	// 3. Build items HTML
+	// 3. Fetch new items from database
+	items, hasMore, nextCursor := fetchItems(cursor, 20)
+
+	// 4. Build items HTML
 	var itemsHTML strings.Builder
 	for i, item := range items {
 		// Render each item with stable ID
@@ -103,28 +118,26 @@ func HandleLoadMore(c echo.Context) error {
 		itemComponent.Render(context.Background(), &itemsHTML)
 	}
 
-	// 4. Append items to Items container
-	sse.PatchElement(datastar.PatchElementOptions{
-		Selector: "#my_list-items",
-		Mode:     datastar.ModeAppend,
-		Fragment: itemsHTML.String(),
-	})
+	// 5. Append items to Items container (VT OFF)
+	sse.PatchElements(itemsHTML.String(),
+		datastar.WithSelectorID("my_list-items"),
+		datastar.WithModeAppend(),
+		datastar.WithoutViewTransitions(),
+	)
 
-	// 5a. If more content available, add new sentinel
+	// 6. Either remint sentinel with next cursor or exhaust
 	if hasMore {
+		// Remint sentinel with next cursor
 		newSentinel := infinitescroll.Sentinel(infinitescroll.SentinelArgs{
 			ID:        "my_list-sentinel-below",
 			Direction: infinitescroll.DirectionBelow,
-			PatchExpr: "@get('/api/items/more?cursor=" + items[len(items)-1].ID + "')",
+			PatchExpr: fmt.Sprintf("@get('/api/items/more?cursor=%s')", nextCursor),
 		})
 		return sse.PatchElementTempl(newSentinel)
+	} else {
+		// Exhausted - remove sentinel
+		return sse.RemoveElementByID("my_list-sentinel-below")
 	}
-
-	// 5b. If exhausted, remove the loading indicator (no new sentinel)
-	return sse.PatchElement(datastar.PatchElementOptions{
-		Selector: "#my_list-sentinel-below",
-		Mode:     datastar.ModeRemove,
-	})
 }
 ```
 
@@ -136,48 +149,54 @@ For loading earlier content (e.g., scrolling up in a chat):
 func HandleLoadBefore(c echo.Context) error {
 	w := c.Response().Writer
 	r := c.Request()
-	sse := datastar.NewSSE(w, r)
 
 	cursor := c.QueryParam("cursor")
 
-	// 1. Show loading indicator
+	// Set SSE headers
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	sse := datastar.NewSSE(w, r)
+
+	// 1. Show loading indicator with VT OFF
 	loadingComponent := infinitescroll.Loading(infinitescroll.LoadingArgs{
 		ID:        "my_list-sentinel-above",
 		Direction: infinitescroll.DirectionAbove,
 	})
-	sse.PatchElementTempl(loadingComponent)
+	sse.PatchElementTempl(loadingComponent, datastar.WithoutViewTransitions())
 
-	// 2. Fetch earlier items
-	items, hasMore := fetchItemsBefore(cursor, 20)
+	// 2. Add visible delay
+	time.Sleep(300 * time.Millisecond)
 
-	// 3. Build items HTML
+	// 3. Fetch earlier items
+	items, hasMore, nextCursor := fetchItemsBefore(cursor, 20)
+
+	// 4. Build items HTML
 	var itemsHTML strings.Builder
 	for i, item := range items {
 		itemComponent := MyItemComponent(item, i)
 		itemComponent.Render(context.Background(), &itemsHTML)
 	}
 
-	// 4. PREPEND items to Items container (note: Prepend mode)
-	sse.PatchElement(datastar.PatchElementOptions{
-		Selector: "#my_list-items",
-		Mode:     datastar.ModePrepend,
-		Fragment: itemsHTML.String(),
-	})
+	// 5. PREPEND items to Items container (note: Prepend mode, VT OFF)
+	sse.PatchElements(itemsHTML.String(),
+		datastar.WithSelectorID("my_list-items"),
+		datastar.WithModePrepend(),
+		datastar.WithoutViewTransitions(),
+	)
 
-	// 5. Add new sentinel or remove if exhausted
+	// 6. Add new sentinel or remove if exhausted
 	if hasMore {
 		newSentinel := infinitescroll.Sentinel(infinitescroll.SentinelArgs{
 			ID:        "my_list-sentinel-above",
 			Direction: infinitescroll.DirectionAbove,
-			PatchExpr: "@get('/api/items/before?cursor=" + items[0].ID + "')",
+			PatchExpr: fmt.Sprintf("@get('/api/items/before?cursor=%s')", nextCursor),
 		})
 		return sse.PatchElementTempl(newSentinel)
 	}
 
-	return sse.PatchElement(datastar.PatchElementOptions{
-		Selector: "#my_list-sentinel-above",
-		Mode:     datastar.ModeRemove,
-	})
+	return sse.RemoveElementByID("my_list-sentinel-above")
 }
 ```
 
@@ -309,6 +328,13 @@ Show user-friendly error messages when loading fails:
 
 ```go
 func HandleLoadMore(c echo.Context) error {
+	w := c.Response().Writer
+	r := c.Request()
+
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
 	sse := datastar.NewSSE(w, r)
 	
 	items, err := fetchItems(cursor)
@@ -329,11 +355,7 @@ Handle the case when there are no items to load:
 ```go
 if len(items) == 0 {
 	emptyComponent := EmptyState("No more items to load")
-	return sse.PatchElement(datastar.PatchElementOptions{
-		Selector: "#my_list-sentinel-below",
-		Mode:     datastar.ModeReplace,
-		Fragment: renderToString(emptyComponent),
-	})
+	return sse.PatchElementTempl(emptyComponent)
 }
 ```
 

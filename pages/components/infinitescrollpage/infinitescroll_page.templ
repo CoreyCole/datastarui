@@ -51,77 +51,95 @@ templ InfiniteScrollPage(rootArgs l.RootArgs) {
 						A scrollable diff viewer showing file changes (PR/commit review aesthetic).
 						Demonstrates forward-edge infinite scrolling (PatchBelow). Scroll to the bottom to load more files.
 					</p>
-					<p class="text-xs text-muted-foreground">
-						<strong>Note:</strong> This demo exhausts after one <code>/api/infinitescroll/more</code> batch (intentional).
-						A multi-page implementation would remint the sentinel with a cursor parameter.
-					</p>
+				<p class="text-xs text-muted-foreground">
+					<strong>Note:</strong> This demo loads 2 additional pages (with visible loading states), then exhausts (intentional).
+					Each fetch remints the sentinel with a new cursor until exhaustion.
+				</p>
 				</div>
 				@card.Card(card.CardArgs{}) {
 					@card.CardContent(card.CardContentArgs{Class: "p-0"}) {
 						<div class="border rounded-lg overflow-hidden">
-							@infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
-								ID:             "diff_viewer",
-								PatchBelowExpr: patchMoreExpr,
-								Class:          "max-h-[600px]",
-							}) {
-								@DiffFileCard(DiffFile{
-									Path:     "components/infinitescroll/infinitescroll.templ",
-									OldLines: 0,
-									NewLines: 152,
-									Hunks: []DiffHunk{
-										{
-											Header: "@@ -0,0 +1,152 @@",
-											Lines: []DiffLine{
-												{Type: "add", Content: "package infinitescroll", Number: 1},
-												{Type: "add", Content: "", Number: 2},
-												{Type: "add", Content: "// InfiniteScroll creates a complete infinite scroll container", Number: 3},
-												{Type: "add", Content: "templ InfiniteScroll(args InfiniteScrollArgs) {", Number: 4},
-												{Type: "context", Content: "\t...", Number: 5},
-												{Type: "add", Content: "}", Number: 6},
-											},
+						@infinitescroll.InfiniteScroll(infinitescroll.InfiniteScrollArgs{
+							ID:             "diff_viewer",
+							PatchBelowExpr: patchMoreExpr,
+						}) {
+							@DiffFileCard(DiffFile{
+								Path:     "components/infinitescroll/infinitescroll.templ",
+								OldLines: 0,
+								NewLines: 152,
+								Hunks: []DiffHunk{
+									{
+										Header: "@@ -0,0 +1,65 @@",
+										Lines: []DiffLine{
+											{Type: "add", Content: "package infinitescroll", Number: 1},
+											{Type: "add", Content: "", Number: 2},
+											{Type: "add", Content: "// InfiniteScroll creates a complete infinite scroll container with configurable edges", Number: 3},
+											{Type: "add", Content: "// This is the happy path: one root call; children = first-page items.", Number: 4},
+											{Type: "add", Content: "// Root mints Host/Items/Sentinel with derived IDs.", Number: 5},
+											{Type: "add", Content: "// Loading elements are patched onto sentinel IDs via same-id DOM replace.", Number: 6},
+											{Type: "add", Content: "templ InfiniteScroll(args InfiniteScrollArgs) {", Number: 7},
+											{Type: "add", Content: "\t{{", Number: 8},
+											{Type: "add", Content: "\t\t// Derive MorphMap IDs if not provided", Number: 9},
+											{Type: "add", Content: "\t\thostID := args.HostID", Number: 10},
+											{Type: "add", Content: "\t\tif hostID == \"\" {", Number: 11},
+											{Type: "add", Content: "\t\t\thostID = args.ID + \"-host\"", Number: 12},
+											{Type: "add", Content: "\t\t}", Number: 13},
+											{Type: "add", Content: "\t\titemsID := args.ItemsID", Number: 14},
+											{Type: "add", Content: "\t\tif itemsID == \"\" {", Number: 15},
+											{Type: "add", Content: "\t\t\titemsID = args.ID + \"-items\"", Number: 16},
+											{Type: "add", Content: "\t\t}", Number: 17},
+											{Type: "add", Content: "\t\tsentinelAboveID := args.SentinelAboveID", Number: 18},
+											{Type: "add", Content: "\t\tif sentinelAboveID == \"\" {", Number: 19},
+											{Type: "add", Content: "\t\t\tsentinelAboveID = args.ID + \"-sentinel-above\"", Number: 20},
+											{Type: "add", Content: "\t\t}", Number: 21},
+											{Type: "add", Content: "\t\tsentinelBelowID := args.SentinelBelowID", Number: 22},
+											{Type: "add", Content: "\t\tif sentinelBelowID == \"\" {", Number: 23},
+											{Type: "add", Content: "\t\t\tsentinelBelowID = args.ID + \"-sentinel-below\"", Number: 24},
+											{Type: "add", Content: "\t\t}", Number: 25},
+											{Type: "add", Content: "\t\t// Loading IDs default to sentinel IDs (same-id DOM replace)", Number: 26},
+											{Type: "add", Content: "\t\tloadingAboveID := args.LoadingAboveID", Number: 27},
+											{Type: "add", Content: "\t\tif loadingAboveID == \"\" {", Number: 28},
+											{Type: "add", Content: "\t\t\tloadingAboveID = sentinelAboveID", Number: 29},
+											{Type: "add", Content: "\t\t}", Number: 30},
+											{Type: "add", Content: "\t\tloadingBelowID := args.LoadingBelowID", Number: 31},
+											{Type: "add", Content: "\t\tif loadingBelowID == \"\" {", Number: 32},
+											{Type: "add", Content: "\t\t\tloadingBelowID = sentinelBelowID", Number: 33},
+											{Type: "add", Content: "\t\t}", Number: 34},
+											{Type: "add", Content: "\t\tclasses := InfiniteScrollVariants(args)", Number: 35},
+											{Type: "add", Content: "\t}}", Number: 36},
+											{Type: "add", Content: "\t<div class={ classes } { args.Attributes... }>", Number: 37},
+											{Type: "add", Content: "\t\t@Host(HostArgs{", Number: 38},
+											{Type: "add", Content: "\t\t\tID:    hostID,", Number: 39},
+											{Type: "add", Content: "\t\t\tClass: \"h-full\",", Number: 40},
+											{Type: "add", Content: "\t\t}) {", Number: 41},
+											{Type: "add", Content: "\t\t\tif args.PatchAboveExpr != \"\" {", Number: 42},
+											{Type: "add", Content: "\t\t\t\t@LoadingSentinel(LoadingSentinelArgs{", Number: 43},
+											{Type: "add", Content: "\t\t\t\t\tID:        sentinelAboveID,", Number: 44},
+											{Type: "add", Content: "\t\t\t\t\tLoadingID: loadingAboveID,", Number: 45},
+											{Type: "add", Content: "\t\t\t\t\tDirection: DirectionAbove,", Number: 46},
+											{Type: "add", Content: "\t\t\t\t\tOnIntersect: args.PatchAboveExpr,", Number: 47},
+											{Type: "add", Content: "\t\t\t\t})", Number: 48},
+											{Type: "add", Content: "\t\t\t}", Number: 49},
+											{Type: "add", Content: "\t\t\t@Items(ItemsArgs{", Number: 50},
+											{Type: "add", Content: "\t\t\t\tID: itemsID,", Number: 51},
+											{Type: "add", Content: "\t\t\t}) {", Number: 52},
+											{Type: "add", Content: "\t\t\t\t{ children... }", Number: 53},
+											{Type: "add", Content: "\t\t\t}", Number: 54},
+											{Type: "add", Content: "\t\t\tif args.PatchBelowExpr != \"\" {", Number: 55},
+											{Type: "add", Content: "\t\t\t\t@LoadingSentinel(LoadingSentinelArgs{", Number: 56},
+											{Type: "add", Content: "\t\t\t\t\tID:        sentinelBelowID,", Number: 57},
+											{Type: "add", Content: "\t\t\t\t\tLoadingID: loadingBelowID,", Number: 58},
+											{Type: "add", Content: "\t\t\t\t\tDirection: DirectionBelow,", Number: 59},
+											{Type: "add", Content: "\t\t\t\t\tOnIntersect: args.PatchBelowExpr,", Number: 60},
+											{Type: "add", Content: "\t\t\t\t})", Number: 61},
+											{Type: "add", Content: "\t\t\t}", Number: 62},
+											{Type: "add", Content: "\t\t}", Number: 63},
+											{Type: "add", Content: "\t</div>", Number: 64},
+											{Type: "add", Content: "}", Number: 65},
 										},
 									},
-								}, 0)
-								@DiffFileCard(DiffFile{
-									Path:     "components/infinitescroll/args.go",
-									OldLines: 0,
-									NewLines: 71,
-									Hunks: []DiffHunk{
-										{
-											Header: "@@ -0,0 +1,71 @@",
-											Lines: []DiffLine{
-												{Type: "add", Content: "package infinitescroll", Number: 1},
-												{Type: "add", Content: "", Number: 2},
-												{Type: "add", Content: "import \"github.com/a-h/templ\"", Number: 3},
-												{Type: "add", Content: "", Number: 4},
-												{Type: "add", Content: "// InfiniteScrollArgs defines the properties", Number: 5},
-												{Type: "add", Content: "type InfiniteScrollArgs struct {", Number: 6},
-												{Type: "context", Content: "\t...", Number: 7},
-												{Type: "add", Content: "}", Number: 8},
-											},
-										},
-									},
-								}, 1)
-								@DiffFileCard(DiffFile{
-									Path:     "components/infinitescroll/variants.go",
-									OldLines: 0,
-									NewLines: 51,
-									Hunks: []DiffHunk{
-										{
-											Header: "@@ -0,0 +1,51 @@",
-											Lines: []DiffLine{
-												{Type: "add", Content: "package infinitescroll", Number: 1},
-												{Type: "add", Content: "", Number: 2},
-												{Type: "add", Content: "import \"github.com/coreycole/datastarui/utils\"", Number: 3},
-												{Type: "add", Content: "", Number: 4},
-												{Type: "add", Content: "// InfiniteScrollVariants generates CSS classes", Number: 5},
-												{Type: "add", Content: "func InfiniteScrollVariants(args InfiniteScrollArgs) string {", Number: 6},
-												{Type: "context", Content: "\t...", Number: 7},
-												{Type: "add", Content: "}", Number: 8},
-											},
-										},
-									},
-								}, 2)
+								},
+							}, 0)
 							}
 						</div>
 						<div class="p-4 text-xs text-muted-foreground">

@@ -165,7 +165,7 @@ func InfiniteScroll(args InfiniteScrollArgs) templ.Component {
 		})
 		templ_7745c5c3_Err = Host(HostArgs{
 			ID:    hostID,
-			Class: "h-full",
+			Class: "h-[600px]",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -487,12 +487,12 @@ func Loading(args LoadingArgs) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if args.Direction == DirectionAbove {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"text-sm text-muted-foreground\">Loading earlier items...</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"animate-pulse p-4 space-y-3\"><div class=\"h-4 bg-muted rounded w-3/4\"></div><div class=\"h-3 bg-muted rounded w-1/2\"></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"text-sm text-muted-foreground\">Loading more...</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"animate-pulse p-4 space-y-3\"><div class=\"h-4 bg-muted rounded w-3/4\"></div><div class=\"h-3 bg-muted rounded w-1/2\"></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

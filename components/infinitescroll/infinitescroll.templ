@@ -38,7 +38,7 @@ templ InfiniteScroll(args InfiniteScrollArgs) {
 	<div class={ classes } { args.Attributes... }>
 		@Host(HostArgs{
 			ID:    hostID,
-			Class: "h-full",
+			Class: "h-[600px]",
 		}) {
 			<!-- Above edge (inverse/scrollback) -->
 			if args.PatchAboveExpr != "" {
@@ -123,9 +123,15 @@ templ Loading(args LoadingArgs) {
 		{ args.Attributes... }
 	>
 		if args.Direction == DirectionAbove {
-			<div class="text-sm text-muted-foreground">Loading earlier items...</div>
+			<div class="animate-pulse p-4 space-y-3">
+				<div class="h-4 bg-muted rounded w-3/4"></div>
+				<div class="h-3 bg-muted rounded w-1/2"></div>
+			</div>
 		} else {
-			<div class="text-sm text-muted-foreground">Loading more...</div>
+			<div class="animate-pulse p-4 space-y-3">
+				<div class="h-4 bg-muted rounded w-3/4"></div>
+				<div class="h-3 bg-muted rounded w-1/2"></div>
+			</div>
 		}
 	</div>
 }
