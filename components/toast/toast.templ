@@ -1,0 +1,99 @@
+package toast
+
+import (
+	"fmt"
+	"github.com/coreycole/datastarui/utils"
+)
+
+// ToastSignals defines the state for a single toast notification
+type ToastSignals struct {
+	Open bool `json:"open"`
+}
+
+// ToastContainer creates a container that holds toast notifications
+templ ToastContainer(args ToastContainerArgs) {
+	{{
+		containerClasses := ToastContainerVariants(args)
+	}}
+	<div
+		id={ args.ID }
+		class={ containerClasses }
+		aria-live="polite"
+		aria-atomic="false"
+	>
+		{ children... }
+	</div>
+}
+
+// ToastItem creates a single toast notification
+templ ToastItem(args ToastItemArgs) {
+	{{
+		itemClasses := ToastItemVariants(args)
+		
+		// Initialize signals for this toast
+		signals := utils.Signals(args.ID, ToastSignals{
+			Open: false,
+		})
+
+		// Build close handler
+		closeHandler := signals.Set("open", "false")
+	}}
+	<div
+		data-signals={ signals.DataSignals }
+		data-show={ signals.Signal("open") }
+		style="display: none;"
+	>
+		<div
+			id={ args.ID }
+			class={ itemClasses }
+			role="alert"
+			aria-live="assertive"
+			aria-atomic="true"
+			data-state={ signals.Conditional("open", "'open'", "'closed'") }
+			{ args.Attributes... }
+		>
+			<div class="grid gap-1 flex-1">
+				if args.Title != "" {
+					<div class="text-sm font-semibold">{ args.Title }</div>
+				}
+				if args.Description != "" {
+					<div class="text-sm opacity-90">{ args.Description }</div>
+				}
+				{ children... }
+			</div>
+			<!-- Close button -->
+			<button
+				type="button"
+				class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
+				aria-label="Close"
+				data-on-click={ closeHandler }
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M18 6 6 18"></path>
+					<path d="m6 6 12 12"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+}
+
+// ToastTrigger creates a button that shows a toast when clicked
+templ ToastTrigger(toastID string, duration int) {
+	{{
+		// Build the expression to show toast and auto-hide after duration
+		signals := utils.Signals(toastID, ToastSignals{})
+		showExpr := signals.Set("open", "true")
+		
+		// Add auto-hide if duration is set
+		if duration > 0 {
+			hideExpr := signals.Set("open", "false")
+			showExpr = fmt.Sprintf("%s; setTimeout(() => { %s }, %d)", showExpr, hideExpr, duration)
+		}
+	}}
+	<button
+		type="button"
+		data-on-click={ showExpr }
+	>
+		{ children... }
+	</button>
+}

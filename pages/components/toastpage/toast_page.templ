@@ -1,0 +1,280 @@
+package toastpage
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/toast"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ ToastPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<!-- Global toast container -->
+		@toast.ToastContainer(toast.ToastContainerArgs{
+			ID:       "global_toasts",
+			Position: toast.ToastPositionTopRight,
+		}) {
+			<!-- Pre-define toast items that can be shown/hidden -->
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "default_toast",
+				Title:       "Notification",
+				Description: "Your message has been sent.",
+				Variant:     toast.ToastVariantDefault,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "success_toast",
+				Title:       "Copied!",
+				Description: "Link copied to clipboard.",
+				Variant:     toast.ToastVariantSuccess,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "error_toast",
+				Title:       "Error",
+				Description: "Something went wrong. Please try again.",
+				Variant:     toast.ToastVariantDestructive,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "info_toast",
+				Title:       "Update Available",
+				Description: "A new version is available. Refresh to update.",
+				Variant:     toast.ToastVariantInfo,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "persistent_toast",
+				Title:       "Persistent Notification",
+				Description: "This won't auto-dismiss. Close it manually.",
+				Variant:     toast.ToastVariantDefault,
+			})
+		}
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Toast")
+			<!-- Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Toast</h1>
+				<p class="text-muted-foreground">
+					A succinct message that is displayed temporarily (also known as Sonner-style toasts). Perfect for clipboard "Copied…" feedback and other ephemeral notifications.
+				</p>
+			</div>
+			<!-- Default Toast -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Default</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@toast.ToastTrigger("default_toast", 3000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Default Toast
+						}
+					}
+				</div>
+			</div>
+			<!-- Success Toast (Clipboard Example) -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibend tracking-tight">Success (Clipboard Example)</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@toast.ToastTrigger("success_toast", 2000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "default",
+						}) {
+							Copy Link
+						}
+					}
+				</div>
+			</div>
+			<!-- Destructive/Error Toast -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Destructive</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@toast.ToastTrigger("error_toast", 4000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "destructive",
+						}) {
+							Show Error
+						}
+					}
+				</div>
+			</div>
+			<!-- Info Toast -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Info</h2>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@toast.ToastTrigger("info_toast", 5000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Info
+						}
+					}
+				</div>
+			</div>
+			<!-- Multiple Toasts -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Multiple Toasts</h2>
+				<p class="text-sm text-muted-foreground">Show different toasts - they will stack in the container</p>
+				<div class="flex items-center justify-center gap-4 p-10 border rounded-lg">
+					@toast.ToastTrigger("default_toast", 4000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Default
+						}
+					}
+					@toast.ToastTrigger("success_toast", 4000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Success
+						}
+					}
+					@toast.ToastTrigger("info_toast", 4000) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Info
+						}
+					}
+				</div>
+			</div>
+			<!-- No Auto-dismiss -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">No Auto-dismiss</h2>
+				<p class="text-sm text-muted-foreground">This toast stays until manually dismissed (hover to see close button)</p>
+				<div class="flex items-center justify-center p-10 border rounded-lg">
+					@toast.ToastTrigger("persistent_toast", 0) {
+						@button.Button(button.ButtonArgs{
+							Variant: "outline",
+						}) {
+							Show Persistent Toast
+						}
+					}
+				</div>
+			</div>
+			<!-- Different Positions -->
+			<div class="space-y-4">
+				<h2 class="text-2xl font-semibold tracking-tight">Different Positions</h2>
+				<p class="text-sm text-muted-foreground">Each button uses a different toast container position</p>
+				<div class="grid grid-cols-3 gap-4">
+					<!-- Top Left Container -->
+					@toast.ToastContainer(toast.ToastContainerArgs{
+						ID:       "toast_top_left",
+						Position: toast.ToastPositionTopLeft,
+					}) {
+						@toast.ToastItem(toast.ToastItemArgs{
+							ID:          "pos_top_left",
+							Title:       "Top Left",
+							Description: "Appears at top left",
+							Variant:     toast.ToastVariantDefault,
+						})
+					}
+					<!-- Top Center Container -->
+					@toast.ToastContainer(toast.ToastContainerArgs{
+						ID:       "toast_top_center",
+						Position: toast.ToastPositionTopCenter,
+					}) {
+						@toast.ToastItem(toast.ToastItemArgs{
+							ID:          "pos_top_center",
+							Title:       "Top Center",
+							Description: "Appears at top center",
+							Variant:     toast.ToastVariantDefault,
+						})
+					}
+					<!-- Bottom Left Container -->
+					@toast.ToastContainer(toast.ToastContainerArgs{
+						ID:       "toast_bottom_left",
+						Position: toast.ToastPositionBottomLeft,
+					}) {
+						@toast.ToastItem(toast.ToastItemArgs{
+							ID:          "pos_bottom_left",
+							Title:       "Bottom Left",
+							Description: "Appears at bottom left",
+							Variant:     toast.ToastVariantDefault,
+						})
+					}
+					<!-- Bottom Center Container -->
+					@toast.ToastContainer(toast.ToastContainerArgs{
+						ID:       "toast_bottom_center",
+						Position: toast.ToastPositionBottomCenter,
+					}) {
+						@toast.ToastItem(toast.ToastItemArgs{
+							ID:          "pos_bottom_center",
+							Title:       "Bottom Center",
+							Description: "Appears at bottom center",
+							Variant:     toast.ToastVariantDefault,
+						})
+					}
+					<!-- Bottom Right Container -->
+					@toast.ToastContainer(toast.ToastContainerArgs{
+						ID:       "toast_bottom_right",
+						Position: toast.ToastPositionBottomRight,
+					}) {
+						@toast.ToastItem(toast.ToastItemArgs{
+							ID:          "pos_bottom_right",
+							Title:       "Bottom Right",
+							Description: "Appears at bottom right",
+							Variant:     toast.ToastVariantDefault,
+						})
+					}
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("pos_top_left", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Top Left
+							}
+						}
+					</div>
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("pos_top_center", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Top Center
+							}
+						}
+					</div>
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("default_toast", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Top Right
+							}
+						}
+					</div>
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("pos_bottom_left", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Bottom Left
+							}
+						}
+					</div>
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("pos_bottom_center", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Bottom Center
+							}
+						}
+					</div>
+					<div class="flex items-center justify-center p-4 border rounded-lg">
+						@toast.ToastTrigger("pos_bottom_right", 3000) {
+							@button.Button(button.ButtonArgs{
+								Variant: "outline",
+								Class:   "w-full",
+							}) {
+								Bottom Right
+							}
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

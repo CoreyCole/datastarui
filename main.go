@@ -26,6 +26,7 @@ import (
 	"github.com/coreycole/datastarui/pages/components/sheetpage"
 	"github.com/coreycole/datastarui/pages/components/sidebarpage"
 	"github.com/coreycole/datastarui/pages/components/tabspage"
+	"github.com/coreycole/datastarui/pages/components/toastpage"
 	"github.com/coreycole/datastarui/pages/components/tooltippage"
 	"github.com/coreycole/datastarui/pages/login"
 	"github.com/coreycole/datastarui/utils"
@@ -179,6 +180,9 @@ func main() {
 	})
 	e.GET("/components/tooltip", func(c echo.Context) error {
 		return tooltippage.TooltipPage(componentRootArgs(c.Request().URL.Path, cfg)).Render(c.Request().Context(), c.Response().Writer)
+	})
+	e.GET("/components/toast", func(c echo.Context) error {
+		return toastpage.ToastPage(componentRootArgs(c.Request().URL.Path, cfg)).Render(c.Request().Context(), c.Response().Writer)
 	})
 
 	// Serve the docs page
