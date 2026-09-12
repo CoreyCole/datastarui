@@ -1,0 +1,620 @@
+package toastpage
+
+import (
+	"github.com/coreycole/datastarui/components/button"
+	"github.com/coreycole/datastarui/components/card"
+	"github.com/coreycole/datastarui/components/toast"
+	l "github.com/coreycole/datastarui/layouts"
+)
+
+templ ToastPage(rootArgs l.RootArgs) {
+	@l.Root(rootArgs) {
+		<!-- Global toast container (top-right) -->
+		@toast.ToastContainer(toast.ToastContainerArgs{
+			ID:       "global_toasts",
+			Position: toast.ToastPositionTopRight,
+		}) {
+			<!-- Pre-define toast items for main demos -->
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "default_toast",
+				Title:       "Scheduled: Meeting",
+				Description: "Your meeting is scheduled for 2:00 PM.",
+				Variant:     toast.ToastVariantDefault,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "clipboard_success",
+				Title:       "Copied to clipboard",
+				Description: "",
+				Variant:     toast.ToastVariantSuccess,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "save_success",
+				Title:       "Success",
+				Description: "Your changes have been saved.",
+				Variant:     toast.ToastVariantSuccess,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "error_toast",
+				Title:       "Error",
+				Description: "There was a problem with your request.",
+				Variant:     toast.ToastVariantDestructive,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "delete_error",
+				Title:       "Deletion failed",
+				Description: "Unable to delete item. Please try again.",
+				Variant:     toast.ToastVariantDestructive,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "update_info",
+				Title:       "Update available",
+				Description: "A new version is available. Refresh to update.",
+				Variant:     toast.ToastVariantInfo,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "maintenance_info",
+				Title:       "Scheduled maintenance",
+				Description: "System will be down from 2-3 AM EST.",
+				Variant:     toast.ToastVariantInfo,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "persistent_toast",
+				Title:       "Important notice",
+				Description: "Read this carefully - it won't auto-dismiss.",
+				Variant:     toast.ToastVariantDefault,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "title_only_toast",
+				Title:       "Quick notification",
+				Description: "",
+				Variant:     toast.ToastVariantDefault,
+			})
+			@toast.ToastItem(toast.ToastItemArgs{
+				ID:          "long_description_toast",
+				Title:       "Detailed notification",
+				Description: "This toast contains a longer description to demonstrate how multi-line content is displayed in toast notifications.",
+				Variant:     toast.ToastVariantDefault,
+			})
+		}
+		<div class="space-y-8">
+			@l.ComponentPageBreadcrumbs("Toast")
+			<!-- Page Header -->
+			<div class="space-y-2">
+				<h1 class="text-3xl font-bold tracking-tight">Toast</h1>
+				<p class="text-lg text-muted-foreground">
+					A succinct message that is displayed temporarily. Perfect for clipboard feedback, action confirmations, and ephemeral notifications.
+				</p>
+			</div>
+			<!-- Toast Variants -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Toast Variants</h2>
+					<p class="text-sm text-muted-foreground">
+						Different toast styles for various notification types. Each variant has distinct styling to convey the appropriate message tone.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "grid gap-4 p-6"}) {
+						<!-- Default Variant -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Default</h3>
+							<p class="text-xs text-muted-foreground">
+								Standard notification for general messages and updates.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("default_toast", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+									}) {
+										Show Default Toast
+									}
+								}
+							</div>
+						</div>
+						<!-- Success Variant -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Success</h3>
+							<p class="text-xs text-muted-foreground">
+								Confirms successful actions like saves, copies, and completions.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("save_success", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "default",
+										Size:    "sm",
+									}) {
+										Show Success Toast
+									}
+								}
+							</div>
+						</div>
+						<!-- Destructive/Error Variant -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Destructive</h3>
+							<p class="text-xs text-muted-foreground">
+								Alerts user to errors, failures, or destructive actions.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("delete_error", 4000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "destructive",
+										Size:    "sm",
+									}) {
+										Show Error Toast
+									}
+								}
+							</div>
+						</div>
+						<!-- Info Variant -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Info</h3>
+							<p class="text-xs text-muted-foreground">
+								Informational messages about updates, features, or system status.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("update_info", 5000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+									}) {
+										Show Info Toast
+									}
+								}
+							</div>
+						</div>
+					}
+				}
+			</section>
+			<!-- Clipboard Example -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Clipboard Feedback</h2>
+					<p class="text-sm text-muted-foreground">
+						The primary use case for toasts: providing instant feedback after clipboard operations. This is essential for Share menu and copy-to-clipboard actions.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "space-y-4 p-6"}) {
+						<div class="space-y-3">
+							<div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+								<div class="space-y-1">
+									<p class="text-sm font-medium">Share Link</p>
+									<p class="text-xs text-muted-foreground">https://example.com/share/abc123</p>
+								</div>
+								@toast.ToastTrigger("clipboard_success", 2000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "ghost",
+										Size:    "sm",
+									}) {
+										<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+										</svg>
+										Copy Link
+									}
+								}
+							</div>
+							<p class="text-xs text-muted-foreground">
+								Click "Copy Link" to see the "Copied to clipboard" success toast with a 2-second duration.
+							</p>
+						</div>
+					}
+				}
+			</section>
+			<!-- Action Confirmations -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Action Confirmations</h2>
+					<p class="text-sm text-muted-foreground">
+						Use toasts to confirm user actions without interrupting their workflow. These examples show various real-world scenarios.
+					</p>
+				</div>
+				<div class="grid gap-6 md:grid-cols-2">
+					<!-- Save Action -->
+					@card.Card(card.CardArgs{}) {
+						@card.CardHeader(card.CardHeaderArgs{}) {
+							@card.CardTitle(card.CardTitleArgs{}) {
+								Save Confirmation
+							}
+							@card.CardDescription(card.CardDescriptionArgs{}) {
+								Confirm when user saves changes
+							}
+						}
+						@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
+							<div class="space-y-2">
+								<label class="text-sm font-medium">Document Title</label>
+								<input type="text" class="w-full px-3 py-2 border rounded-md" placeholder="Enter title..." />
+							</div>
+							<div class="space-y-2">
+								<label class="text-sm font-medium">Content</label>
+								<textarea class="w-full px-3 py-2 border rounded-md" rows="3" placeholder="Enter content..."></textarea>
+							</div>
+							@toast.ToastTrigger("save_success", 3000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "default",
+									Size:    "sm",
+									Class:   "w-full",
+								}) {
+									Save Changes
+								}
+							}
+						}
+					}
+					<!-- Delete Error -->
+					@card.Card(card.CardArgs{}) {
+						@card.CardHeader(card.CardHeaderArgs{}) {
+							@card.CardTitle(card.CardTitleArgs{}) {
+								Error Notification
+							}
+							@card.CardDescription(card.CardDescriptionArgs{}) {
+								Alert user when operations fail
+							}
+						}
+						@card.CardContent(card.CardContentArgs{Class: "space-y-4"}) {
+							<div class="space-y-2">
+								<div class="flex items-center justify-between p-3 bg-muted rounded">
+									<span class="text-sm">Document.pdf</span>
+									<span class="text-xs text-muted-foreground">2.5 MB</span>
+								</div>
+								<div class="flex items-center justify-between p-3 bg-muted rounded">
+									<span class="text-sm">Image.png</span>
+									<span class="text-xs text-muted-foreground">1.2 MB</span>
+								</div>
+							</div>
+							@toast.ToastTrigger("delete_error", 4000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "destructive",
+									Size:    "sm",
+									Class:   "w-full",
+								}) {
+									Delete Selected
+								}
+							}
+						}
+					}
+				</div>
+			</section>
+			<!-- Content Variations -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Content Variations</h2>
+					<p class="text-sm text-muted-foreground">
+						Toasts support different content structures: title-only for quick messages, or title with description for more context.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "grid gap-4 p-6"}) {
+						<!-- Title Only -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Title Only</h3>
+							<p class="text-xs text-muted-foreground">
+								Short, concise messages that don't need additional context.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("title_only_toast", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+									}) {
+										Show Title Only
+									}
+								}
+							</div>
+						</div>
+						<!-- Title + Description -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Title with Description</h3>
+							<p class="text-xs text-muted-foreground">
+								More detailed messages that provide additional context or instructions.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("maintenance_info", 5000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+									}) {
+										Show with Description
+									}
+								}
+							</div>
+						</div>
+						<!-- Long Description -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Long Description</h3>
+							<p class="text-xs text-muted-foreground">
+								Demonstrates how longer content is displayed in toast notifications.
+							</p>
+							<div class="flex gap-2">
+								@toast.ToastTrigger("long_description_toast", 5000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+									}) {
+										Show Long Content
+									}
+								}
+							</div>
+						</div>
+					}
+				}
+			</section>
+			<!-- Duration & Dismissal -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Duration & Dismissal</h2>
+					<p class="text-sm text-muted-foreground">
+						Control how long toasts remain visible. Auto-dismiss with custom duration or require manual dismissal for important messages.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "grid gap-4 p-6 md:grid-cols-3"}) {
+						<!-- Quick (2s) -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Quick (2s)</h3>
+							<p class="text-xs text-muted-foreground">
+								Brief confirmation for simple actions.
+							</p>
+							@toast.ToastTrigger("clipboard_success", 2000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+									Class:   "w-full",
+								}) {
+									Show 2s
+								}
+							}
+						</div>
+						<!-- Standard (3-5s) -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Standard (3-5s)</h3>
+							<p class="text-xs text-muted-foreground">
+								Default duration for most notifications.
+							</p>
+							@toast.ToastTrigger("save_success", 4000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+									Class:   "w-full",
+								}) {
+									Show 4s
+								}
+							}
+						</div>
+						<!-- Manual Dismiss -->
+						<div class="space-y-2">
+							<h3 class="text-sm font-medium">Manual Dismiss</h3>
+							<p class="text-xs text-muted-foreground">
+								Stays until user explicitly closes it.
+							</p>
+							@toast.ToastTrigger("persistent_toast", 0) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+									Class:   "w-full",
+								}) {
+									Show Persistent
+								}
+							}
+						</div>
+					}
+				}
+			</section>
+			<!-- Multiple Toasts -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Multiple Toasts</h2>
+					<p class="text-sm text-muted-foreground">
+						Multiple toasts can be displayed simultaneously, stacking vertically in the container. Useful for batch operations or rapid user actions.
+					</p>
+				</div>
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "space-y-4 p-6"}) {
+						<p class="text-sm">
+							Click the buttons quickly to see multiple toasts stack. Each toast maintains its own auto-dismiss timer.
+						</p>
+						<div class="flex flex-wrap gap-2">
+							@toast.ToastTrigger("default_toast", 5000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+								}) {
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+									</svg>
+									Schedule Meeting
+								}
+							}
+							@toast.ToastTrigger("clipboard_success", 5000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+								}) {
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+									</svg>
+									Copy to Clipboard
+								}
+							}
+							@toast.ToastTrigger("save_success", 5000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+								}) {
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									</svg>
+									Save Changes
+								}
+							}
+							@toast.ToastTrigger("update_info", 5000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+								}) {
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+									</svg>
+									Show Update
+								}
+							}
+							@toast.ToastTrigger("delete_error", 5000) {
+								@button.Button(button.ButtonArgs{
+									Variant: "outline",
+									Size:    "sm",
+								}) {
+									<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+									</svg>
+									Trigger Error
+								}
+							}
+						</div>
+					}
+				}
+			</section>
+			<!-- Position Options -->
+			<section class="space-y-6">
+				<div class="space-y-2">
+					<h2 class="text-2xl font-semibold tracking-tight">Position Options</h2>
+					<p class="text-sm text-muted-foreground">
+						Toasts can be positioned in six locations: top-left, top-center, top-right, bottom-left, bottom-center, and bottom-right. Choose the position that best fits your layout.
+					</p>
+				</div>
+				<!-- Position containers -->
+				@toast.ToastContainer(toast.ToastContainerArgs{
+					ID:       "toast_top_left",
+					Position: toast.ToastPositionTopLeft,
+				}) {
+					@toast.ToastItem(toast.ToastItemArgs{
+						ID:          "pos_top_left",
+						Title:       "Top Left",
+						Description: "Toast positioned at top left",
+						Variant:     toast.ToastVariantDefault,
+					})
+				}
+				@toast.ToastContainer(toast.ToastContainerArgs{
+					ID:       "toast_top_center",
+					Position: toast.ToastPositionTopCenter,
+				}) {
+					@toast.ToastItem(toast.ToastItemArgs{
+						ID:          "pos_top_center",
+						Title:       "Top Center",
+						Description: "Toast positioned at top center",
+						Variant:     toast.ToastVariantDefault,
+					})
+				}
+				@toast.ToastContainer(toast.ToastContainerArgs{
+					ID:       "toast_bottom_left",
+					Position: toast.ToastPositionBottomLeft,
+				}) {
+					@toast.ToastItem(toast.ToastItemArgs{
+						ID:          "pos_bottom_left",
+						Title:       "Bottom Left",
+						Description: "Toast positioned at bottom left",
+						Variant:     toast.ToastVariantDefault,
+					})
+				}
+				@toast.ToastContainer(toast.ToastContainerArgs{
+					ID:       "toast_bottom_center",
+					Position: toast.ToastPositionBottomCenter,
+				}) {
+					@toast.ToastItem(toast.ToastItemArgs{
+						ID:          "pos_bottom_center",
+						Title:       "Bottom Center",
+						Description: "Toast positioned at bottom center",
+						Variant:     toast.ToastVariantDefault,
+					})
+				}
+				@toast.ToastContainer(toast.ToastContainerArgs{
+					ID:       "toast_bottom_right",
+					Position: toast.ToastPositionBottomRight,
+				}) {
+					@toast.ToastItem(toast.ToastItemArgs{
+						ID:          "pos_bottom_right",
+						Title:       "Bottom Right",
+						Description: "Toast positioned at bottom right",
+						Variant:     toast.ToastVariantDefault,
+					})
+				}
+				@card.Card(card.CardArgs{}) {
+					@card.CardContent(card.CardContentArgs{Class: "p-6"}) {
+						<div class="grid grid-cols-3 gap-4">
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Top Left</p>
+								@toast.ToastTrigger("pos_top_left", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Top Center</p>
+								@toast.ToastTrigger("pos_top_center", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Top Right (Default)</p>
+								@toast.ToastTrigger("default_toast", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Bottom Left</p>
+								@toast.ToastTrigger("pos_bottom_left", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Bottom Center</p>
+								@toast.ToastTrigger("pos_bottom_center", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+							<div class="text-center space-y-2">
+								<p class="text-xs font-medium text-muted-foreground">Bottom Right</p>
+								@toast.ToastTrigger("pos_bottom_right", 3000) {
+									@button.Button(button.ButtonArgs{
+										Variant: "outline",
+										Size:    "sm",
+										Class:   "w-full",
+									}) {
+										Show
+									}
+								}
+							</div>
+						</div>
+					}
+				}
+			</section>
+		</div>
+	}
+}
