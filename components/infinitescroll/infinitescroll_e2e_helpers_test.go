@@ -25,7 +25,7 @@ func (d InfiniteScrollDemo) Host() spec.Locator {
 }
 
 func HostExists(demo InfiniteScrollDemo) spec.Expectation {
-	return spec.Custom("host exists with stable ID: "+demo.hostID, func(t testing.TB, ctx *runtime.Context) {
+	return spec.ExpectStep(spec.Custom("host exists with stable ID: "+demo.hostID, func(t testing.TB, ctx *runtime.Context) {
 		t.Helper()
 		locator := ctx.Page.Locator("#" + demo.hostID)
 		if err := locator.WaitFor(playwright.LocatorWaitForOptions{
@@ -34,11 +34,11 @@ func HostExists(demo InfiniteScrollDemo) spec.Expectation {
 		}); err != nil {
 			t.Errorf("host element #%s not found or not visible: %v", demo.hostID, err)
 		}
-	})
+	}))
 }
 
 func SentinelHasIntersectAttribute(sentinelID string) spec.Expectation {
-	return spec.Custom("sentinel has data-on:intersect attribute: "+sentinelID, func(t testing.TB, ctx *runtime.Context) {
+	return spec.ExpectStep(spec.Custom("sentinel has data-on:intersect attribute: "+sentinelID, func(t testing.TB, ctx *runtime.Context) {
 		t.Helper()
 		locator := ctx.Page.Locator("#" + sentinelID)
 		
@@ -63,5 +63,5 @@ func SentinelHasIntersectAttribute(sentinelID string) spec.Expectation {
 		}
 		
 		t.Logf("✓ sentinel #%s has data-on:intersect attribute: %s", sentinelID, attr)
-	})
+	}))
 }
